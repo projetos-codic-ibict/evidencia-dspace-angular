@@ -1,0 +1,53 @@
+// Add any global css for the theme here
+
+// imports the base global style
+@import "../../../styles/_global-styles.scss";
+
+// overflow-x: hidden on body (DSpace base) creates a scroll container that breaks position:sticky.
+// clip achieves the same visual clipping without creating a scroll container.
+body {
+  overflow-x: clip;
+}
+
+// ThemedComponent wrapper for the header has height = header height, which prevents sticky from
+// having any scroll range. display:contents makes it layout-transparent so the sticky
+// ds-themed-header-navbar-wrapper becomes a direct flex child of .inner-wrapper (min-height:100vh).
+ds-header-navbar-wrapper {
+  display: contents;
+}
+
+// Sidebar sticks below the sticky header
+@include media-breakpoint-up(md) {
+  .sidebar-content {
+    top: var(--ds-header-height);
+  }
+}
+
+html,
+body {
+  background-color: #f8f9fa;
+}
+
+// override bootstrap buttons
+
+.btn {
+  border-radius: var(--rdapp-border-radius-2rem);
+}
+
+.btn-group .btn {
+  border-radius: var(--bs-border-radius);
+}
+
+.btn.btn-secondary:focus {
+  outline-color: #aab7c4;
+}
+
+.btn.btn-primary:focus {
+  outline-color: #28408b;
+}
+
+// B1 — HU003: capitalizar labels dos facets na sidebar de busca
+ds-search-facet-option .break-facet,
+ds-search-facet-selected-option .break-facet {
+  text-transform: capitalize;
+}

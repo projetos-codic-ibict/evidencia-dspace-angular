@@ -1,0 +1,126 @@
+<div class="doc-more-results">
+  <div class="doc-more-results__trigger">
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-primary doc-more-results__toggle-btn"
+      (click)="toggleOpen()"
+      [attr.aria-expanded]="isOpen"
+      aria-controls="document-more-results-panel"
+    >
+      <i class="fas fa-file-search" aria-hidden="true"></i>
+      <span>{{ 'rdapp.document-more-results.toggle-btn' | translate }}</span>
+      <i
+        class="fas fa-chevron-down doc-more-results__chevron"
+        [class.rotated]="isOpen"
+        aria-hidden="true"
+      ></i>
+    </button>
+  </div>
+
+  @if (isOpen) {
+    <section
+      id="document-more-results-panel"
+      class="doc-more-results__panel"
+      role="region"
+      [attr.aria-label]="'rdapp.document-more-results.panel-aria-label' | translate"
+    >
+      <div class="doc-more-results__panel-header">
+        <i class="fas fa-search-plus" aria-hidden="true"></i>
+        <h4>{{ 'rdapp.document-more-results.occurrences-title' | translate }}</h4>
+        
+        <span class="doc-more-results__badge">{{ occurrences?.length || 0 }} resultados</span>
+        
+      </div>
+
+      @if (isLoading) {
+        <p class="doc-more-results__loading">{{ 'rdapp.document-more-results.loading' | translate }}</p>
+      }
+
+      @if (!isLoading && occurrences.length === 0) {
+        <div class="doc-more-results__no-results">
+          @if (hasError) {
+            <p class="doc-more-results__error-message">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              {{ 'rdapp.document-more-results.error' | translate }}
+            </p>
+          } @else {
+            <p class="doc-more-results__no-results-message">
+              <i class="fas fa-search" aria-hidden="true"></i>
+              {{ 'rdapp.document-more-results.no-results' | translate }}
+            </p>
+          }
+        </div>
+      }
+
+      @if (!isLoading && occurrences.length > 0) {
+        <ul class="doc-more-results__list" [attr.aria-label]="'rdapp.document-more-results.list-aria-label' | translate">
+          @for (occurrence of pagedOccurrences; track occurrence.trecho) {
+            <li class="doc-more-results__item">
+              <p class="doc-more-results__snippet">{{ occurrence.trecho }}</p>
+              <div class="doc-more-results__meta">
+                <span class="doc-more-results__section">
+                  {{ 'rdapp.document-more-results.section-label' | translate }} <strong>{{ occurrence.secao }}</strong>
+                </span>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-primary doc-more-results__page-link"
+                  (click)="navigateToPDFPage(occurrence.pagina)"
+                >
+                  {{ 'rdapp.document-more-results.page-number' | translate: { page: occurrence.pagina } }}
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+
+        <div class="doc-more-results__pagination">
+          <div class="doc-more-results__pagination-group">
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              (click)="goToFirstPage()"
+              [disabled]="currentPage === 1"
+              aria-label="Primeira página"
+            >
+              <i class="fas fa-angle-double-left" aria-hidden="true"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              (click)="goToPreviousPage()"
+              [disabled]="currentPage === 1"
+              aria-label="Página anterior"
+            >
+              <i class="fas fa-angle-left" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <span class="doc-more-results__pagination-label">
+            {{ 'rdapp.document-more-results.pagination-label' | translate: { current: currentPage, total: totalPages } }}
+          </span>
+
+          <div class="doc-more-results__pagination-group">
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              (click)="goToNextPage()"
+              [disabled]="currentPage === totalPages"
+              aria-label="Próxima página"
+            >
+              <i class="fas fa-angle-right" aria-hidden="true"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              (click)="goToLastPage()"
+              [disabled]="currentPage === totalPages"
+              aria-label="Última página"
+            >
+              <i class="fas fa-angle-double-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      }
+    </section>
+  }
+</div>

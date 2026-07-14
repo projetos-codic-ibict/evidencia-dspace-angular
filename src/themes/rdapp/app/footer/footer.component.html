@@ -1,0 +1,72 @@
+<footer role="contentinfo">
+  <div class="footer-social">
+    <a
+      href="https://www.youtube.com/@MPStreaming"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="YouTube do Ministério do Planejamento e Orçamento"
+    >
+      <img src="assets/rdapp/images/youtube.svg" alt="" aria-hidden="true" />
+    </a>
+    <a
+      href="https://www.x.com/MinPlanejamento"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="X (Twitter) do Ministério do Planejamento e Orçamento"
+    >
+      <img src="assets/rdapp/images/twitter-x.svg" alt="" aria-hidden="true" />
+    </a>
+    <a
+      href="https://www.flickr.com/photos/minplanejamento"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Flickr do Ministério do Planejamento e Orçamento"
+    >
+      <img src="assets/rdapp/images/flickr-svgrepo-com.svg" alt="" aria-hidden="true" />
+    </a>
+    <a
+      href="https://www.instagram.com/planejamentoeorcamento/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Instagram do Ministério do Planejamento e Orçamento"
+    >
+      <img src="assets/rdapp/images/instagram.svg" alt="" aria-hidden="true" />
+    </a>
+  </div>
+
+  <div class="bottom-footer p-1 d-flex flex-column flex-md-row justify-content-center align-items-center">
+    <div class="content-container align-self-center">
+      <ul class="footer-info list-unstyled d-flex justify-content-center flex-wrap mb-0">
+        @if (showPrivacyPolicy) {
+          <li>
+            <a routerLink="info/privacy" role="link" tabindex="0">{{ "footer.link.privacy-policy" | translate }}</a>
+          </li>
+        }
+        @if (showEndUserAgreement) {
+          <li>
+            <a routerLink="info/end-user-agreement" role="link" tabindex="0">{{ "footer.link.end-user-agreement" | translate }}</a>
+          </li>
+        }
+      </ul>
+
+      <div class="d-flex justify-content-center mb-3">
+        <img src="assets/rdapp/images/MPOLogoFooter.png" [attr.alt]="'rdapp.footer.mpo-logo-alt' | translate" />
+      </div>
+
+      <p class="mb-0 text-center footer-org-name">
+        {{ 'rdapp.footer.org-name' | translate }}
+      </p>
+      <p class="mb-0 text-center">
+        {{ 'rdapp.footer.org-sector' | translate }}
+      </p>
+      <p class="mb-0 text-center">
+        {{ 'rdapp.footer.org-address' | translate }}
+      </p>
+      <p class="mb-0 text-center">
+        <a href="mailto:{{ 'rdapp.footer.org-email' | translate }}">{{ 'rdapp.footer.org-email' | translate }}</a>
+        &nbsp;·&nbsp;
+        {{ 'rdapp.footer.org-phone' | translate }}
+      </p>
+    </div>
+  </div>
+</footer>

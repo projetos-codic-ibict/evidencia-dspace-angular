@@ -1,4 +1,5 @@
 {
+
   "401.help": "You're not authorized to access this page. You can use the button below to get back to the home page.",
 
   "401.link.home-page": "Take me to the home page",
@@ -17,7 +18,7 @@
 
   "500.link.home-page": "Take me to the home page",
 
-  "404.help": "We can't find the page you're looking for. The page may have been moved or deleted. You can use the button below to get back to the home page.",
+  "404.help": "We can't find the page you're looking for. The page may have been moved or deleted. You can use the button below to get back to the home page. ",
 
   "404.link.home-page": "Take me to the home page",
 
@@ -899,56 +900,6 @@
 
   "admin.batch-import.page.remove": "remove",
 
-  "audit.data.not-found": "No audits found.",
-
-  "audit.data.self": "self",
-
-  "audit.detail.metadata.field": "Metadata field:",
-
-  "audit.detail.metadata.value": "Value:",
-
-  "audit.detail.metadata.authority": "Authority:",
-
-  "audit.detail.metadata.confidence": "Confidence:",
-
-  "audit.detail.metadata.place": "Place:",
-
-  "audit.detail.metadata.action": "Action:",
-
-  "audit.detail.metadata.checksum": "Checksum:",
-
-  "audit.overview.title": "All Audit Logs",
-
-  "audit.overview.table.id": "Audit ID",
-
-  "audit.overview.table.objectUUID": "Object ID",
-
-  "audit.overview.table.objectType": "Object Type",
-
-  "audit.overview.table.subjectUUID": "Subject ID",
-
-  "audit.overview.table.subjectType": "Subject Type",
-
-  "audit.overview.table.entityType": "Audit Type",
-
-  "audit.overview.table.eperson": "EPerson",
-
-  "audit.overview.table.other": "Object",
-
-  "audit.overview.table.timestamp": "Time (UTC)",
-
-  "audit.overview.breadcrumbs": "Audit Logs",
-
-  "audit.object.back": "Back",
-
-  "audit.object.breadcrumbs": "Object Audit Logs",
-
-  "audit.object.overview.title": "Object Audit Logs",
-
-  "audit.object.logs.label": "Logs for object: ",
-
-  "audit.object.overview.disabled.message": "Audit feature is currently disabled",
-
   "auth.errors.invalid-user": "Invalid email address or password.",
 
   "auth.messages.expired": "Your session has expired. Please log in again.",
@@ -1010,26 +961,6 @@
   "bitstream.edit.form.iiifHeight.label": "IIIF Canvas Height",
 
   "bitstream.edit.form.iiifHeight.hint": "The canvas height should usually match the image height.",
-
-  "bitstream.edit.form.mediaType.label": "Audio or video media type",
-
-  "bitstream.edit.form.mediaType.hint": "Choose how this bitstream should be interpreted.",
-
-  "bitstream.edit.form.mediaType.option.neither": "Neither",
-
-  "bitstream.edit.form.mediaType.option.audio": "Audio",
-
-  "bitstream.edit.form.mediaType.option.video": "Video",
-
-  "bitstream.edit.form.mediaType.option.audio-video": "Audio and video",
-
-  "bitstream.edit.form.audioTranscript.label": "Audio transcript",
-
-  "bitstream.edit.form.audioTranscript.hint": "Provide a transcript for audio content.",
-
-  "bitstream.edit.form.videoDescription.label": "Video description",
-
-  "bitstream.edit.form.videoDescription.hint": "Provide a description for video content.",
 
   "bitstream.edit.notifications.saved.content": "Your changes to this bitstream were saved.",
 
@@ -1197,10 +1128,6 @@
 
   "browse.title": "Browsing by {{ field }}{{ startsWith }} {{ value }}",
 
-  "browse.taxonomy.show_next_results": "Show next results",
-
-  "browse.taxonomy.show_previous_results": "Show previous results",
-
   "browse.title.page": "Browsing by {{ field }} {{ value }}",
 
   "search.browse.item-back": "Back to Results",
@@ -1235,7 +1162,7 @@
 
   "collection.delete.notification.fail": "Collection could not be deleted",
 
-  "collection.delete.notification.success": "Successfully started a process to delete this collection",
+  "collection.delete.notification.success": "Successfully deleted collection",
 
   "collection.delete.text": "Are you sure you want to delete collection \"{{ dso }}\"",
 
@@ -1399,29 +1326,17 @@
 
   "collection.form.errors.title.required": "Please enter a collection name",
 
-  "collection.form.errors.submissionDefinition.required": "Please choose a submission definition for this collection",
-
-  "collection.form.errors.entityType.required": "Please choose an entity type for this collection",
-
   "collection.form.license": "License",
 
   "collection.form.provenance": "Provenance",
 
   "collection.form.rights": "Copyright text (HTML)",
 
-  "collection.form.sharedWorkspace": "Shared workspace",
-
   "collection.form.tableofcontents": "News (HTML)",
 
   "collection.form.title": "Name",
 
   "collection.form.entityType": "Entity Type",
-
-  "collection.form.submissionDefinition": "Submission definition",
-
-  "collection.form.correctionSubmissionDefinition": "Submission definition for correction request",
-
-
 
   "collection.listelement.badge": "Collection",
 
@@ -1541,7 +1456,7 @@
 
   "community.delete.notification.fail": "Community could not be deleted",
 
-  "community.delete.notification.success": "Successfully started a process to delete this community",
+  "community.delete.notification.success": "Successfully deleted community",
 
   "community.delete.text": "Are you sure you want to delete community \"{{ dso }}\"",
 
@@ -1696,18 +1611,6 @@
   "community.sub-collection-list.head": "Collections in this community",
 
   "community.sub-community-list.head": "Communities in this Community",
-
-  "confirmation-modal.pending-changes.header": "Unsaved changes",
-
-  "confirmation-modal.pending-changes.info": "There are unsaved changes. Do you want to leave the page?",
-
-  "confirmation-modal.pending-changes.cancel": "Cancel",
-
-  "confirmation-modal.pending-changes.confirm": "Leave",
-
-  "context-menu.actions.audit-item.btn": "Audit",
-
-  "context-menu.actions.subscription.frequency.required": "Please select a frequency",
 
   "cookies.consent.accept-all": "Accept all",
 
@@ -1879,7 +1782,7 @@
 
   "dso-selector.no-results": "No {{ type }} found",
 
-  "dso-selector.placeholder": "Search for {{ type }}",
+  "dso-selector.placeholder": "Search for a {{ type }}",
 
   "dso-selector.placeholder.type.community": "community",
 
@@ -2001,16 +1904,6 @@
 
   "error.item": "Error fetching item",
 
-  "error.custom-url-conflict.title": "Duplicate custom URL detected",
-
-  "error.custom-url-conflict.description": "The custom URL \"{{customUrl}}\" is assigned to more than one item. This causes a conflict and the item cannot be displayed.",
-
-  "error.custom-url-conflict.admin-action": "Please contact your repository administrator. The following affected items need their dspace.customurl metadata fixed so each value is unique:",
-
-  "error.custom-url-conflict.edit-link": "Edit \"{{name}}\" ({{uuid}})",
-
-  "error.custom-url-conflict.no-items-found": "No conflicting items could be retrieved. Please contact your administrator.",
-
   "error.items": "Error fetching items",
 
   "error.objects": "Error fetching objects",
@@ -2031,15 +1924,9 @@
 
   "error.top-level-communities": "Error fetching top-level communities",
 
-  "error.validation.license.required": "You must grant this license to complete your submission. If you are unable to grant this license at this time you may save your work and return later or remove the submission.",
+  "error.validation.license.notgranted": "You must grant this license to complete your submission. If you are unable to grant this license at this time you may save your work and return later or remove the submission.",
 
   "error.validation.cclicense.required": "You must grant this cclicense to complete your submission. If you are unable to grant the cclicense at this time, you may save your work and return later or remove the submission.",
-
-  "error.validation.custom-url.conflict": "The custom url has been already used, please try with a new one.",
-
-  "error.validation.custom-url.empty": "The custom url is required and cannot be empty.",
-
-  "error.validation.custom-url.invalid-characters": "The custom url contains invalid characters. Only alphanumeric characters, dashes and underscores are supported.",
 
   "error.validation.pattern": "This input is restricted by the current pattern: {{ pattern }}.",
 
@@ -2153,8 +2040,6 @@
 
   "form.clear-help": "Click here to remove the selected value",
 
-  "form.copy": "Duplicate",
-
   "form.discard": "Discard",
 
   "form.drag": "Drag",
@@ -2164,12 +2049,6 @@
   "form.edit-help": "Click here to edit the selected value",
 
   "form.first-name": "First name",
-
-  "form.group.add": "Add",
-
-  "form.group.close": "Close",
-
-  "form.group.set": "Set",
 
   "form.group-collapse": "Collapse",
 
@@ -2203,38 +2082,6 @@
 
   "form.other-information.orcid": "ORCID",
 
-  "form.other-information.oairecerif_author_affiliation": "Affiliation",
-
-  "form.other-information.oairecerif_editor_affiliation": "Affiliation",
-
-  "form.other-information.person_identifier_orcid": "ORCID iD",
-
-  "form.other-information.institution-affiliation-name": "Affiliation(s)",
-
-  "form.other-information.dc_relation_grantno": "Grant Number",
-
-  "form.other-information.not-available": "Not available",
-
-  "form.other-information.ror_orgunit_id": "ROR ID",
-
-  "form.other-information.ror_orgunit_type": "ROR type",
-
-  "form.other-information.ror_orgunit_acronym": "ROR acronym",
-
-  "form.other-information.ror_orgunit_countryName": "ROR country",
-
-  "form.entry.source.local": "",
-
-  "form.entry.source.orcid": "",
-
-  "form.entry.source.ror": "",
-
-  "form.entry.source.openaire": "",
-
-  "form.entry.source.zdb": "",
-
-  "form.entry.source.jisc": "- Jisc Open policy finder",
-
   "form.remove": "Remove",
 
   "form.save": "Save",
@@ -2252,12 +2099,6 @@
   "form.number-picker.decrement": "Decrement {{field}}",
 
   "form.number-picker.increment": "Increment {{field}}",
-
-  "form.number-picker.label.Year": "Year",
-
-  "form.number-picker.label.Month": "Month",
-
-  "form.number-picker.label.Day": "Day",
 
   "form.repeatable.sort.tip": "Drop the item in the new position",
 
@@ -2379,7 +2220,7 @@
 
   "info.accessibility-settings.disableNotificationTimeOut.label": "Automatically close notifications after time out",
 
-  "info.accessibility-settings.disableNotificationTimeOut.hint": "When this toggle is activated, notifications will close automatically after the time out passes. When deactivated, notifications will remain open until manually closed.",
+  "info.accessibility-settings.disableNotificationTimeOut.hint": "When this toggle is activated, notifications will close automatically after the time out passes. When deactivated, notifications will remain open untill manually closed.",
 
   "info.accessibility-settings.failed-notification": "Failed to save accessibility settings",
 
@@ -2515,7 +2356,7 @@
 
   "item.edit.bitstreams.bundle.name": "BUNDLE: {{ name }}",
 
-  "item.edit.bitstreams.bundle.table.aria-label": "Bitstreams in the {{ bundle }} Bundle",
+  "item.edit.bitstreams.bundle.table.aria-label": "Bitstreams in the  {{ bundle }} Bundle",
 
   "item.edit.bitstreams.bundle.tooltip": "You can move a bitstream to a different page by dropping it on the page number.",
 
@@ -2593,13 +2434,7 @@
 
   "item.edit.delete.header": "Delete item: {{ id }}",
 
-  "item.edit.delete.success": "Successfully started a process to delete this item",
-
-  "item.edit.delete.confirmation-title": "Confirm deletion",
-
-  "item.edit.delete.confirmation-message": "Are you sure you want to permanently delete this item?",
-
-  "item.edit.delete.confirmation-detail": "This item may have been cited, has (or had) a persistent identifier (Handle/DOI), and deleting it may break scholarly references and external links.",
+  "item.edit.delete.success": "The item has been deleted",
 
   "item.edit.head": "Edit Item",
 
@@ -2669,10 +2504,6 @@
 
   "item.edit.item-mapper.notifications.add.error.content": "Errors occurred for mapping of item to {{amount}} collections.",
 
-  "item.edit.item-mapper.notifications.add.error.forbidden.head": "Permission denied",
-
-  "item.edit.item-mapper.notifications.add.error.forbidden.content": "You do not have permission to map this item to a collection.",
-
   "item.edit.item-mapper.notifications.add.error.head": "Mapping errors",
 
   "item.edit.item-mapper.notifications.add.success.content": "Successfully mapped item to {{amount}} collections.",
@@ -2680,10 +2511,6 @@
   "item.edit.item-mapper.notifications.add.success.head": "Mapping completed",
 
   "item.edit.item-mapper.notifications.remove.error.content": "Errors occurred for the removal of the mapping to {{amount}} collections.",
-
-  "item.edit.item-mapper.notifications.remove.error.forbidden.head": "Permission denied",
-
-  "item.edit.item-mapper.notifications.remove.error.forbidden.content": "You do not have permission to remove this item from a collection.",
 
   "item.edit.item-mapper.notifications.remove.error.head": "Removal of mapping errors",
 
@@ -2702,8 +2529,6 @@
   "item.edit.metadata.discard-button": "Discard",
 
   "item.edit.metadata.edit.language": "Edit language",
-
-  "item.edit.metadata.edit.authority": "Edit authority",
 
   "item.edit.metadata.edit.value": "Edit value",
 
@@ -2734,10 +2559,6 @@
   "item.edit.metadata.headers.field": "Field",
 
   "item.edit.metadata.headers.language": "Lang",
-
-  "item.edit.metadata.headers.security": "Security level",
-
-  "item.edit.metadata.headers.authority": "Authority",
 
   "item.edit.metadata.headers.value": "Value",
 
@@ -2895,7 +2716,7 @@
 
   "item.edit.tabs.metadata.head": "Metadata",
 
-  "item.edit.tabs.metadata.title": "Item Edit - Metadata",
+  "item.edit.tabs.metadata.title": "Item Edit -  Metadata",
 
   "item.edit.tabs.relationships.head": "Relationships",
 
@@ -2947,7 +2768,7 @@
 
   "item.edit.tabs.status.labels.lastModified": "Last Modified",
 
-  "item.edit.tabs.status.title": "Item Edit - Status",
+  "item.edit.tabs.status.title": "Item Edit -  Status",
 
   "item.edit.tabs.versionhistory.head": "Version History",
 
@@ -2957,7 +2778,7 @@
 
   "item.edit.tabs.view.head": "View Item",
 
-  "item.edit.tabs.view.title": "Item Edit - View",
+  "item.edit.tabs.view.title": "Item Edit -  View",
 
   "item.edit.withdraw.cancel": "Cancel",
 
@@ -3017,8 +2838,6 @@
 
   "item.page.dcterms.spatial": "Geospatial point",
 
-  "item.page.doi": "DOI",
-
   "item.search.results.head": "Item Search Results",
 
   "item.search.title": "Item Search",
@@ -3027,15 +2846,11 @@
 
   "item.truncatable-part.show-less": "Collapse",
 
-  "item.qa-event-notification.check.notification-info.singular": "There is {{num}} pending suggestion related to your account",
-
-  "item.qa-event-notification.check.notification-info.plural": "There are {{num}} pending suggestions related to your account",
+  "item.qa-event-notification.check.notification-info": "There are {{num}} pending suggestions related to your account",
 
   "item.qa-event-notification-info.check.button": "View",
 
-  "mydspace.qa-event-notification.check.notification-info.singular": "There is {{num}} pending suggestion related to your account",
-
-  "mydspace.qa-event-notification.check.notification-info.plural": "There are {{num}} pending suggestions related to your account",
+  "mydspace.qa-event-notification.check.notification-info": "There are {{num}} pending suggestions related to your account",
 
   "mydspace.qa-event-notification-info.check.button": "View",
 
@@ -3089,7 +2904,7 @@
 
   "item.page.date": "Date",
 
-  "item.page.edit": "Administer",
+  "item.page.edit": "Edit this item",
 
   "item.page.files": "Files",
 
@@ -3115,10 +2930,6 @@
 
   "item.page.orcid.tooltip": "Open ORCID setting page",
 
-  "item.page.orcid-ico": "ORCID icon",
-
-  "item.page.orcid-profile": "ORCID Profile",
-
   "item.page.person.search.title": "Articles by this author",
 
   "item.page.related-items.view-more": "Show {{ amount }} more",
@@ -3133,29 +2944,6 @@
 
   "item.page.relationships.isOrgUnitOfProject": "Research Projects",
 
-  "item.page.relationships.RELATION.Person.researchoutputs": "Publications",
-
-  "item.page.relationships.RELATION.Person.projects": "Projects",
-
-  "item.page.relationships.RELATION.OrgUnit.rpprojects": "Researchers Projects",
-
-  "item.page.relationships.RELATION.OrgUnit.publications": "Publications",
-
-  "item.page.relationships.RELATION.OrgUnit.rppublications": "Researchers Publications",
-
-  "item.page.relationships.RELATION.OrgUnit.people": "People",
-
-  "item.page.relationships.RELATION.OrgUnit.projects": "Projects",
-
-  "item.page.relationships.RELATION.OrgUnit.organizations": "Organizations",
-
-  "item.page.relationships.RELATION.Project.projects": "Projects",
-
-  "item.page.relationships.RELATION.Project.fundings": "Fundings",
-
-  "item.page.relationships.RELATION.Project.researchoutputs": "Publications",
-
-
   "item.page.subject": "Keywords",
 
   "item.page.uri": "URI",
@@ -3169,10 +2957,6 @@
   "item.page.filesection.original.bundle": "Original bundle",
 
   "item.page.filesection.license.bundle": "License bundle",
-
-  "item-page.resolver.invalid-custom-url.title": "Invalid custom URL",
-
-  "item-page.resolver.invalid-custom-url.message": "The custom URL of this item contains unsupported characters. The item is being displayed using its UUID.",
 
   "item.page.return": "Back",
 
@@ -3196,11 +2980,11 @@
 
   "item.preview.dc.date.issued": "Published date:",
 
-  "item.preview.dc.description": "Description:",
+  "item.preview.dc.description": "Description",
 
   "item.preview.dc.description.abstract": "Abstract:",
 
-  "item.preview.dc.identifier.other": "Other identifier:",
+  "item.preview.dc.identifier.other": "Other Identifier",
 
   "item.preview.dc.language.iso": "Language:",
 
@@ -3432,8 +3216,6 @@
 
   "itemtemplate.edit.metadata.edit.language": "Edit language",
 
-  "itemtemplate.edit.metadata.edit.authority": "Edit authority",
-
   "itemtemplate.edit.metadata.edit.value": "Edit value",
 
   "itemtemplate.edit.metadata.edit.buttons.confirm": "Confirm",
@@ -3457,8 +3239,6 @@
   "itemtemplate.edit.metadata.headers.language": "Lang",
 
   "itemtemplate.edit.metadata.headers.value": "Value",
-
-  "itemtemplate.edit.metadata.headers.authority": "Authority",
 
   "itemtemplate.edit.metadata.metadatafield": "Edit field",
 
@@ -3494,7 +3274,7 @@
 
   "journal.page.description": "Description",
 
-  "journal.page.edit": "Administer",
+  "journal.page.edit": "Edit this item",
 
   "journal.page.editor": "Editor-in-Chief",
 
@@ -3516,7 +3296,7 @@
 
   "journalissue.page.description": "Description",
 
-  "journalissue.page.edit": "Administer",
+  "journalissue.page.edit": "Edit this item",
 
   "journalissue.page.issuedate": "Issue Date",
 
@@ -3538,7 +3318,7 @@
 
   "journalvolume.page.description": "Description",
 
-  "journalvolume.page.edit": "Administer",
+  "journalvolume.page.edit": "Edit this item",
 
   "journalvolume.page.issuedate": "Issue Date",
 
@@ -3571,30 +3351,6 @@
   "iiif.page.issue": "Issue: ",
 
   "iiif.page.description": "Description: ",
-
-  "layout.advanced-attachment.dc.title": "Name",
-
-  "layout.advanced-attachment.size": "Size",
-
-  "layout.advanced-attachment.checksum": "Checksum",
-
-  "layout.advanced-attachment.checksum.info.MD5": "The <b>MD5 message-digest algorithm</b> can be used to verify the integrity of the file that you have uploaded. You can calculate its value locally via tools that are generally available in each operative system like <b>md5sum</b>",
-
-  "layout.advanced-attachment.format": "Format",
-
-  "layout.advanced-attachment.dc.type": "Type",
-
-  "layout.advanced-attachment.dc.description": "Description",
-
-  "layout.advanced-attachment.no_thumbnail": "No Thumbnail Available",
-
-  "layout.advanced-attachment.download": "Download",
-
-  "layout.advanced-attachment.requestACopy": "Request a copy",
-
-  "layout.advanced-attachment.viewMore": "View More",
-
-  "layout.advanced-attachment.label.not-present": "(not present)",
 
   "loading.bitstream": "Loading bitstream...",
 
@@ -3679,8 +3435,6 @@
   "menu.section.access_control_groups": "Groups",
 
   "menu.section.access_control_people": "People",
-
-  "menu.section.audit": "Audit Logs",
 
   "menu.section.reports": "Reports",
 
@@ -3834,21 +3588,11 @@
 
   "menu.section.workflow": "Administer Workflow",
 
-  "menu.section.FULL": "Edit",
-
-  "menu.section.OWNER": "Edit",
-
-  "menu.section.DIRECTOR": "Edit",
-
-  "menu.section.INVESTIGATOR": "Edit",
-
   "metadata-export-search.tooltip": "Export search results as CSV",
 
   "metadata-export-search.submit.success": "The export was started successfully",
 
   "metadata-export-search.submit.error": "Starting the export has failed",
-
-  "metadata.security.level.title": "Metatada security level {{level}}",
 
   "mydspace.breadcrumbs": "MyDSpace",
 
@@ -3909,8 +3653,6 @@
   "mydspace.show.workflow": "Workflow tasks",
 
   "mydspace.show.workspace": "Your submissions",
-
-  "mydspace.show.otherWorkspace": "Shared Submissions",
 
   "mydspace.show.supervisedWorkspace": "Supervised items",
 
@@ -4128,8 +3870,6 @@
 
   "quality-assurance.event.reason": "Reason",
 
-  "orcid.badge.tooltip": "Connected to ORCID",
-
   "orgunit.listelement.badge": "Organizational Unit",
 
   "orgunit.listelement.no-title": "Untitled",
@@ -4142,7 +3882,7 @@
 
   "orgunit.page.description": "Description",
 
-  "orgunit.page.edit": "Administer",
+  "orgunit.page.edit": "Edit this item",
 
   "orgunit.page.id": "ID",
 
@@ -4170,7 +3910,7 @@
 
   "person.page.birthdate": "Birth Date",
 
-  "person.page.edit": "Administer",
+  "person.page.edit": "Edit this item",
 
   "person.page.email": "Email Address",
 
@@ -4348,11 +4088,11 @@
 
   "process.overview.unknown.user": "Unknown",
 
-  "process.bulk.delete.error.head": "Error on deleting process",
+  "process.bulk.delete.error.head": "Error on deleteing process",
 
-  "process.bulk.delete.error.body": "The process with ID {{processId}} could not be deleted. The remaining processes will continue being deleted.",
+  "process.bulk.delete.error.body": "The process with ID {{processId}} could not be deleted. The remaining processes will continue being deleted. ",
 
-  "process.bulk.delete.success": "{{count}} process(es) have been successfully deleted",
+  "process.bulk.delete.success": "{{count}} process(es) have been succesfully deleted",
 
   "profile.breadcrumbs": "Update Profile",
 
@@ -4426,7 +4166,7 @@
 
   "project.page.description": "Description",
 
-  "project.page.edit": "Administer",
+  "project.page.edit": "Edit this item",
 
   "project.page.expectedcompletion": "Expected Completion",
 
@@ -4450,7 +4190,7 @@
 
   "publication.page.description": "Description",
 
-  "publication.page.edit": "Administer",
+  "publication.page.edit": "Edit this item",
 
   "publication.page.journal-issn": "Journal ISSN",
 
@@ -4463,8 +4203,6 @@
   "publication.page.titleprefix": "Publication: ",
 
   "publication.page.volume-title": "Volume Title",
-
-  "publication.page.doi": "DOI",
 
   "publication.search.results.head": "Publication Search Results",
 
@@ -4742,7 +4480,7 @@
 
   "resource-policies.form.eperson-group-list.select.btn": "Select",
 
-  "resource-policies.form.eperson-group-list.tab.eperson": "Search for an ePerson",
+  "resource-policies.form.eperson-group-list.tab.eperson": "Search for a ePerson",
 
   "resource-policies.form.eperson-group-list.tab.group": "Search for a group",
 
@@ -4816,28 +4554,6 @@
 
   "resource-policies.table.headers.title.for.collection": "Policies for Collection",
 
-  "RELATION.Person.researchoutputs.search.results.head": "Research Output",
-
-  "RELATION.Person.projects.search.results.head": "Projects",
-
-  "RELATION.Project.researchoutputs.search.results.head": "Publications",
-
-  "RELATION.Project.fundings.search.results.head": "Fundings",
-
-  "RELATION.Project.projects.search.results.head": "Projects",
-
-  "RELATION.OrgUnit.organizations.search.results.head": "Organizations",
-
-  "RELATION.OrgUnit.rppublications.search.results.head": "Researchers Publications",
-
-  "RELATION.OrgUnit.publications.search.results.head": "Publications",
-
-  "RELATION.OrgUnit.rpprojects.search.results.head": "Researchers Projects",
-
-  "RELATION.OrgUnit.projects.search.results.head": "Projects",
-
-  "RELATION.OrgUnit.people.search.results.head": "People",
-
   "root.skip-to-content": "Skip to main content",
 
   "search.description": "",
@@ -4864,7 +4580,7 @@
 
   "search.filters.applied.f.discoverable": "Non-discoverable",
 
-  "search.filters.applied.f.entityType": "Item Type",
+  "search.filters.applied.f.entityType": "Type",
 
   "search.filters.applied.f.has_content_in_original_bundle": "Has files",
 
@@ -4912,13 +4628,13 @@
 
   "search.filters.filter.title.placeholder": "Title",
 
-  "search.filters.filter.title.label": "Search Title",
+  "search.filters.filter.title.label": "Search by title",
 
   "search.filters.filter.author.head": "Author",
 
   "search.filters.filter.author.placeholder": "Author name",
 
-  "search.filters.filter.author.label": "Search author name",
+  "search.filters.filter.author.label": "Search by author",
 
   "search.filters.filter.birthDate.head": "Birth Date",
 
@@ -4958,11 +4674,11 @@
 
   "search.filters.filter.dateIssued.head": "Date",
 
-  "search.filters.filter.dateIssued.max.placeholder": "Maximum Date",
+  "search.filters.filter.dateIssued.max.placeholder": "End date",
 
   "search.filters.filter.dateIssued.max.label": "End",
 
-  "search.filters.filter.dateIssued.min.placeholder": "Minimum Date",
+  "search.filters.filter.dateIssued.min.placeholder": "Start date",
 
   "search.filters.filter.dateIssued.min.label": "Start",
 
@@ -4976,11 +4692,11 @@
 
   "search.filters.filter.withdrawn.head": "Withdrawn",
 
-  "search.filters.filter.entityType.head": "Item Type",
+  "search.filters.filter.entityType.head": "Type",
 
-  "search.filters.filter.entityType.placeholder": "Item Type",
+  "search.filters.filter.entityType.placeholder": "Type",
 
-  "search.filters.filter.entityType.label": "Search item type",
+  "search.filters.filter.entityType.label": "Search by type",
 
   "search.filters.filter.expand": "Expand filter",
 
@@ -5066,7 +4782,7 @@
 
   "search.filters.filter.subject.placeholder": "Subject",
 
-  "search.filters.filter.subject.label": "Search subject",
+  "search.filters.filter.subject.label": "Search by subject",
 
   "search.filters.filter.submitter.head": "Submitter",
 
@@ -5138,7 +4854,7 @@
 
   "search.filters.operator.equals.text": "Equals",
 
-  "search.filters.operator.notequals.text": "Not Equals",
+  "search.filters.operator.notequals.text": "Not equals",
 
   "search.filters.operator.authority.text": "Authority",
 
@@ -5146,15 +4862,15 @@
 
   "search.filters.operator.contains.text": "Contains",
 
-  "search.filters.operator.notcontains.text": "Not Contains",
+  "search.filters.operator.notcontains.text": "Not contains",
 
-  "search.filters.operator.query.text": "Query",
+  "search.filters.operator.query.text": "Free query",
 
   "search.form.search": "Search",
 
   "search.form.search_dspace": "All repository",
 
-  "search.form.scope.all": "All of DSpace",
+  "search.form.scope.all": "Entire Repository",
 
   "search.results.head": "Search Results",
 
@@ -5246,10 +4962,6 @@
 
   "sorting.person.birthDate.DESC": "Birth Date Descending",
 
-  "sorting.ownerselection.ASC": "Owner Relevance Ascending",
-
-  "sorting.ownerselection.DESC": "Owner Relevance Descending",
-
   "statistics.title": "Statistics",
 
   "statistics.header": "Statistics for {{ scope }}",
@@ -5278,8 +4990,6 @@
 
   "submission.edit.title": "Edit Submission",
 
-  "submission.edit.item.breadcrumbs": "Edit item",
-
   "submission.general.cancel": "Cancel",
 
   "submission.general.cannot_submit": "You don't have permission to make a new submission.",
@@ -5298,8 +5008,6 @@
 
   "submission.general.back.submit": "Back",
 
-  "submission.general.info.invalid": "The submission is invalid, check missing fields",
-
   "submission.general.info.saved": "Saved",
 
   "submission.general.info.pending-changes": "Unsaved changes",
@@ -5307,8 +5015,6 @@
   "submission.general.save": "Save",
 
   "submission.general.save-later": "Save for later",
-
-  "submission.general.save-later.edit-item": "Save and return",
 
   "submission.import-external.page.title": "Import metadata from an external source",
 
@@ -5320,7 +5026,7 @@
 
   "submission.import-external.title.JournalVolume": "Import a journal volume from an external source",
 
-  "submission.import-external.title.OrgUnit": "Import an organizational unit from an external source",
+  "submission.import-external.title.OrgUnit": "Import a publisher from an external source",
 
   "submission.import-external.title.Person": "Import a person from an external source",
 
@@ -5370,11 +5076,11 @@
 
   "submission.import-external.source.loading": "Loading ...",
 
-  "submission.import-external.source.opfJournal": "Jisc Open policy finder Journals",
+  "submission.import-external.source.sherpaJournal": "SHERPA Journals",
 
-  "submission.import-external.source.opfJournalIssn": "Jisc Open policy finder Journals by ISSN",
+  "submission.import-external.source.sherpaJournalIssn": "SHERPA Journals by ISSN",
 
-  "submission.import-external.source.opfPublisher": "Jisc Open policy finder Publishers",
+  "submission.import-external.source.sherpaPublisher": "SHERPA Publishers",
 
   "submission.import-external.source.openaire": "OpenAIRE Search by Authors",
 
@@ -5474,8 +5180,6 @@
 
   "submission.sections.describe.relationship-lookup.external-source.import-modal.isAuthorOfPublication.added.new-entity": "Successfully imported and added external author to the selection",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isJournalOfVolume.added.new-entity": "Successfully imported and added external journal to the selection",
-
   "submission.sections.describe.relationship-lookup.external-source.import-modal.authority": "Authority",
 
   "submission.sections.describe.relationship-lookup.external-source.import-modal.authority.new": "Import as a new local authority entry",
@@ -5498,9 +5202,9 @@
 
   "submission.sections.describe.relationship-lookup.external-source.import-modal.head.openaireFunding": "Importing from OpenAIRE",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.head.jiscJournal": "Importing from Jisc Open policy finder Journal",
+  "submission.sections.describe.relationship-lookup.external-source.import-modal.head.sherpaJournal": "Importing from Sherpa Journal",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.head.jiscPublisher": "Importing from Jisc Open policy finder Publisher",
+  "submission.sections.describe.relationship-lookup.external-source.import-modal.head.sherpaPublisher": "Importing from Sherpa Publisher",
 
   "submission.sections.describe.relationship-lookup.external-source.import-modal.head.pubmed": "Importing from PubMed",
 
@@ -5544,8 +5248,6 @@
 
   "submission.sections.describe.relationship-lookup.search-tab.placeholder": "Search query",
 
-  "submission.sections.describe.relationship-lookup.toggle-dropdown": "Toggle dropdown",
-
   "submission.sections.describe.relationship-lookup.search-tab.search": "Go",
 
   "submission.sections.describe.relationship-lookup.search-tab.search-form.placeholder": "Search...",
@@ -5584,9 +5286,9 @@
 
   "submission.sections.describe.relationship-lookup.search-tab.tab-title.JournalVolume": "Local Journal Volumes ({{ count }})",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.jiscJournal": "Jisc Open policy finder Journals ({{ count }})",
+  "submission.sections.describe.relationship-lookup.search-tab.tab-title.sherpaJournal": "Sherpa Journals ({{ count }})",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.jiscPublisher": "Jisc Open policy finder Publishers ({{ count }})",
+  "submission.sections.describe.relationship-lookup.search-tab.tab-title.sherpaPublisher": "Sherpa Publishers ({{ count }})",
 
   "submission.sections.describe.relationship-lookup.search-tab.tab-title.orcid": "ORCID ({{ count }})",
 
@@ -5610,7 +5312,7 @@
 
   "submission.sections.describe.relationship-lookup.search-tab.tab-title.openaireFunding": "OpenAIRE Search by Funder ({{ count }})",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.jiscJournalIssn": "Jisc Open policy finder Journals by ISSN ({{ count }})",
+  "submission.sections.describe.relationship-lookup.search-tab.tab-title.sherpaJournalIssn": "Sherpa Journals by ISSN ({{ count }})",
 
   "submission.sections.describe.relationship-lookup.search-tab.tab-title.openalexPerson": "OpenAlex ({{ count }})",
 
@@ -5635,10 +5337,6 @@
   "submission.sections.describe.relationship-lookup.search-tab.tab-title.isPublicationOfAuthor": "Publication of the Author",
 
   "submission.sections.describe.relationship-lookup.search-tab.tab-title.isOrgUnitOfProject": "OrgUnit of the Project",
-
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.isJournalOfVolume": "Journal of the Volume",
-
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.opfJournal": "Jisc Open policy finder of Journal",
 
   "submission.sections.describe.relationship-lookup.selection-tab.title.isProjectOfPublication": "Project",
 
@@ -5692,8 +5390,6 @@
 
   "submission.sections.describe.relationship-lookup.title.isOrgUnitOfProject": "OrgUnit",
 
-  "submission.sections.describe.relationship-lookup.title.isJournalOfVolume": "Journal",
-
   "submission.sections.describe.relationship-lookup.search-tab.toggle-dropdown": "Toggle dropdown",
 
   "submission.sections.describe.relationship-lookup.selection-tab.settings": "Settings",
@@ -5734,9 +5430,9 @@
 
   "submission.sections.describe.relationship-lookup.selection-tab.title.isChildOrgUnitOf": "Selected Organizational Unit",
 
-  "submission.sections.describe.relationship-lookup.selection-tab.title.jiscJournal": "Search Results",
+  "submission.sections.describe.relationship-lookup.selection-tab.title.sherpaJournal": "Search Results",
 
-  "submission.sections.describe.relationship-lookup.selection-tab.title.jiscPublisher": "Search Results",
+  "submission.sections.describe.relationship-lookup.selection-tab.title.sherpaPublisher": "Search Results",
 
   "submission.sections.describe.relationship-lookup.selection-tab.title.orcid": "Search Results",
 
@@ -5776,8 +5472,6 @@
 
   "submission.sections.describe.relationship-lookup.selection-tab.title.dataciteProject": "Search Results",
 
-  "submission.sections.describe.relationship-lookup.selection-tab.title.opfJournal": "Search Results",
-
   "submission.sections.describe.relationship-lookup.selection-tab.title": "Search Results",
 
   "submission.sections.describe.relationship-lookup.name-variant.notification.content": "Would you like to save \"{{ value }}\" as a name variant for this person so you and others can reuse it for future submissions? If you don't you can still use it for this submission.",
@@ -5807,8 +5501,6 @@
   "submission.sections.general.collection": "Collection",
 
   "submission.sections.general.deposit_error_notice": "There was an issue when submitting the item, please try again later.",
-
-  "submission.sections.general.invalid_state_error": "Cannot save current changes, mandatory fields are missing. Please resolve problems and save again later.",
 
   "submission.sections.general.deposit_success_notice": "Submission deposited successfully.",
 
@@ -5850,8 +5542,6 @@
 
   "submission.sections.submit.progressbar.CClicense": "Creative commons license",
 
-  "submission.sections.submit.progressbar.CustomUrlStep": "Custom Url",
-
   "submission.sections.submit.progressbar.describe.recycle": "Recycle",
 
   "submission.sections.submit.progressbar.describe.stepcustom": "Describe",
@@ -5866,13 +5556,13 @@
 
   "submission.sections.submit.progressbar.license": "Deposit license",
 
-  "submission.sections.submit.progressbar.describe.owner": "Owner",
-
-  "submission.sections.submit.progressbar.opfpolicy": "Publisher open access policy information",
+  "submission.sections.submit.progressbar.sherpapolicy": "Sherpa policies",
 
   "submission.sections.submit.progressbar.upload": "Upload files",
 
-  "submission.sections.jisc-policy.title-empty": "No publisher policy information available. If your work has an associated ISSN, please enter it above to see any related publisher open access policies.",
+  "submission.sections.submit.progressbar.sherpaPolicies": "Publisher open access policy information",
+
+  "submission.sections.sherpa-policy.title-empty": "No publisher policy information available. If your work has an associated ISSN, please enter it above to see any related publisher open access policies.",
 
   "submission.sections.status.errors.title": "Errors",
 
@@ -5918,26 +5608,6 @@
 
   "submission.sections.upload.edit.title": "Edit bitstream",
 
-  "submission.sections.upload.file.edit.form.file-type.label": "Audio or video media type",
-
-  "submission.sections.upload.file.edit.form.file-type.hint": "Choose how this bitstream should be interpreted.",
-
-  "submission.sections.upload.file.edit.form.file-type.option.audio-video": "Audio and video",
-
-  "submission.sections.upload.file.edit.form.file-type.option.neither": "Neither",
-
-  "submission.sections.upload.file.edit.form.file-type.option.audio": "Audio",
-
-  "submission.sections.upload.file.edit.form.file-type.option.video": "Video",
-
-  "submission.sections.upload.file.edit.form.audio-transcript.label": "Audio transcript",
-
-  "submission.sections.upload.file.edit.form.audio-transcript.hint": "Provide a transcript for audio content.",
-
-  "submission.sections.upload.file.edit.form.video-description.label": "Video description",
-
-  "submission.sections.upload.file.edit.form.video-description.hint": "Provide a description for video content.",
-
   "submission.sections.upload.form.access-condition-label": "Access condition type",
 
   "submission.sections.upload.form.access-condition-hint": "Select an access condition to apply on the bitstream once the item is deposited",
@@ -5981,14 +5651,6 @@
   "submission.sections.upload.upload-failed": "Upload failed",
 
   "submission.sections.upload.upload-successful": "Upload successful",
-
-  "submission.sections.custom-url.label.previous-urls": "Previous Urls",
-
-  "submission.sections.custom-url.alert.info": "Define here a custom URL which will be used to reach the item instead of using an internal randomly generated UUID identifier. ",
-
-  "submission.sections.custom-url.url.placeholder": "Custom URL",
-
-  "submission.sections.custom-url.label.remove": "Remove",
 
   "submission.sections.accesses.form.discoverable-description": "When checked, this item will be discoverable in search/browse. When unchecked, the item will only be available via a direct link and will never appear in search/browse.",
 
@@ -6034,57 +5696,57 @@
 
   "submission.sections.license.notgranted": "You must accept the license",
 
-  "submission.sections.jisc.publication.information": "Publication information",
+  "submission.sections.sherpa.publication.information": "Publication information",
 
-  "submission.sections.jisc.publication.information.title": "Title",
+  "submission.sections.sherpa.publication.information.title": "Title",
 
-  "submission.sections.jisc.publication.information.issns": "ISSNs",
+  "submission.sections.sherpa.publication.information.issns": "ISSNs",
 
-  "submission.sections.jisc.publication.information.url": "URL",
+  "submission.sections.sherpa.publication.information.url": "URL",
 
-  "submission.sections.jisc.publication.information.publishers": "Publisher",
+  "submission.sections.sherpa.publication.information.publishers": "Publisher",
 
-  "submission.sections.jisc.publication.information.romeoPub": "Romeo Pub",
+  "submission.sections.sherpa.publication.information.romeoPub": "Romeo Pub",
 
-  "submission.sections.jisc.publication.information.zetoPub": "Zeto Pub",
+  "submission.sections.sherpa.publication.information.zetoPub": "Zeto Pub",
 
-  "submission.sections.jisc.publisher.policy": "Publisher Policy",
+  "submission.sections.sherpa.publisher.policy": "Publisher Policy",
 
-  "submission.sections.jisc.publisher.policy.description": "The below information was found via Jisc Open policy finder. Based on the policies of your publisher, it provides advice regarding whether an embargo may be necessary and/or which files you are allowed to upload. If you have questions, please contact your site administrator via the feedback form in the footer.",
+  "submission.sections.sherpa.publisher.policy.description": "The below information was found via Sherpa Romeo. Based on the policies of your publisher, it provides advice regarding whether an embargo may be necessary and/or which files you are allowed to upload. If you have questions, please contact your site administrator via the feedback form in the footer.",
 
-  "submission.sections.jisc.publisher.policy.openaccess": "Open Access pathways permitted by this journal's policy are listed below by article version. Click on a pathway for a more detailed view",
+  "submission.sections.sherpa.publisher.policy.openaccess": "Open Access pathways permitted by this journal's policy are listed below by article version. Click on a pathway for a more detailed view",
 
-  "submission.sections.jisc.publisher.policy.more.information": "For more information, please see the following links:",
+  "submission.sections.sherpa.publisher.policy.more.information": "For more information, please see the following links:",
 
-  "submission.sections.jisc.publisher.policy.version": "Version",
+  "submission.sections.sherpa.publisher.policy.version": "Version",
 
-  "submission.sections.jisc.publisher.policy.embargo": "Embargo",
+  "submission.sections.sherpa.publisher.policy.embargo": "Embargo",
 
-  "submission.sections.jisc.publisher.policy.noembargo": "No Embargo",
+  "submission.sections.sherpa.publisher.policy.noembargo": "No Embargo",
 
-  "submission.sections.jisc.publisher.policy.nolocation": "None",
+  "submission.sections.sherpa.publisher.policy.nolocation": "None",
 
-  "submission.sections.jisc.publisher.policy.license": "License",
+  "submission.sections.sherpa.publisher.policy.license": "License",
 
-  "submission.sections.jisc.publisher.policy.prerequisites": "Prerequisites",
+  "submission.sections.sherpa.publisher.policy.prerequisites": "Prerequisites",
 
-  "submission.sections.jisc.publisher.policy.location": "Location",
+  "submission.sections.sherpa.publisher.policy.location": "Location",
 
-  "submission.sections.jisc.publisher.policy.conditions": "Conditions",
+  "submission.sections.sherpa.publisher.policy.conditions": "Conditions",
 
-  "submission.sections.jisc.publisher.policy.refresh": "Refresh",
+  "submission.sections.sherpa.publisher.policy.refresh": "Refresh",
 
-  "submission.sections.jisc.record.information": "Record Information",
+  "submission.sections.sherpa.record.information": "Record Information",
 
-  "submission.sections.jisc.record.information.id": "ID",
+  "submission.sections.sherpa.record.information.id": "ID",
 
-  "submission.sections.jisc.record.information.date.created": "Date Created",
+  "submission.sections.sherpa.record.information.date.created": "Date Created",
 
-  "submission.sections.jisc.record.information.date.modified": "Last Modified",
+  "submission.sections.sherpa.record.information.date.modified": "Last Modified",
 
-  "submission.sections.jisc.record.information.uri": "URI",
+  "submission.sections.sherpa.record.information.uri": "URI",
 
-  "submission.sections.jisc.error.message": "There was an error retrieving Jisc Open policy finder information",
+  "submission.sections.sherpa.error.message": "There was an error retrieving sherpa informations",
 
   "submission.submit.breadcrumbs": "New submission",
 
@@ -6132,7 +5794,7 @@
 
   "submission.workflow.tasks.claimed.reject.submit": "Reject",
 
-  "submission.workflow.tasks.claimed.reject_help": "If you have reviewed the item and found it is <strong>not</strong> suitable for inclusion in the collection, select \"Reject\". You will then be asked to enter a message indicating why the item is unsuitable, and whether the submitter should change something and resubmit.",
+  "submission.workflow.tasks.claimed.reject_help": "If you have reviewed the item and found it is <strong>not</strong> suitable for inclusion in the collection, select \"Reject\".  You will then be asked to enter a message indicating why the item is unsuitable, and whether the submitter should change something and resubmit.",
 
   "submission.workflow.tasks.claimed.return": "Return to pool",
 
@@ -6182,7 +5844,7 @@
 
   "subscriptions.tooltip": "Subscribe",
 
-  "subscriptions.manage": "Manage Subscription",
+  "subscriptions.unsubscribe": "Unsubscribe",
 
   "subscriptions.modal.title": "Subscriptions",
 
@@ -6250,7 +5912,7 @@
 
   "thumbnail.person.placeholder": "No Profile Picture Available",
 
-  "title": "DSpace",
+  title: "DSpace",
 
   "vocabulary-treeview.header": "Hierarchical tree view",
 
@@ -6295,8 +5957,6 @@
   "workflowAdmin.search.results.head": "Administer Workflow",
 
   "workflow.search.results.head": "Workflow tasks",
-
-  "otherWorkspace.search.results.head": "Shared workspace",
 
   "supervision.search.results.head": "Workflow and Workspace tasks",
 
@@ -6650,8 +6310,6 @@
 
   "home.recent-submissions.head": "Recent Submissions",
 
-  "authority-confidence.search-label": "Search",
-
   "listable-notification-object.default-message": "This object couldn't be retrieved",
 
   "system-wide-alert-banner.retrieval.error": "Something went wrong retrieving the system-wide alert banner",
@@ -6950,8 +6608,6 @@
 
   "ldn-new-service.form.error.ldnurl": "LDN URL is required",
 
-  "ldn-new-service.form.error.ldnurl.ldnUrlAlreadyAssociated": "This LDN URL is already associated with another service",
-
   "ldn-new-service.form.error.patterns": "At least a pattern is required",
 
   "ldn-new-service.form.error.score": "Please enter a valid score (between 0 and 1). Use the “.” as decimal separator",
@@ -7134,13 +6790,13 @@
 
   "error.validation.coarnotify.invalidfilter": "Invalid filter, try to select another service or none.",
 
-  "request-status-alert-box.accepted": "The requested {{ offerType }} for <a href='{{serviceUrl}}' target='_blank'>{{ serviceName }}</a> has been taken in charge.",
+  "request-status-alert-box.accepted": "The requested {{ offerType }} for <a href='{{serviceUrl}}' target='_blank'> {{ serviceName }}  </a> has been taken in charge.",
 
-  "request-status-alert-box.rejected": "The requested {{ offerType }} for <a href='{{serviceUrl}}' target='_blank'>{{ serviceName }}</a> has been rejected.",
+  "request-status-alert-box.rejected": "The requested {{ offerType }} for <a href='{{serviceUrl}}' target='_blank'> {{ serviceName }}  </a> has been rejected.",
 
-  "request-status-alert-box.tentative_rejected": "The requested {{ offerType }} for <a href='{{serviceUrl}}' target='_blank'>{{ serviceName }}</a> has been tentatively rejected. Revisions are required",
+  "request-status-alert-box.tentative_rejected": "The requested {{ offerType }} for <a href='{{serviceUrl}}' target='_blank'> {{ serviceName }}  </a> has been tentatively rejected. Revisions are required",
 
-  "request-status-alert-box.requested": "The requested {{ offerType }} for <a href='{{serviceUrl}}' target='_blank'>{{ serviceName }}</a> is pending.",
+  "request-status-alert-box.requested": "The requested {{ offerType }} for <a href='{{serviceUrl}}' target='_blank'> {{ serviceName }}  </a> is pending.",
 
   "ldn-service-button-mark-inbound-deletion": "Mark supported pattern for deletion",
 
@@ -7534,15 +7190,13 @@
 
   "form.date-picker.placeholder.day": "Day",
 
-  "item.page.license.title": "Rights and licensing",
-
   "item.page.cc.license.title": "Creative Commons license",
 
-  "item.page.cc.license.disclaimer": "Except where otherwise noted, this item's license is described as",
+  "item.page.cc.license.disclaimer": "Except where otherwised noted, this item's license is described as",
+
+  "browse.search-form.placeholder": "Search the repository",
 
   "file-download-link.download": "Download ",
-
-  "file-download-button.download": "Download",
 
   "register-page.registration.aria.label": "Enter your e-mail address",
 
@@ -7552,7 +7206,7 @@
 
   "live-region.ordering.instructions": "Press spacebar to reorder {{ itemName }}.",
 
-  "live-region.ordering.status": "{{ itemName }}, grabbed. Current position in list: {{ index }} of {{ length }}. Press up and down arrow keys to change position, SpaceBar to drop, Escape to cancel.",
+  "live-region.ordering.status": "{{ itemName }}, grabbed. Current position in list: {{ index }} of  {{ length }}. Press up and down arrow keys to change position, SpaceBar to drop, Escape to cancel.",
 
   "live-region.ordering.moved": "{{ itemName }}, moved to position {{ index }} of {{ length }}. Press up and down arrow keys to change position, SpaceBar to drop, Escape to cancel.",
 
@@ -7573,8 +7227,6 @@
   "external-login.confirmation.email-required": "Email is required.",
 
   "external-login.confirmation.email-label": "User Email",
-
-  "external-login.confirmation.email": "Email",
 
   "external-login.confirmation.email-invalid": "Invalid email format.",
 
@@ -7636,8 +7288,6 @@
 
   "external-login-page.orcid-confirmation.netid": "Account Identifier",
 
-  "external-login-page.orcid-confirmation.netid.label": "Account Identifier",
-
   "external-login-page.orcid-confirmation.netid.placeholder": "xxxx-xxxx-xxxx-xxxx",
 
   "external-login-page.orcid-confirmation.email": "Email",
@@ -7668,223 +7318,529 @@
 
   "file-download-link.request-copy": "Request a copy of ",
 
-  "file-download-button.request-copy": "Request a copy",
-
-  "file-download-link.audio-transcript.label": "Transcript",
-
-  "file-download-link.audio-transcript.title": "Audio transcript",
-
-  "file-download-link.audio-transcript.aria": "Open audio transcript",
-
-  "file-download-link.video-description.label": "Video description",
-
-  "file-download-link.video-description.title": "Video description",
-
-  "file-download-link.video-description.aria": "Open video description",
-
   "item.preview.organization.url": "URL",
 
   "item.preview.organization.address.addressLocality": "City",
 
   "item.preview.organization.alternateName": "Alternative name",
 
-  "metadata-link-view.orcid.logo": "ORCID logo",
+  "rdapp.search.placeholder.title": "Ready to explore?",
 
-  "metadata-link-view.source.logo": "Source logo",
+  "rdapp.search.placeholder.subtitle": "Type a term in the search bar or select a filter on the side to view results.",
 
-  "metadata-link-view.popover.label.Person.dc.title": "Fullname",
+  "rdapp.search.query-label": "Search term",
 
-  "metadata-link-view.popover.label.Person.person.affiliation.name": "Main affiliation",
+  "rdapp.search.clear-all": "Clear all",
 
-  "metadata-link-view.popover.label.Person.person.email": "Email",
+  "rdapp.search.results-count": "results",
 
-  "metadata-link-view.popover.label.Person.person.identifier.orcid": "ORCID",
+  "rdapp.search.tab.results": "Search results",
 
-  "metadata-link-view.popover.label.Person.dc.description.abstract": "Abstract",
+  "rdapp.search.tab.ai-summary": "AI Summary",
 
-  "metadata-link-view.popover.label.Person.person.jobTitle": "Job title",
+  "rdapp.search.tab.ai-observation": "AI Observation",
 
-  "metadata-link-view.popover.label.other.dc.title": "Title",
+  "rdapp.search.no-results.title": "No results found",
 
-  "metadata-link-view.popover.label.other.dc.description.abstract": "Description",
+  "rdapp.search.no-results.hint": "Try adjusting your filters or search terms.",
 
-  "metadata-link-view.popover.label.more-info": "More info",
+  "rdapp.search.clear-filters": "Clear filters",
 
-  "item.page.extended-file-section": "Bitstreams",
+  "rdapp.search.filters.title": "Filters",
 
-  "file.section.name": "Document",
+  "rdapp.search.filters.clear": "Clear",
 
-  "file.section.type": "Type",
+  "rdapp.search.toolbar.select-all": "Select All",
 
-  "file.section.size": "Size",
+  "rdapp.search.toolbar.export-docx": "Export DOCX",
 
-  "dataset.page.titleprefix": "Dataset",
+  "rdapp.search.toolbar.export-pdf": "Export PDF",
 
-  "dataset.listelement.badge": "Dataset",
+  "rdapp.item-card.source": "Source:",
 
-  "dataset.page.options": "Options",
+  "rdapp.item-card.access-pdf": "Access Document in PDF",
 
-  "dataset.page.edit": "Edit this Dataset",
+  "rdapp.item-card.subject-label": "Content topic:",
 
-  "relationships.Dataset.isAuthorOfDataset.Person": "Authors (Persons)",
+  "rdapp.search.tab.ai-visualization": "AI Visualization",
 
-  "relationships.Dataset.isProjectOfDataset.Project": "Research Projects",
+  "rdapp.menu.faq": "FAQ",
 
-  "relationships.Dataset.isAuthorOfDataset.OrgUnit": "Organizational Units",
+  "rdapp.menu.about": "About RDAPP",
 
-  "relationships.Dataset.isOrgUnitOfDataset.OrgUnit": "Authors (Organizational Units)",
+  "rdapp.menu.about.presentation": "Presentation",
 
-  "relationships.Dataset.isPublicationOfDataset.Publication": "Publications",
+  "rdapp.menu.about.goals": "Goals",
 
-  "relationships.Publication.isDatasetOfPublication.Dataset": "Datasets",
+  "rdapp.menu.about.team": "Who We Are",
 
-  "relationships.Person.isDatasetOfAuthor.Dataset": "Datasets",
+  "rdapp.item.back": "Back to Repository",
 
-  "relationships.Project.isDatasetOfProject.Dataset": "Datasets",
+  "rdapp.item.back-top": "Back to top",
 
-  "relationships.OrgUnit.isDatasetOfAuthor.Dataset": "Authored Datasets",
+  "rdapp.item.abstract": "Abstract",
 
-  "relationships.OrgUnit.isDatasetOfOrgUnit.Dataset": "Organisation Datasets",
+  "rdapp.item.reference.title": "Bibliographic Reference (ABNT)",
 
-  "submission.sections.describe.relationship-lookup.title.Dataset": "Datasets",
+  "rdapp.item.reference.copy": "Copy reference",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.Dataset": "Local Datasets",
+  "rdapp.item.metrics.title": "Metrics & Technical Transparency",
 
-  "dataset.search.results.head": "Dataset Search Results",
+  "rdapp.item.metrics.stats": "View Statistics",
 
-  "submission.sections.describe.relationship-lookup.title.isAuthorOfDataset": "Authors",
+  "rdapp.item.metrics.dublin": "Dublin Core Metadata",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.isAuthorOfDataset": "Local Authors ({{ count }})",
+  "rdapp.item.metrics.total-access": "Total accesses",
 
-  "submission.sections.describe.relationship-lookup.title.isPublicationOfDataset": "Publications",
+  "rdapp.item.metrics.last-month": "Last month",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.isPublicationOfDataset": "Local Publications ({{ count }})",
+  "rdapp.item.ai.subtitle": "Intelligent analysis of this document",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.cinii": "CiNii ({{ count }})",
+  "rdapp.item.ai.generate": "Generate AI Insights",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.head.cinii": "Importing from CiNii",
+  "rdapp.item.meta.date": "Publication year",
 
-  "submission.sections.describe.relationship-lookup.selection-tab.title.cinii": "Search Results",
+  "rdapp.item.meta.authors": "Authors",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.datacite": "DataCite ({{ count }})",
+  "rdapp.item.meta.institution": "Institution",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.head.datacite": "Importing from DataCite",
+  "rdapp.item.meta.subjects": "Subjects",
 
-  "submission.sections.describe.relationship-lookup.selection-tab.title.datacite": "Search Results",
+  "rdapp.item.action.cite": "Cite this document",
 
-  "submission.sections.describe.relationship-lookup.search-tab.tab-title.doi": "DOI ({{ count }})",
+  "rdapp.header.logo-alt": "RDAPP Logo - Digital Repository for Public Policy Evaluation",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.head.doi": "Importing from DOI",
+  "rdapp.header.mpo-link-aria-label": "External link to Ministry of Planning and Budget",
 
-  "submission.sections.describe.relationship-lookup.selection-tab.title.doi": "Search Results",
+  "rdapp.header.mpo-logo-alt": "Logo of the Ministry of Planning and Budget",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isPublicationOfDataset.title": "Import Remote Publication",
+  "rdapp.home.hero.aria-label": "Explore the Digital Repository for Public Policy Evaluation",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isPublicationOfDataset.added.local-entity": "Successfully added local publication to the selection",
+  "rdapp.home.hero.title-dark": "Explore the<br />Digital Repository for",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isPublicationOfDataset.added.new-entity": "Successfully imported and added external publication to the selection",
+  "rdapp.home.hero.title-light": "Public Policy<br />Evaluation",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isAuthorOfDataset.title": "Import Remote Author",
+  "rdapp.home.hero.description": "Access the complete RDAPP collection and use our artificial intelligence to simplify the understanding of complex studies.",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isAuthorOfDataset.added.local-entity": "Successfully added local author to the selection",
+  "rdapp.home.hero.link": "How to use",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isAuthorOfDataset.added.new-entity": "Successfully imported and added external author to the selection",
+  "rdapp.home.hero.map-alt": "Illustration of the Map of Brazil with focus on Public Policies",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isProjectOfDataset.title": "Import Remote Project",
+  "rdapp.home.hero.stats-aria-label": "Quick statistic: more than 1200 publications",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isProjectOfDataset.added.local-entity": "Successfully added local project to the selection",
+  "rdapp.home.hero.stats-label": "Available publications",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isProjectOfDataset.added.new-entity": "Successfully imported and added external project to the selection",
+  "rdapp.search.ai-badge": "AI ENABLED",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isOrgUnitOfDataset.title": "Import Remote Organization",
+  "rdapp.full-item.hero.aria-label": "Technical metadata",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isOrgUnitOfDataset.added.local-entity": "Successfully added local organization to the selection",
+  "rdapp.full-item.hero.kicker": "Technical metadata",
 
-  "submission.sections.describe.relationship-lookup.external-source.import-modal.isOrgUnitOfDataset.added.new-entity": "Successfully imported and added external organization to the selection",
+  "rdapp.full-item.hero.title": "Dublin Core Record",
 
-  "admin.edit-cms-metadata.success": "Metadata successfully updated",
+  "rdapp.full-item.hero.subtitle": "Metadata standard for cross-domain resource description.",
 
-  "admin.edit-cms-metadata.back-button": "Back",
+  "rdapp.full-item.back": "Back to publication",
 
-  "admin.edit-cms-metadata.save-button": "Save",
+  "rdapp.full-item.table.field": "Dublin Core Element",
 
-  "admin.edit-cms-metadata.select-metadata": "Select metadata to edit",
+  "rdapp.full-item.table.value": "Metadata value",
 
-  "admin.edit-cms-metadata.edit-button": "Edit",
+  "rdapp.full-item.return": "Return to standard view",
 
-  "admin.edit-cms-metadata.breadcrumbs": "Edit CMS Metadata",
+  "rdapp.footer.mpo-logo-alt": "Logo of the Ministry of Planning and Budget",
 
-  "admin.edit-cms-metadata.title": "Edit CMS Metadata",
+  "rdapp.footer.organization": "Brazilian Institute of Information in Science and Technology (Ibict)",
 
-  "admin.edit-cms-metadata.error": "An error occurred while updating the metadata",
+  "rdapp.item.ai.title": "RDAPP AI Insights",
 
-  "menu.section.edit-cms-metadata": "Edit CMS Metadata",
+  "rdapp.faq.hero.label": "SUPPORT",
 
-  "menu.section.cms.edit.metadata.head": "Edit Metadata",
+  "rdapp.faq.hero.title": "Frequently Asked Questions",
 
-  "admin.edit-user-agreement.breadcrumbs": "Edit User Agreement",
+  "rdapp.faq.hero.subtitle": "Find answers about the repository, the collection and available features.",
 
-  "admin.edit-user-agreement.confirm.title": "Force acceptance",
+  "rdapp.faq.cta.title": "STILL HAVE QUESTIONS?",
 
-  "admin.edit-user-agreement.confirm.info": "Do you want to force all users to accept the new user agreement?",
+  "rdapp.faq.cta.subtitle": "Our team is available to help you.",
 
-  "admin.edit-user-agreement.confirm.cancel": "Cancel",
+  "rdapp.faq.cta.btn": "Send Email",
 
-  "admin.edit-user-agreement.confirm.no": "No, update only",
+  "rdapp.faq.0.q": "What is RDAPP?",
 
-  "admin.edit-user-agreement.confirm.yes": "Yes, update and force",
+  "rdapp.faq.0.a": "RDAPP is a digital repository designed to centralise, preserve and organise public policy evaluations and the institution's technical output. Its purpose is to promote active transparency, ensure public access to evidence and support cooperation between government bodies for more informed decision-making. RDAPP serves both public servants and researchers as well as the general public, promoting transparency about the effectiveness of national public policies.",
 
-  "menu.section.edit-user-agreement": "Edit User Agreement",
+  "rdapp.faq.1.q": "Who manages the repository?",
 
-  "admin.edit-user-agreement.save-button": "Save",
+  "rdapp.faq.1.a": "Management and technical curation are the responsibility of the Secretariat for Monitoring and Evaluation of Public Policies and Economic Affairs of the Ministry of Planning and Budget (SMA/MPO).",
 
-  "admin.edit-user-agreement.markdown": "<i>End User Agreement</i> text supports <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a> language.",
+  "rdapp.faq.2.q": "What is the system's privacy policy?",
 
-  "admin.edit-cms-metadata.markdown": "<i>CMS Metadata</i> text supports <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a> language.",
+  "rdapp.faq.2.a": "All documents in the repository are in the public domain. The depositor must ensure the anonymisation of sensitive data before submission, ensuring that the publication of the document respects privacy in accordance with the General Personal Data Protection Law (LGPD).",
 
-  "admin.edit-user-agreement.header": "Edit User Agreement",
+  "rdapp.faq.3.q": "How is Artificial Intelligence used in search?",
 
-  "admin.edit-user-agreement.success": "User agreement successfully updated",
+  "rdapp.faq.3.a": "The system uses AI to extract results directly from the body of files during searches. It also offers an \"AI Summary\", which automatically generates a synthesis of the 5 most relevant documents based on your search term, enabling a quick analysis of the collection.",
 
-  "admin.edit-user-agreement.error": "An error occurred while updating the user agreement",
+  "rdapp.faq.4.q": "How to search for documents efficiently?",
 
-  "admin.edit-user-agreement.title": "Edit User Agreement",
+  "rdapp.faq.4.a": "The system offers a direct search bar with specific filters by Public Policy, Responsible Institution, Area of activity or Document type. Additionally, boolean searches can be used to refine results:<br><br>- <strong>AND:</strong> To find terms that must appear together (e.g. health AND education).<br>- <strong>OR:</strong> To broaden the search with synonyms (e.g. evaluation OR monitoring).<br>- <strong>NOT:</strong> To exclude unwanted terms (e.g. transport NOT road).<br><br>Practical example: A search for \"public security\" AND evaluation NOT cameras will return documents on public security evaluation, but will filter out those specifically focused on surveillance cameras.",
 
-  "bitstream.replace.page.title": "Replace File",
+  "rdapp.faq.5.q": "What gains are expected from using RDAPP with AI?",
 
-  "bitstream.replace.page.header": "Replace {{fileName}} ({{fileSize}})",
+  "rdapp.faq.5.a": "A significant gain in scale and efficiency is expected. While a manual extraction may take several hours of work, RDAPP performs the same task in a few seconds, optimising the time of technical staff and citizens, while covering a much larger volume of documents than would be feasible to process manually.",
 
-  "bitstream.replace.page.content": "Select a file to replace {{fileName}}. Note that this transfer can take a while to process, and may not start immediately.",
+  "rdapp.home.hero.stats-value": "+1.2k",
 
-  "bitstream.replace.page.button.return": "Back",
+  "rdapp.full-item.table.language": "Language",
 
-  "bitstream.replace.page.disclaimer": "The original file will be deleted. This operation can't be undone.",
+  "rdapp.footer.social-label": "RDAPP social media",
 
-  "bitstream.replace.page.button.cancel": "Cancel",
+  "rdapp.about.hero.label": "INSTITUTIONAL",
 
-  "bitstream.replace.page.button.save": "Replace file",
+  "rdapp.about.hero.title": "About RDAPP",
 
-  "bitstream.replace.page.upload.failed": "Bitstream upload failed",
+  "rdapp.about.hero.subtitle": "Learn about the initiative, our goals and the people behind it.",
 
-  "bitstream.replace.page.breadcrumbs": "Replace File",
+  "rdapp.about.tab.apresentacao": "PRESENTATION",
 
-  "item.edit.bitstreams.edit.buttons.replace": "Replace",
+  "rdapp.about.tab.objetivo": "GOALS",
 
-  "bitstream.replace.page.upload.success": "Bitstream successfully replaced",
+  "rdapp.about.tab.equipe": "TEAM",
 
-  "bitstream.edit.replace.link": "Replace file",
+  "rdapp.about.back-top": "↑ TOP",
 
-  "bitstream.replace.page.replace-name": "Use new filename",
+  "rdapp.about.apresentacao.title": "Presentation",
 
-  "bitstream.replace.page.replace-name-hint": "The new file extension will be retained in order to match the content of the replacement file.",
+  "rdapp.about.apresentacao.p1": "The Digital Repository for Public Policy Evaluation (RDAPP) is an institutional initiative of the Ministry of Planning and Budget (MPO), established within the Federal Public Administration with the purpose of centralising, preserving, organising and disseminating public policy evaluations, in line with the principles of transparency, digital government and the use of evidence in public management.",
 
-  "bitstream.related.isCopyOf": "Is copy of",
+  "rdapp.about.apresentacao.p2": "RDAPP aims to address the dispersion and heterogeneity of evaluations produced in the public sector, broadening public access to public policy evaluations, strengthening their use by managers, researchers and society, and promoting greater integration among bodies and institutions that produce evaluations.",
 
-  "bitstream.related.hasCopies": "Has copies",
+  "rdapp.about.apresentacao.quote": "The initiative relies on a technology solution based on free software and incorporates artificial intelligence tools, adopting interoperability standards, digital preservation and information governance, in compliance with current legislation, especially regarding the protection of personal data, copyright and rules on access to information.",
 
-  "bitstream.related.isReplacementOf": "Is replacement of",
+  "rdapp.about.objetivo.title": "Goals",
 
-  "bitstream.related.isReplacedBy": "Is replaced by",
+  "rdapp.about.objetivo.p1": "The goal of RDAPP is to become a national digital reference platform for the storage, organisation and dissemination of public policy evaluations, strengthening transparency, evidence-based decision-making and an evaluation culture in Brazil.",
 
-  "bitstream.related.deleted": "deleted",
+  "rdapp.about.objetivo.specificos.label": "SPECIFIC GOALS",
+
+  "rdapp.about.objetivo.specificos.0": "<strong>Develop an initial functional version of the repository</strong>",
+
+  "rdapp.about.objetivo.specificos.1": "<strong>Implement Open Evaluation features using AI for searching and reusing evidence</strong>",
+
+  "rdapp.about.objetivo.specificos.2": "<strong>Deploy the production version with curation and governance policies</strong>",
+
+  "rdapp.about.objetivo.specificos.3": "<strong>Train management and IT teams for sustainable operation</strong>",
+
+  "rdapp.about.objetivo.specificos.4": "<strong>Develop modules for automated analysis and meta-evaluation</strong>",
+
+  "rdapp.about.objetivo.specificos.5": "<strong>Disseminate results through publications, workshops and integration with national and international networks</strong>",
+
+  "rdapp.about.equipe.title": "Team & Governance",
+
+  "rdapp.about.equipe.p1": "RDAPP is coordinated by the <strong>Secretariat for Monitoring and Evaluation of Public Policies and Economic Affairs (SMA)</strong>, within its mandate to promote rigorous, evidence-based evaluation of public policies.",
+
+  "rdapp.about.equipe.pilares.title": "SMA PILLARS OF ACTION",
+
+  "rdapp.about.equipe.pilares.0": "Shared management of federal government data for monitoring and evaluation",
+
+  "rdapp.about.equipe.pilares.1": "Improvement of existing public policies in line with international best practices",
+
+  "rdapp.about.equipe.pilares.2": "Production of technical notes on public policy proposals",
+
+  "rdapp.about.equipe.pilares.3": "Development and monitoring of economic indicators",
+
+  "rdapp.about.equipe.p2": "SMA is responsible for the strategic coordination of RDAPP, ensuring the repository meets demands for transparency, evidence and efficiency in public management.",
+
+  "rdapp.about.equipe.exec.label": "TECHNICAL EXECUTION",
+
+  "rdapp.about.equipe.exec.p1": "As the technical executor of the project, the <strong>Brazilian Institute of Information in Science and Technology (Ibict)</strong> is responsible for the development, deployment and operation of the platform, with a multidisciplinary team of specialists in information science, data management, systems development, digital curation and artificial intelligence. The team includes Ibict staff, scholarship holders and specialised consultants, ensuring the sustainability and interoperability of the repository with national and international networks.",
+
+  "search.sidebar.section.filter": "Filters",
+
+  "search.filters.filter.tipoDocumento.head": "Document Type",
+
+  "search.filters.filter.tipoDocumento.placeholder": "Document type",
+
+  "search.filters.filter.tipoDocumento.label": "Search by document type",
+
+  "search.filters.applied.f.tipoDocumento": "Document Type",
+
+  "search.filters.filter.tipoAvaliacao.head": "Evaluation Type",
+
+  "search.filters.filter.tipoAvaliacao.placeholder": "Evaluation type",
+
+  "search.filters.filter.tipoAvaliacao.label": "Search by evaluation type",
+
+  "search.filters.applied.f.tipoAvaliacao": "Evaluation Type",
+
+  "search.filters.filter.politicaPublica.head": "Public Policy",
+
+  "search.filters.filter.politicaPublica.placeholder": "Public policy",
+
+  "search.filters.filter.politicaPublica.label": "Search by public policy",
+
+  "search.filters.applied.f.politicaPublica": "Public Policy",
+
+  "search.filters.filter.areaTematica.head": "Thematic Area",
+
+  "search.filters.filter.areaTematica.placeholder": "Thematic area",
+
+  "search.filters.filter.areaTematica.label": "Search by thematic area",
+
+  "search.filters.applied.f.areaTematica": "Thematic Area",
+
+  "search.filters.filter.instituicao.head": "Institution",
+
+  "search.filters.filter.instituicao.placeholder": "Institution",
+
+  "search.filters.filter.instituicao.label": "Search by institution",
+
+  "search.filters.applied.f.instituicao": "Institution",
+
+  "search.filters.filter.abrangencia.head": "Territorial Scope",
+
+  "search.filters.filter.abrangencia.placeholder": "Territorial scope",
+
+  "search.filters.filter.abrangencia.label": "Search by territorial scope",
+
+  "search.filters.applied.f.abrangencia": "Territorial Scope",
+
+  "search.filters.filter.ods.head": "SDG",
+
+  "search.filters.filter.ods.placeholder": "SDG",
+
+  "search.filters.filter.ods.label": "Search by SDG",
+
+  "search.filters.applied.f.ods": "SDG",
+
+  "search.filters.filter.uf.head": "State (UF)",
+
+  "search.filters.filter.uf.placeholder": "State",
+
+  "search.filters.filter.uf.label": "Search by state",
+
+  "search.filters.applied.f.uf": "State (UF)",
+
+  "search.filters.filter.cidade.head": "City",
+
+  "search.filters.filter.cidade.placeholder": "City",
+
+  "search.filters.filter.cidade.label": "Search by city",
+
+  "search.filters.applied.f.cidade": "City",
+
+  "rdapp.item.keywords": "Keywords",
+
+  "rdapp.item.abstract.read-more": "Read more",
+
+  "rdapp.item.abstract.read-less": "Read less",
+
+  "item.cite.open-modal": "Cite",
+
+  "item.cite.modal.title": "Cite Work",
+
+  "item.cite.modal.close": "Close",
+
+  "item.cite.modal.copy": "Copy",
+
+  "item.cite.modal.error": "Error loading citations",
+
+  "modern-language-association": "MLA",
+
+  apa: "APA",
+
+  vancouver: "Vancouver",
+
+  bibtex: "BibTeX",
+
+  "instituto-brasileiro-de-informacao-em-ciencia-e-tecnologia-abnt": "ABNT",
+
+  "item.cite.modal.subtitle": "Available formats",
+
+  "rdapp.item.metrics.total-downloads": "Total downloads",
+
+  "rdapp.item.metrics.copy-count": "Reference copies",
+
+  "rdapp.search.toolbar.export-csv": "Export CSV",
+
+  "rdapp.item.cited.copied": "Copied!",
+
+  "association-for-computing-machinery": "ACM",
+
+  "search.form.scope.searching-in": "Searching in",
+
+  "rdapp.search.tab.results.short": "Results",
+
+  "rdapp.search.tab.ai-summary.short": "AI Summary",
+
+  "rdapp.search.tab.ai-observation.short": "AI Obs.",
+
+  "rdapp.item.reference.copied": "Copied!",
+
+  "rdapp.document-more-results.toggle-btn": "More document results",
+
+  "rdapp.document-more-results.panel-aria-label": "Semantic search results for this document",
+
+  "rdapp.document-more-results.occurrences-title": "Found Occurrences",
+
+  "rdapp.document-more-results.badge": "Semantic Search",
+
+  "rdapp.document-more-results.loading": "Loading occurrences...",
+
+  "rdapp.document-more-results.error": "Failed to load results. Please try again.",
+
+  "rdapp.document-more-results.no-results": "No results found for this search.",
+
+  "rdapp.document-more-results.list-aria-label": "List of occurrences",
+
+  "rdapp.document-more-results.section-label": "Section:",
+
+  "rdapp.document-more-results.page-number": "Page {{page}}",
+
+  "rdapp.document-more-results.pagination-label": "Page {{current}} of {{total}}",
+
+  "rdapp.item-card.access-page": "Access the Document Page",
+
+  "rdapp.item.related.title": "Related Publications",
+
+  "rdapp.item.related.access": "Access",
+
+  "rdapp.communityList.subtitle": "Organizational structure",
+
+  "rdapp.communityList.description": "Browse publications organized hierarchically by agency and their respective thematic collections.",
+
+  "rdapp.communityList.hierarchyButton": "View hierarchy",
+
+  "rdapp.communityList.communityLabel": "Community",
+
+  "rdapp.communityList.collectionsTitle": "Available collections",
+
+  "rdapp.communityList.communityCounter.singular": "community",
+
+  "rdapp.communityList.communityCounter.plural": "communities",
+
+  "rdapp.communityList.collectionCounter.singular": "collection",
+
+  "rdapp.communityList.collectionCounter.plural": "collections",
+
+  "rdapp.about.tab.acervo": "COLLECTION & PARTNERSHIPS",
+
+  "rdapp.about.tab.quemsomos": "WHO WE ARE",
+
+  "rdapp.about.apresentacao.finalidades.label": "PURPOSES OF RDAPP",
+
+  "rdapp.about.apresentacao.finalidades.0": "Centralise, preserve, organise and disseminate public policy evaluations, their products and metadata;",
+
+  "rdapp.about.apresentacao.finalidades.1": "Promote active transparency and public access to evidence;",
+
+  "rdapp.about.apresentacao.finalidades.2": "Foster evidence-informed decision-making by strengthening its use in the formulation, implementation, monitoring, evaluation and improvement of public policies;",
+
+  "rdapp.about.apresentacao.finalidades.3": "Encourage minimum standardisation of documentation and metadata for evaluations; and",
+
+  "rdapp.about.apresentacao.finalidades.4": "Support cooperation and integration among bodies and institutions that produce evaluations.",
+
+  "rdapp.about.apresentacao.guia.label": "Learn more: Access the RDAPP User Guide",
+
+  "rdapp.about.acervo.title": "Collection & Partnerships",
+
+  "rdapp.about.acervo.p1": "The RDAPP collection is composed of evaluation reports, recommendation reports, executive summaries, 2-page summaries/<em>one-page reports</em> and technical notes/<em>policy briefs</em> derived from evaluative processes of public policies, programmes, projects and government interventions within the Federal Public Administration. New collections may be added in the future.",
+
+  "rdapp.about.acervo.comunidades.label": "RDAPP is currently organised in the following communities:",
+
+  "rdapp.about.acervo.comunidades.0": "Council for Monitoring and Evaluation of Public Policies",
+
+  "rdapp.about.acervo.comunidades.1": "Ministry of Planning and Budget",
+
+  "rdapp.about.acervo.comunidades.2": "Partner Public Bodies",
+
+  "rdapp.about.acervo.comunidades.3": "Civil Society Entities",
+
+  "rdapp.about.acervo.parcerias.title": "Institutional Partnerships",
+
+  "rdapp.about.acervo.parcerias.p1": "RDAPP is an institutional repository of the Ministry of Planning and Budget (MPO) conceived as a collaborative platform, open to cooperation with:",
+
+  "rdapp.about.acervo.parcerias.natureza.label": "NATURE OF PARTNERS",
+
+  "rdapp.about.acervo.parcerias.natureza.0": "federal, state, district and municipal public bodies and entities;",
+
+  "rdapp.about.acervo.parcerias.natureza.1": "public teaching and research institutions;",
+
+  "rdapp.about.acervo.parcerias.natureza.2": "private entities, with or without profit, subject to applicable legislation; or",
+
+  "rdapp.about.acervo.parcerias.natureza.3": "international organisations.",
+
+  "rdapp.about.acervo.dev.label": "REPOSITORY DEVELOPMENT",
+
+  "rdapp.about.acervo.dev.p1": "RDAPP was developed through an institutional partnership between MPO and the Brazilian Institute of Information in Science and Technology (IBICT), for the technological development, deployment and operation of the Repository, with a multidisciplinary team of specialists in information science, data management, systems development, accessibility, user experience, digital curation and artificial intelligence.",
+
+  "rdapp.about.quemsomos.title": "Who We Are",
+
+  "rdapp.about.quemsomos.p1": "The Secretariat for Monitoring and Evaluation of Public Policies and Economic Affairs (SMA) is part of the Ministry of Planning and Budget (MPO) and works to strengthen the evaluation and monitoring of public policies, focusing on:",
+
+  "rdapp.about.quemsomos.pilares.title": "SMA PILLARS OF ACTION IN M&E",
+
+  "rdapp.about.quemsomos.pilares.0": "Evaluation of public policies and government programmes within the Council for Monitoring and Evaluation of Public Policies (CMAP)",
+
+  "rdapp.about.quemsomos.pilares.1": "Institutional coordination and cooperation with national and international bodies",
+
+  "rdapp.about.quemsomos.pilares.2": "Production and dissemination of public policy evaluations and public spending reviews",
+
+  "rdapp.about.quemsomos.pilares.3": "Promotion of data sharing by direct and indirect federal public administration bodies, necessary for public policy management and evaluation",
+
+  "rdapp.about.quemsomos.p2": "SMA is responsible for the strategic coordination of RDAPP, ensuring the repository meets demands for transparency, evidence and efficiency in public management.",
+
+  "rdapp.about.quemsomos.gestao.label": "RDAPP MANAGEMENT",
+
+  "rdapp.about.quemsomos.gestao.p1": "Repository management is the responsibility of the Secretariat for Monitoring and Evaluation of Public Policies and Economic Affairs (SMA/MPO), which is responsible, pursuant to the <a href=\"#\">founding Ordinance</a>, for:",
+
+  "rdapp.about.quemsomos.gestao.competencias.0": "managing the <strong>Repository's curation</strong>, encompassing technical and administrative procedures applied to the validation of form, organisation, description, contextualisation, preservation, quality control and publication of documents, with the aim of ensuring authenticity, integrity, reliability, traceability, transparency and qualified access to information;",
+
+  "rdapp.about.quemsomos.gestao.competencias.1": "defining and updating <strong>minimum metadata standards, taxonomies and formats</strong>;",
+
+  "rdapp.about.quemsomos.gestao.competencias.2": "<strong>guiding and training depositors</strong> on procedures and requirements for use; and",
+
+  "rdapp.about.quemsomos.gestao.competencias.3": "maintaining and evolving the <strong>technological platform</strong>, promoting interoperability with digital government portals and systems, transparency and open data.",
+
+  "rdapp.about.quemsomos.gestao.competencias.4": "<strong>Promotion and institutional capacity-building</strong> for RDAPP use and contribution",
+
+  "rdapp.about.acervo.p2": "The entire collection is organised according to curation and documentation standards, ensuring quality, traceability, digital preservation and the possibility of reusing evidence by public managers, researchers, oversight bodies and civil society.",
+
+  "rdapp.about.acervo.acesso": "RDAPP adopts the principle of open access, subject to legal limits regarding the protection of personal data, copyright and information protected by confidentiality, under current legislation.",
+
+  "rdapp.about.acervo.parcerias.p2": "These partnerships may cover, among other aspects, technological development, the definition and adoption of metadata standards, team training, shared content curation, interoperability between information systems and the strengthening of digital preservation and information security strategies.",
+
+  "rdapp.about.acervo.parcerias.p3": "Through institutional articulation and interorganisational cooperation, RDAPP seeks to expand the coverage and diversity of its collection and promote greater integration among producers and users of public policy evaluations in Brazil.",
+
+  "rdapp.faq.6.q": "What precautions should be taken when using the repository and its AI tools?",
+
+  "rdapp.faq.6.a": "The user is responsible for verifying the accuracy of information generated by AI. Syntheses and extractions should serve as strategic support and do not replace human judgement and technical validation by specialists and managers.",
+
+  "rdapp.faq.7.q": "Can I upload documents to the system?",
+
+  "rdapp.faq.7.a": "The deposit of files in RDAPP is carried out by partner bodies or institutions. The partnership is formalised through an accession agreement signed with the Ministry of Planning and Budget, guaranteeing the integrity and origin of the deposited evidence.",
+
+  "rdapp.item-download": "Download Document (PDF)",
+
+  "rdapp.search.toolbar.export": "Export",
+
+  "rdapp.search.toolbar.exporting": "Exporting...",
+
+  "rdapp.search.toolbar.export-format": "Choose format",
+
+  "rdapp.search.toolbar.export-docx-desc": "Word — full metadata",
+
+  "rdapp.search.toolbar.export-csv-desc": "Spreadsheet — all fields",
+
+  "rdapp.search.toolbar.export-pdf-desc": "Printable report",
+
+  "rdapp.footer.org-name": "Ministry of Planning and Budget",
+
+  "rdapp.footer.org-sector": "Secretariat for Monitoring and Evaluation of Public Policies and Economic Affairs",
+
+  "rdapp.footer.org-address": "Esplanada dos Ministérios, Bloco K, Zona Cívico-Administrativa, CEP: 70040-906, Brasília - DF, Brazil",
+
+  "rdapp.footer.org-email": "gabin.sma@planejamento.gov.br",
+
+  "rdapp.footer.org-phone": "+55 (61) 2020-4399",
 }

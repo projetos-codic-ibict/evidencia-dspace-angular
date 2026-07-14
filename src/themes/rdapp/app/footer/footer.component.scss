@@ -1,0 +1,121 @@
+:host {
+  footer {
+    text-align: center;
+    z-index: var(--ds-footer-z-index);
+    margin-top: 5rem;
+  }
+
+   .footer-social {
+    background: var(--rdapp-footer-social-bg);
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .top-footer {
+    background-color: var(--rdapp-footer-social-bg);
+    padding: 1rem 0;
+
+    ul {
+      gap: 2rem;
+    }
+
+    a {
+      color: var(--rdapp-footer-social-icon-color);
+      width: 2.1rem;
+      height: 2.1rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-size: 1.25rem;
+      transform: scale(1);
+      transition: transform 220ms ease;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--rdapp-footer-social-icon-color);
+        transform: scale(1.25);
+      }
+    }
+  }
+
+  .bottom-footer {
+    background-color: var(--rdapp-footer-main-bg);
+    border-top: 1px solid var(--rdapp-footer-main-border-color);
+    padding: 1.5rem 1rem;
+
+    .content-container {
+      margin: 0 auto;
+    }
+  }
+
+  .footer-info {
+    column-gap: 3rem;
+    row-gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    a {
+      color: var(--rdapp-footer-link-color);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 220ms ease, text-decoration-color 220ms ease;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--rdapp-footer-link-hover-color);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .bottom-footer .d-flex img {
+    max-width: 100%;
+    width: min(204px, 68vw);
+    height: auto;
+  }
+
+  .bottom-footer p {
+    color: var(--rdapp-footer-organization-color);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 0.15rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--rdapp-footer-link-hover-color);
+      }
+    }
+  }
+
+  .bottom-footer p.footer-org-name {
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .top-footer a {
+      transition: none;
+    }
+  }
+}

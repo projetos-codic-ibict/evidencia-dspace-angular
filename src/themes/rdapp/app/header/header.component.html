@@ -1,0 +1,37 @@
+<header id="main-site-header">
+  <div class="container-fluid">
+    <div class="d-flex flex-row justify-content-between">
+      <a class="navbar-brand my-2" routerLink="/home" [attr.aria-label]="'home.title' | translate" role="button" tabindex="0">
+        <img id="header-logo" src="assets/rdapp/images/RDAPP_MPO_10_55_22_v2.png" [attr.alt]="'rdapp.header.logo-alt' | translate"/>
+      </a>
+
+      @if ((isMobile$ | async) !== true) {
+        <div class="navbar navbar-expand p-0 align-items-stretch" id="desktop-navbar" [attr.aria-label]="'nav.main.description' | translate">
+          <ds-navbar></ds-navbar>
+        </div>
+      }
+
+      <div class="navbar navbar-light navbar-expand-md flex-shrink-0 px-0">
+        <div role="toolbar" [attr.aria-label]="'nav.user.description' | translate">
+          <ds-lang-switch></ds-lang-switch>
+          <ds-context-help-toggle></ds-context-help-toggle>
+          <ds-impersonate-navbar></ds-impersonate-navbar>
+          <ds-auth-nav-menu></ds-auth-nav-menu>
+        </div>
+        <a class="d-none d-md-inline-flex" href="https://www.gov.br/planejamento" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'rdapp.header.mpo-link-aria-label' | translate">
+          <img src="assets/rdapp/images/logoMPO.PNG" [attr.alt]="'rdapp.header.mpo-logo-alt' | translate" />
+        </a>
+        @if (isMobile$ | async) {
+          <div class="ps-2">
+            <button class="navbar-toggler px-0" type="button" (click)="toggleNavbar()"
+              aria-controls="collapsingNav"
+              [attr.aria-label]="'nav.toggle' | translate"
+              [attr.aria-expanded]="(isNavBarCollapsed$ | async) !== true">
+              <span class="fas fa-bars fa-fw fa-xl toggler-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,56 @@
+<!-- SECTION 1 — Hero Banner -->
+<section class="faq-hero">
+  <div class="container position-relative">
+    <p class="faq-hero__label">{{ 'rdapp.faq.hero.label' | translate }}</p>
+    <h1 class="faq-hero__title">{{ 'rdapp.faq.hero.title' | translate }}</h1>
+    <p class="faq-hero__subtitle">{{ 'rdapp.faq.hero.subtitle' | translate }}</p>
+  </div>
+  <div class="faq-hero__decoration" aria-hidden="true"></div>
+</section>
+
+<!-- SECTION 2 — Card principal -->
+<section class="faq-content">
+  <div class="container">
+    <div class="faq-card">
+
+      <!-- Lista de acordeões -->
+      <div class="faq-accordion">
+        @for (i of faqIndices; track i) {
+          <div class="faq-accordion__item" [class.is-open]="opens[i]">
+            <button
+              class="faq-accordion__trigger"
+              [attr.aria-expanded]="opens[i]"
+              [attr.aria-controls]="'faq-panel-' + i"
+              (click)="toggle(i)"
+              type="button"
+            >
+              <span class="faq-accordion__question" [innerHTML]="'rdapp.faq.' + i + '.q' | translate"></span>
+              <span class="faq-accordion__icon">
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div
+              class="faq-accordion__body"
+              [class.is-visible]="opens[i]"
+              [id]="'faq-panel-' + i"
+              role="region"
+            >
+              <p [innerHTML]="'rdapp.faq.' + i + '.a' | translate"></p>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- CTA Box -->
+      <div class="faq-cta">
+        <h3 class="faq-cta__title">{{ 'rdapp.faq.cta.title' | translate }}</h3>
+        <p class="faq-cta__subtitle">{{ 'rdapp.faq.cta.subtitle' | translate }}</p>
+        <a href="mailto:suporte@rdapp.gov.br" class="faq-cta__btn">
+          <i class="fas fa-envelope"></i>
+          {{ 'rdapp.faq.cta.btn' | translate }}
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>

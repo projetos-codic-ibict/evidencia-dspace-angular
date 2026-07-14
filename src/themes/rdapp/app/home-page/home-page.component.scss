@@ -1,0 +1,39 @@
+@include media-breakpoint-down(md) {
+  ds-themed-configuration-search-page+.container {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+// ─── Placeholder "Pronto para explorar?" na home ──────────────────────────────
+
+.home-explore-area {
+  min-height: 360px;
+  background-color: #ffffff;
+  border: 1px solid #edf0f7;
+  box-shadow: 0 4px 20px rgba(15, 41, 110, 0.07);
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  margin-top: 2rem;
+}
+
+.home-explore-icon-wrap {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  background-color: #ede9fe;
+}
+
+.home-explore-icon {
+  color: #3730a3;
+}
+
+.home-explore-title {
+  font-size: 1.5rem;
+  color: #1a237e;
+}
+
+.home-explore-subtitle {
+  max-width: 400px;
+  font-size: 0.9rem;
+}

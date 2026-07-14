@@ -1,0 +1,23 @@
+.rdapp-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1.5px solid var(--rdapp-bg-color-primary);
+  color: var(--rdapp-bg-color-primary);
+  border-radius: var(--rdapp-border-radius-1rem, 1rem);
+  padding: 0.4rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--rdapp-bg-color-primary);
+    color: #fff;
+    outline: none;
+  }
+}

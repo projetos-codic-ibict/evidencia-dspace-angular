@@ -1,0 +1,59 @@
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1040;
+  height: 3rem;
+  padding: 0 1.25rem;
+  gap: 0.5rem;
+  border-radius: var(--rdapp-border-radius-3rem);
+  border: none;
+  background-color: var(--rdapp-bg-color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.25s ease, background-color 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &:hover {
+    background-color: var(--rdapp-bg-color-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--rdapp-bg-color-accent);
+    outline-offset: 3px;
+  }
+
+  .scroll-to-top-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: 2.5rem;
+    padding: 0 1rem;
+    bottom: 1.25rem;
+    right: 1.25rem;
+
+    .scroll-to-top-label {
+      display: none;
+    }
+  }
+}

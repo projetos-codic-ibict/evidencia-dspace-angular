@@ -1,0 +1,86 @@
+// Override or add CSS variables for your theme here
+
+:root {
+  @include media-breakpoint-up(md) {
+    --ds-header-logo-height: 80px;
+    --ds-header-height: 110px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    --ds-header-logo-height: 44px;
+    --ds-header-height: 72px;
+  }
+
+  --rdapp-bg-color-accent: #00a88f;
+  --rdapp-bg-color-primary: #28408b;
+  --rdapp-color-blue: #0f49bd;
+
+  --rdapp-border-radius-1rem: 1rem;
+  --rdapp-border-radius-2rem: 2rem;
+  --rdapp-border-radius-3rem: 3rem;
+
+  --bs-btn-disabled-border-color: #ccc;
+  --bs-btn-disabled-bg: #eee;
+
+  --ds-banner-text-background: rgba(0, 0, 0, 0.58);
+  --ds-banner-background-gradient-width: 300px;
+
+  --ds-header-navbar-border-bottom-height: 1px;
+  --ds-header-navbar-border-bottom-color: #e5e7eb;
+
+  /* set the next two properties as `--ds-header-navbar-border-bottom-*`
+  in order to keep the bottom border of the header when navbar is expanded */
+
+  --ds-expandable-navbar-border-top-color: #{$white};
+  --ds-expandable-navbar-border-top-height: 0;
+  --ds-expandable-navbar-padding-top: 0;
+
+  --ds-item-page-img-field-default-inline-height: 24px;
+  --ds-item-page-img-field-ror-inline-height: var(
+    --ds-item-page-img-field-default-inline-height
+  );
+
+  --rdapp-footer-social-bg: var(--rdapp-color-blue);
+  --rdapp-footer-social-icon-color: #ffffff;
+
+  --rdapp-footer-main-bg: #ffffff;
+  --rdapp-footer-main-border-color: #f3f4f6;
+  --rdapp-footer-link-color: #28408b;
+  --rdapp-footer-link-hover-color: #17357a;
+  --rdapp-footer-organization-color: #6b7280;
+
+  --rdapp-home-hero-title-color: #28408b;
+  --rdapp-home-hero-card-border-color: #ddd;
+  --rdapp-home-hero-stats-label-color: #006864;
+
+  /* Fix admin sidebar behind sticky header */
+  --ds-sidebar-z-index: 1350;
+}
+
+.btn-primary {
+  --bs-btn-bg: #28408b;
+  --bs-btn-border-color: #28408b;
+
+  --bs-btn-hover-bg: #223a7d;
+  --bs-btn-hover-border-color: #203672;
+
+  --bs-btn-active-bg: #203672;
+  --bs-btn-active-border-color: #1c3066;
+
+  --bs-btn-disabled-bg: #28408b;
+  --bs-btn-disabled-border-color: #28408b;
+}
+
+.btn-secondary {
+  --bs-btn-bg: #778899;
+  --bs-btn-border-color: #778899;
+
+  --bs-btn-hover-bg: #6b7f91;
+  --bs-btn-hover-border-color: #637789;
+
+  --bs-btn-active-bg: #637789;
+  --bs-btn-active-border-color: #5b6f81;
+
+  --bs-btn-disabled-bg: #778899;
+  --bs-btn-disabled-border-color: #778899;
+}

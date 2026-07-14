@@ -1,0 +1,173 @@
+@if ((activeFilters$ | async).length > 0 && (appliedFilters$ | async).length === 0) {
+  <div class="row mb-3">
+    <div class="col-12">
+      <div class="d-flex gap-2">
+        <ngx-skeleton-loader [count]="(activeFilters$ | async).length" />
+      </div>
+    </div>
+  </div>
+}
+
+<div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+  <div class="flex-fill" style="min-width: 0">
+    @if (!disableHeader) {
+      <h1>{{ 'search.results.head' | translate }}</h1>
+    }
+    @if (searchConfig?.query) {
+      <div class="border-start border-3 ps-2 py-1 mb-2"
+           style="border-color: var(--rdapp-bg-color-accent);">
+        <div>
+          <small class="text-muted">{{ "rdapp.search.query-label" | translate }}:</small>
+          <strong class="small ms-1">{{ searchConfig?.query }}</strong>
+        </div>
+        <a class="text-danger small fw-semibold text-decoration-none"
+           [routerLink]="[]"
+           [queryParams]="{ query: null, 'spc.page': null }"
+           queryParamsHandling="merge">
+          {{ "rdapp.search.clear-all" | translate }}
+        </a>
+      </div>
+    }
+  </div>
+  <div class="d-flex align-items-center gap-2 flex-shrink-0">
+    @if (searchResults?.hasSucceeded && !searchResults?.isLoading) {
+      <small class="border rounded-pill bg-white text-muted px-3 py-1 text-nowrap">
+        {{ searchResults?.payload?.totalElements }} {{ 'search.sidebar.results' | translate }}
+      </small>
+    }
+  </div>
+</div>
+
+<div class="rdapp-search-tabs gap-2 my-2">
+  <button class="btn btn-primary rounded-pill rdapp-search-tab" type="button">
+    <i class="fas fa-list-ul me-1"></i>
+    <span class="d-none d-sm-inline">{{ "rdapp.search.tab.results" | translate }}</span>
+    <span class="d-sm-none">{{ "rdapp.search.tab.results.short" | translate }}</span>
+  </button>
+  <button class="btn btn-outline-secondary rounded-pill rdapp-search-tab" type="button" disabled>
+    <i class="fas fa-robot me-1"></i>
+    <span class="d-none d-sm-inline">{{ "rdapp.search.tab.ai-summary" | translate }}</span>
+    <span class="d-sm-none">{{ "rdapp.search.tab.ai-summary.short" | translate }}</span>
+  </button>
+  <button class="btn btn-outline-secondary rounded-pill rdapp-search-tab" type="button" disabled>
+    <i class="fas fa-lightbulb me-1"></i>
+    <span class="d-none d-sm-inline">{{ "rdapp.search.tab.ai-observation" | translate }}</span>
+    <span class="d-sm-none">{{ "rdapp.search.tab.ai-observation.short" | translate }}</span>
+  </button>
+</div>
+
+<div class="rdapp-search-toolbar d-flex flex-wrap justify-content-between align-items-center gap-2 p-3 bg-white border mb-3">
+  <div class="form-check mb-0">
+    <input class="form-check-input" type="checkbox" id="search-select-all" 
+           (change)="toggleSelectAll($event)" />
+    <label class="form-check-label fw-semibold" for="search-select-all">
+      {{ "rdapp.search.toolbar.select-all" | translate }}
+    </label>
+  </div>
+  <div class="d-flex gap-3 flex-wrap align-items-center">
+    <div ngbDropdown placement="bottom-end" class="rdapp-export-dropdown">
+      <button ngbDropdownToggle
+              class="rdapp-export-btn"
+              [class.rdapp-export-btn--active]="selectedCount > 0"
+              [disabled]="selectedCount === 0 || isExporting || isExportingDocx || isExportingPdf">
+        @if (isExporting || isExportingDocx || isExportingPdf) {
+          <i class="fas fa-spinner fa-spin"></i>
+          <span>{{ "rdapp.search.toolbar.exporting" | translate }}</span>
+        } @else {
+          <i class="fas fa-file-export"></i>
+          <span>{{ "rdapp.search.toolbar.export" | translate }}</span>
+          @if (selectedCount > 0) {
+            <span class="rdapp-export-badge">{{ selectedCount }}</span>
+          }
+        }
+        <i class="fas fa-chevron-down rdapp-export-chevron"></i>
+      </button>
+
+      <div ngbDropdownMenu class="rdapp-export-menu">
+        <div class="rdapp-export-menu-header">
+          {{ "rdapp.search.toolbar.export-format" | translate }}
+        </div>
+        <button ngbDropdownItem class="rdapp-export-item" (click)="exportSelectedToDocx()">
+          <span class="rdapp-export-item-icon rdapp-export-item-icon--docx">
+            <i class="fas fa-file-word"></i>
+          </span>
+          <span class="rdapp-export-item-info">
+            <strong>DOCX</strong>
+            <small>{{ "rdapp.search.toolbar.export-docx-desc" | translate }}</small>
+          </span>
+        </button>
+        <button ngbDropdownItem class="rdapp-export-item" (click)="exportSelectedToCsv()">
+          <span class="rdapp-export-item-icon rdapp-export-item-icon--csv">
+            <i class="fas fa-file-csv"></i>
+          </span>
+          <span class="rdapp-export-item-info">
+            <strong>CSV</strong>
+            <small>{{ "rdapp.search.toolbar.export-csv-desc" | translate }}</small>
+          </span>
+        </button>
+        <button ngbDropdownItem class="rdapp-export-item" (click)="exportSelectedToPdf()">
+          <span class="rdapp-export-item-icon rdapp-export-item-icon--pdf">
+            <i class="fas fa-file-pdf"></i>
+          </span>
+          <span class="rdapp-export-item-info">
+            <strong>PDF</strong>
+            <small>{{ "rdapp.search.toolbar.export-pdf-desc" | translate }}</small>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (searchResults && searchResults?.hasSucceeded && !searchResults?.isLoading && searchResults?.payload?.page.length > 0) {
+  <div @fadeIn>
+    <ds-viewable-collection
+      [config]="searchConfig.pagination"
+      [sortConfig]="searchConfig.sort"
+      [objects]="searchResults"
+      [hideGear]="true"
+      [showRSS]="false"
+      [selectable]="false" 
+      [linkType]="linkType"
+      [context]="context"
+      [hidePaginationDetail]="hidePaginationDetail"
+      [showThumbnails]="showThumbnails"
+      (contentChange)="contentChange.emit($event)">
+    </ds-viewable-collection>
+  </div>
+}
+
+@if (isLoading()) {
+  <ds-search-results-skeleton
+    [showThumbnails]="showThumbnails"
+    [numberOfResults]="searchConfig.pagination.pageSize">
+  </ds-search-results-skeleton>
+}
+
+@if (showError()) {
+  <ds-error message="{{ errorMessageLabel() | translate }}"></ds-error>
+}
+
+@if (
+  !isLoading() &&
+  !showError() &&
+  searchConfig?.query &&
+  (searchResults?.payload?.page.length === 0 ||
+    searchResults?.statusCode === 400)
+) {
+  <div class="d-flex flex-column align-items-center justify-content-center bg-light py-5 text-center"
+       style="border-radius: var(--rdapp-border-radius-1rem);">
+    <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center mb-4"
+         style="width: 52px; height: 52px;">
+      <i class="fas fa-search text-secondary"></i>
+    </div>
+    <h2 class="h5 fw-bold mb-1">{{ "rdapp.search.no-results.title" | translate }}</h2>
+    <p class="small text-muted mb-4">{{ "rdapp.search.no-results.hint" | translate }}</p>
+    <a class="btn btn-outline-primary btn-sm rounded-pill px-4"
+       [routerLink]="[]"
+       [queryParams]="{ query: null, 'spc.page': null }"
+       queryParamsHandling="merge">
+      {{ "rdapp.search.clear-filters" | translate }}
+    </a>
+  </div>
+}

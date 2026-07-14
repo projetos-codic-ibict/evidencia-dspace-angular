@@ -1,0 +1,160 @@
+:host {
+  #main-site-header {
+    position: relative;
+    min-height: var(--ds-header-height);
+    background-color: #fff;
+
+    @include media-breakpoint-up(md) {
+      height: var(--ds-header-height);
+    }
+
+    > .container-fluid {
+      min-height: var(--ds-header-height);
+      padding-left: 1rem;
+      padding-right: 1rem;
+      transition: max-width 0.3s ease;
+      gap: 1rem;
+
+      @media (max-width: 1400px) {
+        max-width: 100%;
+      }
+
+      > .d-flex {
+        min-height: var(--ds-header-height);
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+  }
+
+  .navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    img#header-logo {
+      width: auto;
+      height: var(--ds-header-logo-height);
+      object-fit: contain;
+    }
+  }
+
+  #desktop-navbar {
+    flex: 1;
+    min-width: 0;
+    margin-left: 1rem;
+
+    @media (max-width: 1399.98px) {
+      margin-left: 0;
+    }
+  }
+
+  // Toolbar de controles do usuário (lang, auth, etc.)
+  [role="toolbar"] {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--rdapp-bg-color-primary);
+
+    &::after {
+      content: '';
+      width: 1px;
+      height: 2.8rem;
+      background-color: #e5e7eb;
+      margin-left: 1rem;
+      margin-right: 0.75rem;
+    }
+  }
+
+  // Logo MPO à direita
+  .navbar > a img {
+    width: auto;
+    height: clamp(2.5rem, 3.5vw, 3.5rem);
+    object-fit: contain;
+  }
+
+  button.navbar-toggler {
+    border-radius: 0.5rem;
+    color: #4f26da;
+    padding: 0.25rem 0.45rem;
+
+    .toggler-icon {
+      font-size: 1.7rem;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: #3112b9;
+      background-color: #f4f1ff;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    #main-site-header {
+      min-height: var(--ds-header-height);
+    }
+
+    .navbar-brand img#header-logo {
+      height: var(--ds-header-logo-height);
+    }
+  }
+
+  ::ng-deep {
+    #desktop-navbar {
+      .navbar-nav {
+        gap: 0.33rem;
+      }
+
+      .ds-menu-item,
+      .ds-menu-toggler-wrapper {
+        color: var(--rdapp-bg-color-primary);
+        font-weight: 800;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 0.4rem 0.5rem;
+        border-radius: 0.5rem;
+        white-space: nowrap;
+
+        &:hover,
+        &:focus {
+          background-color: #f8f9fb;
+        }
+      }
+    }
+
+    [role="toolbar"] {
+      ds-lang-switch .dropdown-toggle,
+      ds-context-help-toggle button {
+        color: #1e293b;
+      }
+
+      ds-auth-nav-menu {
+        .dropdownLogin,
+        .dropdownLogout {
+          border: 1px solid #e5e7eb;
+          border-radius: 0.6rem;
+          padding: 0.42rem 0.8rem !important;
+          font-size: 0.8rem;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          color: #5b6472;
+          text-decoration: none;
+          background-color: #f8f9fb;
+
+          &:hover,
+          &:focus {
+            color: var(--rdapp-bg-color-primary);
+            background-color: #f1f4ff;
+          }
+        }
+
+        .dropdownLogout {
+          padding-left: 0.6rem !important;
+          padding-right: 0.6rem !important;
+        }
+      }
+    }
+  }
+}

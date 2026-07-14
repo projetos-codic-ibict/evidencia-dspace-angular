@@ -1,0 +1,25 @@
+<div class="custom-badges-container">
+
+  @if (documentType) {
+    <div class="document-type-wrapper">
+      <span class="document-type-badge">
+        <i class="fas fa-file-alt" aria-hidden="true"></i>
+        {{ documentType }}
+      </span>
+    </div>
+  }
+
+  @if (odsValues.length > 0) {
+    <div class="ods-wrapper">
+      @for (ods of odsValues; track ods) {
+        <span class="badge rounded-pill shadow-sm ods-badge" [style.background-color]="getOdsBg(ods)">
+          @if (getOdsNumber(ods)) {
+            <span class="ods-number">{{ getOdsNumber(ods) }}</span>
+          }
+          {{ getOdsLabel(ods) }}
+        </span>
+      }
+    </div>
+  }
+
+</div>

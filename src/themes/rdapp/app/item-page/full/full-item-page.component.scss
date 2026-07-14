@@ -1,0 +1,321 @@
+:host {
+  display: block;
+}
+
+// ── Hero section ────────────────────────────────────────────────────────────
+
+.rdapp-full-hero {
+  position: relative;
+  overflow: hidden;
+  background: #00a88f;
+  padding: 4rem 1rem 5rem;
+  color: #ffffff;
+
+  // Breakout do container Bootstrap para ocupar 100vw
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.rdapp-full-hero__shape {
+  position: absolute;
+  top: 0;
+  right: -10%;
+  width: 50%;
+  height: 100%;
+  transform: skewX(-20deg);
+  background: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.rdapp-full-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.rdapp-full-hero__kicker {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.34em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.rdapp-full-hero__title {
+  margin: 0;
+  font-size: clamp(2.1rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.rdapp-full-hero__subtitle {
+  margin: 0.8rem 0 0;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 500;
+  color: rgba(239, 246, 255, 0.9);
+}
+
+// ── Card wrapper (full-item-info) ────────────────────────────────────────────
+
+.full-item-info {
+  max-width: 1120px;
+  margin: -2rem auto 5rem;
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 2.5rem;
+  box-shadow: 0 18px 48px rgba(2, 6, 23, 0.1);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+// ── Card header ──────────────────────────────────────────────────────────────
+
+.full-item-info > .d-flex.flex-row {
+  padding: 2rem 2.25rem;
+}
+
+.full-item-info .item-view-header {
+  margin: 0;
+  color: #28408b;
+  font-size: clamp(1.55rem, 2.8vw, 2.3rem);
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+// ── Table area ───────────────────────────────────────────────────────────────
+
+.table-responsive {
+  padding: 2rem 2.25rem 0;
+  overflow-x: auto;
+}
+
+:host ::ng-deep .full-item-info .table.table-striped {
+  min-width: 700px;
+
+  thead tr th {
+    color: #9ca3af;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 2px solid #eef2f7;
+    padding: 1rem 0.75rem;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #f0fdfa;
+    }
+
+    td:first-child {
+      width: 33%;
+      color: #00a88f;
+      font-size: 0.88rem;
+      font-weight: 700;
+      vertical-align: top;
+      padding: 1.15rem 0.75rem;
+    }
+
+    td:not(:first-child) {
+      color: #475569;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.62;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      vertical-align: top;
+      padding: 1.15rem 0.75rem;
+
+      a {
+        color: #00a88f;
+        text-decoration: underline;
+        word-break: break-all;
+
+        &:hover {
+          color: #0f766e;
+        }
+      }
+    }
+  }
+}
+
+// ── Extra base sections inside the card ─────────────────────────────────────
+
+:host ::ng-deep .full-item-info ds-item-page-full-file-section,
+:host ::ng-deep .full-item-info ds-item-page-collections,
+:host ::ng-deep .full-item-info ds-item-versions {
+  display: block;
+  padding: 1.5rem 2.25rem 0;
+}
+
+// ── Submission back button row ───────────────────────────────────────────────
+
+.full-item-info .button-row {
+  padding: 1rem 2.25rem;
+}
+
+// ── Card footer (return link) ────────────────────────────────────────────────
+
+.full-item-info > .d-flex.justify-content-center.border-top {
+  a {
+    color: #00a88f;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+
+    &:hover {
+      color: #0f766e;
+      text-decoration: underline;
+    }
+  }
+}
+
+// ── Responsive ───────────────────────────────────────────────────────────────
+
+@media (min-width: 1200px) {
+  .rdapp-full-hero {
+    padding: 4.5rem 1rem 5.5rem;
+  }
+
+  .full-item-info > .d-flex.flex-row,
+  .table-responsive {
+    padding-left: 2.8rem;
+    padding-right: 2.8rem;
+  }
+
+  :host ::ng-deep .full-item-info ds-item-page-full-file-section,
+  :host ::ng-deep .full-item-info ds-item-page-collections,
+  :host ::ng-deep .full-item-info ds-item-versions {
+    padding-left: 2.8rem;
+    padding-right: 2.8rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .rdapp-full-hero {
+    padding: 3.25rem 1rem 4rem;
+  }
+
+  .rdapp-full-hero__kicker {
+    font-size: 0.66rem;
+    letter-spacing: 0.26em;
+  }
+
+  .rdapp-full-hero__title {
+    font-size: 2rem;
+  }
+
+  .rdapp-full-hero__subtitle {
+    font-size: 1rem;
+  }
+
+  .full-item-info {
+    margin-top: -1.4rem;
+    border-radius: 1.5rem;
+  }
+
+  .full-item-info > .d-flex.flex-row,
+  .table-responsive {
+    padding: 1.25rem;
+  }
+
+  .full-item-info > .d-flex.flex-row .item-view-header {
+    font-size: 1.45rem;
+  }
+
+  :host ::ng-deep .full-item-info .table.table-striped {
+    min-width: 540px;
+
+    thead tr th {
+      font-size: 0.68rem;
+    }
+
+    tbody tr td:first-child {
+      font-size: 0.8rem;
+    }
+
+    tbody tr td:not(:first-child) {
+      font-size: 0.95rem;
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .rdapp-full-hero {
+    padding: 2.6rem 0.9rem 3.3rem;
+  }
+
+  .rdapp-full-hero__kicker {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+  }
+
+  .rdapp-full-hero__title {
+    font-size: 1.65rem;
+    line-height: 1.15;
+  }
+
+  .rdapp-full-hero__subtitle {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .full-item-info {
+    margin-top: -1rem;
+    border-radius: 1.15rem;
+  }
+
+  .full-item-info > .d-flex.flex-row,
+  .table-responsive {
+    padding: 1rem;
+  }
+
+  .full-item-info > .d-flex.flex-row .item-view-header {
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  :host ::ng-deep .full-item-info .table.table-striped {
+    min-width: 460px;
+
+    thead tr th {
+      padding: 0.8rem 0.55rem;
+      font-size: 0.62rem;
+    }
+
+    tbody tr td:first-child,
+    tbody tr td:not(:first-child) {
+      padding: 0.95rem 0.55rem;
+    }
+
+    tbody tr td:first-child {
+      font-size: 0.72rem;
+    }
+
+    tbody tr td:not(:first-child) {
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+  }
+
+  .full-item-info > .d-flex.justify-content-center.border-top {
+    padding: 1rem 0.8rem;
+
+    a {
+      font-size: 0.68rem;
+      text-align: center;
+    }
+  }
+}

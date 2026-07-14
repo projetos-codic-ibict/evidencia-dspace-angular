@@ -27,9 +27,8 @@ import {
 
 import { SEARCH_CONFIG_SERVICE } from '../../../../../my-dspace-page/my-dspace-configuration.service';
 import { DebounceDirective } from '../../../../utils/debounce.directive';
-import { SearchService } from '../../../search.service';
-import { SearchConfigurationService } from '../../../search-configuration.service';
-import { SearchFilterService } from '../../search-filter.service';
+import { SearchService } from '../../../../../core/shared/search/search.service';
+import { SearchConfigurationService } from '../../../../../core/shared/search/search-configuration.service';import { SearchFilterService } from '../../search-filter.service';
 import {
   facetLoad,
   SearchFacetFilterComponent,

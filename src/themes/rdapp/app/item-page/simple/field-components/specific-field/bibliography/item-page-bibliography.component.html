@@ -1,0 +1,68 @@
+<button type="button" class="cite-trigger-btn" (click)="openModal(citationModal)">
+  <i class="fas fa-quote-right"></i>
+  {{ "item.cite.open-modal" | translate }}
+</button>
+
+<ng-template #citationModal let-modal>
+  <div class="modal-header">
+    <div>
+      <h4 class="modal-title" id="rdapp-cite-modal-title">{{ "item.cite.modal.title" | translate }}</h4>
+      <small>{{ "item.cite.modal.subtitle" | translate }}</small>
+    </div>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      aria-label="Close"
+      ngbAutofocus
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+
+  <div class="modal-body" aria-live="polite" aria-atomic="true">
+    @if (loading) {
+      <div class="text-center">
+        <i class="fas fa-spinner fa-spin"></i> {{ "loading" | translate }}
+      </div>
+    }
+    @if (error) {
+      <div class="alert alert-danger">
+        {{ "item.cite.modal.error" | translate }}
+      </div>
+    }
+    @if (bibliographies?.length) {
+      @for (c of bibliographies; track c.style) {
+        <div class="cite-entry">
+          <div class="cite-entry__header">
+            <strong class="cite-entry__label">{{ c.style | translate }}</strong>
+            <button
+              type="button"
+              class="cite-entry__copy-btn"
+              [class.cite-entry__copy-btn--copied]="copiedStyle === c.style"
+              (click)="copyStyle(c.value, c.style)"
+            >
+              @if (copiedStyle === c.style) {
+                <i class="fas fa-check" aria-hidden="true"></i>
+                {{ 'rdapp.item.cited.copied' | translate }}
+              } @else {
+                {{ 'item.cite.modal.copy' | translate }}
+              }
+            </button>
+          </div>
+          <div class="cite-entry__box">
+            @if (c.style === 'bibtex') {
+              <code>{{ c.value }}</code>
+            } @else {
+              <span>{{ c.value }}</span>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">
+      {{ "item.cite.modal.close" | translate }}
+    </button>
+  </div>
+</ng-template>

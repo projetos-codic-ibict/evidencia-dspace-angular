@@ -29,6 +29,7 @@ const widthSelector = createSelector(hostWindowStateSelector, (hostWindow: HostW
 @Injectable({ providedIn: 'root' })
 export class HostWindowService {
   private breakPoints: { XS_MIN, SM_MIN, MD_MIN, LG_MIN, XL_MIN } = {} as any;
+  static WidthCategory: any;
 
   constructor(
     private store: Store<AppState>,
@@ -150,3 +151,5 @@ export class HostWindowService {
     );
   }
 }
+export { WidthCategory };
+

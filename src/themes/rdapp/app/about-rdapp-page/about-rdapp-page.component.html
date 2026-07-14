@@ -1,0 +1,158 @@
+<section class="about-hero">
+  <div class="container">
+    <p class="about-hero__label">{{ 'rdapp.about.hero.label' | translate }}</p>
+    <h1 class="about-hero__title">{{ 'rdapp.about.hero.title' | translate }}</h1>
+    <p class="about-hero__subtitle">{{ 'rdapp.about.hero.subtitle' | translate }}</p>
+  </div>
+  <div class="about-tabs-wrap">
+    <div class="about-tabs" role="tablist">
+      <button
+        class="about-tabs__btn"
+        [class.is-active-apresentacao]="activeTab === 'apresentacao'"
+        (click)="setTab('apresentacao')"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeTab === 'apresentacao'"
+      >{{ 'rdapp.about.tab.apresentacao' | translate }}</button>
+      <button
+        class="about-tabs__btn"
+        [class.is-active-acervo]="activeTab === 'acervo'"
+        (click)="setTab('acervo')"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeTab === 'acervo'"
+      >{{ 'rdapp.about.tab.acervo' | translate }}</button>
+      <button
+        class="about-tabs__btn"
+        [class.is-active-quemsomos]="activeTab === 'quemsomos'"
+        (click)="setTab('quemsomos')"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeTab === 'quemsomos'"
+      >{{ 'rdapp.about.tab.quemsomos' | translate }}</button>
+    </div>
+  </div>
+</section>
+
+<section class="about-content">
+  <div class="container">
+
+    @if (activeTab === 'apresentacao') {
+      <div class="about-card" role="tabpanel">
+        <div class="about-card__header">
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <h2>{{ 'rdapp.about.apresentacao.title' | translate }}</h2>
+        </div>
+        <div class="about-card__body">
+          <p [innerHTML]="'rdapp.about.apresentacao.p1' | translate"></p>
+          <p [innerHTML]="'rdapp.about.apresentacao.p2' | translate"></p>
+          <div class="about-card__quote">
+            <p>{{ 'rdapp.about.apresentacao.quote' | translate }}</p>
+          </div>
+          <p class="about-section-label">{{ 'rdapp.about.apresentacao.finalidades.label' | translate }}</p>
+          <ul class="about-checklist">
+            @for (i of [0, 1, 2, 3, 4]; track i) {
+              <li class="about-checklist__item">
+                <i class="fas fa-circle-check" aria-hidden="true"></i>
+                <span [innerHTML]="'rdapp.about.apresentacao.finalidades.' + i | translate"></span>
+              </li>
+            }
+          </ul>
+          <div class="about-card__cta">
+            <a class="about-card__cta-btn" href="#" target="_blank" rel="noopener noreferrer">
+              <i class="fas fa-book-open" aria-hidden="true"></i>
+              {{ 'rdapp.about.apresentacao.guia.label' | translate }}
+            </a>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 'acervo') {
+      <div class="about-card" role="tabpanel">
+        <div class="about-card__header">
+          <i class="fas fa-folder-open" aria-hidden="true"></i>
+          <h2>{{ 'rdapp.about.acervo.title' | translate }}</h2>
+        </div>
+        <div class="about-card__body">
+          <p [innerHTML]="'rdapp.about.acervo.p1' | translate"></p>
+          <p>{{ 'rdapp.about.acervo.p2' | translate }}</p>
+          <p>{{ 'rdapp.about.acervo.comunidades.label' | translate }}</p>
+          <ul class="about-checklist">
+            @for (i of [0, 1, 2, 3]; track i) {
+              <li class="about-checklist__item">
+                <i class="fas fa-circle-check" aria-hidden="true"></i>
+                <span [innerHTML]="'rdapp.about.acervo.comunidades.' + i | translate"></span>
+              </li>
+            }
+          </ul>
+          <p>{{ 'rdapp.about.acervo.acesso' | translate }}</p>
+          <h3 class="about-section-h3">{{ 'rdapp.about.acervo.parcerias.title' | translate }}</h3>
+          <p>{{ 'rdapp.about.acervo.parcerias.p1' | translate }}</p>
+          <ul class="about-checklist">
+            @for (i of [0, 1, 2, 3]; track i) {
+              <li class="about-checklist__item">
+                <i class="fas fa-circle-check" aria-hidden="true"></i>
+                <span [innerHTML]="'rdapp.about.acervo.parcerias.natureza.' + i | translate"></span>
+              </li>
+            }
+          </ul>
+          <p>{{ 'rdapp.about.acervo.parcerias.p2' | translate }}</p>
+          <p>{{ 'rdapp.about.acervo.parcerias.p3' | translate }}</p>
+          <div class="about-section-exec">
+            <i class="fas fa-laptop-code" aria-hidden="true"></i>
+            <span class="about-section-exec__label">{{ 'rdapp.about.acervo.dev.label' | translate }}</span>
+          </div>
+          <p [innerHTML]="'rdapp.about.acervo.dev.p1' | translate"></p>
+        </div>
+      </div>
+    }
+
+    @if (activeTab === 'quemsomos') {
+      <div class="about-card" role="tabpanel">
+        <div class="about-card__header">
+          <i class="fas fa-people-group" aria-hidden="true"></i>
+          <h2>{{ 'rdapp.about.quemsomos.title' | translate }}</h2>
+        </div>
+        <div class="about-card__body">
+          <p [innerHTML]="'rdapp.about.quemsomos.p1' | translate"></p>
+          <div class="about-pillars-card">
+            <p class="about-pillars-card__title">{{ 'rdapp.about.quemsomos.pilares.title' | translate }}</p>
+            <div class="about-pillars-card__grid">
+              <div class="about-pillars-card__item">
+                <i class="fas fa-database" aria-hidden="true"></i>
+                <span>{{ 'rdapp.about.quemsomos.pilares.0' | translate }}</span>
+              </div>
+              <div class="about-pillars-card__item">
+                <i class="fas fa-right-left" aria-hidden="true"></i>
+                <span>{{ 'rdapp.about.quemsomos.pilares.1' | translate }}</span>
+              </div>
+              <div class="about-pillars-card__item">
+                <i class="fas fa-file-lines" aria-hidden="true"></i>
+                <span>{{ 'rdapp.about.quemsomos.pilares.2' | translate }}</span>
+              </div>
+              <div class="about-pillars-card__item">
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                <span>{{ 'rdapp.about.quemsomos.pilares.3' | translate }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-section-exec">
+            <i class="fas fa-chess-king" aria-hidden="true"></i>
+            <span class="about-section-exec__label">{{ 'rdapp.about.quemsomos.gestao.label' | translate }}</span>
+          </div>
+          <p [innerHTML]="'rdapp.about.quemsomos.gestao.p1' | translate"></p>
+          <ul class="about-checklist">
+            @for (i of [0, 1, 2, 3]; track i) {
+              <li class="about-checklist__item about-checklist__item--purple">
+                <i class="fas fa-circle-check" aria-hidden="true"></i>
+                <span [innerHTML]="'rdapp.about.quemsomos.gestao.competencias.' + i | translate"></span>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    }
+
+  </div>
+</section>

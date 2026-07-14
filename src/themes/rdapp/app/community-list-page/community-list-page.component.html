@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+      <span class="page-eyebrow d-block text-uppercase small fw-semibold mb-1">
+        {{ 'rdapp.communityList.subtitle' | translate }}
+      </span>
+      <h1 class="page-title fw-bold mb-2">{{ 'communityList.title' | translate }}</h1>
+      <p class="text-muted small mb-0">{{ 'rdapp.communityList.description' | translate }}</p>
+    </div>
+    @if (communityCount$ | async; as count) {
+      <small class="border rounded-pill bg-white text-muted px-3 py-1 text-nowrap flex-shrink-0">
+        {{ count }} {{ (count === 1 ? 'rdapp.communityList.communityCounter.singular' : 'rdapp.communityList.communityCounter.plural') | translate }}
+      </small>
+    }
+  </div>
+  <ds-community-list></ds-community-list>
+</div>

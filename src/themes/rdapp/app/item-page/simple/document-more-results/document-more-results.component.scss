@@ -1,0 +1,19 @@
+// Override rdapp — botão toggle sem borda, sem border-radius e sem hover colorido.
+// O restante dos estilos (painel, lista, paginação) vem do base via styleUrls.
+
+.doc-more-results {
+  &__toggle-btn {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: transparent;
+      color: #1351B4; // $primary-blue — mantém cor do texto, sem fill
+      border: none;
+      box-shadow: none;
+    }
+  }
+}

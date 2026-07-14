@@ -1,0 +1,294 @@
+// =============================================================================
+// RDAPP – Document More Results Component
+// Estilo coerente com o design system institucional (gov.br / RDAPP)
+// Paleta e padrões espelhados de item-search-result-list-element.scss
+// =============================================================================
+
+// Variáveis locais alinhadas com _theme_sass_variable_overrides.scss
+$primary-blue:   #1351B4;
+$blue-dark:      #0C3A7F;
+$blue-light:     #E6F2FF;
+$blue-medium:    #4A8FD2;
+$white:          #FFFFFF;
+$gray-50:        #F8F9FA;
+$gray-100:       #E9ECEF;
+$gray-300:       #CED4DA;
+$gray-600:       #6C757D;
+$gray-700:       #495057;
+$gray-900:       #212529;
+
+// =============================================================================
+// CONTAINER PRINCIPAL
+// =============================================================================
+
+.doc-more-results {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid $gray-100;
+
+  // ---------------------------------------------------------------------------
+  // BOTÃO TOGGLE
+  // ---------------------------------------------------------------------------
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+  }
+
+  &__toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: $primary-blue;
+    border-color: $primary-blue;
+    transition: background-color 0.2s ease-in-out,
+                color 0.2s ease-in-out,
+                border-color 0.2s ease-in-out;
+
+    &:hover,
+    &:focus {
+      background-color: $primary-blue;
+      color: $white;
+      border-color: $primary-blue;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary-blue;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+
+  &__chevron {
+    transition: transform 0.2s ease-in-out;
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // PAINEL EXPANSÍVEL
+  // ---------------------------------------------------------------------------
+
+  &__panel {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid $blue-light;
+    animation: docPanelReveal 0.25s ease-out;
+  }
+
+  &__panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 1.25rem;
+
+    i {
+      color: $primary-blue;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    h4 {
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: $blue-dark;
+      margin: 0;
+      flex: 1;
+      letter-spacing: -0.2px;
+    }
+  }
+
+  &__badge {
+    display: inline-block;
+    background-color: $blue-light;
+    color: $primary-blue;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.25rem 0.625rem;
+    border-radius: 4px;
+    border: 1px solid rgba($primary-blue, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  // ---------------------------------------------------------------------------
+  // LOADING
+  // ---------------------------------------------------------------------------
+
+  &__loading {
+    font-size: 0.875rem;
+    color: $gray-600;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  // ---------------------------------------------------------------------------
+  // LISTA DE OCORRÊNCIAS
+  // ---------------------------------------------------------------------------
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  &__item {
+    background-color: $gray-50;
+    border: 1px solid $gray-100;
+    border-radius: 8px;
+    padding: 0.875rem 1rem;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    &:hover {
+      border-color: rgba($primary-blue, 0.3);
+      box-shadow: 0 2px 8px rgba($primary-blue, 0.08);
+    }
+  }
+
+  &__snippet {
+    font-size: 0.875rem;
+    color: $gray-700;
+    line-height: 1.65;
+    margin: 0 0 0.625rem;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__section {
+    font-size: 0.8125rem;
+    color: $gray-600;
+
+    strong {
+      color: $primary-blue;
+      font-weight: 600;
+    }
+  }
+
+  &__page-link {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    background-color: $primary-blue;
+    border-color: $primary-blue;
+    color: $white;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+
+    &:hover,
+    &:focus {
+      background-color: $blue-dark;
+      border-color: $blue-dark;
+      color: $white;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary-blue;
+      outline-offset: 2px;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // MENSAGENS (SEM RESULTADOS, ERRO)
+  // ---------------------------------------------------------------------------
+
+  &__no-results {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background-color: $gray-50;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+
+  &__no-results-message {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: $gray-600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    i {
+      color: $primary-blue;
+      font-size: 1.125rem;
+    }
+  }
+
+  &__error-message {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: #dc3545;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    i {
+      font-size: 1.125rem;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // PAGINAÇÃO
+  // ---------------------------------------------------------------------------
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid $gray-100;
+  }
+
+  &__pagination-group {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+
+    .btn {
+      transition: all 0.2s ease-in-out;
+
+      &:focus-visible {
+        outline: 2px solid $primary-blue;
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  &__pagination-label {
+    font-size: 0.8125rem;
+    color: $gray-600;
+  }
+}
+
+// =============================================================================
+// ANIMAÇÃO DE ENTRADA DO PAINEL
+// =============================================================================
+
+@keyframes docPanelReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

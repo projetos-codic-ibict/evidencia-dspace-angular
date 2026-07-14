@@ -1,0 +1,90 @@
+<div class="container" *ngVar="(itemRD$ | async) as itemRD">
+  @if (itemRD?.hasSucceeded) {
+    <div class="item-page" @fadeInOut>
+      @if (itemRD?.payload; as item) {
+        <div>
+          <ds-item-alerts [item]="item"></ds-item-alerts>
+          <ds-item-versions-notice [item]="item"></ds-item-versions-notice>
+          @if (!item.isWithdrawn || (isAdmin$ | async)) {
+
+            <section class="rdapp-full-hero" [attr.aria-label]="'rdapp.full-item.hero.aria-label' | translate">
+              <div class="rdapp-full-hero__shape" aria-hidden="true"></div>
+              <div class="rdapp-full-hero__inner">
+                <span class="rdapp-full-hero__kicker">{{ 'rdapp.full-item.hero.kicker' | translate }}</span>
+                <h1 class="rdapp-full-hero__title">{{ 'rdapp.full-item.hero.title' | translate }}</h1>
+                <p class="rdapp-full-hero__subtitle">{{ 'rdapp.full-item.hero.subtitle' | translate }}</p>
+              </div>
+            </section>
+
+            <div class="full-item-info">
+              <div class="d-flex flex-row align-items-start gap-3 flex-wrap p-4 border-bottom bg-light">
+                <div class="me-auto">
+                  <h2 class="item-view-header">{{ item.name }}</h2>
+                  <p class="text-muted fw-bold small text-uppercase mt-1 mb-0">ID: {{ item.id }}</p>
+                </div>
+                <a class="btn btn-outline-primary" [routerLink]="[(itemPageRoute$ | async)]">
+                  <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                  {{ 'rdapp.full-item.back' | translate }}
+                </a>
+                <ds-dso-edit-menu></ds-dso-edit-menu>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>{{ 'rdapp.full-item.table.field' | translate }}</th>
+                      <th>{{ 'rdapp.full-item.table.value' | translate }}</th>
+                      <th>{{ 'rdapp.full-item.table.language' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (mdEntry of (metadata$ | async) | keyvalue; track mdEntry) {
+                      @for (mdValue of mdEntry.value; track mdValue) {
+                        <tr>
+                          <td>{{ mdEntry.key }}</td>
+                          <td>
+                            @if (isUrl(mdValue.value)) {
+                              <a [href]="mdValue.value" target="_blank" rel="noopener noreferrer">{{ mdValue.value }}</a>
+                            } @else {
+                              {{ mdValue.value }}
+                            }
+                          </td>
+                          <td>{{ mdValue.language }}</td>
+                        </tr>
+                      }
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+              <ds-item-page-collections [item]="item"></ds-item-page-collections>
+              <ds-item-versions class="mt-2" [item]="item"></ds-item-versions>
+
+              @if (fromSubmissionObject) {
+                <div class="button-row bottom">
+                  <div class="text-end">
+                    <button class="btn btn-outline-secondary me-1" (click)="back()">
+                      <i class="fas fa-arrow-left"></i> {{ 'item.page.return' | translate }}
+                    </button>
+                  </div>
+                </div>
+              }
+
+              <div class="d-flex justify-content-center border-top bg-light p-3 mt-4">
+                <a [routerLink]="[(itemPageRoute$ | async)]">{{ 'rdapp.full-item.return' | translate }}</a>
+              </div>
+            </div>
+
+          }
+        </div>
+      }
+    </div>
+  }
+  @if (itemRD?.hasFailed) {
+    <ds-error message="{{'error.item' | translate}}"></ds-error>
+  }
+  @if (itemRD?.isLoading) {
+    <ds-loading message="{{'loading.item' | translate}}"></ds-loading>
+  }
+</div>

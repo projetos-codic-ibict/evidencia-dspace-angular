@@ -1,0 +1,69 @@
+// ─── View mode switch (lista / grid) ─────────────────────────────────────────
+
+::ng-deep ds-view-mode-switch {
+  .btn-group {
+    border: 2px solid #e2e8f0;
+    border-radius: var(--rdapp-border-radius-1rem);
+    overflow: hidden;
+
+    .btn.btn-secondary {
+      background-color: #ffffff;
+      border: none;
+      color: #28408b;
+
+      &.active {
+        background-color: #28408b;
+        color: #ffffff;
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+// ─── Botão open/close sidebar (mobile) ───────────────────────────────────────
+
+.search-controls {
+  margin-bottom: 0.875rem;
+}
+
+.open-sidebar.btn,
+.open-sidebar.btn:focus,
+.open-sidebar.btn:active,
+.close-sidebar.btn,
+.close-sidebar.btn:focus,
+.close-sidebar.btn:active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #28408b;
+  background-color: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--rdapp-border-radius-1rem);
+  padding: 0.625rem 1.25rem;
+  box-shadow: 0 1px 4px rgba(40, 64, 139, 0.08);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    color 0.2s;
+  float: none !important;
+
+  i {
+    font-size: 0.875rem;
+    color: var(--rdapp-color-blue);
+  }
+
+  &:hover {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+    color: var(--rdapp-color-blue);
+    box-shadow: 0 4px 14px rgba(15, 73, 189, 0.14);
+  }
+}

@@ -1,0 +1,199 @@
+:host {
+  display: block;
+
+  // recuo das coleções sob a comunidade (alinha sob o nome, abaixo do ícone)
+  --rdapp-cl-indent: 3.65rem;
+
+  // ── O card branco único (toda a árvore) ───────────────────────────────────
+  .community-card {
+    display: block;
+    max-width: 775px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 1.15rem;
+    box-shadow: 0 16px 46px rgba(15, 23, 42, 0.08);
+    padding: 2rem 2.25rem;
+  }
+
+  .example-tree-node {
+    display: block;
+  }
+
+  // separa comunidades raiz quando há mais de uma
+  .expandable-node.is-root:not(:first-of-type) {
+    border-top: 1px solid #eef0f6;
+    margin-top: 1.8rem;
+    padding-top: 1.8rem;
+  }
+
+  // ── Cabeçalho da comunidade ───────────────────────────────────────────────
+  .community-header {
+    gap: 1rem;
+  }
+
+  .community-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 0.7rem;
+    background: var(--rdapp-bg-color-primary);
+    color: #fff;
+    font-size: 1.2rem;
+  }
+
+  .community-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .community-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 0.15rem;
+  }
+
+  .community-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--rdapp-bg-color-primary);
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
+
+  // ── "COLEÇÕES DISPONÍVEIS" — rótulo sutil, recuado sob a comunidade ───────
+  .collections-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
+    margin-bottom: 0.6rem;
+    padding-left: var(--rdapp-cl-indent);
+
+    i {
+      font-size: 0.95rem;
+      color: #94a3b8;
+    }
+
+    .collections-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    // contador no mesmo estilo sutil da tela de busca (cinza muted)
+    .collections-counter {
+      font-size: 0.82rem;
+    }
+  }
+
+  // ── Pílulas de coleção / sub-comunidade (recuadas sob a comunidade) ───────
+  // posição da linha vertical (espinha) no gutter, alinhada sob o ícone da comunidade
+  --rdapp-cl-spine: 1.5rem;
+
+  .childless-node,
+  .expandable-node:not(.is-root) {
+    position: relative;
+    margin-top: 0.5rem;
+    padding-left: var(--rdapp-cl-indent);
+
+    // linha vertical contínua à esquerda das coleções (cobre o gap p/ conectar)
+    &::before {
+      content: '';
+      position: absolute;
+      left: var(--rdapp-cl-spine);
+      top: -0.5rem;
+      height: calc(100% + 0.5rem);
+      width: 2px;
+      background: #e2e8f0;
+      border-radius: 2px;
+    }
+  }
+
+  .collection-pill {
+    gap: 0.8rem;
+    background: #f5f6fa;
+    border-radius: 0.7rem;
+    padding: 0.95rem 1.25rem;
+    transition: background 0.15s ease;
+
+    &:hover { background: #eef0f6; }
+  }
+
+  .collection-file-icon {
+    font-size: 1rem;
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+
+  .collection-name {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #334155;
+    text-decoration: none;
+  }
+
+  .collection-pill:hover .collection-name {
+    color: var(--rdapp-bg-color-primary);
+  }
+
+  .collection-chevron {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    flex-shrink: 0;
+  }
+
+  // ── Botão toggle da comunidade (circular, no canto do cabeçalho) ──────────
+  .community-toggle-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    background: #fff;
+    color: #94a3b8;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--rdapp-bg-color-primary);
+      border-color: var(--rdapp-bg-color-primary);
+    }
+
+    .fa { font-size: 0.8rem; }
+  }
+
+  // ── Botão toggle (abrir/fechar) ───────────────────────────────────────────
+  .toggle-btn {
+    flex-shrink: 0;
+    padding: 0.3rem 0.55rem;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--rdapp-bg-color-primary);
+    }
+
+    .fa { font-size: 0.85rem; }
+  }
+
+  // ── "Ver mais" ─────────────────────────────────────────────────────────────
+  .show-more-node {
+    margin-top: 0.8rem;
+  }
+}

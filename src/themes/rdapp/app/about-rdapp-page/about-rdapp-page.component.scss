@@ -1,0 +1,351 @@
+// About RDAPP Page — Component Styles
+
+// Hero
+.about-hero {
+  background: linear-gradient(135deg, #0d1b47 0%, #1a2d6e 60%, #1e3580 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 0 3rem;
+  margin-top: calc(-1 * var(--ds-content-spacing));
+  text-align: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.03) 0,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px,
+      transparent 24px
+    );
+  }
+
+  &__label {
+    color: #00a88f;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    color: #ffffff;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+
+    @media (max-width: 767px) {
+      font-size: 2.25rem;
+    }
+  }
+
+  &__subtitle {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.1rem;
+
+    @media (max-width: 767px) {
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// Tab bar
+.about-tabs-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: relative;
+  margin-bottom: -26px;
+  z-index: 2;
+}
+
+.about-tabs {
+  display: flex;
+  background: #ffffff;
+  border-radius: 40px;
+  padding: 4px;
+  gap: 2px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 100%;
+  overflow-x: auto;
+
+  &__btn {
+    padding: 0.65rem 1.75rem;
+    border-radius: 36px;
+    border: none;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6b7280;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    @media (max-width: 575px) {
+      padding: 0.6rem 1rem;
+      font-size: 0.72rem;
+    }
+
+    &.is-active-apresentacao {
+      background: #28408b;
+      color: #ffffff;
+    }
+
+    &.is-active-acervo {
+      background: #00a88f;
+      color: #ffffff;
+    }
+
+    &.is-active-quemsomos {
+      background: #6b5dd3;
+      color: #ffffff;
+    }
+  }
+}
+
+// Content area
+.about-content {
+  background: #f5f7fa;
+  padding: 4rem 0 5rem;
+
+  @media (max-width: 767px) {
+    padding: 3rem 0 4rem;
+  }
+}
+
+// Card
+.about-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 3rem;
+  max-width: 860px;
+  margin: 0 auto;
+
+  @media (max-width: 767px) {
+    padding: 1.75rem 1.25rem;
+    border-radius: 12px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+
+    i {
+      font-size: 1.5rem;
+      color: #00a88f;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #28408b;
+      margin: 0;
+
+      @media (max-width: 575px) {
+        font-size: 1.4rem;
+      }
+    }
+  }
+
+  &__body {
+    p {
+      line-height: 1.8;
+      color: #374151;
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+
+      @media (min-width: 768px) {
+        text-align: justify;
+      }
+    }
+  }
+
+  &__quote {
+    border-left: 4px solid #28408b;
+    background: #eef3ff;
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+
+    p {
+      font-style: italic;
+      color: #1e3a8a;
+      margin: 0;
+
+      @media (min-width: 768px) {
+        text-align: justify;
+      }
+    }
+  }
+
+  &__cta {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f3f4f6;
+
+    &-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #28408b;
+      color: #ffffff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: #1a2d6e;
+        color: #ffffff;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+// Section label (e.g. "FINALIDADES DO RDAPP")
+.about-section-label {
+  color: #00a88f;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 1.5rem 0 1rem;
+}
+
+// Section h3 (sub-heading inside card, e.g. "Parcerias Institucionais")
+.about-section-h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #28408b;
+  margin: 2rem 0 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+// Section exec header (label com ícone, e.g. "DESENVOLVIMENTO DO REPOSITÓRIO")
+.about-section-exec {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1.75rem 0 0.75rem;
+
+  i {
+    color: #00a88f;
+    font-size: 1.1rem;
+  }
+
+  &__label {
+    color: #00a88f;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+}
+
+// Checklist
+.about-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+
+    i {
+      color: #00a88f;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    span {
+      color: #1f2937;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    &--purple {
+      background: #f5f3ff;
+      border-color: #e5e1fa;
+
+      i {
+        color: #6b5dd3;
+      }
+
+      span {
+        color: #4c3d9e;
+      }
+    }
+  }
+}
+
+// Pillars card (Quem Somos)
+.about-pillars-card {
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.25rem 0;
+
+  &__title {
+    text-align: center;
+    color: #00a88f;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+
+    @media (max-width: 575px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+
+    i {
+      color: #28408b;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    span {
+      font-size: 0.85rem;
+      color: #374151;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+  }
+}
