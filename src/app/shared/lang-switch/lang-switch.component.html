@@ -1,9 +1,10 @@
 @if (moreThanOneLanguage) {
-  <div ngbDropdown class="navbar-nav" display="dynamic" placement="bottom-right">
+  <div ngbDropdown #langDropdown="ngbDropdown" class="navbar-nav" display="dynamic" placement="bottom-right">
     <button role="button"
             [attr.aria-label]="'nav.language' |translate"
             aria-controls="language-menu-list"
             aria-haspopup="menu"
+            [attr.aria-expanded]="langDropdown.isOpen()"
             class="dropdown-toggle btn btn-link px-0"
             [title]="'nav.language' | translate"
             (click)="$event.preventDefault()" data-bs-toggle="dropdown" ngbDropdownToggle
