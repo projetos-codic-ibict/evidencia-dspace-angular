@@ -80,6 +80,18 @@ export const APP_ROUTES: Route[] = [
         },
       },
       {
+        path: 'sobre',
+        loadChildren: () => import('../themes/rdapp/app/about-rdapp-page/about-rdapp-page-routes')
+          .then((m) => m.ROUTES),
+        data: { showBreadcrumbs: false },
+      },
+      {
+        path: 'faq',
+        loadChildren: () => import('../themes/rdapp/app/faq-page/faq-page-routes')
+          .then((m) => m.ROUTES),
+        data: { showBreadcrumbs: false },
+      },
+      {
         path: 'community-list',
         loadChildren: () => import('./community-list-page/community-list-page-routes')
           .then((m) => m.ROUTES),

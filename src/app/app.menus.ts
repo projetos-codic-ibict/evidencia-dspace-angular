@@ -15,6 +15,8 @@ import { AuditOverviewMenuProvider } from './shared/menu/providers/audit-overvie
 import { BrowseMenuProvider } from './shared/menu/providers/browse.menu';
 import { CoarNotifyMenuProvider } from './shared/menu/providers/coar-notify.menu';
 import { SubscribeMenuProvider } from './shared/menu/providers/comcol-subscribe.menu';
+import { AboutRdappMenuProvider } from '../themes/rdapp/app/shared/menu/providers/about-rdapp.menu';
+import { FaqMenuProvider } from '../themes/rdapp/app/shared/menu/providers/faq.menu';
 import { CommunityListMenuProvider } from './shared/menu/providers/community-list.menu';
 import { CreateReportMenuProvider } from './shared/menu/providers/create-report.menu';
 import { CurationMenuProvider } from './shared/menu/providers/curation.menu';
@@ -60,6 +62,8 @@ export const MENUS = buildMenuStructure({
     CommunityListMenuProvider,
     BrowseMenuProvider,
     StatisticsMenuProvider,
+    FaqMenuProvider,
+    AboutRdappMenuProvider,
   ],
   [MenuID.ADMIN]: [
     NewMenuProvider,
