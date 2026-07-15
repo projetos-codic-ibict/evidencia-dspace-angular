@@ -6,7 +6,7 @@ import { ThemedHeaderComponent } from '../../../../app/header/themed-header.comp
 import { HeaderNavbarWrapperComponent as BaseComponent } from '../../../../app/header-nav-wrapper/header-navbar-wrapper.component';
 import { ThemedNavbarComponent } from '../../../../app/navbar/themed-navbar.component';
 import { slideMobileNav } from '../../../../app/shared/animations/slide';
-import { HostWindowService } from '../../../../app/shared/host-window.service';
+import { WidthCategory } from '../../../../app/core/shared/host-window-type';
 
 /**
  * This component represents a wrapper for the horizontal navbar and the header
@@ -24,5 +24,5 @@ import { HostWindowService } from '../../../../app/shared/host-window.service';
   animations: [slideMobileNav],
 })
 export class HeaderNavbarWrapperComponent extends BaseComponent {
-  maxMobileWidth = HostWindowService.WidthCategory.LG;
+  maxMobileWidth = WidthCategory.LG;
 }

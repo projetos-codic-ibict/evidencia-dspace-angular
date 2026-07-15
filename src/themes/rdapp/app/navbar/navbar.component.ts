@@ -8,7 +8,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { NavbarComponent as BaseComponent } from '../../../../app/navbar/navbar.component';
-import { HostWindowService } from '../../../../app/shared/host-window.service';
+import { WidthCategory } from '../../../../app/core/shared/host-window-type';
 import { slideMobileNav } from '../../../../app/shared/animations/slide';
 import { ThemedUserMenuComponent } from '../../../../app/shared/auth-nav-menu/user-menu/themed-user-menu.component';
 
@@ -30,5 +30,5 @@ import { ThemedUserMenuComponent } from '../../../../app/shared/auth-nav-menu/us
   ],
 })
 export class NavbarComponent extends BaseComponent {
-  maxMobileWidth = HostWindowService.WidthCategory.LG;
+  maxMobileWidth = WidthCategory.LG;
 }
