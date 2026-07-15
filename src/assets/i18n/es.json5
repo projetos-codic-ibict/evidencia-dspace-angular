@@ -7434,11 +7434,11 @@
 
   "rdapp.item.reference.copy": "Copiar referencia",
 
-  "rdapp.item.metrics.title": "Métricas y Transparencia Técnica",
+  "rdapp.item.metrics.title": "Métricas del Documento",
 
   "rdapp.item.metrics.stats": "Ver Estadísticas",
 
-  "rdapp.item.metrics.dublin": "Metadatos Dublin Core",
+  "rdapp.item.metrics.dublin": "Registro Completo (Dublin Core)",
 
   "rdapp.item.metrics.total-access": "Total de accesos",
 

@@ -163,7 +163,6 @@ $gray-900:       #212529;
   &__meta {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
@@ -184,6 +183,8 @@ $gray-900:       #212529;
     background-color: $primary-blue;
     border-color: $primary-blue;
     color: $white;
+    margin-left: auto;
+    flex-shrink: 0;
     transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 
     &:hover,

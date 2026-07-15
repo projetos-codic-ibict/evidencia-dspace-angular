@@ -66,10 +66,11 @@
     }
   }
 
-  // Logo MPO à direita
+  // Logo MPO à direita — altura máxima segura dentro do header fixo (110px),
+  // descontando o padding vertical padrão do .navbar (1rem, 0.5rem topo/base)
   .navbar > a img {
     width: auto;
-    height: clamp(2.5rem, 3.5vw, 3.5rem);
+    height: min(6.5vw, calc(var(--ds-header-height) - 1rem));
     object-fit: contain;
   }
 
