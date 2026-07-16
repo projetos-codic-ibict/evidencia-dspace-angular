@@ -1,0 +1,35 @@
+.rdapp-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.9rem;
+  border-radius: var(--rdapp-border-radius-2rem);
+  background: var(--rdapp-bg-color-primary);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: capitalize;
+  white-space: normal;
+  line-height: 1.2;
+  transition: background-color 0.2s;
+
+  &:hover,
+  &:focus {
+    background: var(--rdapp-bg-color-accent);
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.rdapp-filter-chip__label {
+  overflow-wrap: anywhere;
+}
+
+.rdapp-filter-chip__remove {
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.85;
+}

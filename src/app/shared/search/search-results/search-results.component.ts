@@ -144,6 +144,11 @@ export class SearchResultsComponent {
   @Input() selectionConfig: SelectionConfig = null;
 
   /**
+   * True when the search component should show results on the current page
+   */
+  @Input() inPlaceSearch = false;
+
+  /**
    * Emit when one of the listed object has changed.
    */
   @Output() contentChange = new EventEmitter<any>();

@@ -18,6 +18,7 @@ import {
 import { ErrorComponent } from '../../../../../../app/shared/error/error.component';
 import { ObjectCollectionComponent } from '../../../../../../app/shared/object-collection/object-collection.component';
 import { SearchExportCsvComponent } from '../../../../../../app/shared/search/search-export-csv/search-export-csv.component';
+import { SearchLabelsComponent } from '../../../../../../app/shared/search/search-labels/search-labels.component';
 import { SearchResultsSkeletonComponent } from '../../../../../../app/shared/search/search-results/search-results-skeleton/search-results-skeleton.component';
 import { SearchResultsComponent as BaseComponent } from '../../../../../../app/shared/search/search-results/search-results.component';
 
@@ -37,6 +38,7 @@ import { SearchResultsComponent as BaseComponent } from '../../../../../../app/s
     ObjectCollectionComponent,
     RouterLink,
     SearchExportCsvComponent,
+    SearchLabelsComponent,
     SearchResultsSkeletonComponent,
     TranslateModule,
   ],

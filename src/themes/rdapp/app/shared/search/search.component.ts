@@ -6,7 +6,6 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 
 import { pushInOut } from '../../../../../app/shared/animations/push';
-import { SearchLabelsComponent } from '../../../../../app/shared/search/search-labels/search-labels.component';
 import { ThemedSearchResultsComponent } from '../../../../../app/shared/search/search-results/themed-search-results.component';
 import { ThemedSearchSidebarComponent } from '../../../../../app/shared/search/search-sidebar/themed-search-sidebar.component';
 import { SearchComponent as BaseSearchComponent } from '../../../../../app/shared/search/search.component';
@@ -24,7 +23,6 @@ import { ViewModeSwitchComponent } from '../../../../../app/shared/view-mode-swi
     AsyncPipe,
     NgTemplateOutlet,
     PageWithSidebarComponent,
-    SearchLabelsComponent,
     ThemedSearchFormComponent,
     ThemedSearchResultsComponent,
     ThemedSearchSidebarComponent,

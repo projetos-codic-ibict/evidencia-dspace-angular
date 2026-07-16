@@ -12,16 +12,6 @@
 </div>
 }
 
-@if (searchEnabled && (isXsOrSm$ | async)) {
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <ng-template *ngTemplateOutlet="searchForm"></ng-template>
-    </div>
-  </div>
-</div>
-}
-
 @if (!showSidebar && (initialized$ | async)) {
 <div>
   <ng-template *ngTemplateOutlet="searchContent"></ng-template>
@@ -38,9 +28,6 @@
   <div class="row">
     @if ((isXsOrSm$ | async) !== true) {
     <div class="col-12">
-      @if (searchEnabled) {
-      <ng-template *ngTemplateOutlet="searchForm"></ng-template>
-      }
       <ng-content select="[additionalSearchOptions]"></ng-content>
     </div>
     }
@@ -59,7 +46,8 @@
       <ds-search-results [searchResults]="resultsRD$ | async" [searchConfig]="searchOptions$ | async"
         [configuration]="(currentConfiguration$ | async)" [disableHeader]="!searchEnabled" [linkType]="linkType"
         [context]="(currentContext$ | async)" [selectable]="selectable" [selectionConfig]="selectionConfig"
-        [showCsvExport]="showCsvExport" [showThumbnails]="showThumbnails" (contentChange)="onContentChange($event)"
+        [showCsvExport]="showCsvExport" [showThumbnails]="showThumbnails" [inPlaceSearch]="inPlaceSearch"
+        (contentChange)="onContentChange($event)"
         (deselectObject)="deselectObject.emit($event)" (selectObject)="selectObject.emit($event)"></ds-search-results>
       }
     </div>
@@ -87,13 +75,4 @@
     (changeViewMode)="changeViewMode()">
   </ds-search-sidebar>
   }
-</ng-template>
-
-<ng-template #searchForm>
-  <div class="row mb-3 mb-md-1">
-    <div class="labels col-12">
-      <ds-search-labels [inPlaceSearch]="inPlaceSearch">
-      </ds-search-labels>
-    </div>
-  </div>
 </ng-template>
