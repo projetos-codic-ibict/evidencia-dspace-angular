@@ -21,24 +21,14 @@
     @for (page of (facetValues$ | async); track page) {
       <div [@facetLoad]="animationState">
         @for (value of page.page; track trackUpdate($index, value)) {
-          <ds-search-facet-option 
-            [filterConfig]="filterConfig" 
-            [filterValue]="value" 
-            [inPlaceSearch]="inPlaceSearch"
-            [isSelected]="isMultiValueSelected(value)"
-            (toggle)="toggleMultiValue($event)">
+          <ds-search-facet-option
+            [filterConfig]="filterConfig"
+            [filterValue]="value"
+            [inPlaceSearch]="inPlaceSearch">
           </ds-search-facet-option>
         }
       </div>
     }
-
-    <div class="mt-3 mb-2 px-1">
-      <button class="btn btn-primary btn-sm w-100" 
-              [disabled]="(selectedCount$ | async) === 0"
-              (click)="applyMultiSelect()">
-        Aplicar Filtros ({{ selectedCount$ | async }})
-      </button>
-    </div>
 
     <div class="clearfix toggle-more-filters">
       @if ((isLastPage$ | async) !== true) {
