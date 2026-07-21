@@ -313,6 +313,19 @@ aside {
   }
 }
 
+.rdapp-item-reference__bibtex {
+  margin: 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  color: #374151;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 // ─── Seção Métricas ───────────────────────────────────────────────────────────
 
 .rdapp-item-metrics {

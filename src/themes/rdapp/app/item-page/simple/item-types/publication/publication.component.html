@@ -96,7 +96,13 @@
         </div>
       </div>
       <div class="rdapp-item-reference__box">
-        <p>@if (bibliographiesLoading) { – } @else { {{ selectedReference }} }</p>
+        @if (bibliographiesLoading) {
+          <p>–</p>
+        } @else if (isBibtexSelected) {
+          <pre class="rdapp-item-reference__bibtex">{{ selectedReference }}</pre>
+        } @else {
+          <p>{{ selectedReference }}</p>
+        }
       </div>
     </section>
 
