@@ -67,79 +67,12 @@ export class PublicationComponent extends BasePublicationComponent implements On
   readonly bibtexStyleKey = 'bibtex';
   selectedStyleKey = this.abntStyleKey;
 
-  // Nome do repositório — fixo, é o mesmo para todo item, não vem de metadado.
-  private readonly repositoryName = 'Repositório Digital de Avaliação de Políticas Públicas - RDAPP';
-
   get selectedReference(): string {
-    if (this.selectedStyleKey === this.bibtexStyleKey) {
-      return this.buildBibtex();
-    }
     return this.bibliographies.find(b => b.style === this.selectedStyleKey)?.value ?? '';
   }
 
   get isBibtexSelected(): boolean {
     return this.selectedStyleKey === this.bibtexStyleKey;
-  }
-
-  /**
-   * Monta o BibTeX manualmente a partir dos metadados do item, em vez de usar a
-   * saída do citeproc-java (que sai numa linha só e não tem howpublished/organization/
-   * address — esses não são variáveis CSL, são exclusivos do BibTeX).
-   */
-  private buildBibtex(): string {
-    const item = this.object as Item;
-    if (!item) {
-      return '';
-    }
-
-    const authors = item.allMetadataValues('dc.contributor.author') ?? [];
-    const title = item.firstMetadataValue('dc.title') ?? '';
-    const issued = item.firstMetadataValue('dc.date.issued') ?? '';
-    const year = issued.slice(0, 4);
-    const organization = item.firstMetadataValue('local.instituicao')
-      ?? item.firstMetadataValue('dc.publisher')
-      ?? '';
-    const cidade = item.firstMetadataValue('local.cidade') ?? '';
-    const uf = item.firstMetadataValue('local.uf') ?? '';
-    const address = cidade && uf ? `${cidade}/${uf}` : (cidade || uf);
-
-    const fields: Array<[string, string]> = [];
-    if (authors.length > 0) {
-      fields.push(['author', authors.join(' and ')]);
-    }
-    if (title) {
-      fields.push(['title', title]);
-    }
-    fields.push(['howpublished', this.repositoryName]);
-    if (organization) {
-      fields.push(['organization', organization]);
-    }
-    if (address) {
-      fields.push(['address', address]);
-    }
-    if (year) {
-      fields.push(['year', year]);
-    }
-
-    const key = this.buildBibtexKey(authors[0], year);
-    const labelWidth = fields.reduce((max, [name]) => Math.max(max, name.length), 0);
-    const lines = fields.map(([name, value], index) => {
-      const separator = index < fields.length - 1 ? ',' : '';
-      return `  ${name.padEnd(labelWidth)} = {${value}}${separator}`;
-    });
-
-    return [`@misc{${key},`, ...lines, '}'].join('\n');
-  }
-
-  private buildBibtexKey(firstAuthor: string | undefined, year: string): string {
-    const namePart = firstAuthor?.includes(',')
-      ? firstAuthor.split(',')[0]
-      : (firstAuthor?.trim().split(/\s+/).pop() ?? '');
-    const slug = (namePart ?? '')
-      .normalize('NFD')
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, '');
-    return `${slug}${year}`;
   }
 
   selectStyle(key: string): void {
