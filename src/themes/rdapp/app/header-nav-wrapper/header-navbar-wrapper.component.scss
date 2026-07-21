@@ -6,7 +6,7 @@
   display: block;
   position: sticky;
   top: 0;
-  z-index: 1300;
+  z-index: var(--ds-nav-z-index);
   background: #fff;
   box-shadow: 0 1px 0 rgba(17, 24, 39, 0.06);
 
@@ -87,7 +87,7 @@
         .dropdown-menu {
           border-radius: 0.95rem;
           border: 1px solid #eaedf3;
-          z-index: 1310;
+          z-index: calc(var(--ds-nav-z-index) + 10);
           box-shadow: 0 15px 34px -18px rgba(0, 0, 0, 0.28) !important;
 
           .ds-menu-item {

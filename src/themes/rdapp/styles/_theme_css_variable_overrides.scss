@@ -53,8 +53,12 @@
   --rdapp-home-hero-card-border-color: #ddd;
   --rdapp-home-hero-stats-label-color: #006864;
 
-  /* Fix admin sidebar behind sticky header */
-  --ds-sidebar-z-index: 1350;
+  /* Header sticky fica na mesma faixa do $zindex-fixed do Bootstrap (1030) —
+  abaixo de dropdown/modal/popover/tooltip/toast, pra não cobrir nada disso. */
+  --ds-nav-z-index: 1030;
+
+  /* Sidebar admin fixa precisa ficar acima do header sticky, senão some atrás dele. */
+  --ds-sidebar-z-index: calc(var(--ds-nav-z-index) + 5);
 }
 
 .btn-primary {
