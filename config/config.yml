@@ -241,6 +241,9 @@ fallbackLanguage: en
 # Languages. DSpace Angular holds a message catalog for each of the following languages.
 # When set to active, users will be able to switch to the use of this language in the user interface.
 languages:
+  - code: pt-BR
+    label: Português do Brasil
+    active: true
   - code: en
     label: English
     active: true
@@ -307,9 +310,6 @@ languages:
   - code: pt-PT
     label: Português
     active: false
-  - code: pt-BR
-    label: Português do Brasil
-    active: true
   - code: ru
     label: Русский
     active: false
