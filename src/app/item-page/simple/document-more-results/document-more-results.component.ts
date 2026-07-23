@@ -252,11 +252,12 @@ export class DocumentMoreResultsComponent implements OnChanges {
       getFirstSucceededRemoteListPayload(),
       map((bitstreams: Bitstream[]) => {
         const selected = this.selectPdfBitstream(bitstreams ?? [], normalizedPreferredDocName);
+        
         if (!hasValue(selected)) {
           return '';
         }
 
-        return getBitstreamDownloadRoute(selected);
+        return selected._links.content.href;
       }),
       catchError(() => of('')),
     );
