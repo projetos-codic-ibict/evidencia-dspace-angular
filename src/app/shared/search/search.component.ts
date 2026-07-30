@@ -24,6 +24,7 @@ import {
 } from '@dspace/config/app-config.interface';
 import { SearchManager } from '@dspace/core/browse/search-manager';
 import { SortOptions } from '@dspace/core/cache/models/sort-options.model';
+import { ConfigurationDataService } from '@dspace/core/data/configuration-data.service';
 import { PaginatedList } from '@dspace/core/data/paginated-list.model';
 import { RemoteData } from '@dspace/core/data/remote-data';
 import {
@@ -33,6 +34,7 @@ import {
 } from '@dspace/core/router/core-routing-paths';
 import { currentPath } from '@dspace/core/router/utils/route.utils';
 import { RouteService } from '@dspace/core/services/route.service';
+import { ConfigurationProperty } from '@dspace/core/shared/configuration-property.model';
 import { Context } from '@dspace/core/shared/context.model';
 import { DSpaceObject } from '@dspace/core/shared/dspace-object.model';
 import { followLink } from '@dspace/core/shared/follow-link-config.model';
@@ -259,6 +261,11 @@ export class SearchComponent implements OnDestroy, OnInit {
    */
   currentScope$: Observable<string>;
 
+  /**
+   * True when semantic search is enabled in backend configuration.
+   */
+  semanticSearchEnabled$: Observable<boolean>;
+
 
   /**
    * The current sort options used
@@ -348,6 +355,7 @@ export class SearchComponent implements OnDestroy, OnInit {
   @Output() selectObject: EventEmitter<ListableObject> = new EventEmitter<ListableObject>();
 
   constructor(protected service: SearchService,
+              protected configurationDataService: ConfigurationDataService,
               protected sidebarService: SidebarService,
               protected windowService: HostWindowService,
               @Inject(SEARCH_CONFIG_SERVICE) public searchConfigService: SearchConfigurationService,
@@ -368,6 +376,11 @@ export class SearchComponent implements OnDestroy, OnInit {
    * If something changes, update the list of scopes for the dropdown
    */
   ngOnInit(): void {
+    this.semanticSearchEnabled$ = this.configurationDataService.findByPropertyName('semantic.search.enabled').pipe(
+      getFirstCompletedRemoteData(),
+      map((response: RemoteData<ConfigurationProperty>) => this.isPropertyEnabled(response)),
+    );
+
     if (!this.renderOnServerSide && !environment.ssr.enableSearchComponent && isPlatformServer(this.platformId)) {
       this.subs.push(this.getSearchOptions().pipe(distinctUntilChanged()).subscribe((options) => {
         this.searchOptions$.next(options);
@@ -451,6 +464,10 @@ export class SearchComponent implements OnDestroy, OnInit {
     }));
 
     this.subscribeToRoutingEvents();
+  }
+
+  private isPropertyEnabled(property: RemoteData<ConfigurationProperty>): boolean {
+    return property.hasSucceeded && property.payload.values.length > 0 && property.payload.values[0] === 'true';
   }
 
   /**

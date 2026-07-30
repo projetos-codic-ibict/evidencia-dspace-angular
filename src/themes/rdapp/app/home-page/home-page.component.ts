@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -21,6 +21,7 @@ import { ThemedSearchFormComponent } from '../../../../app/shared/search-form/th
     ThemedHomeNewsComponent,
     ThemedSearchFormComponent,
     TranslateModule,
+    AsyncPipe
   ],
 })
 export class HomePageComponent extends BaseHomePageComponent {}

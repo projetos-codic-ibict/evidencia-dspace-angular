@@ -36,6 +36,13 @@ export class SearchResult<T extends DSpaceObject> extends ListableObject impleme
   hitHighlights: MetadataMap;
 
   /**
+   * Relevance score returned by search backend (when available).
+   */
+  @excludeFromEquals
+  @autoserialize
+  score?: number;
+
+  /**
    * The {@link HALLink}s for this SearchResult
    */
   @deserialize

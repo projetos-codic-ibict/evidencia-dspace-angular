@@ -188,6 +188,13 @@ export class SearchConfigurationService implements OnDestroy {
   }
 
   /**
+   * @returns {Observable<string>} Emits the current search type
+   */
+  getCurrentSearchType() {
+    return this.routeService.getQueryParameterValue('searchType');
+  }
+
+  /**
    * @returns {Observable<number>} Emits the current DSpaceObject type as a number
    */
   getCurrentDSOType(): Observable<DSpaceObjectType> {
@@ -360,6 +367,7 @@ export class SearchConfigurationService implements OnDestroy {
       this.getConfigurationPart(defaults.configuration),
       this.getScopePart(defaults.scope),
       this.getQueryPart(defaults.query),
+      this.getSearchTypePart(),
       this.getDSOTypePart(),
       this.getFiltersPart(),
       this.getFixedFilterPart(),
@@ -384,6 +392,7 @@ export class SearchConfigurationService implements OnDestroy {
       this.getSortPart(paginationId, defaults.sort),
       this.getScopePart(defaults.scope),
       this.getQueryPart(defaults.query),
+      this.getSearchTypePart(),
       this.getDSOTypePart(),
       this.getFiltersPart(),
       this.getFixedFilterPart(),
@@ -432,6 +441,15 @@ export class SearchConfigurationService implements OnDestroy {
   private getQueryPart(defaultQuery: string): Observable<any> {
     return this.getCurrentQuery(defaultQuery).pipe(map((query) => {
       return { query };
+    }));
+  }
+
+  /**
+   * @returns {Observable<string>} Emits the current search type as a partial SearchOptions object
+   */
+  private getSearchTypePart(): Observable<any> {
+    return this.getCurrentSearchType().pipe(map((searchType) => {
+      return { searchType };
     }));
   }
 

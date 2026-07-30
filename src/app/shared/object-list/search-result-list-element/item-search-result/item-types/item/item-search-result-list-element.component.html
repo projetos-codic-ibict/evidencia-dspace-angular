@@ -22,6 +22,9 @@
         <ds-badges [object]="dso" [context]="context" [showAccessStatus]="true"></ds-badges>
       }
     </div>
+    @if (object?.score !== undefined && object?.score !== null) {
+      <div class="text-muted small mb-1">Score: {{ object.score.toFixed(2) }}</div>
+    }
 
       @if (object !== undefined && object !== null) {
         <ds-truncatable [id]="dso.id">
