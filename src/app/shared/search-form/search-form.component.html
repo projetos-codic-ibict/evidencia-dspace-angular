@@ -12,6 +12,20 @@
       <input type="text" [(ngModel)]="query" name="query" class="form-control"
         [attr.aria-label]="searchPlaceholder" [attr.data-test]="'search-box' | dsBrowserOnly"
         [placeholder]="searchPlaceholder" tabindex="0">
+      <select class="form-select select-search-type" [(ngModel)]="searchType" name="searchType"
+        aria-label="Search type" [attr.data-test]="'search-type-select' | dsBrowserOnly">
+        <option value="lexical" [attr.title]="'search.form.search-type.lexical.hint' | translate">
+          {{ 'search.form.search-type.lexical' | translate }}
+        </option>
+        <option value="semantic" [disabled]="!semanticSearchEnabled"
+          [attr.title]="'search.form.search-type.semantic.hint' | translate">
+          {{ 'search.form.search-type.semantic' | translate }} (beta)
+        </option>
+        <option value="hybrid" [disabled]="!semanticSearchEnabled"
+          [attr.title]="'search.form.search-type.hybrid.hint' | translate">
+          {{ 'search.form.search-type.hybrid' | translate }} (beta)
+        </option>
+      </select>
       <button type="submit" class="search-button btn btn-{{brandColor}}" [attr.data-test]="'search-button' | dsBrowserOnly" role="button" tabindex="0"><i class="fas fa-search"></i> {{ ('search.form.search' | translate) }}</button>
     </div>
   </div>

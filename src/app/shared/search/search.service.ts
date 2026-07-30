@@ -167,7 +167,9 @@ export class SearchService {
    * @returns {Observable<RemoteData<SearchObjects<T>>>} Emits a paginated list with all search results found
    */
   search<T extends DSpaceObject>(searchOptions?: PaginatedSearchOptions, responseMsToLive?: number, useCachedVersionIfAvailable = true, reRequestOnStale = true, ...linksToFollow: FollowLinkConfig<T>[]): Observable<RemoteData<SearchObjects<T>>> {
-    const href$ = this.getEndpoint(searchOptions);
+    const href$ = this.getEndpoint(searchOptions).pipe(
+      map((href: string) => this.addSearchTypeParam(href, searchOptions)),
+    );
 
     let startTime: number;
     href$.pipe(
@@ -208,6 +210,29 @@ export class SearchService {
       // cached completed object
       skipWhile((rd: RemoteData<SearchObjects<T>>) => rd.isStale || (!useCachedVersionIfAvailable && rd.lastUpdated < startTime)),
     );
+  }
+
+  /**
+   * Ensures searchType is part of the request URL so cache entries are unique per query + search type.
+   */
+  private addSearchTypeParam(href: string, searchOptions?: PaginatedSearchOptions): string {
+    const requestedSearchType = searchOptions?.searchType;
+    const searchType = requestedSearchType === 'semantic' || requestedSearchType === 'hybrid' ?
+      requestedSearchType : 'lexical';
+
+    try {
+      const parsedUrl = new URL(href);
+      parsedUrl.searchParams.set('searchType', searchType);
+      return parsedUrl.toString();
+    } catch (e) {
+      const [base, query = ''] = href.split('?');
+      const params = query
+        .split('&')
+        .filter((part: string) => isNotEmpty(part) && !part.startsWith('searchType='));
+      params.push(`searchType=${encodeURIComponent(searchType)}`);
+
+      return isNotEmpty(params) ? `${base}?${params.join('&')}` : base;
+    }
   }
 
   /**

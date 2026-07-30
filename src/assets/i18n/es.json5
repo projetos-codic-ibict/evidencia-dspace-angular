@@ -7849,4 +7849,22 @@
   "rdapp.footer.org-email": "gabin.sma@planejamento.gov.br",
 
   "rdapp.footer.org-phone": "+55 (61) 2020-4399",
+
+  // "search.form.search-type.lexical": "Lexical",
+  "search.form.search-type.lexical": "Léxica",
+
+  // "search.form.search-type.semantic": "Semantic",
+ "search.form.search-type.semantic": "Semántica",
+
+  // "search.form.search-type.hybrid": "Hybrid",
+ "search.form.search-type.hybrid": "Híbrida",
+
+  // "search.form.search-type.lexical.hint": "Keyword search with operators",
+  "search.form.search-type.lexical.hint": "Búsqueda por palabras clave con operadores",
+
+  // "search.form.search-type.semantic.hint": "AI-powered meaning search",
+  "search.form.search-type.semantic.hint": "Búsqueda semántica impulsada por IA",
+
+  // "search.form.search-type.hybrid.hint": "Keyword and meaning search combined with RRF",
+  "search.form.search-type.hybrid.hint": "Búsqueda por palabra clave y significado combinada con RRF",
 }
