@@ -25,6 +25,8 @@ export class ThemedSearchFormComponent extends ThemedComponent<SearchFormCompone
 
   @Input() semanticSearchEnabled: boolean;
 
+  @Input() hybridSearchEnabled: boolean;
+
   @Input() inPlaceSearch: boolean;
 
   @Input() scope: string;
@@ -48,6 +50,7 @@ export class ThemedSearchFormComponent extends ThemedComponent<SearchFormCompone
     'semanticSearch',
     'selectedSearchType',
     'semanticSearchEnabled',
+    'hybridSearchEnabled',
     'inPlaceSearch',
     'scope',
     'hideScopeInUrl',

@@ -62,6 +62,7 @@ export class HomePageComponent implements OnInit {
   showDiscoverFilters: boolean;
   homeHeaderMetadataValue$: Observable<string>;
   semanticSearchEnabled$: Observable<boolean>;
+  hybridSearchEnabled$: Observable<boolean>;
 
   constructor(
     @Inject(APP_CONFIG) protected appConfig: AppConfig,
@@ -87,6 +88,11 @@ export class HomePageComponent implements OnInit {
     );
 
     this.semanticSearchEnabled$ = this.configurationDataService.findByPropertyName('semantic.search.enabled').pipe(
+      getFirstCompletedRemoteData(),
+      map((response: RemoteData<ConfigurationProperty>) => this.isPropertyEnabled(response)),
+    );
+
+    this.hybridSearchEnabled$ = this.configurationDataService.findByPropertyName('hybrid.search.enabled').pipe(
       getFirstCompletedRemoteData(),
       map((response: RemoteData<ConfigurationProperty>) => this.isPropertyEnabled(response)),
     );

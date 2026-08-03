@@ -74,6 +74,11 @@ export class SearchFormComponent implements OnChanges {
   @Input() semanticSearchEnabled = false;
 
   /**
+   * True when hybrid search option is enabled from backend configuration
+   */
+  @Input() hybridSearchEnabled = false;
+
+  /**
    * True when the search component should show results on the current page
    */
   @Input() inPlaceSearch: boolean;
@@ -224,8 +229,12 @@ export class SearchFormComponent implements OnChanges {
   }
 
   private getAllowedSearchType(searchType: string): 'lexical' | 'semantic' | 'hybrid' {
-    if (this.semanticSearchEnabled && ['semantic', 'hybrid'].includes(searchType)) {
-      return searchType as 'semantic' | 'hybrid';
+    if (this.semanticSearchEnabled && searchType === 'semantic') {
+      return 'semantic';
+    }
+
+    if (this.hybridSearchEnabled && searchType === 'hybrid') {
+      return 'hybrid';
     }
 
     if (this.semanticSearchEnabled && this.semanticSearch) {

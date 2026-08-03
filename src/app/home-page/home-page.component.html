@@ -27,6 +27,7 @@
 <ng-template #homeContent>
   <ds-search-form [inPlaceSearch]="false"
     [semanticSearchEnabled]="(semanticSearchEnabled$ | async) === true"
+    [hybridSearchEnabled]="(hybridSearchEnabled$ | async) === true"
     [searchPlaceholder]="'home.search-form.placeholder' | translate">
   </ds-search-form>
   <ds-top-level-community-list></ds-top-level-community-list>

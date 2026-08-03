@@ -42,20 +42,18 @@
         >
           {{ "search.form.search-type.lexical" | translate }}
         </option>
-        <option
-          value="semantic"
-          [disabled]="!semanticSearchEnabled"
-          [attr.title]="'search.form.search-type.semantic.hint' | translate"
-        >
-          {{ "search.form.search-type.semantic" | translate }} (beta)
-        </option>
-        <option
-          value="hybrid"
-          [disabled]="!semanticSearchEnabled"
-          [attr.title]="'search.form.search-type.hybrid.hint' | translate"
-        >
-          {{ "search.form.search-type.hybrid" | translate }} (beta)
-        </option>
+        @if (semanticSearchEnabled) {
+          <option value="semantic"
+            [attr.title]="'search.form.search-type.semantic.hint' | translate">
+            {{ 'search.form.search-type.semantic' | translate }} (beta)
+          </option>
+        }
+        @if (hybridSearchEnabled) {
+          <option value="hybrid"
+            [attr.title]="'search.form.search-type.hybrid.hint' | translate">
+            {{ 'search.form.search-type.hybrid' | translate }} (beta)
+          </option>
+        }
       </select>
       <button
         type="submit"

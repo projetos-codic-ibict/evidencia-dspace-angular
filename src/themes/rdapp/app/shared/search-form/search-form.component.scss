@@ -2,8 +2,12 @@
   display: block;
 }
 
-.select-search-type {
+.input-group > .select-search-type {
+  border-radius: var(--rdapp-border-radius-2rem) !important;
+  margin-left: 0 !important;
+  margin-right: 0.75rem;
   max-width: fit-content;
+  padding: 0.9rem 6rem 0.9rem 1rem; 
 }
 
 .input-group {

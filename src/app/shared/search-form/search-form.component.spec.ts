@@ -92,6 +92,33 @@ describe('SearchFormComponent', () => {
     expect(queryInput.value).toBe(testString);
   }));
 
+  it('should show hybrid search independently from semantic search', fakeAsync(() => {
+    comp.semanticSearchEnabled = false;
+    comp.hybridSearchEnabled = true;
+
+    fixture.detectChanges();
+    tick();
+
+    expect(de.query(By.css('option[value="semantic"]'))).toBeFalsy();
+    expect(de.query(By.css('option[value="hybrid"]'))).toBeTruthy();
+  }));
+
+  it('should select hybrid search only when hybrid search is enabled', fakeAsync(() => {
+    comp.selectedSearchType = 'hybrid';
+    comp.semanticSearchEnabled = true;
+    comp.hybridSearchEnabled = false;
+
+    fixture.detectChanges();
+    tick();
+
+    expect(comp.searchType).toBe('lexical');
+
+    comp.hybridSearchEnabled = true;
+    comp.ngOnChanges();
+
+    expect(comp.searchType).toBe('hybrid');
+  }));
+
   it('should select correct scope option in scope select', fakeAsync(() => {
 
     fixture.detectChanges();
@@ -115,7 +142,7 @@ describe('SearchFormComponent', () => {
       comp.updateSearch(searchQuery);
 
       expect(router.navigate).toHaveBeenCalledWith(comp.getSearchLinkParts(), {
-        queryParams: { ...searchQuery, ...firstPage },
+        queryParams: { ...searchQuery, ...firstPage, searchType: 'lexical' },
         queryParamsHandling: 'merge',
       });
     });
@@ -128,7 +155,7 @@ describe('SearchFormComponent', () => {
       comp.updateSearch(searchQuery);
 
       expect(router.navigate).toHaveBeenCalledWith(comp.getSearchLinkParts(), {
-        queryParams: { ...searchQuery, ...firstPage },
+        queryParams: { ...searchQuery, ...firstPage, searchType: 'lexical' },
         queryParamsHandling: 'merge',
       });
     });
@@ -141,7 +168,7 @@ describe('SearchFormComponent', () => {
       comp.updateSearch(searchQuery);
 
       expect(router.navigate).toHaveBeenCalledWith(comp.getSearchLinkParts(), {
-        queryParams: { ...searchQuery, ...firstPage },
+        queryParams: { ...searchQuery, ...firstPage, searchType: 'lexical' },
         queryParamsHandling: 'merge',
       });
     });

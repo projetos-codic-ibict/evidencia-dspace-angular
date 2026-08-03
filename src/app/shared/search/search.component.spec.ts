@@ -21,6 +21,7 @@ import {
   SortOptions,
 } from '@dspace/core/cache/models/sort-options.model';
 import { CommunityDataService } from '@dspace/core/data/community-data.service';
+import { ConfigurationDataService } from '@dspace/core/data/configuration-data.service';
 import { RemoteData } from '@dspace/core/data/remote-data';
 import { APP_DATA_SERVICES_MAP } from '@dspace/core/data-services-map-type';
 import { PaginationComponentOptions } from '@dspace/core/pagination/pagination-component-options.model';
@@ -29,6 +30,7 @@ import {
   getCommunityPageRoute,
 } from '@dspace/core/router/utils/dso-route.utils';
 import { RouteService } from '@dspace/core/services/route.service';
+import { ConfigurationProperty } from '@dspace/core/shared/configuration-property.model';
 import { DSpaceObject } from '@dspace/core/shared/dspace-object.model';
 import { Item } from '@dspace/core/shared/item.model';
 import { FilterType } from '@dspace/core/shared/search/models/filter-type.model';
@@ -194,6 +196,7 @@ const routeServiceStub = {
 };
 
 let searchConfigurationServiceStub;
+let configurationDataServiceStub: jasmine.SpyObj<ConfigurationDataService>;
 
 export function configureSearchComponentTestingModule(compType, additionalDeclarations: any[] = []) {
   searchConfigurationServiceStub = jasmine.createSpyObj('SearchConfigurationService', {
@@ -216,6 +219,11 @@ export function configureSearchComponentTestingModule(compType, additionalDeclar
   });
   searchConfigurationServiceStub.paginatedSearchOptions = new BehaviorSubject(new PaginatedSearchOptions({ pagination: { id: 'default' } as any }));
 
+  configurationDataServiceStub = jasmine.createSpyObj('ConfigurationDataService', ['findByPropertyName']);
+  configurationDataServiceStub.findByPropertyName.and.returnValue(createSuccessfulRemoteDataObject$(Object.assign(new ConfigurationProperty(), {
+    values: ['true'],
+  })));
+
   TestBed.configureTestingModule({
     imports: [TranslateModule.forRoot(), RouterTestingModule.withRoutes([]), NoopAnimationsModule, NgbCollapseModule, compType, ...additionalDeclarations],
     providers: [
@@ -225,6 +233,7 @@ export function configureSearchComponentTestingModule(compType, additionalDeclar
         provide: CommunityDataService,
         useValue: jasmine.createSpyObj('communityService', ['findById', 'findAll']),
       },
+      { provide: ConfigurationDataService, useValue: configurationDataServiceStub },
       { provide: ActivatedRoute, useValue: activatedRouteStub },
       { provide: RouteService, useValue: routeServiceStub },
       {
@@ -319,6 +328,14 @@ describe('SearchComponent', () => {
       b: expectedSearchOptions,
     }));
     expect((comp as any).retrieveSearchResults).toHaveBeenCalledWith(expectedSearchOptions);
+  }));
+
+  it('should retrieve semantic and hybrid search enablement properties', fakeAsync(() => {
+    fixture.detectChanges();
+    tick(100);
+
+    expect(configurationDataServiceStub.findByPropertyName).toHaveBeenCalledWith('semantic.search.enabled');
+    expect(configurationDataServiceStub.findByPropertyName).toHaveBeenCalledWith('hybrid.search.enabled');
   }));
 
   it('should retrieve SearchResults', fakeAsync(() => {

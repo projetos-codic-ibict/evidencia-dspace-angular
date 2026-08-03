@@ -266,6 +266,10 @@ export class SearchComponent implements OnDestroy, OnInit {
    */
   semanticSearchEnabled$: Observable<boolean>;
 
+  /**
+   * True when hybrid search is enabled in backend configuration.
+   */
+  hybridSearchEnabled$: Observable<boolean>;
 
   /**
    * The current sort options used
@@ -377,6 +381,10 @@ export class SearchComponent implements OnDestroy, OnInit {
    */
   ngOnInit(): void {
     this.semanticSearchEnabled$ = this.configurationDataService.findByPropertyName('semantic.search.enabled').pipe(
+      getFirstCompletedRemoteData(),
+      map((response: RemoteData<ConfigurationProperty>) => this.isPropertyEnabled(response)),
+    );
+    this.hybridSearchEnabled$ = this.configurationDataService.findByPropertyName('hybrid.search.enabled').pipe(
       getFirstCompletedRemoteData(),
       map((response: RemoteData<ConfigurationProperty>) => this.isPropertyEnabled(response)),
     );
