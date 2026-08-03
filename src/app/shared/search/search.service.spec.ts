@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { RemoteDataBuildService } from '@dspace/core/cache/builders/remote-data-build.service';
@@ -28,7 +29,6 @@ import { SearchService } from './search.service';
 import { SearchConfigurationService } from './search-configuration.service';
 import anything = jasmine.anything;
 import SpyObj = jasmine.SpyObj;
-import { Component } from '@angular/core';
 
 @Component({
   template: '',
@@ -244,7 +244,8 @@ describe('SearchService', () => {
 
       service.search(new PaginatedSearchOptions({})).subscribe();
 
-      expect(remoteDataBuildService.buildFromHref).toHaveBeenCalledWith(envConfig.rest.baseUrl + '/discover/search/objects');
+      expect(remoteDataBuildService.buildFromHref)
+        .toHaveBeenCalledWith(envConfig.rest.baseUrl + '/discover/search/objects?searchType=lexical');
     });
   });
 

@@ -12,7 +12,11 @@ import {
   APP_CONFIG,
   AppConfig,
 } from '@dspace/config/app-config.interface';
+import { ConfigurationDataService } from '@dspace/core/data/configuration-data.service';
+import { RemoteData } from '@dspace/core/data/remote-data';
 import { LocaleService } from '@dspace/core/locale/locale.service';
+import { ConfigurationProperty } from '@dspace/core/shared/configuration-property.model';
+import { getFirstCompletedRemoteData } from '@dspace/core/shared/operators';
 import { Site } from '@dspace/core/shared/site.model';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -57,10 +61,12 @@ export class HomePageComponent implements OnInit {
   recentSubmissionspageSize: number;
   showDiscoverFilters: boolean;
   homeHeaderMetadataValue$: Observable<string>;
+  semanticSearchEnabled$: Observable<boolean>;
 
   constructor(
     @Inject(APP_CONFIG) protected appConfig: AppConfig,
     protected route: ActivatedRoute,
+    protected configurationDataService: ConfigurationDataService,
     private locale: LocaleService,
   ) {
     this.recentSubmissionspageSize = this.appConfig.homePage.recentSubmissions.pageSize;
@@ -79,6 +85,15 @@ export class HomePageComponent implements OnInit {
       take(1),
       map(({ site, language }) => site?.firstMetadataValue('dspace.cms.home-header', { language })),
     );
+
+    this.semanticSearchEnabled$ = this.configurationDataService.findByPropertyName('semantic.search.enabled').pipe(
+      getFirstCompletedRemoteData(),
+      map((response: RemoteData<ConfigurationProperty>) => this.isPropertyEnabled(response)),
+    );
+  }
+
+  private isPropertyEnabled(property: RemoteData<ConfigurationProperty>): boolean {
+    return property.hasSucceeded && property.payload.values.length > 0 && property.payload.values[0] === 'true';
   }
 
 }

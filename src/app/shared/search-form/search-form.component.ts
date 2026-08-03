@@ -54,6 +54,26 @@ export class SearchFormComponent implements OnChanges {
   @Input() query: string;
 
   /**
+   * True when semantic search is enabled
+   */
+  @Input() semanticSearch = false;
+
+  /**
+   * Search mode selected in the current search URL.
+   */
+  @Input() selectedSearchType = 'lexical';
+
+  /**
+   * Selected search mode in the form.
+   */
+  searchType: 'lexical' | 'semantic' | 'hybrid' = 'lexical';
+
+  /**
+   * True when semantic search option is enabled from backend configuration
+   */
+  @Input() semanticSearchEnabled = false;
+
+  /**
    * True when the search component should show results on the current page
    */
   @Input() inPlaceSearch: boolean;
@@ -114,6 +134,8 @@ export class SearchFormComponent implements OnChanges {
    * Retrieve the scope object from the URL so we can show its name
    */
   ngOnChanges(): void {
+    this.searchType = this.getAllowedSearchType(this.selectedSearchType);
+
     if (isNotEmpty(this.scope)) {
       this.dsoService.findById(this.scope).pipe(getFirstSucceededRemoteDataPayload())
         .subscribe((scope: DSpaceObject) => this.selectedScope.next(scope));
@@ -148,11 +170,17 @@ export class SearchFormComponent implements OnChanges {
   updateSearch(data: any) {
     const goToFirstPage = { 'spc.page': 1 };
 
+    const selectedSearchType = data.searchType || (data.semanticSearch ? 'semantic' : 'lexical');
+    const searchType = this.getAllowedSearchType(selectedSearchType);
+    delete data.searchType;
+    delete data.semanticSearch;
+
     const queryParams = Object.assign(
       {
         ...goToFirstPage,
       },
       data,
+      { searchType },
     );
     if (hasValue(data.scope) && this.hideScopeInUrl) {
       delete queryParams.scope;
@@ -193,5 +221,17 @@ export class SearchFormComponent implements OnChanges {
       this.selectedScope.next(scope);
       this.onScopeChange(scope);
     });
+  }
+
+  private getAllowedSearchType(searchType: string): 'lexical' | 'semantic' | 'hybrid' {
+    if (this.semanticSearchEnabled && ['semantic', 'hybrid'].includes(searchType)) {
+      return searchType as 'semantic' | 'hybrid';
+    }
+
+    if (this.semanticSearchEnabled && this.semanticSearch) {
+      return 'semantic';
+    }
+
+    return 'lexical';
   }
 }
