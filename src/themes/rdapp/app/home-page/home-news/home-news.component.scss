@@ -42,7 +42,7 @@
 }
 
 .rdapp-home-news-title-tone-light {
-  color: #2f56be;
+  color: var(--rdapp-color-blue-light);
 }
 
 .rdapp-home-news-description {
@@ -57,14 +57,15 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 1.5rem;
-  border-radius: 2rem;
+  border-radius: var(--rdapp-border-radius-2rem);
   border: 2px solid var(--rdapp-bg-color-primary);
   color: var(--rdapp-bg-color-primary);
   font-weight: 700;
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     background: var(--rdapp-bg-color-primary);
     color: #fff;
     text-decoration: none;
@@ -79,9 +80,9 @@
 }
 
 .rdapp-home-news-visual-card {
-  border-radius: 2rem;
+  border-radius: var(--rdapp-border-radius-2rem);
   border: 1px solid var(--rdapp-home-hero-card-border-color);
-  box-shadow: 0 20px 45px -20px rgba(15, 73, 189, 0.28);
+  box-shadow: 0 20px 45px -20px rgba(var(--rdapp-color-blue-rgb), 0.28);
   padding: 1.5rem;
   transform: rotate(2deg);
   transform-origin: center center;

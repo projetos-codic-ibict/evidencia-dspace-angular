@@ -8,8 +8,8 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background-color: #f0f4f8;
-  color: #0b368c;
+  background-color: var(--rdapp-badge-color-bg);
+  color: var(--rdapp-badge-color-text);
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 0.65rem;

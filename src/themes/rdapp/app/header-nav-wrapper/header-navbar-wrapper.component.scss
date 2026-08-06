@@ -68,13 +68,13 @@
 
         .ds-menu-item,
         .ds-menu-toggler-wrapper {
-          color: #28408b !important;
+          color: var(--rdapp-bg-color-primary);
           border-bottom: 2px solid transparent;
 
           &:hover,
           &:focus {
-            color: #28408b !important;
-            border-bottom-color: #28408b;
+            color: var(--rdapp-bg-color-primary);
+            border-bottom-color: var(--rdapp-bg-color-primary);
           }
         }
 
@@ -88,7 +88,7 @@
           border-radius: 0.95rem;
           border: 1px solid #eaedf3;
           z-index: calc(var(--ds-nav-z-index) + 10);
-          box-shadow: 0 15px 34px -18px rgba(0, 0, 0, 0.28) !important;
+          box-shadow: 0 15px 34px -18px rgba(0, 0, 0, 0.28);
 
           .ds-menu-item {
             // define here the style for second-level navbar menu items
@@ -98,7 +98,7 @@
             letter-spacing: normal;
             border-bottom: none;
             padding: 0.5rem 0.9rem;
-            color: #28408b !important;
+            color: var(--rdapp-bg-color-primary);
           }
         }
 
@@ -121,7 +121,7 @@
         }
 
         .ds-menu-item {
-          color: #28408b;
+          color: var(--rdapp-bg-color-primary);
           font-size: 0.85rem;
           font-weight: 800;
           letter-spacing: 0.08em;
@@ -130,7 +130,7 @@
         }
 
         .ds-menu-toggler-wrapper {
-          color: #28408b;
+          color: var(--rdapp-bg-color-primary);
           font-size: 0.85rem;
           font-weight: 800;
           letter-spacing: 0.08em;
@@ -140,7 +140,7 @@
 
         .dropdown-menu {
           border: 0;
-          box-shadow: none !important;
+          box-shadow: none;
           background: #f8f9fc;
           margin-top: 0;
 

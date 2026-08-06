@@ -17,7 +17,6 @@ import { ThemedUserMenuComponent } from '../../../../app/shared/auth-nav-menu/us
  */
 @Component({
   selector: 'ds-themed-navbar',
-  styleUrls: ['./navbar.component.scss'],
   templateUrl: './navbar.component.html',
   animations: [slideMobileNav],
   imports: [

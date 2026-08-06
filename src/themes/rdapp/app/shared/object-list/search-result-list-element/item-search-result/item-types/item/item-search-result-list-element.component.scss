@@ -47,7 +47,8 @@
   line-height: 1.25;
   display: block;
 
-  &:hover { color: var(--rdapp-color-blue); }
+  &:hover,
+  &:focus-visible { color: var(--rdapp-color-blue); }
 }
 
 .item-list-date {
@@ -82,8 +83,8 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background-color: #f0f4f8;
-  color: #0b368c;
+  background-color: var(--rdapp-badge-color-bg);
+  color: var(--rdapp-badge-color-text);
   border-radius: 4px;
   padding: 3px 9px;
   font-size: 0.75rem;
@@ -122,7 +123,8 @@
   user-select: none;
   transition: background-color 0.15s ease;
 
-  &:hover { background-color: #d1d5db; }
+  &:hover,
+  &:focus-visible { background-color: #d1d5db; }
 }
 
 .ods-number {
@@ -143,24 +145,24 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.5rem;
+}
 
-  // Torna o host e o wrapper do componente "transparentes" para o flexbox,
-  // fazendo o trigger ficar inline com o btn-item-page e o panel quebrar
-  // para nova linha com largura total — sem alterar o componente base.
-  ::ng-deep {
-    ds-document-more-results,
-    .doc-more-results {
-      display: contents;
-    }
+// Torna o host e o wrapper do componente "transparentes" para o flexbox,
+// fazendo o trigger ficar inline com o btn-item-page e o panel quebrar
+// para nova linha com largura total — sem alterar o componente base.
+:host ::ng-deep .item-actions-row {
+  ds-document-more-results,
+  .doc-more-results {
+    display: contents;
+  }
 
-    .doc-more-results__trigger {
-      margin-left: auto;
-    }
+  .doc-more-results__trigger {
+    margin-left: auto;
+  }
 
-    .doc-more-results__panel {
-      flex-basis: 100%;
-      margin-top: 0.5rem;
-    }
+  .doc-more-results__panel {
+    flex-basis: 100%;
+    margin-top: 0.5rem;
   }
 }
 
@@ -178,7 +180,8 @@
   text-decoration: none;
   transition: background-color 0.2s ease, color 0.2s ease;
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     background-color: var(--rdapp-bg-color-primary);
     color: #ffffff;
     text-decoration: none;
@@ -232,7 +235,7 @@
 // Breakpoints
 // =============================================================================
 
-@media (max-width: 575px) {
+@include media-breakpoint-down(sm) {
   .row { flex-direction: column; }
 
   .col-3,
@@ -248,7 +251,7 @@
   }
 }
 
-@media (min-width: 576px) {
+@include media-breakpoint-up(sm) {
   :host { padding: 1.5rem; }
 
   .col-3,
@@ -257,7 +260,7 @@
   .item-list-title { font-size: 1.25rem; }
 }
 
-@media (min-width: 992px) {
+@include media-breakpoint-up(lg) {
   :host { padding: 2rem; }
 
   .col-3,

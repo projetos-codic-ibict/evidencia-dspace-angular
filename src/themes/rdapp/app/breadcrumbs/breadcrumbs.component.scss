@@ -16,11 +16,11 @@
   max-width: 12rem;
   overflow: hidden;
 
-  @media (min-width: 576px) {
+  @include media-breakpoint-up(sm) {
     max-width: 20rem;
   }
 
-  @media (min-width: 992px) {
+  @include media-breakpoint-up(lg) {
     max-width: none;
   }
 }
@@ -56,8 +56,9 @@
     text-transform: uppercase;
     text-decoration: none;
 
-    &:hover {
-      color: #00a88f;
+    &:hover,
+    &:focus-visible {
+      color: var(--rdapp-bg-color-accent);
       text-decoration: underline;
     }
   }

@@ -15,6 +15,18 @@
   --rdapp-bg-color-primary: #28408b;
   --rdapp-color-blue: #0f49bd;
 
+  // Triplas RGB das cores acima, pra uso dentro de rgba() com opacidade variável
+  // (CSS custom properties não entram direto dentro de rgba(), precisam da tripla separada).
+  --rdapp-bg-color-primary-rgb: 40, 64, 139;
+  --rdapp-bg-color-accent-rgb: 0, 168, 143;
+  --rdapp-color-blue-rgb: 15, 73, 189;
+
+  --rdapp-color-navy-secondary: #1a2f6e;
+  --rdapp-border-color-muted: #f0f2f7;
+  --rdapp-badge-color-text: #0b368c;
+  --rdapp-badge-color-bg: #f0f4f8;
+  --rdapp-color-blue-light: #2f56be;
+
   --rdapp-border-radius-1rem: 1rem;
   --rdapp-border-radius-2rem: 2rem;
   --rdapp-border-radius-3rem: 3rem;

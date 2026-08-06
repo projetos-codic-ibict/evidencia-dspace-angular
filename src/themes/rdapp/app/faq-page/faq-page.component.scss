@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 
 .faq-hero {
-  background: linear-gradient(135deg, #28408b 0%, #1a1c2e 100%);
+  background: linear-gradient(135deg, var(--rdapp-bg-color-primary) 0%, #1a1c2e 100%);
   position: relative;
   overflow: hidden;
   padding: 5rem 0 5rem;
@@ -16,7 +16,7 @@
   text-align: center;
 
   &__label {
-    color: #00a88f;
+    color: var(--rdapp-bg-color-accent);
     font-size: 0.875rem;
     font-weight: 700;
     letter-spacing: 0.4em;
@@ -64,7 +64,7 @@
 
 .faq-card {
   background: #ffffff;
-  border-radius: 3rem;
+  border-radius: var(--rdapp-border-radius-3rem);
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
   padding: 4rem;
   max-width: 896px;
@@ -72,7 +72,7 @@
   position: relative;
   z-index: 20;
 
-  @media (max-width: 767px) {
+  @include media-breakpoint-down(md) {
     padding: 2rem;
     border-radius: 1.5rem;
     margin-top: -1.5rem;
@@ -90,7 +90,7 @@
 
   &__item {
     border: 1px solid #f3f4f6;
-    border-radius: 1rem;
+    border-radius: var(--rdapp-border-radius-1rem);
     overflow: hidden;
     transition:
       border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -131,7 +131,7 @@
   &__question {
     font-size: 1.125rem;
     font-weight: 700;
-    color: #28408b;
+    color: var(--rdapp-bg-color-primary);
     transition: color 0.3s;
     flex: 1;
   }
@@ -194,13 +194,13 @@
   padding: 2rem;
   background: #f9fafb;
   border: 1px solid #f3f4f6;
-  border-radius: 2rem;
+  border-radius: var(--rdapp-border-radius-2rem);
   text-align: center;
 
   &__title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #28408b;
+    color: var(--rdapp-bg-color-primary);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-bottom: 1rem;
@@ -224,13 +224,14 @@
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    border-radius: 1rem;
+    border-radius: var(--rdapp-border-radius-1rem);
     text-decoration: none;
     transition:
       background 0.2s,
       transform 0.15s;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background: #1e40af;
       color: #ffffff;
       text-decoration: none;

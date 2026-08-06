@@ -23,7 +23,7 @@
   }
 
   &__label {
-    color: #00a88f;
+    color: var(--rdapp-bg-color-accent);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.25em;
@@ -35,19 +35,11 @@
     font-size: 3.5rem;
     font-weight: 700;
     margin: 0.5rem 0;
-
-    @media (max-width: 767px) {
-      font-size: 2.25rem;
-    }
   }
 
   &__subtitle {
     color: rgba(255, 255, 255, 0.75);
     font-size: 1.1rem;
-
-    @media (max-width: 767px) {
-      font-size: 0.95rem;
-    }
   }
 }
 
@@ -88,18 +80,13 @@
     white-space: nowrap;
     flex-shrink: 0;
 
-    @media (max-width: 575px) {
-      padding: 0.6rem 1rem;
-      font-size: 0.72rem;
-    }
-
     &.is-active-apresentacao {
-      background: #28408b;
+      background: var(--rdapp-bg-color-primary);
       color: #ffffff;
     }
 
     &.is-active-acervo {
-      background: #00a88f;
+      background: var(--rdapp-bg-color-accent);
       color: #ffffff;
     }
 
@@ -114,25 +101,16 @@
 .about-content {
   background: #f5f7fa;
   padding: 4rem 0 5rem;
-
-  @media (max-width: 767px) {
-    padding: 3rem 0 4rem;
-  }
 }
 
 // Card
 .about-card {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: var(--rdapp-border-radius-1rem);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   padding: 3rem;
   max-width: 860px;
   margin: 0 auto;
-
-  @media (max-width: 767px) {
-    padding: 1.75rem 1.25rem;
-    border-radius: 12px;
-  }
 
   &__header {
     display: flex;
@@ -142,18 +120,14 @@
 
     i {
       font-size: 1.5rem;
-      color: #00a88f;
+      color: var(--rdapp-bg-color-accent);
     }
 
     h2 {
       font-size: 1.75rem;
       font-weight: 800;
-      color: #28408b;
+      color: var(--rdapp-bg-color-primary);
       margin: 0;
-
-      @media (max-width: 575px) {
-        font-size: 1.4rem;
-      }
     }
   }
 
@@ -163,15 +137,11 @@
       color: #374151;
       font-size: 1rem;
       margin-bottom: 1.25rem;
-
-      @media (min-width: 768px) {
-        text-align: justify;
-      }
     }
   }
 
   &__quote {
-    border-left: 4px solid #28408b;
+    border-left: 4px solid var(--rdapp-bg-color-primary);
     background: #eef3ff;
     border-radius: 0 8px 8px 0;
     padding: 1rem 1.25rem;
@@ -181,10 +151,6 @@
       font-style: italic;
       color: #1e3a8a;
       margin: 0;
-
-      @media (min-width: 768px) {
-        text-align: justify;
-      }
     }
   }
 
@@ -197,7 +163,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      background: #28408b;
+      background: var(--rdapp-bg-color-primary);
       color: #ffffff;
       padding: 0.8rem 1.5rem;
       border-radius: 8px;
@@ -206,7 +172,8 @@
       text-decoration: none;
       transition: background 0.2s ease;
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
         background: #1a2d6e;
         color: #ffffff;
         text-decoration: none;
@@ -217,7 +184,7 @@
 
 // Section label (e.g. "FINALIDADES DO RDAPP")
 .about-section-label {
-  color: #00a88f;
+  color: var(--rdapp-bg-color-accent);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.15em;
@@ -229,7 +196,7 @@
 .about-section-h3 {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #28408b;
+  color: var(--rdapp-bg-color-primary);
   margin: 2rem 0 0.75rem;
   padding-top: 1.5rem;
   border-top: 1px solid #f3f4f6;
@@ -243,12 +210,12 @@
   margin: 1.75rem 0 0.75rem;
 
   i {
-    color: #00a88f;
+    color: var(--rdapp-bg-color-accent);
     font-size: 1.1rem;
   }
 
   &__label {
-    color: #00a88f;
+    color: var(--rdapp-bg-color-accent);
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.15em;
@@ -275,7 +242,7 @@
     padding: 0.85rem 1rem;
 
     i {
-      color: #00a88f;
+      color: var(--rdapp-bg-color-accent);
       font-size: 1.1rem;
       flex-shrink: 0;
       margin-top: 1px;
@@ -311,7 +278,7 @@
 
   &__title {
     text-align: center;
-    color: #00a88f;
+    color: var(--rdapp-bg-color-accent);
     font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 0.15em;
@@ -323,10 +290,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
-
-    @media (max-width: 575px) {
-      grid-template-columns: 1fr;
-    }
   }
 
   &__item {
@@ -335,7 +298,7 @@
     gap: 0.6rem;
 
     i {
-      color: #28408b;
+      color: var(--rdapp-bg-color-primary);
       font-size: 1.1rem;
       flex-shrink: 0;
       margin-top: 2px;
@@ -347,5 +310,51 @@
       line-height: 1.5;
       font-weight: 600;
     }
+  }
+}
+
+// ─── Responsivo ────────────────────────────────────────────────────────────
+
+@include media-breakpoint-down(md) {
+  .about-hero__title {
+    font-size: 2.25rem;
+  }
+
+  .about-hero__subtitle {
+    font-size: 0.95rem;
+  }
+
+  .about-content {
+    padding: 3rem 0 4rem;
+  }
+
+  .about-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: 12px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .about-tabs__btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.72rem;
+  }
+
+  .about-card__header h2 {
+    font-size: 1.4rem;
+  }
+
+  .about-pillars-card__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .about-card__body p {
+    text-align: justify;
+  }
+
+  .about-card__quote p {
+    text-align: justify;
   }
 }

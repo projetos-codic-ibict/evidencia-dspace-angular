@@ -43,7 +43,7 @@ body {
 }
 
 .btn.btn-primary:focus {
-  outline-color: #28408b;
+  outline-color: var(--rdapp-bg-color-primary);
 }
 
 // B1 — HU003: capitalizar labels dos facets na sidebar de busca

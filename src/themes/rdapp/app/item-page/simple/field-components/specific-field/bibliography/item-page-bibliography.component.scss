@@ -16,7 +16,8 @@
   letter-spacing: 0.15em;
   transition: background-color 0.2s, color 0.2s;
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     background-color: var(--rdapp-bg-color-primary);
     color: #ffffff;
   }
@@ -93,7 +94,8 @@
     cursor: pointer;
     transition: color 0.15s;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       text-decoration: underline;
     }
 
@@ -139,7 +141,8 @@
     border-radius: var(--bs-border-radius-pill);
     padding: 0.65rem 3.5rem;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background-color: #f4f6f8;
       color: #333;
     }

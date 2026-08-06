@@ -52,7 +52,6 @@ import { ScrollToTopComponent } from '../shared/scroll-to-top/scroll-to-top.comp
 @Component({
   selector: 'ds-themed-root',
   templateUrl: './root.component.html',
-  styleUrls: ['./root.component.scss'],
   animations: [slideSidebarPadding],
   imports: [
     AsyncPipe,

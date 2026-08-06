@@ -7,7 +7,7 @@
 .rdapp-full-hero {
   position: relative;
   overflow: hidden;
-  background: #00a88f;
+  background: var(--rdapp-bg-color-accent);
   padding: 4rem 1rem 5rem;
   color: #ffffff;
 
@@ -83,7 +83,7 @@
 
 .full-item-info .item-view-header {
   margin: 0;
-  color: #28408b;
+  color: var(--rdapp-bg-color-primary);
   font-size: clamp(1.55rem, 2.8vw, 2.3rem);
   line-height: 1.15;
   font-weight: 700;
@@ -119,7 +119,7 @@
 
     td:first-child {
       width: 33%;
-      color: #00a88f;
+      color: var(--rdapp-bg-color-accent);
       font-size: 0.88rem;
       font-weight: 700;
       vertical-align: top;
@@ -137,11 +137,12 @@
       padding: 1.15rem 0.75rem;
 
       a {
-        color: #00a88f;
+        color: var(--rdapp-bg-color-accent);
         text-decoration: underline;
         word-break: break-all;
 
-        &:hover {
+        &:hover,
+        &:focus-visible {
           color: #0f766e;
         }
       }
@@ -168,14 +169,15 @@
 
 .full-item-info > .d-flex.justify-content-center.border-top {
   a {
-    color: #00a88f;
+    color: var(--rdapp-bg-color-accent);
     text-decoration: none;
     font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       color: #0f766e;
       text-decoration: underline;
     }
@@ -184,7 +186,7 @@
 
 // ── Responsive ───────────────────────────────────────────────────────────────
 
-@media (min-width: 1200px) {
+@include media-breakpoint-up(xl) {
   .rdapp-full-hero {
     padding: 4.5rem 1rem 5.5rem;
   }
@@ -203,7 +205,7 @@
   }
 }
 
-@media (max-width: 991.98px) {
+@include media-breakpoint-down(lg) {
   .rdapp-full-hero {
     padding: 3.25rem 1rem 4rem;
   }
@@ -252,7 +254,7 @@
   }
 }
 
-@media (max-width: 575.98px) {
+@include media-breakpoint-down(sm) {
   .rdapp-full-hero {
     padding: 2.6rem 0.9rem 3.3rem;
   }

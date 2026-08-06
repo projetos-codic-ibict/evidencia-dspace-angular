@@ -33,9 +33,9 @@ h3 {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #1a2f6e;
+  color: var(--rdapp-color-navy-secondary);
   padding: 1.25rem 1.75rem 1.125rem;
-  border-bottom: 1px solid #f0f2f7;
+  border-bottom: 1px solid var(--rdapp-border-color-muted);
   margin: 0;
 }
 
@@ -53,7 +53,7 @@ h3 {
     margin-bottom: 0 !important;
     padding: 0 !important;
     border: none !important;
-    border-bottom: 1px solid #f0f2f7 !important;
+    border-bottom: 1px solid var(--rdapp-border-color-muted) !important;
 
     &:last-child {
       border-bottom: none !important;
@@ -71,12 +71,13 @@ h3 {
       gap: 1rem;
       transition: background-color 0.2s ease;
 
-      &:hover {
-        background-color: rgba(40, 64, 139, 0.03);
+      &:hover,
+      &:focus-visible {
+        background-color: rgba(var(--rdapp-bg-color-primary-rgb), 0.03);
       }
 
       &[aria-expanded="true"] {
-        background-color: rgba(0, 168, 143, 0.04);
+        background-color: rgba(var(--rdapp-bg-color-accent-rgb), 0.04);
       }
 
       // .text-dark do Bootstrap usa color !important, precisa de !important aqui
@@ -93,11 +94,12 @@ h3 {
       }
 
       &[aria-expanded="true"] .h4 {
-        color: #1a2f6e !important;
+        color: var(--rdapp-color-navy-secondary) !important;
       }
 
-      &:hover .h4 {
-        color: #1a2f6e !important;
+      &:hover .h4,
+      &:focus-visible .h4 {
+        color: var(--rdapp-color-navy-secondary) !important;
       }
 
       // fa-plus/fa-minus → chevron-down com rotação suave
@@ -121,16 +123,18 @@ h3 {
 
         &.fa-minus::before {
           transform: rotate(180deg);
-          color: #00a88f;
+          color: var(--rdapp-bg-color-accent);
         }
       }
 
-      &:hover .filter-toggle::before {
-        color: #28408b;
+      &:hover .filter-toggle::before,
+      &:focus-visible .filter-toggle::before {
+        color: var(--rdapp-bg-color-primary);
       }
 
-      &[aria-expanded="true"]:hover .filter-toggle::before {
-        color: #00a88f;
+      &[aria-expanded="true"]:hover .filter-toggle::before,
+      &[aria-expanded="true"]:focus-visible .filter-toggle::before {
+        color: var(--rdapp-bg-color-accent);
       }
     }
 
@@ -145,8 +149,9 @@ h3 {
       transition: color 0.15s ease;
       cursor: pointer;
 
-      &:hover {
-        color: #1a2f6e;
+      &:hover,
+      &:focus-within {
+        color: var(--rdapp-color-navy-secondary);
       }
     }
 
@@ -163,15 +168,15 @@ h3 {
         background-color 0.18s !important;
 
       &:focus {
-        border-color: #00a88f !important;
+        border-color: var(--rdapp-bg-color-accent) !important;
         outline: none !important;
-        box-shadow: 0 0 0 2px rgba(0, 168, 143, 0.15) !important;
+        box-shadow: 0 0 0 2px rgba(var(--rdapp-bg-color-accent-rgb), 0.15) !important;
         background-color: #ffffff !important;
       }
     }
 
     input[type="checkbox"] {
-      accent-color: #00a88f;
+      accent-color: var(--rdapp-bg-color-accent);
       width: 14px;
       height: 14px;
       cursor: pointer;
