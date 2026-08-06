@@ -1,6 +1,10 @@
-import { AsyncPipe } from '@angular/common';
+import {
+  AsyncPipe,
+  LowerCasePipe,
+} from '@angular/common';
 import {
   Component,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -23,22 +27,23 @@ import { FilterInputSuggestionsComponent } from '../../../../../../../../app/sha
 import { facetLoad } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter/search-facet-filter.component';
 import { SearchFacetOptionComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter-options/search-facet-option/search-facet-option.component';
 import { SearchFacetSelectedOptionComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter-options/search-facet-selected-option/search-facet-selected-option.component';
-import { SearchTextFilterComponent as BaseComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-text-filter/search-text-filter.component';
+import { SearchHierarchyFilterComponent as BaseComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-hierarchy-filter/search-hierarchy-filter.component';
 
 @Component({
-  selector: 'ds-search-text-filter',
-  templateUrl: './search-text-filter.component.html',
+  selector: 'ds-themed-search-hierarchy-filter',
+  templateUrl: './search-hierarchy-filter.component.html',
   animations: [facetLoad],
   imports: [
     AsyncPipe,
     FilterInputSuggestionsComponent,
     FormsModule,
+    LowerCasePipe,
     SearchFacetOptionComponent,
     SearchFacetSelectedOptionComponent,
     TranslateModule,
   ],
 })
-export class RdappSearchTextFilterComponent extends BaseComponent implements OnInit {
+export class RdappSearchHierarchyFilterComponent extends BaseComponent implements OnDestroy, OnInit {
   /**
    * Overrides the base facet retrieval so the search-by-text input stays visible regardless of
    * facetLimit (discovery.xml). facetLimit doubles as the facet page size there, so tying the input's
