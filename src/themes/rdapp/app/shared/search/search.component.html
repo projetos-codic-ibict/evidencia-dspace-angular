@@ -26,13 +26,14 @@
 }
 
 @if (!showSidebar && (initialized$ | async)) {
-  <div>
+  <div class="rdapp-search-body">
     <ng-template *ngTemplateOutlet="searchContent"></ng-template>
   </div>
 }
 
 @if (showSidebar && (initialized$ | async)) {
   <ds-page-with-sidebar
+    class="rdapp-search-body"
     [id]="'search-page'"
     [sideBarWidth]="sideBarWidth"
     [sidebarContent]="sidebarContent"

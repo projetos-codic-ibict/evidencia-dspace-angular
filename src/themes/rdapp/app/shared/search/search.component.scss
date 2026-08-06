@@ -1,26 +1,35 @@
 // ─── View mode switch (lista / grid) ─────────────────────────────────────────
 
-::ng-deep ds-view-mode-switch {
-  .btn-group {
-    border: 2px solid #e2e8f0;
-    border-radius: var(--rdapp-border-radius-1rem);
-    overflow: hidden;
+:host {
+  ::ng-deep ds-view-mode-switch {
+    .btn-group {
+      border: 2px solid #e2e8f0;
+      border-radius: var(--rdapp-border-radius-1rem);
+      overflow: hidden;
 
-    .btn.btn-secondary {
-      background-color: #ffffff;
-      border: none;
-      color: #28408b;
+      .btn.btn-secondary {
+        background-color: #ffffff;
+        border: none;
+        color: var(--rdapp-bg-color-primary);
 
-      &.active {
-        background-color: #28408b;
-        color: #ffffff;
-      }
+        &.active {
+          background-color: var(--rdapp-bg-color-primary);
+          color: #ffffff;
+        }
 
-      &:focus {
-        box-shadow: none;
+        &:focus {
+          box-shadow: none;
+        }
       }
     }
   }
+}
+
+// ─── Afastamento do conteúdo em relação à barra de busca ─────────────────────
+
+.rdapp-search-body {
+  display: block;
+  margin-top: 2.5rem;
 }
 
 // ─── Botão open/close sidebar (mobile) ───────────────────────────────────────
@@ -42,28 +51,29 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #28408b;
+  color: var(--rdapp-bg-color-primary);
   background-color: #ffffff;
   border: 2px solid #e2e8f0;
   border-radius: var(--rdapp-border-radius-1rem);
   padding: 0.625rem 1.25rem;
-  box-shadow: 0 1px 4px rgba(40, 64, 139, 0.08);
+  box-shadow: 0 1px 4px rgba(var(--rdapp-bg-color-primary-rgb), 0.08);
   transition:
     background-color 0.2s,
     border-color 0.2s,
     box-shadow 0.2s,
     color 0.2s;
-  float: none !important;
+  float: none;
 
   i {
     font-size: 0.875rem;
     color: var(--rdapp-color-blue);
   }
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     background-color: #eff6ff;
     border-color: #bfdbfe;
     color: var(--rdapp-color-blue);
-    box-shadow: 0 4px 14px rgba(15, 73, 189, 0.14);
+    box-shadow: 0 4px 14px rgba(var(--rdapp-color-blue-rgb), 0.14);
   }
 }
