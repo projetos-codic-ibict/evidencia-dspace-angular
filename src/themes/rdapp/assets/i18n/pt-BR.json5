@@ -157,7 +157,7 @@
   "rdapp.document-more-results.badge": "Busca Semântica",
   "rdapp.document-more-results.loading": "Carregando ocorrências...",
   "rdapp.document-more-results.error": "Erro ao carregar resultados. Tente novamente.",
-  "rdapp.document-more-results.no-results": "Nenhum resultado encontrado para esta busca.",
+  "rdapp.document-more-results.no-results": "Aguarde. Estamos processando  o documento.",
   "rdapp.document-more-results.list-aria-label": "Lista de ocorrências",
   "rdapp.document-more-results.section-label": "Seção:",
   "rdapp.document-more-results.page-number": "Página {{page}}",
