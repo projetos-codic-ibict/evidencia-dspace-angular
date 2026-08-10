@@ -16,7 +16,7 @@ export class ResultsBackButtonComponent extends BaseComponent {
 
   override ngOnInit(): void {
     if (!this.buttonLabel) {
-      this.buttonLabel = this.translate.get('rdapp.item.back');
+      this.buttonLabel = this.translate.get('evidencia.item.back');
     }
   }
 }

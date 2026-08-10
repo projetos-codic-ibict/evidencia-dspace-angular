@@ -7324,237 +7324,161 @@
 
   "item.preview.organization.alternateName": "Alternative name",
 
-  "rdapp.search.placeholder.title": "¿Listo para explorar?",
+  "evidencia.search.placeholder.title": "¿Listo para explorar?",
 
-  "rdapp.search.placeholder.subtitle": "Escriba un término en la barra de búsqueda o seleccione un filtro al lado para ver los resultados.",
+  "evidencia.search.placeholder.subtitle": "Escriba un término en la barra de búsqueda o seleccione un filtro al lado para ver los resultados.",
 
-  "rdapp.search.query-label": "Término de búsqueda",
+  "evidencia.search.query-label": "Término de búsqueda",
 
-  "rdapp.search.clear-all": "Limpiar todo",
+  "evidencia.search.clear-all": "Limpiar todo",
 
-  "rdapp.search.results-count": "resultados",
+  "evidencia.search.tab.results": "Resultado",
 
-  "rdapp.search.tab.results": "Resultado",
+  "evidencia.search.tab.ai-summary": "Resumen de IA",
 
-  "rdapp.search.tab.ai-summary": "Resumen de IA",
+  "evidencia.search.tab.ai-observation": "Observación de IA",
 
-  "rdapp.search.tab.ai-observation": "Observación de IA",
+  "evidencia.search.no-results.title": "No se encontraron resultados",
 
-  "rdapp.search.tab.ai-visualization": "Visualización de IA",
+  "evidencia.search.no-results.hint": "Intente ajustar sus filtros o términos de búsqueda.",
 
-  "rdapp.search.no-results.title": "No se encontraron resultados",
+  "evidencia.search.clear-filters": "Limpiar filtros",
 
-  "rdapp.search.no-results.hint": "Intente ajustar sus filtros o términos de búsqueda.",
+  "evidencia.search.toolbar.select-all": "Seleccionar Todo",
 
-  "rdapp.search.clear-filters": "Limpiar filtros",
+  "evidencia.search.toolbar.export-docx": "Exportar DOCX",
 
-  "rdapp.search.filters.title": "Filtros",
+  "evidencia.search.toolbar.export-pdf": "Exportar PDF",
 
-  "rdapp.search.filters.clear": "Limpiar",
+  "evidencia.item-card.source": "Fuente:",
 
-  "rdapp.search.toolbar.select-all": "Seleccionar Todo",
+  "evidencia.item-card.access-pdf": "Acceder al Documento en PDF",
 
-  "rdapp.search.toolbar.export-docx": "Exportar DOCX",
+  "evidencia.menu.faq": "Preguntas Frecuentes",
 
-  "rdapp.search.toolbar.export-pdf": "Exportar PDF",
+  "evidencia.menu.about": "El EvidencIA",
 
-  "rdapp.item-card.source": "Fuente:",
+  "evidencia.menu.about.presentation": "Presentación",
 
-  "rdapp.item-card.access-pdf": "Acceder al Documento en PDF",
+  "evidencia.menu.about.goals": "Objetivos",
 
-  "rdapp.item-card.subject-label": "Tema del contenido:",
+  "evidencia.menu.about.team": "Quiénes Somos",
 
-  "rdapp.menu.faq": "Preguntas Frecuentes",
+  "evidencia.menu.estatisticas": "Panel de Estadísticas",
 
-  "rdapp.menu.about": "El RDAPP",
+  "evidencia.header.logo-alt": "Logo del EvidencIA - Repositorio Digital de Evaluación de Políticas Públicas",
 
-  "rdapp.menu.about.presentation": "Presentación",
+  "evidencia.header.mpo-link-aria-label": "Enlace externo al Ministerio de Planificación y Presupuesto",
 
-  "rdapp.menu.about.goals": "Objetivos",
+  "evidencia.header.mpo-logo-alt": "Logo del Ministerio de Planificación y Presupuesto",
 
-  "rdapp.menu.about.team": "Quiénes Somos",
+  "evidencia.home.hero.aria-label": "Conozca el Repositorio Digital de Evaluación de Políticas Públicas",
 
-  "rdapp.menu.estatisticas": "Panel de Estadísticas",
+  "evidencia.home.hero.title-dark": "Conozca el<br />Repositorio Digital de",
 
-  "rdapp.search.ai-badge": "IA HABILITADA",
+  "evidencia.home.hero.title-light": "Evaluación de Políticas<br />Públicas",
 
-  "rdapp.header.logo-alt": "Logo del RDAPP - Repositorio Digital de Evaluación de Políticas Públicas",
+  "evidencia.home.hero.description": "Acceda al acervo completo del evidencIA y utilice nuestra inteligencia artificial para simplificar la comprensión de estudios complejos.",
 
-  "rdapp.header.mpo-link-aria-label": "Enlace externo al Ministerio de Planificación y Presupuesto",
+  "evidencia.home.hero.link": "Como usar",
 
-  "rdapp.header.mpo-logo-alt": "Logo del Ministerio de Planificación y Presupuesto",
+  "evidencia.home.hero.map-alt": "Ilustración del Mapa de Brasil con enfoque en Políticas Públicas",
 
-  "rdapp.home.hero.aria-label": "Conozca el Repositorio Digital de Evaluación de Políticas Públicas",
+  "evidencia.home.hero.stats-aria-label": "Estadística rápida: más de 1200 publicaciones",
 
-  "rdapp.home.hero.title-dark": "Conozca el<br />Repositorio Digital de",
+  "evidencia.home.hero.stats-value": "+1.2k",
 
-  "rdapp.home.hero.title-light": "Evaluación de Políticas<br />Públicas",
+  "evidencia.home.hero.stats-label": "Publicaciones disponibles",
 
-  "rdapp.home.hero.description": "Acceda al acervo completo del evidencIA y utilice nuestra inteligencia artificial para simplificar la comprensión de estudios complejos.",
+  "evidencia.full-item.hero.aria-label": "Metadatos técnicos",
 
-  "rdapp.home.hero.link": "Como usar",
+  "evidencia.full-item.hero.kicker": "Metadatos técnicos",
 
-  "rdapp.home.hero.map-alt": "Ilustración del Mapa de Brasil con enfoque en Políticas Públicas",
+  "evidencia.full-item.hero.title": "Registro Dublin Core",
 
-  "rdapp.home.hero.stats-aria-label": "Estadística rápida: más de 1200 publicaciones",
+  "evidencia.full-item.hero.subtitle": "Estándar de metadatos para descripción de recursos entre dominios.",
 
-  "rdapp.home.hero.stats-value": "+1.2k",
+  "evidencia.full-item.back": "Volver a la publicación",
 
-  "rdapp.home.hero.stats-label": "Publicaciones disponibles",
+  "evidencia.full-item.table.field": "Elemento Dublin Core",
 
-  "rdapp.full-item.hero.aria-label": "Metadatos técnicos",
+  "evidencia.full-item.table.value": "Valor del metadato",
 
-  "rdapp.full-item.hero.kicker": "Metadatos técnicos",
+  "evidencia.full-item.table.language": "Idioma",
 
-  "rdapp.full-item.hero.title": "Registro Dublin Core",
+  "evidencia.full-item.return": "Volver a la vista estándar",
 
-  "rdapp.full-item.hero.subtitle": "Estándar de metadatos para descripción de recursos entre dominios.",
+  "evidencia.footer.mpo-logo-alt": "Logo del Ministerio de Planificación y Presupuesto",
 
-  "rdapp.full-item.back": "Volver a la publicación",
+  "evidencia.item.abstract": "Resumen",
 
-  "rdapp.full-item.table.field": "Elemento Dublin Core",
+  "evidencia.item.reference.title": "Referencia Bibliográfica (ABNT)",
 
-  "rdapp.full-item.table.value": "Valor del metadato",
+  "evidencia.item.reference.copy": "Copiar referencia",
 
-  "rdapp.full-item.table.language": "Idioma",
+  "evidencia.item.metrics.title": "Métricas del Documento",
 
-  "rdapp.full-item.return": "Volver a la vista estándar",
+  "evidencia.item.metrics.dublin": "Registro Completo (Dublin Core)",
 
-  "rdapp.footer.social-label": "Redes sociales del RDAPP",
+  "evidencia.item.metrics.total-access": "Total de accesos",
 
-  "rdapp.footer.mpo-logo-alt": "Logo del Ministerio de Planificación y Presupuesto",
+  "evidencia.item.meta.date": "Año de publicación",
 
-  "rdapp.footer.organization": "Instituto Brasileño de Información en Ciencia y Tecnología (Ibict)",
+  "evidencia.item.meta.authors": "Autores",
 
-  "rdapp.item.back-top": "Volver arriba",
+  "evidencia.item.meta.institution": "Institución",
 
-  "rdapp.item.ai.title": "RDAPP AI Insights",
+  "evidencia.faq.hero.label": "SOPORTE",
 
-  "rdapp.item.abstract": "Resumen",
+  "evidencia.faq.hero.title": "Preguntas Frecuentes",
 
-  "rdapp.item.reference.title": "Referencia Bibliográfica (ABNT)",
+  "evidencia.faq.hero.subtitle": "Resuelva sus dudas sobre el repositorio, el acervo y las funcionalidades disponibles.",
 
-  "rdapp.item.reference.copy": "Copiar referencia",
+  "evidencia.faq.cta.title": "¿AÚN TIENE DUDAS?",
 
-  "rdapp.item.metrics.title": "Métricas del Documento",
+  "evidencia.faq.cta.subtitle": "Nuestro equipo está disponible para ayudarle.",
 
-  "rdapp.item.metrics.stats": "Ver Estadísticas",
+  "evidencia.faq.cta.btn": "Enviar Correo",
 
-  "rdapp.item.metrics.dublin": "Registro Completo (Dublin Core)",
+  "evidencia.faq.0.q": "¿Qué es el EvidencIA?",
 
-  "rdapp.item.metrics.total-access": "Total de accesos",
+  "evidencia.faq.0.a": "El EvidencIA es un repositorio digital destinado a centralizar, preservar y organizar las evaluaciones de políticas públicas y la producción técnica de la institución. Su finalidad es promover la transparencia activa, garantizar el acceso público a evidencias y apoyar la cooperación entre organismos gubernamentales para una toma de decisiones más cualificada. El EvidencIA sirve tanto a servidores e investigadores como al público en general, promoviendo la transparencia sobre la eficacia de las políticas públicas nacionales.",
 
-  "rdapp.item.metrics.last-month": "Último mes",
+  "evidencia.faq.1.q": "¿Quién ejerce la gestión del repositorio?",
 
-  "rdapp.item.ai.subtitle": "Análisis inteligente de este documento",
+  "evidencia.faq.1.a": "La gestión y la curaduría técnica son responsabilidad de la Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos del Ministerio de Planificación y Presupuesto (SMA/MPO).",
 
-  "rdapp.item.ai.generate": "Generar Insights con IA",
+  "evidencia.faq.2.q": "¿Cuál es la política de privacidad del sistema?",
 
-  "rdapp.item.meta.date": "Año de publicación",
+  "evidencia.faq.2.a": "Todos los documentos del repositorio son de dominio público. El depositante debe garantizar la anonimización de datos sensibles antes del envío, asegurando que la publicidad del documento respete la privacidad conforme a la Ley General de Protección de Datos Personales (LGPD).",
 
-  "rdapp.item.meta.authors": "Autores",
+  "evidencia.faq.3.q": "¿Cómo se utiliza la Inteligencia Artificial en la búsqueda?",
 
-  "rdapp.item.meta.institution": "Institución",
+  "evidencia.faq.3.a": "El sistema utiliza IA para extraer resultados directamente del cuerpo de los archivos durante las búsquedas. También ofrece un \"Resumen de IA\", que genera automáticamente una síntesis de los 5 documentos más relevantes según su término de búsqueda, permitiendo un análisis rápido del acervo.",
 
-  "rdapp.item.meta.subjects": "Temas",
+  "evidencia.faq.4.q": "¿Cómo buscar documentos de forma eficiente?",
 
-  "rdapp.item.action.cite": "Citar este documento",
+  "evidencia.faq.4.a": "El sistema ofrece una barra de búsqueda directa con filtros específicos por Política Pública, Institución responsable, Área de actuación o Tipo de documento. Adicionalmente, es posible realizar búsquedas booleanas para refinar los resultados:<br><br>- <strong>AND (Y):</strong> Para encontrar términos que deben aparecer juntos (ej: salud AND educación).<br>- <strong>OR (O):</strong> Para ampliar la búsqueda con sinónimos (ej: evaluación OR monitoreo).<br>- <strong>NOT (NO):</strong> Para excluir términos no deseados (ej: transporte NOT carretero).<br><br>Ejemplo práctico: Una búsqueda por \"seguridad pública\" AND evaluación NOT cámaras traerá documentos sobre evaluación de seguridad pública, pero filtrará los centrados específicamente en cámaras de vigilancia.",
 
-  "rdapp.faq.hero.label": "SOPORTE",
+  "evidencia.faq.5.q": "¿Qué beneficios se esperan al utilizar el EvidencIA con IA?",
 
-  "rdapp.faq.hero.title": "Preguntas Frecuentes",
+  "evidencia.faq.5.a": "Se espera un beneficio significativo en escala y eficiencia. Mientras que una extracción manual puede llevar varias horas de trabajo, el EvidencIA realiza la misma tarea en pocos segundos, optimizando el tiempo del equipo técnico y de los ciudadanos, además de abarcar un volumen de documentos mucho mayor del que sería viable procesar manualmente.",
 
-  "rdapp.faq.hero.subtitle": "Resuelva sus dudas sobre el repositorio, el acervo y las funcionalidades disponibles.",
+  "evidencia.about.hero.label": "INSTITUCIONAL",
 
-  "rdapp.faq.cta.title": "¿AÚN TIENE DUDAS?",
+  "evidencia.about.hero.title": "El EvidencIA",
 
-  "rdapp.faq.cta.subtitle": "Nuestro equipo está disponible para ayudarle.",
+  "evidencia.about.hero.subtitle": "Conozca la iniciativa, nuestros propósitos y quiénes la hacen posible.",
 
-  "rdapp.faq.cta.btn": "Enviar Correo",
+  "evidencia.about.tab.apresentacao": "PRESENTACIÓN",
 
-  "rdapp.faq.0.q": "¿Qué es el RDAPP?",
+  "evidencia.about.apresentacao.title": "Presentación",
 
-  "rdapp.faq.0.a": "El RDAPP es un repositorio digital destinado a centralizar, preservar y organizar las evaluaciones de políticas públicas y la producción técnica de la institución. Su finalidad es promover la transparencia activa, garantizar el acceso público a evidencias y apoyar la cooperación entre organismos gubernamentales para una toma de decisiones más cualificada. El RDAPP sirve tanto a servidores e investigadores como al público en general, promoviendo la transparencia sobre la eficacia de las políticas públicas nacionales.",
+  "evidencia.about.apresentacao.p1": "El Repositorio Digital de Evaluación de Políticas Públicas (EvidencIA) es una iniciativa institucional del Ministerio de Planificación y Presupuesto (MPO), establecida en el ámbito de la Administración Pública Federal con la finalidad de centralizar, preservar, organizar y difundir evaluaciones de políticas públicas, en consonancia con los principios de transparencia, gobierno digital y uso de evidencias en la gestión pública.",
 
-  "rdapp.faq.1.q": "¿Quién ejerce la gestión del repositorio?",
+  "evidencia.about.apresentacao.p2": "El EvidencIA tiene como objetivo enfrentar la dispersión y la heterogeneidad de las evaluaciones producidas en el sector público, ampliando el acceso público a las evaluaciones de políticas públicas, fortaleciendo su utilización por gestores, investigadores y la sociedad, y promoviendo mayor integración entre los órganos e instituciones productoras de evaluaciones.",
 
-  "rdapp.faq.1.a": "La gestión y la curaduría técnica son responsabilidad de la Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos del Ministerio de Planificación y Presupuesto (SMA/MPO).",
-
-  "rdapp.faq.2.q": "¿Cuál es la política de privacidad del sistema?",
-
-  "rdapp.faq.2.a": "Todos los documentos del repositorio son de dominio público. El depositante debe garantizar la anonimización de datos sensibles antes del envío, asegurando que la publicidad del documento respete la privacidad conforme a la Ley General de Protección de Datos Personales (LGPD).",
-
-  "rdapp.faq.3.q": "¿Cómo se utiliza la Inteligencia Artificial en la búsqueda?",
-
-  "rdapp.faq.3.a": "El sistema utiliza IA para extraer resultados directamente del cuerpo de los archivos durante las búsquedas. También ofrece un \"Resumen de IA\", que genera automáticamente una síntesis de los 5 documentos más relevantes según su término de búsqueda, permitiendo un análisis rápido del acervo.",
-
-  "rdapp.faq.4.q": "¿Cómo buscar documentos de forma eficiente?",
-
-  "rdapp.faq.4.a": "El sistema ofrece una barra de búsqueda directa con filtros específicos por Política Pública, Institución responsable, Área de actuación o Tipo de documento. Adicionalmente, es posible realizar búsquedas booleanas para refinar los resultados:<br><br>- <strong>AND (Y):</strong> Para encontrar términos que deben aparecer juntos (ej: salud AND educación).<br>- <strong>OR (O):</strong> Para ampliar la búsqueda con sinónimos (ej: evaluación OR monitoreo).<br>- <strong>NOT (NO):</strong> Para excluir términos no deseados (ej: transporte NOT carretero).<br><br>Ejemplo práctico: Una búsqueda por \"seguridad pública\" AND evaluación NOT cámaras traerá documentos sobre evaluación de seguridad pública, pero filtrará los centrados específicamente en cámaras de vigilancia.",
-
-  "rdapp.faq.5.q": "¿Qué beneficios se esperan al utilizar el RDAPP con IA?",
-
-  "rdapp.faq.5.a": "Se espera un beneficio significativo en escala y eficiencia. Mientras que una extracción manual puede llevar varias horas de trabajo, el RDAPP realiza la misma tarea en pocos segundos, optimizando el tiempo del equipo técnico y de los ciudadanos, además de abarcar un volumen de documentos mucho mayor del que sería viable procesar manualmente.",
-
-  "rdapp.about.hero.label": "INSTITUCIONAL",
-
-  "rdapp.about.hero.title": "El RDAPP",
-
-  "rdapp.about.hero.subtitle": "Conozca la iniciativa, nuestros propósitos y quiénes la hacen posible.",
-
-  "rdapp.about.tab.apresentacao": "PRESENTACIÓN",
-
-  "rdapp.about.tab.objetivo": "OBJETIVOS",
-
-  "rdapp.about.tab.equipe": "EQUIPO",
-
-  "rdapp.about.back-top": "↑ INICIO",
-
-  "rdapp.about.apresentacao.title": "Presentación",
-
-  "rdapp.about.apresentacao.p1": "El Repositorio Digital de Evaluación de Políticas Públicas (RDAPP) es una iniciativa institucional del Ministerio de Planificación y Presupuesto (MPO), establecida en el ámbito de la Administración Pública Federal con la finalidad de centralizar, preservar, organizar y difundir evaluaciones de políticas públicas, en consonancia con los principios de transparencia, gobierno digital y uso de evidencias en la gestión pública.",
-
-  "rdapp.about.apresentacao.p2": "El RDAPP tiene como objetivo enfrentar la dispersión y la heterogeneidad de las evaluaciones producidas en el sector público, ampliando el acceso público a las evaluaciones de políticas públicas, fortaleciendo su utilización por gestores, investigadores y la sociedad, y promoviendo mayor integración entre los órganos e instituciones productoras de evaluaciones.",
-
-  "rdapp.about.apresentacao.quote": "La iniciativa se apoya en una solución tecnológica basada en software libre e incorpora herramientas de inteligencia artificial, adoptando estándares de interoperabilidad, preservación digital y gobernanza de la información, en conformidad con la legislación vigente, especialmente en lo que se refiere a la protección de datos personales, los derechos de autor y las normas de acceso a la información.",
-
-  "rdapp.about.objetivo.title": "Objetivos",
-
-  "rdapp.about.objetivo.p1": "El objetivo del RDAPP es convertirse en una plataforma digital nacional de referencia para el almacenamiento, la organización y la difusión de evaluaciones de políticas públicas, fortaleciendo la transparencia, la toma de decisiones basada en evidencias y la cultura de evaluación en Brasil.",
-
-  "rdapp.about.objetivo.specificos.label": "OBJETIVOS ESPECÍFICOS",
-
-  "rdapp.about.objetivo.specificos.0": "<strong>Desarrollar una versión funcional inicial del repositorio</strong>",
-
-  "rdapp.about.objetivo.specificos.1": "<strong>Implementar funcionalidades de Evaluación Abierta con uso de IA para búsqueda y reutilización de evidencias</strong>",
-
-  "rdapp.about.objetivo.specificos.2": "<strong>Implementar la versión de producción con políticas de curación y gobernanza</strong>",
-
-  "rdapp.about.objetivo.specificos.3": "<strong>Capacitar equipos de gestión y TI para operación sostenible</strong>",
-
-  "rdapp.about.objetivo.specificos.4": "<strong>Desarrollar módulos de análisis y meta-evaluación automatizada</strong>",
-
-  "rdapp.about.objetivo.specificos.5": "<strong>Difundir los resultados mediante publicaciones, talleres e integración con redes nacionales e internacionales</strong>",
-
-  "rdapp.about.equipe.title": "Equipo y Gobernanza",
-
-  "rdapp.about.equipe.p1": "La ejecución del RDAPP es una iniciativa coordinada por la <strong>Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos (SMA)</strong>, dentro de sus atribuciones de promover la evaluación rigurosa y basada en evidencias de las políticas públicas.",
-
-  "rdapp.about.equipe.pilares.title": "PILARES DE ACTUACIÓN DE LA SMA",
-
-  "rdapp.about.equipe.pilares.0": "Gestión compartida de los datos del gobierno federal para su uso en monitoreo y evaluaciones",
-
-  "rdapp.about.equipe.pilares.1": "Mejora de las políticas públicas existentes a la luz de las mejores prácticas internacionales",
-
-  "rdapp.about.equipe.pilares.2": "Producción de notas técnicas sobre propuestas de políticas públicas",
-
-  "rdapp.about.equipe.pilares.3": "Elaboración y seguimiento de indicadores económicos",
-
-  "rdapp.about.equipe.p2": "Corresponde a la SMA la proposición y la coordinación estratégica del RDAPP, asegurando que el repositorio atienda las demandas de transparencia, evidencia y eficiencia en la gestión pública.",
-
-  "rdapp.about.equipe.exec.label": "EJECUCIÓN TÉCNICA",
-
-  "rdapp.about.equipe.exec.p1": "Como ejecutor técnico del proyecto, el <strong>Instituto Brasileño de Información en Ciencia y Tecnología (Ibict)</strong> es responsable del desarrollo, la implantación y la operación de la plataforma, contando con un equipo multidisciplinario compuesto por especialistas en ciencia de la información, gestión de datos, desarrollo de sistemas, curación digital e inteligencia artificial. El equipo incluye servidores del Ibict, becarios y consultores especializados, garantizando la sostenibilidad y la interoperabilidad del repositorio con redes nacionales e internacionales.",
+  "evidencia.about.apresentacao.quote": "La iniciativa se apoya en una solución tecnológica basada en software libre e incorpora herramientas de inteligencia artificial, adoptando estándares de interoperabilidad, preservación digital y gobernanza de la información, en conformidad con la legislación vigente, especialmente en lo que se refiere a la protección de datos personales, los derechos de autor y las normas de acceso a la información.",
 
   "search.sidebar.section.filter": "Filtros",
 
@@ -7630,21 +7554,21 @@
 
   "search.filters.applied.f.cidade": "Ciudad",
 
-  "rdapp.item.keywords": "Palabras clave",
+  "evidencia.item.keywords": "Palabras clave",
 
-  "rdapp.item.abstract.read-more": "Leer más",
+  "evidencia.item.abstract.read-more": "Leer más",
 
-  "rdapp.item.abstract.read-less": "Leer menos",
+  "evidencia.item.abstract.read-less": "Leer menos",
 
-  "rdapp.search.toolbar.export-csv": "Exportar CSV",
+  "evidencia.search.toolbar.export-csv": "Exportar CSV",
 
-  "rdapp.item.back": "Volver al Repositorio",
+  "evidencia.item.back": "Volver al Repositorio",
 
-  "rdapp.item.metrics.total-downloads": "Total de descargas",
+  "evidencia.item.metrics.total-downloads": "Total de descargas",
 
-  "rdapp.item.metrics.copy-count": "Copias de la referencia",
+  "evidencia.item.metrics.copy-count": "Copias de la referencia",
 
-  "rdapp.item.cited.copied": "¡Copiado!",
+  "evidencia.item.cited.copied": "¡Copiado!",
 
   "item.cite.open-modal": "Citar",
 
@@ -7672,185 +7596,179 @@
 
   "search.form.scope.searching-in": "Buscando en",
 
-  "rdapp.search.tab.results.short": "Resultados",
+  "evidencia.search.tab.results.short": "Resultados",
 
-  "rdapp.search.tab.ai-summary.short": "IA Resumen",
+  "evidencia.search.tab.ai-summary.short": "IA Resumen",
 
-  "rdapp.search.tab.ai-observation.short": "IA Obs.",
+  "evidencia.search.tab.ai-observation.short": "IA Obs.",
 
-  "rdapp.item.reference.copied": "¡Copiado!",
+  "evidencia.item.reference.copied": "¡Copiado!",
 
-  "rdapp.item-card.access-page": "Acceder a la Página del Documento",
+  "evidencia.item-card.access-page": "Acceder a la Página del Documento",
 
-  "rdapp.document-more-results.toggle-btn": "Más resultados del documento",
+  "evidencia.document-more-results.toggle-btn": "Más resultados del documento",
 
-  "rdapp.document-more-results.panel-aria-label": "Resultados de búsqueda semántica del documento",
+  "evidencia.document-more-results.panel-aria-label": "Resultados de búsqueda semántica del documento",
 
-  "rdapp.document-more-results.occurrences-title": "Ocurrencias encontradas",
+  "evidencia.document-more-results.occurrences-title": "Ocurrencias encontradas",
 
-  "rdapp.document-more-results.badge": "Búsqueda semántica",
+  "evidencia.document-more-results.loading": "Cargando ocurrencias...",
 
-  "rdapp.document-more-results.loading": "Cargando ocurrencias...",
+  "evidencia.document-more-results.error": "Error al cargar resultados. Inténtelo de nuevo.",
 
-  "rdapp.document-more-results.error": "Error al cargar resultados. Inténtelo de nuevo.",
+  "evidencia.document-more-results.no-results": "No se encontraron resultados para esta búsqueda.",
 
-  "rdapp.document-more-results.no-results": "No se encontraron resultados para esta búsqueda.",
+  "evidencia.document-more-results.list-aria-label": "Lista de ocurrencias",
 
-  "rdapp.document-more-results.list-aria-label": "Lista de ocurrencias",
+  "evidencia.document-more-results.section-label": "Sección:",
 
-  "rdapp.document-more-results.section-label": "Sección:",
+  "evidencia.document-more-results.page-number": "Página {{page}}",
 
-  "rdapp.document-more-results.page-number": "Página {{page}}",
+  "evidencia.document-more-results.pagination-label": "Página {{current}} de {{total}}",
 
-  "rdapp.document-more-results.pagination-label": "Página {{current}} de {{total}}",
+  "evidencia.document-more-results.prev": "Anterior",
 
-  "rdapp.document-more-results.prev": "Anterior",
+  "evidencia.document-more-results.next": "Siguiente",
 
-  "rdapp.document-more-results.next": "Siguiente",
+  "evidencia.document-more-results.page-link-aria": "Ver página {{page}} del documento",
 
-  "rdapp.document-more-results.page-link-aria": "Ver página {{page}} del documento",
+  "evidencia.item.related.title": "Publicaciones Relacionadas",
 
-  "rdapp.item.related.title": "Publicaciones Relacionadas",
+  "evidencia.item.related.access": "Acceder",
 
-  "rdapp.item.related.access": "Acceder",
+  "evidencia.communityList.subtitle": "Estructura organizacional",
 
-  "rdapp.communityList.subtitle": "Estructura organizacional",
+  "evidencia.communityList.description": "Navegue por las publicaciones organizadas jerárquicamente por organismos y sus respectivas colecciones temáticas.",
 
-  "rdapp.communityList.description": "Navegue por las publicaciones organizadas jerárquicamente por organismos y sus respectivas colecciones temáticas.",
+  "evidencia.communityList.communityLabel": "Comunidad",
 
-  "rdapp.communityList.hierarchyButton": "Ver jerarquía",
+  "evidencia.communityList.collectionsTitle": "Colecciones disponibles",
 
-  "rdapp.communityList.communityLabel": "Comunidad",
+  "evidencia.communityList.communityCounter.singular": "comunidad",
 
-  "rdapp.communityList.collectionsTitle": "Colecciones disponibles",
+  "evidencia.communityList.communityCounter.plural": "comunidades",
 
-  "rdapp.communityList.communityCounter.singular": "comunidad",
+  "evidencia.communityList.collectionCounter.singular": "colección",
 
-  "rdapp.communityList.communityCounter.plural": "comunidades",
+  "evidencia.communityList.collectionCounter.plural": "colecciones",
 
-  "rdapp.communityList.collectionCounter.singular": "colección",
+  "evidencia.about.tab.acervo": "ACERVO Y ALIANZAS",
 
-  "rdapp.communityList.collectionCounter.plural": "colecciones",
+  "evidencia.about.tab.quemsomos": "QUIÉNES SOMOS",
 
-  "rdapp.about.tab.acervo": "ACERVO Y ALIANZAS",
+  "evidencia.about.apresentacao.finalidades.label": "FINALIDADES DEL EvidencIA",
 
-  "rdapp.about.tab.quemsomos": "QUIÉNES SOMOS",
+  "evidencia.about.apresentacao.finalidades.0": "Centralizar, preservar, organizar y difundir evaluaciones de políticas públicas, sus productos y metadatos;",
 
-  "rdapp.about.apresentacao.finalidades.label": "FINALIDADES DEL RDAPP",
+  "evidencia.about.apresentacao.finalidades.1": "Promover la transparencia activa y el acceso público a evidencias;",
 
-  "rdapp.about.apresentacao.finalidades.0": "Centralizar, preservar, organizar y difundir evaluaciones de políticas públicas, sus productos y metadatos;",
+  "evidencia.about.apresentacao.finalidades.2": "Fomentar la toma de decisiones informada por evidencias, mediante el fortalecimiento de su uso en la formulación, implementación, monitoreo, evaluación y perfeccionamiento de políticas públicas;",
 
-  "rdapp.about.apresentacao.finalidades.1": "Promover la transparencia activa y el acceso público a evidencias;",
+  "evidencia.about.apresentacao.finalidades.3": "Incentivar la estandarización mínima de documentación y metadatos para evaluaciones; y",
 
-  "rdapp.about.apresentacao.finalidades.2": "Fomentar la toma de decisiones informada por evidencias, mediante el fortalecimiento de su uso en la formulación, implementación, monitoreo, evaluación y perfeccionamiento de políticas públicas;",
+  "evidencia.about.apresentacao.finalidades.4": "Apoyar la cooperación y la integración entre órganos e instituciones productoras de evaluaciones.",
 
-  "rdapp.about.apresentacao.finalidades.3": "Incentivar la estandarización mínima de documentación y metadatos para evaluaciones; y",
+  "evidencia.about.apresentacao.guia.label": "Conozca más: Acceda a la Guía de Uso del EvidencIA",
 
-  "rdapp.about.apresentacao.finalidades.4": "Apoyar la cooperación y la integración entre órganos e instituciones productoras de evaluaciones.",
+  "evidencia.about.acervo.title": "Acervo y Alianzas",
 
-  "rdapp.about.apresentacao.guia.label": "Conozca más: Acceda a la Guía de Uso del RDAPP",
+  "evidencia.about.acervo.p1": "El acervo del EvidencIA está compuesto por informes de evaluación, informes de recomendaciones, resúmenes ejecutivos, resúmenes de 2 páginas/<em>one-page reports</em> y notas técnicas/<em>policy briefs</em> derivados de procesos evaluativos de políticas públicas, programas, proyectos e intervenciones gubernamentales en el ámbito de la Administración Pública Federal. Nuevas colecciones podrán ser añadidas en el futuro.",
 
-  "rdapp.about.acervo.title": "Acervo y Alianzas",
+  "evidencia.about.acervo.comunidades.label": "El EvidencIA está organizado actualmente en las siguientes comunidades:",
 
-  "rdapp.about.acervo.p1": "El acervo del RDAPP está compuesto por informes de evaluación, informes de recomendaciones, resúmenes ejecutivos, resúmenes de 2 páginas/<em>one-page reports</em> y notas técnicas/<em>policy briefs</em> derivados de procesos evaluativos de políticas públicas, programas, proyectos e intervenciones gubernamentales en el ámbito de la Administración Pública Federal. Nuevas colecciones podrán ser añadidas en el futuro.",
+  "evidencia.about.acervo.comunidades.0": "Consejo de Monitoreo y Evaluación de Políticas Públicas",
 
-  "rdapp.about.acervo.comunidades.label": "El RDAPP está organizado actualmente en las siguientes comunidades:",
+  "evidencia.about.acervo.comunidades.1": "Ministerio de Planificación y Presupuesto",
 
-  "rdapp.about.acervo.comunidades.0": "Consejo de Monitoreo y Evaluación de Políticas Públicas",
+  "evidencia.about.acervo.comunidades.2": "Órganos Públicos Asociados",
 
-  "rdapp.about.acervo.comunidades.1": "Ministerio de Planificación y Presupuesto",
+  "evidencia.about.acervo.comunidades.3": "Entidades de la Sociedad Civil",
 
-  "rdapp.about.acervo.comunidades.2": "Órganos Públicos Asociados",
+  "evidencia.about.acervo.parcerias.title": "Alianzas Institucionales",
 
-  "rdapp.about.acervo.comunidades.3": "Entidades de la Sociedad Civil",
+  "evidencia.about.acervo.parcerias.p1": "El EvidencIA es un repositorio institucional del Ministerio de Planificación y Presupuesto (MPO) concebido como una plataforma colaborativa, abierta a la cooperación con:",
 
-  "rdapp.about.acervo.parcerias.title": "Alianzas Institucionales",
+  "evidencia.about.acervo.parcerias.natureza.label": "NATURALEZA DE LOS SOCIOS",
 
-  "rdapp.about.acervo.parcerias.p1": "El RDAPP es un repositorio institucional del Ministerio de Planificación y Presupuesto (MPO) concebido como una plataforma colaborativa, abierta a la cooperación con:",
+  "evidencia.about.acervo.parcerias.natureza.0": "órganos y entidades de la administración pública federal, estadual, distrital y municipal;",
 
-  "rdapp.about.acervo.parcerias.natureza.label": "NATURALEZA DE LOS SOCIOS",
+  "evidencia.about.acervo.parcerias.natureza.1": "instituciones públicas de enseñanza e investigación;",
 
-  "rdapp.about.acervo.parcerias.natureza.0": "órganos y entidades de la administración pública federal, estadual, distrital y municipal;",
+  "evidencia.about.acervo.parcerias.natureza.2": "entidades privadas, con o sin fines lucrativos, observada la legislación aplicable; o",
 
-  "rdapp.about.acervo.parcerias.natureza.1": "instituciones públicas de enseñanza e investigación;",
+  "evidencia.about.acervo.parcerias.natureza.3": "organizaciones internacionales.",
 
-  "rdapp.about.acervo.parcerias.natureza.2": "entidades privadas, con o sin fines lucrativos, observada la legislación aplicable; o",
+  "evidencia.about.acervo.dev.label": "DESARROLLO DEL REPOSITORIO",
 
-  "rdapp.about.acervo.parcerias.natureza.3": "organizaciones internacionales.",
+  "evidencia.about.acervo.dev.p1": "El EvidencIA contó con la asociación institucional del MPO con el Instituto Brasileño de Información en Ciencia y Tecnología (IBICT), para el desarrollo tecnológico, implantación y operación del Repositorio, con un equipo multidisciplinario compuesto por especialistas en ciencia de la información, gestión de datos, desarrollo de sistemas, accesibilidad, experiencia del usuario, curación digital e inteligencia artificial.",
 
-  "rdapp.about.acervo.dev.label": "DESARROLLO DEL REPOSITORIO",
+  "evidencia.about.quemsomos.title": "Quiénes Somos",
 
-  "rdapp.about.acervo.dev.p1": "El RDAPP contó con la asociación institucional del MPO con el Instituto Brasileño de Información en Ciencia y Tecnología (IBICT), para el desarrollo tecnológico, implantación y operación del Repositorio, con un equipo multidisciplinario compuesto por especialistas en ciencia de la información, gestión de datos, desarrollo de sistemas, accesibilidad, experiencia del usuario, curación digital e inteligencia artificial.",
+  "evidencia.about.quemsomos.p1": "La Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos (SMA) integra la estructura del Ministerio de Planificación y Presupuesto (MPO) y actúa en el fortalecimiento de la evaluación y el monitoreo de las políticas públicas, con foco en:",
 
-  "rdapp.about.quemsomos.title": "Quiénes Somos",
+  "evidencia.about.quemsomos.pilares.title": "PILARES DE ACTUACIÓN DE LA SMA EN M&E",
 
-  "rdapp.about.quemsomos.p1": "La Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos (SMA) integra la estructura del Ministerio de Planificación y Presupuesto (MPO) y actúa en el fortalecimiento de la evaluación y el monitoreo de las políticas públicas, con foco en:",
+  "evidencia.about.quemsomos.pilares.0": "Evaluación de las políticas públicas y los programas gubernamentales en el ámbito del Consejo de Monitoreo y Evaluación de Políticas Públicas (CMAP)",
 
-  "rdapp.about.quemsomos.pilares.title": "PILARES DE ACTUACIÓN DE LA SMA EN M&E",
+  "evidencia.about.quemsomos.pilares.1": "Articulación institucional y cooperación con órganos nacionales e internacionales",
 
-  "rdapp.about.quemsomos.pilares.0": "Evaluación de las políticas públicas y los programas gubernamentales en el ámbito del Consejo de Monitoreo y Evaluación de Políticas Públicas (CMAP)",
+  "evidencia.about.quemsomos.pilares.2": "Producción y difusión de evaluaciones de políticas públicas y revisión del gasto público",
 
-  "rdapp.about.quemsomos.pilares.1": "Articulación institucional y cooperación con órganos nacionales e internacionales",
+  "evidencia.about.quemsomos.pilares.3": "Fomento al intercambio de datos por órganos de la administración pública federal directa e indirecta, necesarios para la gestión y evaluación de políticas públicas",
 
-  "rdapp.about.quemsomos.pilares.2": "Producción y difusión de evaluaciones de políticas públicas y revisión del gasto público",
+  "evidencia.about.quemsomos.gestao.label": "GESTIÓN DEL EvidencIA",
 
-  "rdapp.about.quemsomos.pilares.3": "Fomento al intercambio de datos por órganos de la administración pública federal directa e indirecta, necesarios para la gestión y evaluación de políticas públicas",
+  "evidencia.about.quemsomos.gestao.p1": "La gestión del Repositorio es responsabilidad de la Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos (SMA/MPO), a quien corresponde, en los términos de la <a href=\"#\">Ordenanza instituidora</a>:",
 
-  "rdapp.about.quemsomos.p2": "Corresponde a la SMA la proposición y la coordinación estratégica del RDAPP, asegurando que el repositorio atienda las demandas de transparencia, evidencia y eficiencia en la gestión pública.",
+  "evidencia.about.quemsomos.gestao.competencias.0": "realizar la <strong>curación del Repositorio</strong>, comprendiendo los procedimientos técnicos y administrativos aplicados a la validación de forma, organización, descripción, contextualización, preservación, control de calidad y publicación de documentos, con el objetivo de asegurar autenticidad, integridad, confiabilidad, trazabilidad, transparencia y acceso calificado a la información;",
 
-  "rdapp.about.quemsomos.gestao.label": "GESTIÓN DEL RDAPP",
+  "evidencia.about.quemsomos.gestao.competencias.1": "definir y actualizar <strong>estándares mínimos de metadatos, taxonomías y formatos</strong>;",
 
-  "rdapp.about.quemsomos.gestao.p1": "La gestión del Repositorio es responsabilidad de la Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos (SMA/MPO), a quien corresponde, en los términos de la <a href=\"#\">Ordenanza instituidora</a>:",
+  "evidencia.about.quemsomos.gestao.competencias.2": "<strong>orientar y capacitar a los depositantes</strong> en cuanto a los procedimientos y requisitos de uso; y",
 
-  "rdapp.about.quemsomos.gestao.competencias.0": "realizar la <strong>curación del Repositorio</strong>, comprendiendo los procedimientos técnicos y administrativos aplicados a la validación de forma, organización, descripción, contextualización, preservación, control de calidad y publicación de documentos, con el objetivo de asegurar autenticidad, integridad, confiabilidad, trazabilidad, transparencia y acceso calificado a la información;",
+  "evidencia.about.quemsomos.gestao.competencias.3": "mantener y evolucionar la <strong>plataforma tecnológica</strong>, promoviendo la interoperabilidad con portales y sistemas de gobierno digital, transparencia y datos abiertos.",
 
-  "rdapp.about.quemsomos.gestao.competencias.1": "definir y actualizar <strong>estándares mínimos de metadatos, taxonomías y formatos</strong>;",
+  "evidencia.about.quemsomos.gestao.competencias.4": "<strong>Promoción y capacitación institucional</strong> para el uso y la contribución al EvidencIA",
 
-  "rdapp.about.quemsomos.gestao.competencias.2": "<strong>orientar y capacitar a los depositantes</strong> en cuanto a los procedimientos y requisitos de uso; y",
+  "evidencia.about.acervo.p2": "Todo el acervo está organizado según estándares de curación y documentación, asegurando calidad, trazabilidad, preservación digital y posibilidad de reutilización de las evidencias por gestores públicos, investigadores, órganos de control y la sociedad civil.",
 
-  "rdapp.about.quemsomos.gestao.competencias.3": "mantener y evolucionar la <strong>plataforma tecnológica</strong>, promoviendo la interoperabilidad con portales y sistemas de gobierno digital, transparencia y datos abiertos.",
+  "evidencia.about.acervo.acesso": "El EvidencIA adopta el principio de acceso abierto, respetados los límites legales relativos a la protección de datos personales, los derechos de autor y la información protegida por confidencialidad, en los términos de la legislación vigente.",
 
-  "rdapp.about.quemsomos.gestao.competencias.4": "<strong>Promoción y capacitación institucional</strong> para el uso y la contribución al RDAPP",
+  "evidencia.about.acervo.parcerias.p2": "Estas alianzas pueden abarcar, entre otros aspectos, el desarrollo tecnológico, la definición y adopción de estándares de metadatos, la capacitación de equipos, la curación compartida de contenidos, la interoperabilidad entre sistemas de información y el fortalecimiento de las estrategias de preservación digital y seguridad de la información.",
 
-  "rdapp.about.acervo.p2": "Todo el acervo está organizado según estándares de curación y documentación, asegurando calidad, trazabilidad, preservación digital y posibilidad de reutilización de las evidencias por gestores públicos, investigadores, órganos de control y la sociedad civil.",
+  "evidencia.about.acervo.parcerias.p3": "Por medio de la articulación institucional y la cooperación interorganizacional, el EvidencIA busca ampliar la cobertura y la diversidad de su acervo y promover mayor integración entre los productores y usuarios de evaluaciones de políticas públicas en Brasil.",
 
-  "rdapp.about.acervo.acesso": "El RDAPP adopta el principio de acceso abierto, respetados los límites legales relativos a la protección de datos personales, los derechos de autor y la información protegida por confidencialidad, en los términos de la legislación vigente.",
+  "evidencia.faq.6.q": "¿Qué precauciones se deben tomar al utilizar el repositorio y sus herramientas de IA?",
 
-  "rdapp.about.acervo.parcerias.p2": "Estas alianzas pueden abarcar, entre otros aspectos, el desarrollo tecnológico, la definición y adopción de estándares de metadatos, la capacitación de equipos, la curación compartida de contenidos, la interoperabilidad entre sistemas de información y el fortalecimiento de las estrategias de preservación digital y seguridad de la información.",
+  "evidencia.faq.6.a": "El usuario es responsable de verificar la exactitud de la información generada por IA. Las síntesis y extracciones deben servir de apoyo estratégico y no sustituyen el juicio humano ni la validación técnica de los especialistas y gestores.",
 
-  "rdapp.about.acervo.parcerias.p3": "Por medio de la articulación institucional y la cooperación interorganizacional, el RDAPP busca ampliar la cobertura y la diversidad de su acervo y promover mayor integración entre los productores y usuarios de evaluaciones de políticas públicas en Brasil.",
+  "evidencia.faq.7.q": "¿Puedo subir documentos al sistema?",
 
-  "rdapp.faq.6.q": "¿Qué precauciones se deben tomar al utilizar el repositorio y sus herramientas de IA?",
+  "evidencia.faq.7.a": "El depósito de archivos en el EvidencIA es realizado por organismos o instituciones asociadas. La asociación se formaliza mediante un acuerdo de adhesión celebrado con el Ministerio de Planificación y Presupuesto, garantizando la integridad y el origen de las evidencias depositadas.",
 
-  "rdapp.faq.6.a": "El usuario es responsable de verificar la exactitud de la información generada por IA. Las síntesis y extracciones deben servir de apoyo estratégico y no sustituyen el juicio humano ni la validación técnica de los especialistas y gestores.",
+  "evidencia.item-download": "Descargar documento (PDF)",
 
-  "rdapp.faq.7.q": "¿Puedo subir documentos al sistema?",
+  "evidencia.search.toolbar.export": "Exportar",
 
-  "rdapp.faq.7.a": "El depósito de archivos en el RDAPP es realizado por organismos o instituciones asociadas. La asociación se formaliza mediante un acuerdo de adhesión celebrado con el Ministerio de Planificación y Presupuesto, garantizando la integridad y el origen de las evidencias depositadas.",
+  "evidencia.search.toolbar.exporting": "Exportando...",
 
-  "rdapp.item-download": "Descargar documento (PDF)",
+  "evidencia.search.toolbar.export-format": "Elegir formato",
 
-  "rdapp.search.toolbar.export": "Exportar",
+  "evidencia.search.toolbar.export-docx-desc": "Word — metadatos completos",
 
-  "rdapp.search.toolbar.exporting": "Exportando...",
+  "evidencia.search.toolbar.export-csv-desc": "Hoja de cálculo — todos los campos",
 
-  "rdapp.search.toolbar.export-format": "Elegir formato",
+  "evidencia.search.toolbar.export-pdf-desc": "Informe para impresión",
 
-  "rdapp.search.toolbar.export-docx-desc": "Word — metadatos completos",
+  "evidencia.footer.org-name": "Ministerio de Planificación y Presupuesto",
 
-  "rdapp.search.toolbar.export-csv-desc": "Hoja de cálculo — todos los campos",
+  "evidencia.footer.org-sector": "Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos",
 
-  "rdapp.search.toolbar.export-pdf-desc": "Informe para impresión",
+  "evidencia.footer.org-address": "Esplanada dos Ministérios, Bloco K, Zona Cívico-Administrativa, CEP: 70040-906, Brasília - DF, Brasil",
 
-  "rdapp.footer.org-name": "Ministerio de Planificación y Presupuesto",
+  "evidencia.footer.org-email": "gabin.sma@planejamento.gov.br",
 
-  "rdapp.footer.org-sector": "Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos",
-
-  "rdapp.footer.org-address": "Esplanada dos Ministérios, Bloco K, Zona Cívico-Administrativa, CEP: 70040-906, Brasília - DF, Brasil",
-
-  "rdapp.footer.org-email": "gabin.sma@planejamento.gov.br",
-
-  "rdapp.footer.org-phone": "+55 (61) 2020-4399",
+  "evidencia.footer.org-phone": "+55 (61) 2020-4399",
 
   "search.form.search-type.lexical": "Léxica",
 

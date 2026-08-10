@@ -7,12 +7,12 @@
           <ds-item-versions-notice [item]="item"></ds-item-versions-notice>
           @if (!item.isWithdrawn || (isAdmin$ | async)) {
 
-            <section class="rdapp-full-hero" [attr.aria-label]="'rdapp.full-item.hero.aria-label' | translate">
+            <section class="rdapp-full-hero" [attr.aria-label]="'evidencia.full-item.hero.aria-label' | translate">
               <div class="rdapp-full-hero__shape" aria-hidden="true"></div>
               <div class="rdapp-full-hero__inner">
-                <span class="rdapp-full-hero__kicker">{{ 'rdapp.full-item.hero.kicker' | translate }}</span>
-                <h1 class="rdapp-full-hero__title">{{ 'rdapp.full-item.hero.title' | translate }}</h1>
-                <p class="rdapp-full-hero__subtitle">{{ 'rdapp.full-item.hero.subtitle' | translate }}</p>
+                <span class="rdapp-full-hero__kicker">{{ 'evidencia.full-item.hero.kicker' | translate }}</span>
+                <h1 class="rdapp-full-hero__title">{{ 'evidencia.full-item.hero.title' | translate }}</h1>
+                <p class="rdapp-full-hero__subtitle">{{ 'evidencia.full-item.hero.subtitle' | translate }}</p>
               </div>
             </section>
 
@@ -24,7 +24,7 @@
                 </div>
                 <a class="btn btn-outline-primary" [routerLink]="[(itemPageRoute$ | async)]">
                   <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                  {{ 'rdapp.full-item.back' | translate }}
+                  {{ 'evidencia.full-item.back' | translate }}
                 </a>
                 <ds-dso-edit-menu></ds-dso-edit-menu>
               </div>
@@ -33,9 +33,9 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th>{{ 'rdapp.full-item.table.field' | translate }}</th>
-                      <th>{{ 'rdapp.full-item.table.value' | translate }}</th>
-                      <th>{{ 'rdapp.full-item.table.language' | translate }}</th>
+                      <th>{{ 'evidencia.full-item.table.field' | translate }}</th>
+                      <th>{{ 'evidencia.full-item.table.value' | translate }}</th>
+                      <th>{{ 'evidencia.full-item.table.language' | translate }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -72,7 +72,7 @@
               }
 
               <div class="d-flex justify-content-center border-top bg-light p-3 mt-4">
-                <a [routerLink]="[(itemPageRoute$ | async)]">{{ 'rdapp.full-item.return' | translate }}</a>
+                <a [routerLink]="[(itemPageRoute$ | async)]">{{ 'evidencia.full-item.return' | translate }}</a>
               </div>
             </div>
 

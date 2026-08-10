@@ -106,15 +106,15 @@
 
       @if (linkType !== linkTypes.None) {
         <div class="item-list-source">
-          <span>{{ 'rdapp.item-card.source' | translate }}</span>
+          <span>{{ 'evidencia.item-card.source' | translate }}</span>
           @if (pdfDownloadRoute$ | async; as pdfUrl) {
             <a [href]="pdfUrl" target="_blank" rel="noopener noreferrer">
-              {{ 'rdapp.item-card.access-pdf' | translate }}
+              {{ 'evidencia.item-card.access-pdf' | translate }}
               <i class="fas fa-file-pdf" aria-hidden="true"></i>
             </a>
           } @else {
             <a [routerLink]="[itemPageRoute]">
-              {{ 'rdapp.item-card.access-pdf' | translate }}
+              {{ 'evidencia.item-card.access-pdf' | translate }}
               <i class="fas fa-file-pdf" aria-hidden="true"></i>
             </a>
           }
@@ -123,7 +123,7 @@
         <div class="item-actions-row">
           <a [routerLink]="[itemPageRoute]" class="btn-item-page">
             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-            {{ 'rdapp.item-card.access-page' | translate }}
+            {{ 'evidencia.item-card.access-page' | translate }}
           </a>
           <ds-document-more-results [item]="dso"></ds-document-more-results>
         </div>

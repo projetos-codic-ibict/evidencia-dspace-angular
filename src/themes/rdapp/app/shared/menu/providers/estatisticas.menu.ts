@@ -24,7 +24,7 @@ export class EstatisticasMenuProvider extends AbstractMenuProvider {
         visible: true,
         model: {
           type: MenuItemType.LINK,
-          text: 'rdapp.menu.estatisticas',
+          text: 'evidencia.menu.estatisticas',
           link: '/estatisticas',
         },
         icon: 'chart-column',

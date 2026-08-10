@@ -21,7 +21,7 @@ export class AboutRdappMenuProvider extends AbstractExpandableMenuProvider {
       visible: true,
       model: {
         type: MenuItemType.TEXT,
-        text: 'rdapp.menu.about',
+        text: 'evidencia.menu.about',
       } as TextMenuItemModel,
       icon: 'circle-info',
     });
@@ -33,7 +33,7 @@ export class AboutRdappMenuProvider extends AbstractExpandableMenuProvider {
         visible: true,
         model: {
           type: MenuItemType.LINK,
-          text: 'rdapp.menu.about.presentation',
+          text: 'evidencia.menu.about.presentation',
           link: '/sobre',
         },
       },
@@ -41,7 +41,7 @@ export class AboutRdappMenuProvider extends AbstractExpandableMenuProvider {
         visible: true,
         model: {
           type: MenuItemType.LINK,
-          text: 'rdapp.menu.about.goals',
+          text: 'evidencia.menu.about.goals',
           link: '/sobre',
         },
       },
@@ -49,7 +49,7 @@ export class AboutRdappMenuProvider extends AbstractExpandableMenuProvider {
         visible: true,
         model: {
           type: MenuItemType.LINK,
-          text: 'rdapp.menu.about.team',
+          text: 'evidencia.menu.about.team',
           link: '/sobre',
         },
       },

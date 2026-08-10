@@ -1,9 +1,9 @@
 <!-- SECTION 1 — Hero Banner -->
 <section class="faq-hero">
   <div class="container position-relative">
-    <p class="faq-hero__label">{{ 'rdapp.faq.hero.label' | translate }}</p>
-    <h1 class="faq-hero__title">{{ 'rdapp.faq.hero.title' | translate }}</h1>
-    <p class="faq-hero__subtitle">{{ 'rdapp.faq.hero.subtitle' | translate }}</p>
+    <p class="faq-hero__label">{{ 'evidencia.faq.hero.label' | translate }}</p>
+    <h1 class="faq-hero__title">{{ 'evidencia.faq.hero.title' | translate }}</h1>
+    <p class="faq-hero__subtitle">{{ 'evidencia.faq.hero.subtitle' | translate }}</p>
   </div>
   <div class="faq-hero__decoration" aria-hidden="true"></div>
 </section>
@@ -24,7 +24,7 @@
               (click)="toggle(i)"
               type="button"
             >
-              <span class="faq-accordion__question" [innerHTML]="'rdapp.faq.' + i + '.q' | translate"></span>
+              <span class="faq-accordion__question" [innerHTML]="'evidencia.faq.' + i + '.q' | translate"></span>
               <span class="faq-accordion__icon">
                 <i class="fas fa-chevron-down"></i>
               </span>
@@ -35,7 +35,7 @@
               [id]="'faq-panel-' + i"
               role="region"
             >
-              <p [innerHTML]="'rdapp.faq.' + i + '.a' | translate"></p>
+              <p [innerHTML]="'evidencia.faq.' + i + '.a' | translate"></p>
             </div>
           </div>
         }
@@ -43,11 +43,11 @@
 
       <!-- CTA Box -->
       <div class="faq-cta">
-        <h3 class="faq-cta__title">{{ 'rdapp.faq.cta.title' | translate }}</h3>
-        <p class="faq-cta__subtitle">{{ 'rdapp.faq.cta.subtitle' | translate }}</p>
+        <h3 class="faq-cta__title">{{ 'evidencia.faq.cta.title' | translate }}</h3>
+        <p class="faq-cta__subtitle">{{ 'evidencia.faq.cta.subtitle' | translate }}</p>
         <a href="mailto:suporte@rdapp.gov.br" class="faq-cta__btn">
           <i class="fas fa-envelope"></i>
-          {{ 'rdapp.faq.cta.btn' | translate }}
+          {{ 'evidencia.faq.cta.btn' | translate }}
         </a>
       </div>
 

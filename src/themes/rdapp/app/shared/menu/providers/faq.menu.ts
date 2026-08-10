@@ -21,7 +21,7 @@ export class FaqMenuProvider extends AbstractMenuProvider {
         visible: true,
         model: {
           type: MenuItemType.LINK,
-          text: 'rdapp.menu.faq',
+          text: 'evidencia.menu.faq',
           link: '/faq',
         },
         icon: 'circle-question',

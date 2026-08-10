@@ -24,18 +24,18 @@
 
     <!-- CA02: Resumo expansível -->
     @if (object?.firstMetadataValue('dc.description.abstract')) {
-      <section class="rdapp-item-section" aria-label="{{ 'rdapp.item.abstract' | translate }}">
+      <section class="rdapp-item-section" aria-label="{{ 'evidencia.item.abstract' | translate }}">
         <div class="rdapp-item-section__heading">
           <div class="rdapp-item-section__icon-wrap">
             <i class="fas fa-align-left" aria-hidden="true"></i>
           </div>
-          <h2 class="rdapp-item-section__title">{{ 'rdapp.item.abstract' | translate }}</h2>
+          <h2 class="rdapp-item-section__title">{{ 'evidencia.item.abstract' | translate }}</h2>
         </div>
         <div class="rdapp-item-abstract-card">
           <p class="rdapp-item-abstract-card__text">{{ abstractDisplay }}</p>
           @if (abstractIsTruncatable) {
             <button type="button" class="btn btn-link p-0 fw-bold mt-3" (click)="toggleAbstract()">
-              {{ (isAbstractExpanded ? 'rdapp.item.abstract.read-less' : 'rdapp.item.abstract.read-more') | translate }}
+              {{ (isAbstractExpanded ? 'evidencia.item.abstract.read-less' : 'evidencia.item.abstract.read-more') | translate }}
               <i class="fas ms-1" [class.fa-chevron-down]="!isAbstractExpanded" [class.fa-chevron-up]="isAbstractExpanded" aria-hidden="true"></i>
             </button>
           }
@@ -45,12 +45,12 @@
 
     <!-- CA04: Palavras-chave -->
     @if (object?.allMetadataValues('dc.subject')?.length > 0) {
-      <section class="rdapp-item-section" aria-label="{{ 'rdapp.item.keywords' | translate }}">
+      <section class="rdapp-item-section" aria-label="{{ 'evidencia.item.keywords' | translate }}">
         <div class="rdapp-item-section__heading">
           <div class="rdapp-item-section__icon-wrap">
             <i class="fas fa-tags" aria-hidden="true"></i>
           </div>
-          <h2 class="rdapp-item-section__title">{{ 'rdapp.item.keywords' | translate }}</h2>
+          <h2 class="rdapp-item-section__title">{{ 'evidencia.item.keywords' | translate }}</h2>
         </div>
         <div class="rdapp-item-keywords">
           @for (keyword of object.allMetadataValues('dc.subject'); track keyword) {
@@ -61,10 +61,10 @@
     }
 
     <!-- Referência Bibliográfica -->
-    <section id="rdapp-item-reference" class="rdapp-item-reference" aria-label="{{ 'rdapp.item.reference.title' | translate }}">
+    <section id="rdapp-item-reference" class="rdapp-item-reference" aria-label="{{ 'evidencia.item.reference.title' | translate }}">
       <div class="rdapp-item-reference__header">
         <h4 class="rdapp-item-reference__title">
-          {{ 'rdapp.item.reference.title' | translate }}
+          {{ 'evidencia.item.reference.title' | translate }}
         </h4>
         <div class="rdapp-item-reference__actions">
           <button type="button"
@@ -73,9 +73,9 @@
                   [disabled]="bibliographiesLoading || !selectedReference"
                   (click)="copyReference()">
             @if (referenceIsCopied) {
-              <i class="fas fa-check me-1" aria-hidden="true"></i>{{ 'rdapp.item.reference.copied' | translate }}
+              <i class="fas fa-check me-1" aria-hidden="true"></i>{{ 'evidencia.item.reference.copied' | translate }}
             } @else {
-              {{ 'rdapp.item.reference.copy' | translate }}
+              {{ 'evidencia.item.reference.copy' | translate }}
             }
           </button>
           <div ngbDropdown class="rdapp-item-reference__format-dropdown">
@@ -110,21 +110,21 @@
       <div class="rdapp-item-metrics__actions">
         <a [routerLink]="[itemPageRoute + '/full']" class="rdapp-item-metrics__dublin-btn">
           <i class="fas fa-database" aria-hidden="true"></i>
-          {{ 'rdapp.item.metrics.dublin' | translate }}
+          {{ 'evidencia.item.metrics.dublin' | translate }}
         </a>
       </div>
 
     <!-- Métricas e Transparência Técnica -->
-<section class="rdapp-item-metrics" aria-label="{{ 'rdapp.item.metrics.title' | translate }}">
+<section class="rdapp-item-metrics" aria-label="{{ 'evidencia.item.metrics.title' | translate }}">
       
-      <h4 class="rdapp-item-metrics__title">{{ 'rdapp.item.metrics.title' | translate }}</h4>
+      <h4 class="rdapp-item-metrics__title">{{ 'evidencia.item.metrics.title' | translate }}</h4>
 
       @let metrics = (reports$ | async);
       <div class="rdapp-item-metrics__stats-card">
         
         <div class="rdapp-item-metrics__stat">
           <span class="rdapp-item-metrics__stat-label rdapp-item-metrics__stat-label--blue">
-            {{ 'rdapp.item.metrics.total-access' | translate }}
+            {{ 'evidencia.item.metrics.total-access' | translate }}
           </span>
           <span class="rdapp-item-metrics__stat-value">
             @if (metrics) { {{ getReportTotal(metrics, 'TotalVisits') }} } @else { – }
@@ -136,7 +136,7 @@
         
         <div class="rdapp-item-metrics__stat">
           <span class="rdapp-item-metrics__stat-label rdapp-item-metrics__stat-label--blue">
-            {{ 'rdapp.item.metrics.total-downloads' | translate }}
+            {{ 'evidencia.item.metrics.total-downloads' | translate }}
           </span>
           <span class="rdapp-item-metrics__stat-value">
             @if (metrics) { {{ getReportTotal(metrics, 'TotalDownloads') }} } @else { – }
@@ -148,7 +148,7 @@
         
         <div class="rdapp-item-metrics__stat">
           <span class="rdapp-item-metrics__stat-label rdapp-item-metrics__stat-label--green">
-            {{ 'rdapp.item.metrics.copy-count' | translate }}
+            {{ 'evidencia.item.metrics.copy-count' | translate }}
           </span>
           <span class="rdapp-item-metrics__stat-value">
             {{ referenceCopiesCount !== undefined ? referenceCopiesCount : '–' }}
@@ -167,7 +167,7 @@
   <!-- fim: conteúdo -->
 
   <!-- Sidebar: coluna direita -->
-  <aside class="col-12 col-md-4 order-1 order-md-2" aria-label="{{ 'rdapp.item.meta.institution' | translate }}">
+  <aside class="col-12 col-md-4 order-1 order-md-2" aria-label="{{ 'evidencia.item.meta.institution' | translate }}">
 
     <!-- Card da capa -->
     <div class="rdapp-item-cover-card">
@@ -184,7 +184,7 @@
         <div class="rdapp-item-meta-card__field">
           <p class="rdapp-item-meta-card__label">
             <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-            {{ 'rdapp.item.meta.date' | translate }}
+            {{ 'evidencia.item.meta.date' | translate }}
           </p>
           <p class="rdapp-item-meta-card__value rdapp-item-meta-card__value--date">
             {{ object.firstMetadataValue('dc.date.issued') | slice:0:4 }}
@@ -196,7 +196,7 @@
         <div class="rdapp-item-meta-card__field">
           <p class="rdapp-item-meta-card__label">
             <i class="fas fa-users" aria-hidden="true"></i>
-            {{ 'rdapp.item.meta.authors' | translate }}
+            {{ 'evidencia.item.meta.authors' | translate }}
           </p>
           <p class="rdapp-item-meta-card__value">
             {{ object.allMetadataValues('dc.contributor.author').join('; ') }}
@@ -208,7 +208,7 @@
   <div class="rdapp-item-meta-card__field">
     <p class="rdapp-item-meta-card__label">
       <i class="fas fa-building" aria-hidden="true"></i>
-      {{ 'rdapp.item.meta.institution' | translate }}
+      {{ 'evidencia.item.meta.institution' | translate }}
     </p>
     <p class="rdapp-item-meta-card__value">
       {{ instituicao }}
@@ -220,7 +220,7 @@
         <div class="rdapp-item-meta-card__field">
           <p class="rdapp-item-meta-card__label">
             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-            {{ 'rdapp.item.meta.external.link' | translate }}
+            {{ 'evidencia.item.meta.external.link' | translate }}
           </p>
           <p class="rdapp-item-meta-card__value">
             <a [href]="object.firstMetadataValue('dc.identifier.uri')"

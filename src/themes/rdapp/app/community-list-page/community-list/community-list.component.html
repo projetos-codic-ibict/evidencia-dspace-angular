@@ -29,7 +29,7 @@
       <div class="community-header d-flex align-items-center">
         <span class="community-icon" aria-hidden="true"><i class="fas fa-university"></i></span>
         <div class="community-info">
-          <span class="community-label">{{ 'rdapp.communityList.communityLabel' | translate }}</span>
+          <span class="community-label">{{ 'evidencia.communityList.communityLabel' | translate }}</span>
           <span class="d-flex align-items-center">
             <a [routerLink]="node.route" class="community-name" role="link" tabindex="0">{{ dsoNameService.getName(node.payload) }}</a>
             @if (node.payload.archivedItemsCount >= 0) {
@@ -52,10 +52,10 @@
       @if (node.isExpanded) {
         <div class="collections-section-header">
           <i class="fas fa-folder" aria-hidden="true"></i>
-          <span class="collections-title">{{ 'rdapp.communityList.collectionsTitle' | translate }}</span>
+          <span class="collections-title">{{ 'evidencia.communityList.collectionsTitle' | translate }}</span>
           @if (collectionCount$(node) | async; as collCount) {
             <small class="collections-counter border rounded-pill bg-white text-muted px-3 py-1 text-nowrap ms-auto">
-              {{ collCount }} {{ (collCount === 1 ? 'rdapp.communityList.collectionCounter.singular' : 'rdapp.communityList.collectionCounter.plural') | translate }}
+              {{ collCount }} {{ (collCount === 1 ? 'evidencia.communityList.collectionCounter.singular' : 'evidencia.communityList.collectionCounter.plural') | translate }}
             </small>
           }
         </div>
