@@ -1,7 +1,7 @@
 <section class="rdapp-home-news-hero" role="banner" aria-label="Destaque principal">
   <div class="container rdapp-home-news-hero-container">
     <div class="row g-4 g-lg-5 align-items-center">
-      <div class="col-12 col-lg-7">
+      <div class="col-12">
         <div class="rdapp-home-news-content text-center text-lg-start">
           <h1 class="rdapp-home-news-title" [attr.aria-label]="'evidencia.home.hero.aria-label' | translate">
             <span class="rdapp-home-news-title-tone-dark" [innerHTML]="'evidencia.home.hero.title-dark' | translate"></span>
@@ -15,25 +15,6 @@
             <i class="fas fa-play-circle"></i>
             {{ 'evidencia.home.hero.link' | translate }}
           </a>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-5">
-        <div class="rdapp-home-news-visual-wrapper">
-          <div class="rdapp-home-news-visual-card">
-            <img src="assets/rdapp/images/mapa.png" [attr.alt]="'evidencia.home.hero.map-alt' | translate"
-              class="img-fluid rdapp-home-news-map" />
-          </div>
-
-          <div class="rdapp-home-news-stats" [attr.aria-label]="'evidencia.home.hero.stats-aria-label' | translate">
-            <div class="rdapp-home-news-stats-icon" aria-hidden="true">
-              <span class="fas fa-chart-line"></span>
-            </div>
-            <div class="rdapp-home-news-stats-text">
-              <p class="rdapp-home-news-stats-value mb-0">{{ 'evidencia.home.hero.stats-value' | translate }}</p>
-              <p class="rdapp-home-news-stats-label mb-0">{{ 'evidencia.home.hero.stats-label' | translate }}</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
