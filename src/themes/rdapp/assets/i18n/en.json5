@@ -282,4 +282,6 @@
   "evidencia.communityList.communityCounter.plural": "communities",
   "evidencia.communityList.collectionCounter.singular": "collection",
   "evidencia.communityList.collectionCounter.plural": "collections",
+  "vocabulary-treeview.tree.description.rdapp-ufs": "Brazilian Federative Units",
+  "vocabulary-treeview.tree.description.rdapp-politicas": "Public Policies or Evaluated Objects",
 }

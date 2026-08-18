@@ -295,4 +295,6 @@
   "evidencia.communityList.communityCounter.plural": "comunidades",
   "evidencia.communityList.collectionCounter.singular": "colección",
   "evidencia.communityList.collectionCounter.plural": "colecciones",
+  "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades Federativas de Brasil",
+  "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas Públicas u Objetos Evaluados",
 }
