@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,7 @@ import { BrowserOnlyPipe } from '../../../../../app/shared/utils/browser-only.pi
     BrowserOnlyPipe,
     FormsModule,
     NgbTooltipModule,
+    NgTemplateOutlet,
     TranslateModule,
   ],
 })

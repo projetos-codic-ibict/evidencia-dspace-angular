@@ -38,6 +38,15 @@
   margin-bottom: 0.875rem;
 }
 
+// No home, aproxima o botão "Ferramentas de busca" (mobile) da linha do
+// seletor Léxica/Semântica do ds-search-form logo acima, pra lerem como uma
+// única barra de controles em vez de duas linhas separadas.
+:host-context(ds-base-home-page) .search-controls {
+  @include media-breakpoint-down(md) {
+    margin-top: -0.75rem;
+  }
+}
+
 .open-sidebar.btn,
 .open-sidebar.btn:focus,
 .open-sidebar.btn:active,

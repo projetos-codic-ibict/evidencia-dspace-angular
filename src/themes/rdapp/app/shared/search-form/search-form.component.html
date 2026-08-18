@@ -1,4 +1,4 @@
-<form #form="ngForm" (ngSubmit)="onSubmit(form.value)" action="/search">
+<form (ngSubmit)="onSubmit({ query: query, searchType: searchType })" action="/search">
   <div>
     <div class="mb-1 input-group">
       @if (showScopeSelector) {
@@ -29,32 +29,15 @@
         [placeholder]="searchPlaceholder"
         tabindex="0"
       />
-      <select
-        class="form-select select-search-type"
-        [(ngModel)]="searchType"
-        name="searchType"
+      <div
+        class="search-type-toggle search-type-toggle--inline d-none d-lg-flex"
+        role="group"
         aria-label="Search type"
-        [attr.data-test]="'search-type-select' | dsBrowserOnly"
       >
-        <option
-          value="lexical"
-          [attr.title]="'search.form.search-type.lexical.hint' | translate"
-        >
-          {{ "search.form.search-type.lexical" | translate }}
-        </option>
-        @if (semanticSearchEnabled) {
-          <option value="semantic"
-            [attr.title]="'search.form.search-type.semantic.hint' | translate">
-            {{ 'search.form.search-type.semantic' | translate }} (beta)
-          </option>
-        }
-        @if (hybridSearchEnabled) {
-          <option value="hybrid"
-            [attr.title]="'search.form.search-type.hybrid.hint' | translate">
-            {{ 'search.form.search-type.hybrid' | translate }} (beta)
-          </option>
-        }
-      </select>
+        <ng-container
+          *ngTemplateOutlet="searchTypeButtons; context: { dataTestSuffix: '' }"
+        ></ng-container>
+      </div>
       <button
         type="submit"
         class="search-button btn btn-{{ brandColor }}"
@@ -64,6 +47,13 @@
       >
         {{ "search.form.search" | translate }}
       </button>
+    </div>
+    <div class="search-type-row d-flex d-lg-none align-items-center">
+      <div class="search-type-toggle" role="group" aria-label="Search type">
+        <ng-container
+          *ngTemplateOutlet="searchTypeButtons; context: { dataTestSuffix: '-mobile' }"
+        ></ng-container>
+      </div>
     </div>
     @if (showScopeSelector) {
       <div
@@ -88,3 +78,40 @@
     }
   </div>
 </form>
+
+<ng-template #searchTypeButtons let-dataTestSuffix="dataTestSuffix">
+  <button
+    type="button"
+    class="search-type-toggle__btn"
+    [class.active]="searchType === 'lexical'"
+    [attr.title]="'search.form.search-type.lexical.hint' | translate"
+    [attr.data-test]="('search-type-lexical' + dataTestSuffix) | dsBrowserOnly"
+    (click)="searchType = 'lexical'"
+  >
+    {{ "search.form.search-type.lexical" | translate }}
+  </button>
+  @if (semanticSearchEnabled) {
+    <button
+      type="button"
+      class="search-type-toggle__btn"
+      [class.active]="searchType === 'semantic'"
+      [attr.title]="'search.form.search-type.semantic.hint' | translate"
+      [attr.data-test]="('search-type-semantic' + dataTestSuffix) | dsBrowserOnly"
+      (click)="searchType = 'semantic'"
+    >
+      {{ "search.form.search-type.semantic" | translate }}
+    </button>
+  }
+  @if (hybridSearchEnabled) {
+    <button
+      type="button"
+      class="search-type-toggle__btn"
+      [class.active]="searchType === 'hybrid'"
+      [attr.title]="'search.form.search-type.hybrid.hint' | translate"
+      [attr.data-test]="('search-type-hybrid' + dataTestSuffix) | dsBrowserOnly"
+      (click)="searchType = 'hybrid'"
+    >
+      {{ "search.form.search-type.hybrid" | translate }}
+    </button>
+  }
+</ng-template>
