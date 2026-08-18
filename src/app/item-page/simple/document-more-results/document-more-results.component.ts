@@ -37,6 +37,7 @@ interface SemanticApiResult {
   snippet: string;
   score: number;
   type: string;
+  item_uuid: string;
 }
 
 interface DocumentOccurrence {
@@ -253,10 +254,10 @@ export class DocumentMoreResultsComponent implements OnChanges {
 
     return results
       .filter((result) => {
-        if (!hasValue(result?.doc_id)) {
+        if (!hasValue(result?.item_uuid)) {
           return false;
         }
-        return result.doc_id.trim().toLowerCase() === normalizedItemUuid;
+        return result.item_uuid.trim().toLowerCase() === normalizedItemUuid;
       })
       .map((result) => ({
         trecho: result.snippet,
