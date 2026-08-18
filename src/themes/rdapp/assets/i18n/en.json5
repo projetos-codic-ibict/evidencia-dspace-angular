@@ -117,6 +117,10 @@
   "search.filters.filter.cidade.placeholder": "City",
   "search.filters.filter.cidade.label": "Search by city",
   "search.filters.applied.f.cidade": "City",
+  "search.filters.applied.f.access_status": "Evaluation Type",
+  "search.filters.filter.access_status.head": "Evaluation Type",
+  "search.filters.filter.access_status.placeholder": "Evaluation type",
+  "search.filters.filter.access_status.label": "Search by evaluation type",
 
   // Advanced search (sidebar)
   "search.sidebar.advanced-search.title": "Advanced Search",
@@ -186,6 +190,8 @@
   "evidencia.item.keywords": "Keywords",
   "evidencia.item.abstract.read-more": "Read more",
   "evidencia.item.abstract.read-less": "Read less",
+  "evidencia.item.meta.external.link": "External Publication Link",
+  "evidencia.item-download": "Download Document (PDF)",
 
   // FAQ page
   "evidencia.faq.hero.label": "SUPPORT",

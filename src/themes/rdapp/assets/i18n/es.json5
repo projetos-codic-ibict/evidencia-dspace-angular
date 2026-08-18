@@ -103,10 +103,10 @@
   "search.filters.filter.cidade.placeholder": "Ciudad",
   "search.filters.filter.cidade.label": "Buscar por ciudad",
   "search.filters.applied.f.cidade": "Ciudad",
-  "search.filters.applied.f.access_status": "Estado de acceso",
-  "search.filters.filter.access_status.head": "Estado de acceso",
-  "search.filters.filter.access_status.placeholder": "Estado de acceso",
-  "search.filters.filter.access_status.label": "Buscar por estado de acceso",
+  "search.filters.applied.f.access_status": "Tipo de Evaluación",
+  "search.filters.filter.access_status.head": "Tipo de Evaluación",
+  "search.filters.filter.access_status.placeholder": "Tipo de evaluación",
+  "search.filters.filter.access_status.label": "Buscar por tipo de evaluación",
 
   // Búsqueda avanzada
   "search.sidebar.advanced-search.title": "Búsqueda Avanzada",
@@ -183,6 +183,8 @@
   "evidencia.item.keywords": "Palabras clave",
   "evidencia.item.abstract.read-more": "Leer más",
   "evidencia.item.abstract.read-less": "Leer menos",
+  "evidencia.item.meta.external.link": "Enlace Externo de la Publicación",
+  "evidencia.item-download": "Descargar Documento (PDF)",
   "evidencia.item.cited.copied": "¡Copiado!",
 
   // FAQ page
@@ -284,9 +286,6 @@
   "evidencia.document-more-results.section-label": "Sección:",
   "evidencia.document-more-results.page-number": "Página {{page}}",
   "evidencia.document-more-results.pagination-label": "Página {{current}} de {{total}}",
-  "evidencia.document-more-results.prev": "Anterior",
-  "evidencia.document-more-results.next": "Siguiente",
-  "evidencia.document-more-results.page-link-aria": "Ver página {{page}} del documento",
   "evidencia.communityList.subtitle": "Estructura organizacional",
   "evidencia.communityList.description": "Navegue por las publicaciones organizadas jerárquicamente por organismos y sus respectivas colecciones temáticas.",
   "evidencia.communityList.communityLabel": "Comunidad",
