@@ -1,11 +1,8 @@
-import {
-  CommonModule,
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   HttpClient,
   HttpParams,
 } from '@angular/common/http';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,20 +15,19 @@ import {
   ActivatedRoute,
   Router,
 } from '@angular/router';
+import { hasValue } from '@dspace/shared/utils/empty.util';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   catchError,
   map,
   of,
-  switchMap,
   take,
 } from 'rxjs';
 
-import { getBitstreamDownloadRoute } from '@dspace/core/router/utils/dso-route.utils';
 import { BitstreamDataService } from '../../../core/data/bitstream-data.service';
 import { Bitstream } from '../../../core/shared/bitstream.model';
 import { Item } from '../../../core/shared/item.model';
 import { getFirstSucceededRemoteListPayload } from '../../../core/shared/operators';
-import { hasValue } from '@dspace/shared/utils/empty.util';
 
 interface SemanticApiResult {
   doc_id: string;
@@ -51,7 +47,6 @@ interface DocumentOccurrence {
 
 @Component({
   selector: 'ds-document-more-results',
-  standalone: true,
   imports: [
     CommonModule,
     TranslateModule,
@@ -64,7 +59,6 @@ export class DocumentMoreResultsComponent implements OnChanges {
 
   @Input() item: Item;
   @Input() semanticText = '';
-  @Input() docName = '';
   @Input() apiBaseUrl = 'https://api.rdapp.comais.uft.edu.br';
   @Input() endpointPath = '/api/search/semantic';
   @Input() pageSize = 3;
@@ -90,8 +84,7 @@ export class DocumentMoreResultsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const contextChanged = hasValue(changes.item)
-      || hasValue(changes.semanticText)
-      || hasValue(changes.docName);
+      || hasValue(changes.semanticText);
 
     if (contextChanged) {
       this.hasLoadedFromApi = false;
@@ -155,7 +148,7 @@ export class DocumentMoreResultsComponent implements OnChanges {
       }
 
       if (hasValue(this.item?.uuid)) {
-        this.router.navigate(
+        void this.router.navigate(
           ['/items', this.item.uuid],
           { queryParams: { page: safePage } },
         );
@@ -175,24 +168,23 @@ export class DocumentMoreResultsComponent implements OnChanges {
     this.hasError = false;
 
     const endpointUrl = this.resolveApiEndpointUrl();
+    const itemUuid = this.resolveItemUuid();
 
-    this.resolveDocIdForApi().pipe(
+    if (!this.hasNonBlankValue(itemUuid)) {
+      this.isLoading = false;
+      this.hasLoadedFromApi = true;
+      this.cdr.markForCheck();
+      return;
+    }
+
+    const params = new HttpParams()
+      .set('q', query)
+      .set('limit', '50')
+      .set('uuid', itemUuid);
+
+    this.http.get<SemanticApiResult[]>(endpointUrl, { params }).pipe(
       take(1),
-      switchMap((docId) => {
-        if (!this.hasNonBlankValue(docId)) {
-          return of([]);
-        }
-
-        const params = new HttpParams()
-          .set('q', query)
-          .set('limit', '50')
-          .set('doc_id', docId);
-
-        return this.http.get<SemanticApiResult[]>(endpointUrl, { params }).pipe(
-          take(1),
-          map((results) => this.mapApiResultsToOccurrences(results, docId)),
-        );
-      }),
+      map((results) => this.mapApiResultsToOccurrences(results, itemUuid)),
       catchError(() => {
         this.hasError = true;
         return of([]);
@@ -207,42 +199,14 @@ export class DocumentMoreResultsComponent implements OnChanges {
     });
   }
 
-  private resolveDocIdForApi() {
-    const fromMetadata = this.resolveDocName();
-    if (this.hasNonBlankValue(fromMetadata)) {
-      return of(fromMetadata);
-    }
-
-    if (!hasValue(this.item)) {
-      return of('');
-    }
-
-    return this.bitstreamDataService.findAllByItemAndBundleName(
-      this.item,
-      'ORIGINAL',
-      { elementsPerPage: 10 },
-    ).pipe(
-      getFirstSucceededRemoteListPayload(),
-      map((bitstreams) => {
-        for (const bitstream of bitstreams ?? []) {
-          const bitstreamName = (bitstream?.name ?? '').trim();
-          const extracted = this.extractPdfFileNames(bitstreamName);
-          if (extracted.length > 0) {
-            return extracted[0];
-          }
-        }
-        return '';
-      }),
-      catchError(() => of('')),
-    );
+  private resolveItemUuid(): string {
+    return this.item?.uuid ?? '';
   }
 
   private resolvePdfDownloadRoute() {
     if (!hasValue(this.item)) {
       return of('');
     }
-
-    const normalizedPreferredDocName = this.normalizeDocName(this.resolveDocName());
 
     return this.bitstreamDataService.findAllByItemAndBundleName(
       this.item,
@@ -251,8 +215,8 @@ export class DocumentMoreResultsComponent implements OnChanges {
     ).pipe(
       getFirstSucceededRemoteListPayload(),
       map((bitstreams: Bitstream[]) => {
-        const selected = this.selectPdfBitstream(bitstreams ?? [], normalizedPreferredDocName);
-        
+        const selected = this.selectPdfBitstream(bitstreams ?? []);
+
         if (!hasValue(selected)) {
           return '';
         }
@@ -263,48 +227,36 @@ export class DocumentMoreResultsComponent implements OnChanges {
     );
   }
 
-  private selectPdfBitstream(bitstreams: Bitstream[], normalizedPreferredDocName: string): Bitstream | undefined {
-    let firstPdf: Bitstream | undefined;
-
+  private selectPdfBitstream(bitstreams: Bitstream[]): Bitstream | undefined {
     for (const bitstream of bitstreams) {
       const bitstreamName = (bitstream?.name ?? '').trim();
       if (!this.isPdfBitstreamName(bitstreamName)) {
         continue;
       }
 
-      if (!hasValue(firstPdf)) {
-        firstPdf = bitstream;
-      }
-
-      if (this.hasNonBlankValue(normalizedPreferredDocName)) {
-        const normalizedBitstreamName = this.normalizeDocName(bitstreamName);
-        if (normalizedBitstreamName === normalizedPreferredDocName) {
-          return bitstream;
-        }
-      }
+      return bitstream;
     }
 
-    return firstPdf;
+    return undefined;
   }
 
-  private isPdfBitstreamName(fileName: string): boolean {
-    return this.hasNonBlankValue(fileName) && fileName.toLowerCase().endsWith('.pdf');
+  private isPdfBitstreamName(value: string): boolean {
+    return this.hasNonBlankValue(value) && value.toLowerCase().endsWith('.pdf');
   }
 
-  private mapApiResultsToOccurrences(results: SemanticApiResult[], docId: string): DocumentOccurrence[] {
+  private mapApiResultsToOccurrences(results: SemanticApiResult[], itemUuid: string): DocumentOccurrence[] {
     if (!Array.isArray(results)) {
       return [];
     }
 
-    const normalizedDocId = this.normalizeDocName(docId);
+    const normalizedItemUuid = itemUuid.trim().toLowerCase();
 
     return results
       .filter((result) => {
         if (!hasValue(result?.doc_id)) {
           return false;
         }
-        const normalized = this.normalizeDocName(result.doc_id);
-        return normalized === normalizedDocId;
+        return result.doc_id.trim().toLowerCase() === normalizedItemUuid;
       })
       .map((result) => ({
         trecho: result.snippet,
@@ -327,92 +279,6 @@ export class DocumentMoreResultsComponent implements OnChanges {
     }
 
     return '';
-  }
-
-  private resolveDocName(): string {
-    if (this.hasNonBlankValue(this.docName)) {
-      return this.docName.trim();
-    }
-
-    const docNameCandidates = this.resolveItemDocNameCandidates();
-    return docNameCandidates[0] || '';
-  }
-
-  private resolveItemDocNameCandidates(): string[] {
-    const values = new Set<string>();
-
-    if (hasValue(this.item?.metadata)) {
-      Object.keys(this.item.metadata).forEach((key) => {
-        const metadataValues = this.item.metadata[key] ?? [];
-        metadataValues.forEach((metadataValue) => {
-          const raw = (metadataValue?.value ?? '').trim();
-          if (!this.hasNonBlankValue(raw)) {
-            return;
-          }
-
-          this.extractPdfFileNames(raw).forEach((fileName) => {
-            values.add(fileName);
-            values.add(this.extractBaseName(fileName));
-          });
-        });
-      });
-    }
-
-    const preferredFileName = this.item?.firstMetadataValue('dc.identifier.filename');
-    if (this.hasNonBlankValue(preferredFileName)) {
-      this.extractPdfFileNames(preferredFileName).forEach((fileName) => {
-        values.add(fileName);
-        values.add(this.extractBaseName(fileName));
-      });
-    }
-
-    return Array.from(values)
-      .map((value) => value.trim())
-      .filter((value) => this.hasNonBlankValue(value));
-  }
-
-  private extractPdfFileNames(value: string): string[] {
-    const candidates = new Set<string>();
-    const decoded = this.safeDecodeURIComponent(value.trim());
-
-    // Direct value or path-like value.
-    const baseName = this.extractBaseName(decoded);
-    if (baseName.toLowerCase().endsWith('.pdf')) {
-      candidates.add(baseName);
-    }
-
-    // Values such as filename=documento.pdf or text containing documento.pdf.
-    const regex = /([\w\-. ]+\.pdf)/ig;
-    let match: RegExpExecArray | null = regex.exec(decoded);
-    while (match !== null) {
-      const fileName = (match[1] ?? '').trim();
-      if (this.hasNonBlankValue(fileName)) {
-        candidates.add(fileName);
-      }
-      match = regex.exec(decoded);
-    }
-
-    return Array.from(candidates)
-      .map((fileName) => fileName.trim())
-      .filter((fileName) => this.hasNonBlankValue(fileName));
-  }
-
-  private safeDecodeURIComponent(value: string): string {
-    try {
-      return decodeURIComponent(value);
-    } catch {
-      return value;
-    }
-  }
-
-  private normalizeDocName(value: string): string {
-    return this.extractBaseName(value).trim().toLowerCase();
-  }
-
-  private extractBaseName(value: string): string {
-    const normalized = value.replace(/\\/g, '/');
-    const parts = normalized.split('/');
-    return parts[parts.length - 1] || value;
   }
 
   private updatePagination(): void {

@@ -6,8 +6,10 @@ debug: false
 # "ui" settings usually specify a localhost port/URL which is later proxied to a public URL (using Apache or similar)
 ui:
   ssl: false
-  host: localhost
+  host: 0.0.0.0
   port: 4000
+  # Specify the public URL that this user interface responds to. This corresponds to the "dspace.ui.url" property in your backend's local.cfg.
+  baseUrl: https://devrdapp.ibict.br
   # NOTE: Space is capitalized because 'namespace' is a reserved string in TypeScript
   nameSpace: /
   # The rateLimiter settings limit each IP to a 'max' of 500 requests per 'windowMs' (1 minute).
