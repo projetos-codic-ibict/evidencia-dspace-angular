@@ -28,7 +28,7 @@ import { BitstreamDataService } from '../../../core/data/bitstream-data.service'
 import { Bitstream } from '../../../core/shared/bitstream.model';
 import { Item } from '../../../core/shared/item.model';
 import { getFirstSucceededRemoteListPayload } from '../../../core/shared/operators';
-
+import { customConfig } from 'src/environments/environment';
 interface SemanticApiResult {
   doc_id: string;
   doc_path: string;
@@ -57,10 +57,11 @@ interface DocumentOccurrence {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentMoreResultsComponent implements OnChanges {
+  private apiURL = customConfig.apiURL
 
   @Input() item: Item;
   @Input() semanticText = '';
-  @Input() apiBaseUrl = 'https://api.rdapp.comais.uft.edu.br';
+  @Input() apiBaseUrl = this.apiURL;
   @Input() endpointPath = '/api/search/semantic';
   @Input() pageSize = 3;
 
@@ -81,6 +82,7 @@ export class DocumentMoreResultsComponent implements OnChanges {
     private cdr: ChangeDetectorRef,
   ) {
     this.updatePagination();
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -296,7 +298,7 @@ export class DocumentMoreResultsComponent implements OnChanges {
       return this.ensureSemanticApiPort(explicitBaseUrl);
     }
 
-    return 'https://api.rdapp.comais.uft.edu.br';
+    return this.apiURL;
   }
 
   private resolveApiEndpointUrl(): string {
@@ -310,14 +312,14 @@ export class DocumentMoreResultsComponent implements OnChanges {
 
   private ensureSemanticApiPort(baseUrl: string): string {
     if (!/^https?:\/\//i.test(baseUrl)) {
-      return 'https://api.rdapp.comais.uft.edu.br';
+      return this.apiURL;
     }
 
     try {
       const parsed = new URL(baseUrl);
       return `${parsed.protocol}//${parsed.host}`;
     } catch {
-      return 'https://api.rdapp.comais.uft.edu.br';
+      return this.apiURL;
     }
   }
 

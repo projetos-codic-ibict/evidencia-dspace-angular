@@ -33,3 +33,7 @@ export const environment: Partial<BuildConfig> = {
     enableBrowseComponent: false,
   },
 };
+
+export const customConfig = {
+  apiURL : 'https://api.rdapp.comais.uft.edu.br'
+}

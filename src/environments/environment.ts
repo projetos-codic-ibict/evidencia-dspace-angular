@@ -15,6 +15,7 @@ export const environment: Partial<BuildConfig> = {
     inlineCriticalCss: false,
     transferState: true,
     replaceRestUrl: false,
+    
     excludePathPatterns: [
       {
         pattern: '^/communities/[a-f0-9-]{36}/browse(/.*)?$',
@@ -38,6 +39,10 @@ export const environment: Partial<BuildConfig> = {
     enableBrowseComponent: false,
   },
 };
+
+export const customConfig = {
+  apiURL : 'https://api.rdapp.comais.uft.edu.br'
+}
 
 /*
  * For easier debugging in development mode, you can import the following file
