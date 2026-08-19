@@ -14,7 +14,8 @@
     <h1 class="d-flex align-items-center gap-2">
       {{ (configuration ? configuration + '.search.results.head' : 'search.results.head') | translate }}
       <span class="search-type-badge"
-            [class.search-type-badge--semantic]="searchConfig?.searchType === 'semantic'">
+            [class.search-type-badge--semantic]="searchConfig?.searchType === 'semantic'"
+            [class.search-type-badge--hybrid]="searchConfig?.searchType === 'hybrid'">
         {{ ('search.form.search-type.' + (searchConfig?.searchType || 'lexical')) | translate }}
         @if (searchConfig?.searchType === 'semantic') { (beta) }
       </span>
