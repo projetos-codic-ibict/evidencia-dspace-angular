@@ -7777,4 +7777,91 @@
   "search.form.search-type.semantic.hint": "Busca por significado com IA",
 
   "search.form.search-type.hybrid.hint": "Busca por palavra-chave e significado combinada com RRF",
+
+  "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades Federativas",
+
+  "vocabulary-treeview.tree.description.rdapp-cidades": "Cidades",
+
+  "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas",
+
+  "browse.metadata.rdapp-politicas.breadcrumbs": "Navegue por Políticas",
+
+  "browse.comcol.by.rdapp-politicas": "Por Políticas",
+
+  "browse.metadata.rdapp-politicas.tree.description": "Políticas",
+
+// "admin.edit-cms-metadata.success": "Metadata successfully updated",
+  "admin.edit-cms-metadata.success": "Metadados atualizados com sucesso",
+
+  // "admin.edit-cms-metadata.back-button": "Back",
+  "admin.edit-cms-metadata.back-button": "Voltar",
+
+  // "admin.edit-cms-metadata.save-button": "Save",
+  "admin.edit-cms-metadata.save-button": "Salvar",
+
+  // "admin.edit-cms-metadata.select-metadata": "Select metadata to edit",
+  "admin.edit-cms-metadata.select-metadata": "Selecionar metadados para editar",
+
+  // "admin.edit-cms-metadata.edit-button": "Edit",
+  "admin.edit-cms-metadata.edit-button": "Editar",
+
+  // "admin.edit-cms-metadata.breadcrumbs": "Edit CMS Metadata",
+  "admin.edit-cms-metadata.breadcrumbs": "Editar metadados CMS",
+
+  // "admin.edit-cms-metadata.title": "Edit CMS Metadata",
+  "admin.edit-cms-metadata.title": "Editar metadados CMS",
+
+  // "admin.edit-cms-metadata.error": "An error occurred while updating the metadata",
+  "admin.edit-cms-metadata.error": "Ocorreu um erro ao atualizar os metadados",
+
+  // "menu.section.edit-cms-metadata": "Edit CMS Metadata",
+  "menu.section.edit-cms-metadata": "Editar metadados CMS",
+
+  // "menu.section.cms.edit.metadata.head": "Edit Metadata",
+  "menu.section.cms.edit.metadata.head": "Editar Metadados",
+
+ // "admin.edit-user-agreement.breadcrumbs": "Edit User Agreement",
+  "admin.edit-user-agreement.breadcrumbs": "Editar Contrato de Usuário",
+
+  // "admin.edit-user-agreement.confirm.title": "Force acceptance",
+  "admin.edit-user-agreement.confirm.title": "Forçar aceite",
+
+  // "admin.edit-user-agreement.confirm.info": "Do you want to force all users to accept the new user agreement?",
+  "admin.edit-user-agreement.confirm.info": "Você deseja forçar todos usuários a aceitar o novo contrato de usuário?",
+
+  // "admin.edit-user-agreement.confirm.cancel": "Cancel",
+  "admin.edit-user-agreement.confirm.cancel": "Cancelar",
+
+  // "admin.edit-user-agreement.confirm.no": "No, update only",
+  "admin.edit-user-agreement.confirm.no": "Não, somente atualizar",
+
+  // "admin.edit-user-agreement.confirm.yes": "Yes, update and force",
+  "admin.edit-user-agreement.confirm.yes": "Sim, atualizar e forçar",
+
+  // "menu.section.edit-user-agreement": "Edit User Agreement",
+  "menu.section.edit-user-agreement": "Editar Contrato de Usuário",
+
+  // "admin.edit-user-agreement.save-button": "Save",
+  "admin.edit-user-agreement.save-button": "Salvar",
+
+  // "admin.edit-user-agreement.markdown": "<i>End User Agreement</i> text supports <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a> language.",
+  "admin.edit-user-agreement.markdown": "Texto do <i>Contrato de Usuário</i> suporta a linguagem <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a>.",
+
+  // "admin.edit-cms-metadata.markdown": "<i>CMS Metadata</i> text supports <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a> language.",
+  "admin.edit-cms-metadata.markdown": "Texto <i> Metadados CMS</i> suporta a linguagem <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a>.",
+
+  // "admin.edit-user-agreement.header": "Edit User Agreement",
+  "admin.edit-user-agreement.header": "Editar Contrato de Usuário",
+
+  // "admin.edit-user-agreement.success": "User agreement successfully updated",
+  "admin.edit-user-agreement.success": "Contrato de Usuário atualizado com sucesso",
+
+  // "admin.edit-user-agreement.error": "An error occurred while updating the user agreement",
+  "admin.edit-user-agreement.error": "Ocorreu um erro ao atualizar o Contrato de Usuário",
+
+  // "admin.edit-user-agreement.title": "Edit User Agreement",
+  "admin.edit-user-agreement.title": "Editar Contrato de Usuário",
+
+
+
 }
