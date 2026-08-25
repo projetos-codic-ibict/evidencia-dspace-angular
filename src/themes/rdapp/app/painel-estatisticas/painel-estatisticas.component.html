@@ -2,7 +2,6 @@
 
   <!-- Banner / hero -->
   <header class="hero">
-    <p class="hero-ante">DASHBOARD RDAPP</p>
     <h1 class="hero-titulo">Painel de Estatísticas</h1>
     <p class="hero-sub">Indicadores consolidados sobre a produção científica e técnica do acervo.</p>
     <div class="alternador" role="tablist" aria-label="Seletor de visão">
@@ -70,8 +69,8 @@
               <p class="bloco-ante">DETALHAMENTO</p>
               <h2>Política Pública ou Objeto Avaliado</h2>
               @if (politicaPublica.length) {
-                <div class="tabela-box">
-                  <div class="tabela-wrap">
+                <div class="tabela-box" [class.sem-fade]="!fadeTabela">
+                  <div class="tabela-wrap" #tabelaWrap (scroll)="atualizarFadeTabela()">
                     <table class="tabela">
                       <thead><tr><th>Nome da Política</th><th class="num">Nº de Avaliações</th></tr></thead>
                       <tbody>
