@@ -15,11 +15,11 @@
         </button>
         @if (abertos[g.nome]) {
           <div class="grupo-corpo">
-            <label class="busca-label">Buscar por {{ g.titulo.toLowerCase() }}</label>
-            <input class="mini-busca" type="text" [placeholder]="g.titulo"
+            <label class="busca-label">{{ g.buscarPor }}</label>
+            <input class="mini-busca" type="text" [placeholder]="g.placeholder"
                    [(ngModel)]="buscaOpcao[g.nome]" [attr.aria-label]="'Filtrar ' + g.titulo">
             <ul class="opcoes">
-              @for (o of opcoesVisiveis(g); track o.valor) {
+              @for (o of opcoesExibidas(g); track o.valor) {
                 <li>
                   <label>
                     <input type="checkbox" [checked]="estaSelecionado(g.nome, o.valor)"
@@ -32,16 +32,20 @@
                 <li class="op-vazio">Nenhuma opção.</li>
               }
             </ul>
+            @if (temMais(g)) {
+              <button type="button" class="mostrar-mais" (click)="toggleMostrarMais(g.nome)">
+                {{ expandidos[g.nome] ? 'Mostrar menos' : 'Mostrar mais' }}
+              </button>
+            }
           </div>
         }
       </div>
     }
   </div>
 
-  @if (totalFiltros() > 0) {
-    <button type="button" class="btn-redefinir" (click)="limpar.emit()">
-      <svg class="ico-reset" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v3.6H7.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Redefinir filtros
-    </button>
-  }
+  <!-- Sempre presente ao final da barra, como na barra padrao (CA10). -->
+  <button type="button" class="btn-redefinir" (click)="limpar.emit()">
+    <svg class="ico-reset" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v3.6H7.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Redefinir filtros
+  </button>
 </aside>

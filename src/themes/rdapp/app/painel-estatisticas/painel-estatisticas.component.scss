@@ -6,8 +6,6 @@
   .hero {
     background: linear-gradient(120deg, #0c2350 0%, #14366f 60%, #1b2f5a 100%);
     color: #fff; text-align: center; padding: 3rem 1rem 2.25rem;
-
-    .hero-ante { color: #36c9a0; letter-spacing: 0.25em; font-size: 0.75rem; font-weight: 700; margin: 0 0 0.5rem; }
     .hero-titulo { font-weight: 800; font-size: 2.6rem; margin: 0; }
     .hero-sub { color: rgba(255,255,255,0.82); margin: 0.5rem 0 1.5rem; }
 
@@ -89,7 +87,9 @@
     position: relative;
   }
   .tabela-box::after {
-    // esmaecido no rodape: dica visual de que ha mais conteudo para rolar
+    // esmaecido no rodape: dica visual de que ha mais conteudo para rolar.
+    // Some (.sem-fade, controlado pelo componente) quando a rolagem chega ao
+    // fim ou quando a tabela nem tem rolagem.
     content: '';
     position: absolute;
     left: 0; right: 0; bottom: 0;
@@ -97,7 +97,10 @@
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
     pointer-events: none;
     border-radius: 0 0 8px 8px;
+    opacity: 1;
+    transition: opacity 0.18s ease;
   }
+  .tabela-box.sem-fade::after { opacity: 0; }
   .tabela-wrap {
     max-height: 300px;
     overflow-y: auto;

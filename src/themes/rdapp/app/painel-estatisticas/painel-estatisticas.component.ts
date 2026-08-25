@@ -3,15 +3,22 @@ import {
   isPlatformBrowser,
 } from '@angular/common';
 import {
+  AfterViewChecked,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Inject,
   OnInit,
   PLATFORM_ID,
+  ViewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { EChartsType } from 'echarts/core';
-import { forkJoin } from 'rxjs';
+import {
+  forkJoin,
+  map,
+  Observable,
+} from 'rxjs';
 
 import {
   FiltrosSidebarComponent,
@@ -26,6 +33,23 @@ import {
 } from './painel-estatisticas.service';
 
 interface SerieEvolucao { nome: string; dados: number[]; }
+
+/**
+ * FONTE UNICA da composicao da barra de filtros (CA18 da padronizacao):
+ * ordem das secoes (item 4.1 do documento), sub-rotulo "Buscar por..." (CA05/
+ * CA06, caixa de sentenca preservando siglas) e placeholder do campo de busca.
+ * "Tipo de Avaliacao" entra na 5a posicao quando a decisao D2 for tomada.
+ */
+interface DefGrupoFiltro { nome: string; titulo: string; buscarPor: string; placeholder: string; }
+const GRUPOS_FILTRO: DefGrupoFiltro[] = [
+  { nome: 'instituicao', titulo: 'Instituição', buscarPor: 'Buscar por instituição', placeholder: 'Instituição' },
+  { nome: 'dateIssued', titulo: 'Ano de Publicação', buscarPor: 'Buscar por ano de publicação', placeholder: 'Ano de publicação' },
+  { nome: 'areaTematica', titulo: 'Área Temática', buscarPor: 'Buscar por área temática', placeholder: 'Área temática' },
+  { nome: 'politicaPublica', titulo: 'Política Pública', buscarPor: 'Buscar por política pública', placeholder: 'Política pública' },
+  { nome: 'tipoDocumento', titulo: 'Tipo de Documento', buscarPor: 'Buscar por tipo de documento', placeholder: 'Tipo de documento' },
+  { nome: 'abrangencia', titulo: 'Abrangência Territorial', buscarPor: 'Buscar por abrangência territorial', placeholder: 'Abrangência territorial' },
+  { nome: 'ods', titulo: 'ODS', buscarPor: 'Buscar por ODS', placeholder: 'ODS' },
+];
 
 const CORES_ODS: { [n: number]: string } = {
   1: '#E5243B', 2: '#DDA63A', 3: '#4C9F38', 4: '#C5192D', 5: '#FF3A21',
@@ -65,9 +89,14 @@ const CORES_LINHAS = ['#1f4ea3', '#0a97d9', '#1aa179', '#f0a500', '#a21942', '#6
   ],
   providers: [PainelEstatisticasService],
 })
-export class PainelEstatisticasComponent implements OnInit {
+export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   private isBrowser: boolean;
+
+  // Fade da tabela de politica publica: visivel so enquanto ha conteudo
+  // abaixo do ponto de rolagem (some no fim e quando nao ha rolagem).
+  @ViewChild('tabelaWrap') tabelaWrap?: ElementRef<HTMLElement>;
+  fadeTabela = false;
 
   loading = true;
   recarregando = false;
@@ -118,6 +147,29 @@ export class PainelEstatisticasComponent implements OnInit {
     this.carregar();
   }
 
+  /**
+   * Reavalia o fade sempre que a view muda (tabela aparece, dados trocam por
+   * causa de filtro, etc). O guard de igualdade evita loop de deteccao.
+   */
+  ngAfterViewChecked(): void {
+    const fade = this.calcularFadeTabela();
+    if (fade !== this.fadeTabela) {
+      this.fadeTabela = fade;
+      this.cdr.detectChanges();
+    }
+  }
+
+  atualizarFadeTabela(): void {
+    this.fadeTabela = this.calcularFadeTabela();
+  }
+
+  private calcularFadeTabela(): boolean {
+    const el = this.tabelaWrap?.nativeElement;
+    if (!el) { return false; }
+    // margem de 4px absorve arredondamento de zoom/subpixel
+    return el.scrollHeight - el.scrollTop - el.clientHeight > 4;
+  }
+
   // ---- Filtros -----------------------------------------------------------
 
   toggleFiltro(nome: string, valor: string): void {
@@ -131,6 +183,10 @@ export class PainelEstatisticasComponent implements OnInit {
     this.recarregar();
   }
   limparFiltros(): void {
+    // O botao "Redefinir filtros" agora e permanente (CA10); sem selecao ativa
+    // o clique nao dispara recarga.
+    const temSelecao = Object.values(this.selecionados).some((s) => s.size > 0);
+    if (!temSelecao) { return; }
     Object.keys(this.selecionados).forEach((k) => this.selecionados[k].clear());
     this.recarregar();
   }
@@ -155,33 +211,61 @@ export class PainelEstatisticasComponent implements OnInit {
 
   // ---- Carregamento ------------------------------------------------------
 
+  /**
+   * Busca uma faceta em DOIS escopos:
+   * - grafico: com TODOS os filtros ativos (o endpoint de facets aplica o
+   *   filtro do proprio campo — verificado na instancia com curl);
+   * - sidebar: excluindo o proprio grupo, para as demais opcoes continuarem
+   *   visiveis e selecionaveis em conjunto (multi-selecao).
+   * Sem selecao no grupo os escopos sao identicos e ha UMA requisicao.
+   */
+  private fetchFacetDupla(nome: string): Observable<{ grafico: FacetValue[]; sidebar: FacetValue[] }> {
+    const grafico$ = this.stats.fetchFacet(nome, this.paramsFiltro());
+    if ((this.selecionados[nome]?.size ?? 0) === 0) {
+      return grafico$.pipe(map((v) => ({ grafico: v, sidebar: v })));
+    }
+    return forkJoin({ grafico: grafico$, sidebar: this.stats.fetchFacet(nome, this.paramsFiltro(nome)) });
+  }
+
+  /**
+   * Cinto de seguranca do GRAFICO: com selecao ativa no grupo, garante que so
+   * os valores selecionados aparecam, mesmo que o operador "equals" do DSpace
+   * case por token e traga valores parecidos (ou que alguma versao do backend
+   * exclua o filtro do proprio campo no facet). Sem selecao, retorna tudo.
+   */
+  private paraGrafico(nome: string, facet: FacetValue[]): FacetValue[] {
+    const sel = this.selecionados[nome];
+    if (!sel || sel.size === 0) { return facet; }
+    return facet.filter((v) => sel.has(v.label));
+  }
+
   private carregar(): void {
     forkJoin({
       total: this.stats.fetchTotalItens(this.paramsFiltro()),
-      totalOds: this.stats.fetchTotalItens(this.paramsFiltro('ods')),
-      comOds: this.stats.fetchComOds(this.paramsFiltro('ods')),
-      ods: this.stats.fetchFacet('ods', this.paramsFiltro('ods')),
-      areaTematica: this.stats.fetchFacet('areaTematica', this.paramsFiltro('areaTematica')),
-      instituicao: this.stats.fetchFacet('instituicao', this.paramsFiltro('instituicao')),
-      tipoDocumento: this.stats.fetchFacet('tipoDocumento', this.paramsFiltro('tipoDocumento')),
-      abrangencia: this.stats.fetchFacet('abrangencia', this.paramsFiltro('abrangencia')),
-      politicaPublica: this.stats.fetchFacet('politicaPublica', this.paramsFiltro('politicaPublica')),
+      comOds: this.stats.fetchComOds(this.paramsFiltro()),
+      ods: this.fetchFacetDupla('ods'),
+      areaTematica: this.fetchFacetDupla('areaTematica'),
+      instituicao: this.fetchFacetDupla('instituicao'),
+      tipoDocumento: this.fetchFacetDupla('tipoDocumento'),
+      abrangencia: this.fetchFacetDupla('abrangencia'),
+      politicaPublica: this.fetchFacetDupla('politicaPublica'),
       itens: this.stats.fetchItens(this.paramsFiltro()),
       itensAno: this.stats.fetchItens(this.paramsFiltro('dateIssued')),
     }).subscribe({
       next: (r) => {
         this.totalAvaliacoes = r.total;
-        this.ods = r.ods;
-        // Avaliacoes sem nenhum ODS (Nao Informado). Calculado no servidor:
-        // total no mesmo escopo do facet (sem o filtro de ODS) menos as que
-        // tem ao menos um ODS. Independe do teto de paginacao de fetchItens.
-        this.odsNaoInformado = Math.max(0, r.totalOds - r.comOds);
-        this.areaTematica = r.areaTematica;
-        this.instituicao = r.instituicao;
-        this.tipoDocumento = r.tipoDocumento;
-        this.abrangencia = r.abrangencia;
-        this.politicaPublica = r.politicaPublica;
-        this.totalInstituicoes = r.instituicao.length;
+        // Graficos: escopo completo + intersecao com a selecao do grupo.
+        this.ods = this.paraGrafico('ods', r.ods.grafico);
+        // Avaliacoes sem nenhum ODS (Nao Informado), no mesmo escopo do grafico:
+        // total com todos os filtros menos as que tem ao menos um ODS. Calculado
+        // no servidor; independe do teto de paginacao de fetchItens.
+        this.odsNaoInformado = Math.max(0, r.total - r.comOds);
+        this.areaTematica = this.paraGrafico('areaTematica', r.areaTematica.grafico);
+        this.instituicao = this.paraGrafico('instituicao', r.instituicao.grafico);
+        this.tipoDocumento = this.paraGrafico('tipoDocumento', r.tipoDocumento.grafico);
+        this.abrangencia = this.paraGrafico('abrangencia', r.abrangencia.grafico);
+        this.politicaPublica = this.paraGrafico('politicaPublica', r.politicaPublica.grafico);
+        this.totalInstituicoes = this.instituicao.length;
 
         this.agregarEvolucao(r.itens);
         this.agregarMatriz(r.itens);
@@ -206,22 +290,39 @@ export class PainelEstatisticasComponent implements OnInit {
       .map((a) => ({ rotulo: a.ano, valor: a.ano, count: a.count }))
       .reverse();
 
-    this.grupos = [
-      { nome: 'dateIssued', titulo: 'Ano de Publicação', opcoes: anoOpcoes },
-      { nome: 'tipoDocumento', titulo: 'Tipo de Documento', opcoes: this.paraOpcoes(r.tipoDocumento) },
-      { nome: 'politicaPublica', titulo: 'Política Pública', opcoes: this.paraOpcoes(r.politicaPublica) },
-      { nome: 'areaTematica', titulo: 'Área Temática', opcoes: this.paraOpcoes(r.areaTematica) },
-      { nome: 'instituicao', titulo: 'Instituição', opcoes: this.paraOpcoes(r.instituicao) },
-      { nome: 'abrangencia', titulo: 'Abrangência Territorial', opcoes: this.paraOpcoes(r.abrangencia) },
-      { nome: 'ods', titulo: 'ODS', opcoes: this.paraOpcoes(r.ods) },
-    ];
+    // Opcoes da sidebar no escopo que EXCLUI o proprio grupo (multi-selecao).
+    const opcoesPorNome: { [nome: string]: OpcaoFiltro[] } = {
+      dateIssued: anoOpcoes,
+      instituicao: this.paraOpcoes(r.instituicao.sidebar),
+      areaTematica: this.paraOpcoes(r.areaTematica.sidebar),
+      politicaPublica: this.paraOpcoes(r.politicaPublica.sidebar),
+      tipoDocumento: this.paraOpcoes(r.tipoDocumento.sidebar),
+      abrangencia: this.paraOpcoes(r.abrangencia.sidebar),
+      ods: this.paraOpcoesOds(r.ods.sidebar),
+    };
+    // Ordem e textos vem da fonte unica GRUPOS_FILTRO (item 4.1 / CA18).
+    this.grupos = GRUPOS_FILTRO.map((d) => ({
+      nome: d.nome,
+      titulo: d.titulo,
+      buscarPor: d.buscarPor,
+      placeholder: d.placeholder,
+      opcoes: opcoesPorNome[d.nome] ?? [],
+    }));
     this.grupos.forEach((g) => {
       if (!this.selecionados[g.nome]) { this.selecionados[g.nome] = new Set<string>(); }
     });
   }
 
   private paraOpcoes(dados: FacetValue[]): OpcaoFiltro[] {
-    return dados.map((v) => ({ rotulo: v.label, valor: v.label, count: v.count }));
+    return dados
+      .map((v) => ({ rotulo: v.label, valor: v.label, count: v.count }))
+      .sort((a, b) => a.rotulo.localeCompare(b.rotulo, 'pt-BR', { sensitivity: 'base' }));
+  }
+
+  private paraOpcoesOds(dados: FacetValue[]): OpcaoFiltro[] {
+    return dados
+      .map((v) => ({ rotulo: v.label, valor: v.label, count: v.count }))
+      .sort((a, b) => this.numeroOds(a.rotulo) - this.numeroOds(b.rotulo));
   }
 
   private contarAnos(itens: any[]): { ano: string; count: number }[] {

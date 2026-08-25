@@ -1,5 +1,5 @@
 @import "../../../../../styles/filter-chip";
 
-.rdapp-filter-chip {
-  text-transform: capitalize;
-}
+// text-transform: capitalize removido (padronizacao da barra de filtros,
+// item 5.1/CA03): produzia "Secretaria De Monitoramento E..." nos chips de
+// filtro ativo. O valor do metadado e exibido tal como armazenado.
