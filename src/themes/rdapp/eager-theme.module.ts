@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FilterType } from '../../app/core/shared/search/models/filter-type.model';
 import { RootModule } from '../../app/root.module';
 import { renderFacetFor } from '../../app/shared/search/search-filters/search-filter/search-filter-type-decorator';
+import { GroupsRegistryComponent } from './app/access-control/group-registry/groups-registry.component';
 import { BreadcrumbsComponent } from './app/breadcrumbs/breadcrumbs.component';
 import { CommunityListComponent } from './app/community-list-page/community-list/community-list.component';
 import { CommunityListPageComponent } from './app/community-list-page/community-list-page.component';
@@ -57,6 +58,7 @@ const DECLARATIONS = [
   RootComponent,
   CommunityListPageComponent,
   CommunityListComponent,
+  GroupsRegistryComponent,
   ScrollToTopComponent,
   SearchComponent,
   SearchResultsComponent,

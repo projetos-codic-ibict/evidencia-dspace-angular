@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="group-governance row">
+    <div class="col-12">
+      <h1 id="header" class="border-bottom pb-2">{{messagePrefix + 'head' | translate}}</h1>
+
+      @if (loading$ | async) {
+        <ds-loading></ds-loading>
+      }
+
+      @if ((loading$ | async) !== true && (entries$ | async)?.length > 0) {
+        <div class="table-responsive">
+          <table id="group-governance" class="table table-striped table-hover table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">{{messagePrefix + 'table.object' | translate}}</th>
+                <th scope="col">{{messagePrefix + 'table.type' | translate}}</th>
+                <th scope="col">{{messagePrefix + 'table.action' | translate}}</th>
+                <th scope="col">{{messagePrefix + 'table.edit' | translate}}</th>
+                <th scope="col">{{messagePrefix + 'table.remove' | translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (entry of (entries$ | async); track entry.policy.id) {
+                <tr>
+                  @if ((entry.resource$ | async)?.payload; as resource) {
+                    <td><a [routerLink]="getDSORoute(resource)">{{ dsoNameService.getName(resource) }}</a></td>
+                    <td>{{messagePrefix + 'type.' + resource.type | translate}}</td>
+                  } @else {
+                    <td></td>
+                    <td></td>
+                  }
+                  <td>{{getActionDisplayLabel(entry.policy.action)}}</td>
+                  <td>
+                    <div class="btn-group edit-field">
+                      <a [routerLink]="['edit']" [queryParams]="{policyId: entry.policy.id}"
+                        class="btn btn-outline-primary btn-sm btn-edit"
+                        [title]="messagePrefix + 'table.edit.button' | translate: {name: entry.policy.name ?? entry.policy.id}"
+                        [attr.aria-label]="messagePrefix + 'table.edit.button' | translate: {name: entry.policy.name ?? entry.policy.id}">
+                        <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-group edit-field">
+                      <button (click)="confirmDelete(entry)" class="btn btn-outline-danger btn-sm btn-delete"
+                        [title]="messagePrefix + 'table.remove.button' | translate: {name: entry.policy.name ?? entry.policy.id}"
+                        [attr.aria-label]="messagePrefix + 'table.remove.button' | translate: {name: entry.policy.name ?? entry.policy.id}">
+                        <i class="fas fa-trash-alt fa-fw" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      @if ((loading$ | async) !== true && (entries$ | async)?.length === 0) {
+        <div class="alert alert-info w-100 mb-2" role="alert">
+          {{messagePrefix + 'no-items' | translate}}
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

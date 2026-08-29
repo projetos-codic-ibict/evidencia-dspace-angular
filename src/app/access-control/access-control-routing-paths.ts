@@ -27,6 +27,10 @@ export function getGroupEditRoute(id: string) {
   return new URLCombiner(getGroupsRoute(), id, 'edit').toString();
 }
 
+export function getGroupGovernanceRoute(id: string) {
+  return new URLCombiner(getGroupsRoute(), id, 'authorizations').toString();
+}
+
 /**
  * Get Edit page of group
  * @param group Group we want edit page for

@@ -71,7 +71,7 @@ import { PaginationComponent } from '../../shared/pagination/pagination.componen
 import { getGroupEditPageRouterLink } from '../access-control-routing-paths';
 
 @Component({
-  selector: 'ds-groups-registry',
+  selector: 'ds-base-groups-registry',
   templateUrl: './groups-registry.component.html',
   imports: [
     AsyncPipe,
