@@ -7823,4 +7823,10 @@
   "evidencia.group-governance.notification.deleted.success": "Política eliminada con éxito.",
 
   "evidencia.group-governance.notification.deleted.failure": "No fue posible eliminar la política.",
+
+  "evidencia.group-governance.breadcrumbs": "Gobernanza de permisos",
+
+  "evidencia.group-governance.type.bitstream": "Archivo",
+
+  "evidencia.group-governance.type.bundle": "Paquete de archivos",
 }

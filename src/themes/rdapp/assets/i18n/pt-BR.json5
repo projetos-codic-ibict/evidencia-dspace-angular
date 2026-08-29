@@ -304,6 +304,7 @@
 
   // HU009 CA08 — tela de governança de permissões
   "evidencia.group-governance.title": "Governança de permissões",
+  "evidencia.group-governance.breadcrumbs": "Governança de permissões",
   "evidencia.group-governance.head": "Governança de permissões do grupo",
   "evidencia.group-governance.table.object": "Objeto",
   "evidencia.group-governance.table.type": "Tipo",
@@ -316,6 +317,8 @@
   "evidencia.group-governance.type.community": "Comunidade",
   "evidencia.group-governance.type.collection": "Coleção",
   "evidencia.group-governance.type.item": "Item",
+  "evidencia.group-governance.type.bitstream": "Arquivo",
+  "evidencia.group-governance.type.bundle": "Pacote de arquivos",
   "evidencia.group-governance.no-items": "Este grupo não tem nenhuma política de acesso associada.",
   "evidencia.group-governance.notification.deleted.success": "Política removida com sucesso.",
   "evidencia.group-governance.notification.deleted.failure": "Não foi possível remover a política.",

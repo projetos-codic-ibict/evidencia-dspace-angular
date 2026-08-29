@@ -7817,4 +7817,10 @@
   "evidencia.group-governance.notification.deleted.success": "Policy removed successfully.",
 
   "evidencia.group-governance.notification.deleted.failure": "Unable to remove the policy.",
+
+  "evidencia.group-governance.breadcrumbs": "Permission governance",
+
+  "evidencia.group-governance.type.bitstream": "File",
+
+  "evidencia.group-governance.type.bundle": "File bundle",
 }

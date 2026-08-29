@@ -297,6 +297,7 @@
 
   // HU009 CA08 — group permission governance screen
   "evidencia.group-governance.title": "Permission governance",
+  "evidencia.group-governance.breadcrumbs": "Permission governance",
   "evidencia.group-governance.head": "Group permission governance",
   "evidencia.group-governance.table.object": "Object",
   "evidencia.group-governance.table.type": "Type",
@@ -309,6 +310,8 @@
   "evidencia.group-governance.type.community": "Community",
   "evidencia.group-governance.type.collection": "Collection",
   "evidencia.group-governance.type.item": "Item",
+  "evidencia.group-governance.type.bitstream": "File",
+  "evidencia.group-governance.type.bundle": "File bundle",
   "evidencia.group-governance.no-items": "This group has no access policies associated with it.",
   "evidencia.group-governance.notification.deleted.success": "Policy removed successfully.",
   "evidencia.group-governance.notification.deleted.failure": "Unable to remove the policy.",

@@ -106,6 +106,10 @@ export const ROUTES: Route[] = [
     path: `${GROUP_PATH}/:groupId`,
     loadChildren: () => import('../../themes/rdapp/app/access-control/group-governance/group-governance-routes')
       .then((m) => m.ROUTES),
+    resolve: {
+      breadcrumb: i18nBreadcrumbResolver,
+    },
+    data: { breadcrumbKey: 'evidencia.group-governance' },
     canActivate: [groupPageGuard],
   },
   {
