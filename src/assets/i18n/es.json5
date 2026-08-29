@@ -4802,11 +4802,11 @@
 
   "search.filters.filter.supervisedBy.label": "Búsqueda Supervisada Por",
 
-  "search.filters.filter.access_status.head": "Estado de acceso",
+  "search.filters.filter.access_status.head": "Tipo de Evaluación",
 
-  "search.filters.filter.access_status.placeholder": "Estado de acceso",
+  "search.filters.filter.access_status.placeholder": "Tipo de evaluación",
 
-  "search.filters.filter.access_status.label": "Buscar por estado de acceso",
+  "search.filters.filter.access_status.label": "Buscar por tipo de evaluación",
 
   "search.filters.entityType.JournalIssue": "Número de la revista",
 
@@ -6944,7 +6944,7 @@
 
   "search.filters.applied.f.notifyRelation": "Notificación de Relación",
 
-  "search.filters.applied.f.access_status": "Estado de acceso",
+  "search.filters.applied.f.access_status": "Tipo de Evaluación",
 
   "search.filters.filter.queue_last_start_time.head": "Última hora de procesamiento ",
 
@@ -7746,7 +7746,7 @@
 
   "evidencia.faq.7.a": "El depósito de archivos en el EvidencIA es realizado por organismos o instituciones asociadas. La asociación se formaliza mediante un acuerdo de adhesión celebrado con el Ministerio de Planificación y Presupuesto, garantizando la integridad y el origen de las evidencias depositadas.",
 
-  "evidencia.item-download": "Descargar documento (PDF)",
+  "evidencia.item-download": "Descargar Documento (PDF)",
 
   "evidencia.search.toolbar.export": "Exportar",
 
@@ -7781,4 +7781,46 @@
   "search.form.search-type.semantic.hint": "Búsqueda semántica impulsada por IA",
 
   "search.form.search-type.hybrid.hint": "Búsqueda por palabra clave y significado combinada con RRF",
+
+  "evidencia.item.meta.external.link": "Enlace Externo de la Publicación",
+
+  "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades Federativas de Brasil",
+
+  "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas Públicas u Objetos Evaluados",
+
+  "vocabulary-treeview.tree.description.rdapp-cidades": "Municipios de Brasil, organizados por Unidad Federativa",
+
+  "admin.access-control.groups.table.description": "Descripción",
+
+  "evidencia.group-governance.title": "Gobernanza de permisos",
+
+  "evidencia.group-governance.head": "Gobernanza de permisos del grupo",
+
+  "evidencia.group-governance.table.object": "Objeto",
+
+  "evidencia.group-governance.table.type": "Tipo",
+
+  "evidencia.group-governance.table.action": "Acción",
+
+  "evidencia.group-governance.table.edit": "Editar",
+
+  "evidencia.group-governance.table.remove": "Eliminar",
+
+  "evidencia.group-governance.table.edit.button": "Editar política de \"{{name}}\"",
+
+  "evidencia.group-governance.table.remove.button": "Eliminar política de \"{{name}}\"",
+
+  "evidencia.group-governance.table.view.button": "Ver permisos de \"{{name}}\"",
+
+  "evidencia.group-governance.type.community": "Comunidad",
+
+  "evidencia.group-governance.type.collection": "Colección",
+
+  "evidencia.group-governance.type.item": "Ítem",
+
+  "evidencia.group-governance.no-items": "Este grupo no tiene ninguna política de acceso asociada.",
+
+  "evidencia.group-governance.notification.deleted.success": "Política eliminada con éxito.",
+
+  "evidencia.group-governance.notification.deleted.failure": "No fue posible eliminar la política.",
 }

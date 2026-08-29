@@ -298,4 +298,25 @@
   "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades da Federação do Brasil",
   "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas Públicas ou Objetos Avaliados",
   "vocabulary-treeview.tree.description.rdapp-cidades": "Municípios do Brasil, organizados por Unidade da Federação",
+
+  // HU009 CA01 — coluna de descrição na listagem de grupos
+  "admin.access-control.groups.table.description": "Descrição",
+
+  // HU009 CA08 — tela de governança de permissões
+  "evidencia.group-governance.title": "Governança de permissões",
+  "evidencia.group-governance.head": "Governança de permissões do grupo",
+  "evidencia.group-governance.table.object": "Objeto",
+  "evidencia.group-governance.table.type": "Tipo",
+  "evidencia.group-governance.table.action": "Ação",
+  "evidencia.group-governance.table.edit": "Editar",
+  "evidencia.group-governance.table.remove": "Remover",
+  "evidencia.group-governance.table.edit.button": "Editar política de \"{{name}}\"",
+  "evidencia.group-governance.table.remove.button": "Remover política de \"{{name}}\"",
+  "evidencia.group-governance.table.view.button": "Ver permissões de \"{{name}}\"",
+  "evidencia.group-governance.type.community": "Comunidade",
+  "evidencia.group-governance.type.collection": "Coleção",
+  "evidencia.group-governance.type.item": "Item",
+  "evidencia.group-governance.no-items": "Este grupo não tem nenhuma política de acesso associada.",
+  "evidencia.group-governance.notification.deleted.success": "Política removida com sucesso.",
+  "evidencia.group-governance.notification.deleted.failure": "Não foi possível remover a política.",
 }

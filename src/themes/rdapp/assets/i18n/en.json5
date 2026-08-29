@@ -291,4 +291,25 @@
   "vocabulary-treeview.tree.description.rdapp-ufs": "Brazilian Federative Units",
   "vocabulary-treeview.tree.description.rdapp-politicas": "Public Policies or Evaluated Objects",
   "vocabulary-treeview.tree.description.rdapp-cidades": "Brazilian municipalities, organized by Federative Unit",
+
+  // HU009 CA01 — description column in the groups listing
+  "admin.access-control.groups.table.description": "Description",
+
+  // HU009 CA08 — group permission governance screen
+  "evidencia.group-governance.title": "Permission governance",
+  "evidencia.group-governance.head": "Group permission governance",
+  "evidencia.group-governance.table.object": "Object",
+  "evidencia.group-governance.table.type": "Type",
+  "evidencia.group-governance.table.action": "Action",
+  "evidencia.group-governance.table.edit": "Edit",
+  "evidencia.group-governance.table.remove": "Remove",
+  "evidencia.group-governance.table.edit.button": "Edit policy for \"{{name}}\"",
+  "evidencia.group-governance.table.remove.button": "Remove policy for \"{{name}}\"",
+  "evidencia.group-governance.table.view.button": "View permissions for \"{{name}}\"",
+  "evidencia.group-governance.type.community": "Community",
+  "evidencia.group-governance.type.collection": "Collection",
+  "evidencia.group-governance.type.item": "Item",
+  "evidencia.group-governance.no-items": "This group has no access policies associated with it.",
+  "evidencia.group-governance.notification.deleted.success": "Policy removed successfully.",
+  "evidencia.group-governance.notification.deleted.failure": "Unable to remove the policy.",
 }

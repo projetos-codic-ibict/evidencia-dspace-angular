@@ -18,7 +18,7 @@ import { EPersonFormComponent } from './epeople-registry/eperson-form/eperson-fo
 import { EPersonResolver } from './epeople-registry/eperson-resolver.service';
 import { GroupFormComponent } from './group-registry/group-form/group-form.component';
 import { groupPageGuard } from './group-registry/group-page.guard';
-import { GroupsRegistryComponent } from './group-registry/groups-registry.component';
+import { ThemedGroupsRegistryComponent } from './group-registry/themed-groups-registry.component';
 
 /**
  * Condition for displaying error messages on email form field
@@ -68,7 +68,7 @@ export const ROUTES: Route[] = [
   },
   {
     path: GROUP_PATH,
-    component: GroupsRegistryComponent,
+    component: ThemedGroupsRegistryComponent,
     resolve: {
       breadcrumb: i18nBreadcrumbResolver,
     },
@@ -100,6 +100,12 @@ export const ROUTES: Route[] = [
       title: 'admin.access-control.groups.title.singleGroup',
       breadcrumbKey: 'admin.access-control.groups.singleGroup',
     },
+    canActivate: [groupPageGuard],
+  },
+  {
+    path: `${GROUP_PATH}/:groupId`,
+    loadChildren: () => import('../../themes/rdapp/app/access-control/group-governance/group-governance-routes')
+      .then((m) => m.ROUTES),
     canActivate: [groupPageGuard],
   },
   {

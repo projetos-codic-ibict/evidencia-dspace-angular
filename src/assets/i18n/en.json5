@@ -4802,11 +4802,11 @@
 
   "search.filters.filter.supervisedBy.label": "Search Supervised By",
 
-  "search.filters.filter.access_status.head": "Access type",
+  "search.filters.filter.access_status.head": "Evaluation Type",
 
-  "search.filters.filter.access_status.placeholder": "Access type",
+  "search.filters.filter.access_status.placeholder": "Evaluation type",
 
-  "search.filters.filter.access_status.label": "Search by access type",
+  "search.filters.filter.access_status.label": "Search by evaluation type",
 
   "search.filters.entityType.JournalIssue": "Journal Issue",
 
@@ -6944,7 +6944,7 @@
 
   "search.filters.applied.f.notifyRelation": "Notify Relation",
 
-  "search.filters.applied.f.access_status": "Access type",
+  "search.filters.applied.f.access_status": "Evaluation Type",
 
   "search.filters.filter.queue_last_start_time.head": "Last processing time ",
 
@@ -7775,4 +7775,46 @@
   "search.form.search-type.semantic.hint": "AI-powered meaning search",
 
   "search.form.search-type.hybrid.hint": "Keyword and meaning search combined with RRF",
+
+  "evidencia.item.meta.external.link": "External Publication Link",
+
+  "vocabulary-treeview.tree.description.rdapp-ufs": "Brazilian Federative Units",
+
+  "vocabulary-treeview.tree.description.rdapp-politicas": "Public Policies or Evaluated Objects",
+
+  "vocabulary-treeview.tree.description.rdapp-cidades": "Brazilian municipalities, organized by Federative Unit",
+
+  "admin.access-control.groups.table.description": "Description",
+
+  "evidencia.group-governance.title": "Permission governance",
+
+  "evidencia.group-governance.head": "Group permission governance",
+
+  "evidencia.group-governance.table.object": "Object",
+
+  "evidencia.group-governance.table.type": "Type",
+
+  "evidencia.group-governance.table.action": "Action",
+
+  "evidencia.group-governance.table.edit": "Edit",
+
+  "evidencia.group-governance.table.remove": "Remove",
+
+  "evidencia.group-governance.table.edit.button": "Edit policy for \"{{name}}\"",
+
+  "evidencia.group-governance.table.remove.button": "Remove policy for \"{{name}}\"",
+
+  "evidencia.group-governance.table.view.button": "View permissions for \"{{name}}\"",
+
+  "evidencia.group-governance.type.community": "Community",
+
+  "evidencia.group-governance.type.collection": "Collection",
+
+  "evidencia.group-governance.type.item": "Item",
+
+  "evidencia.group-governance.no-items": "This group has no access policies associated with it.",
+
+  "evidencia.group-governance.notification.deleted.success": "Policy removed successfully.",
+
+  "evidencia.group-governance.notification.deleted.failure": "Unable to remove the policy.",
 }
