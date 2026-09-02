@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import {
   Component,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import {
@@ -11,15 +12,17 @@ import { DSONameService } from '@dspace/core/breadcrumbs/dso-name.service';
 import { DSpaceObjectDataService } from '@dspace/core/data/dspace-object-data.service';
 import { RemoteData } from '@dspace/core/data/remote-data';
 import { NotificationsService } from '@dspace/core/notification-system/notifications.service';
+import { PaginationService } from '@dspace/core/pagination/pagination.service';
+import { PaginationComponentOptions } from '@dspace/core/pagination/pagination-component-options.model';
 import { ActionType } from '@dspace/core/resource-policy/models/action-type.model';
 import { ResourcePolicy } from '@dspace/core/resource-policy/models/resource-policy.model';
-import { ResourcePolicyDataService } from '@dspace/core/resource-policy/resource-policy-data.service';
 import { getDSORoute } from '@dspace/core/router/utils/dso-route.utils';
 import { DSpaceObject } from '@dspace/core/shared/dspace-object.model';
 import {
   getAllSucceededRemoteData,
   getRemoteDataPayload,
 } from '@dspace/core/shared/operators';
+import { PageInfo } from '@dspace/core/shared/page-info.model';
 import { hasValue } from '@dspace/shared/utils/empty.util';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -32,10 +35,16 @@ import {
   of,
   Subscription,
 } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 
 import { ConfirmationModalComponent } from '../../../../../app/shared/confirmation-modal/confirmation-modal.component';
 import { ThemedLoadingComponent } from '../../../../../app/shared/loading/themed-loading.component';
+import { PaginationComponent } from '../../../../../app/shared/pagination/pagination.component';
+import { GroupResourcePolicyDataService } from '../../core/resource-policy/group-resource-policy-data.service';
 
 interface GroupGovernanceEntry {
   policy: ResourcePolicy;
@@ -47,16 +56,30 @@ interface GroupGovernanceEntry {
   templateUrl: './group-governance.component.html',
   imports: [
     AsyncPipe,
+    PaginationComponent,
     RouterLink,
     ThemedLoadingComponent,
     TranslateModule,
   ],
 })
-export class GroupGovernanceComponent implements OnInit {
+export class GroupGovernanceComponent implements OnInit, OnDestroy {
 
   messagePrefix = 'evidencia.group-governance.';
 
   groupId: string;
+
+  /**
+   * Config de paginação da lista de políticas do grupo (CA08). Sem isso, a tela só mostrava a
+   * primeira página do resultado, sem aviso, mesmo com centenas de políticas (ex.: grupo
+   * Anonymous com 391).
+   */
+  config: PaginationComponentOptions = Object.assign(new PaginationComponentOptions(), {
+    id: 'group-governance-policies',
+    pageSize: 20,
+    currentPage: 1,
+  });
+
+  pageInfoState$: BehaviorSubject<PageInfo> = new BehaviorSubject<PageInfo>(undefined);
 
   entries$: BehaviorSubject<GroupGovernanceEntry[]> = new BehaviorSubject<GroupGovernanceEntry[]>([]);
 
@@ -64,21 +87,28 @@ export class GroupGovernanceComponent implements OnInit {
 
   public readonly getDSORoute = getDSORoute;
 
+  private paginationSub: Subscription;
+
   constructor(
     protected route: ActivatedRoute,
-    protected resourcePolicyService: ResourcePolicyDataService,
+    protected resourcePolicyService: GroupResourcePolicyDataService,
     protected dSpaceObjectDataService: DSpaceObjectDataService,
     public dsoNameService: DSONameService,
     protected notificationsService: NotificationsService,
     protected translateService: TranslateService,
     protected modalService: NgbModal,
+    protected paginationService: PaginationService,
   ) {
   }
 
   ngOnInit(): void {
     this.groupId = this.route.snapshot.params.groupId;
-    this.loading$.next(true);
-    this.resourcePolicyService.searchByGroup(this.groupId).pipe(
+    this.paginationSub = this.paginationService.getCurrentPagination(this.config.id, this.config).pipe(
+      tap(() => this.loading$.next(true)),
+      switchMap((paginationOptions) => this.resourcePolicyService.searchByGroupPaginated(this.groupId, {
+        currentPage: paginationOptions.currentPage,
+        elementsPerPage: paginationOptions.pageSize,
+      })),
       getAllSucceededRemoteData(),
       getRemoteDataPayload(),
     ).subscribe((list) => {
@@ -86,8 +116,16 @@ export class GroupGovernanceComponent implements OnInit {
         policy,
         resource$: this.getResource(policy),
       })));
+      this.pageInfoState$.next(list.pageInfo);
       this.loading$.next(false);
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.paginationSub) {
+      this.paginationSub.unsubscribe();
+    }
+    this.paginationService.clearPagination(this.config.id);
   }
 
   /**
