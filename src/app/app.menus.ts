@@ -39,7 +39,7 @@ import { RegistriesMenuProvider } from './shared/menu/providers/registries.menu'
 import { SystemWideAlertMenuProvider } from './shared/menu/providers/system-wide-alert.menu';
 import { WithdrawnReinstateItemMenuProvider } from './shared/menu/providers/withdrawn-reinstate-item.menu';
 import { WorkflowMenuProvider } from './shared/menu/providers/workflow.menu';
-
+import { AuditLogAdminMenuProvider } from './shared/menu/providers/audit-log-menu.provider';
 /**
  * Represents and builds the menu structure for the three available menus (public navbar, admin sidebar and the dso edit
  * menus).
@@ -82,6 +82,7 @@ export const MENUS = buildMenuStructure({
     AuditOverviewMenuProvider,
     EditCMSMetadataMenuProvider,
     EditUserAgreementMenuProvider,
+    AuditLogAdminMenuProvider,
   ],
   [MenuID.DSO_EDIT]: [
     DsoOptionMenuProvider.withSubs([
