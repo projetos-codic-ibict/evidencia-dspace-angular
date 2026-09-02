@@ -301,6 +301,9 @@
   // HU009 CA01 — columna de descripción en el listado de grupos
   "admin.access-control.groups.table.description": "Descripción",
 
+  // HU009 CA01c — columna de permisos asociados en el listado de grupos
+  "admin.access-control.groups.table.permissions": "Permisos",
+
   // HU009 CA08 — pantalla de gobernanza de permisos
   "evidencia.group-governance.title": "Gobernanza de permisos",
   "evidencia.group-governance.breadcrumbs": "Gobernanza de permisos",

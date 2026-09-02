@@ -51,6 +51,7 @@
                   <th scope="col">{{messagePrefix + 'table.description' | translate}}</th>
                   <th scope="col">{{messagePrefix + 'table.collectionOrCommunity' | translate}}</th>
                   <th scope="col">{{messagePrefix + 'table.members' | translate}}</th>
+                  <th scope="col">{{messagePrefix + 'table.permissions' | translate}}</th>
                   <th scope="col">{{messagePrefix + 'table.edit' | translate}}</th>
                 </tr>
               </thead>
@@ -62,6 +63,14 @@
                     <td>{{ groupDto.group.firstMetadataValue('dc.description') }}</td>
                     <td>{{ dsoNameService.getName((groupDto.group.object | async)?.payload) }}</td>
                     <td>{{groupDto.epersons?.totalElements + groupDto.subgroups?.totalElements}}</td>
+                    <td>
+                      <a [routerLink]="getGroupGovernanceRoute(groupDto.group.id)"
+                        class="badge bg-primary text-decoration-none"
+                        title="{{'evidencia.group-governance.table.view.button' | translate: {name: dsoNameService.getName(groupDto.group) } }}"
+                        [attr.aria-label]="'evidencia.group-governance.table.view.button' | translate: {name: dsoNameService.getName(groupDto.group) }">
+                        {{ (policyCounts$ | async)?.[groupDto.group.id] ?? '...' }}
+                      </a>
+                    </td>
                     <td>
                       <div class="btn-group edit-field">
                         @switch (groupDto.ableToEdit) {

@@ -7877,4 +7877,6 @@
   "evidencia.group-governance.type.bitstream": "Arquivo",
 
   "evidencia.group-governance.type.bundle": "Pacote de arquivos",
+
+  "admin.access-control.groups.table.permissions": "Permissões",
 }
