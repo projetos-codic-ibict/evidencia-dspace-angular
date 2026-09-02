@@ -1,0 +1,88 @@
+<div class="container pt-4 pb-5">
+  <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+    <h2><i class="fas fa-user-shield text-primary mr-2"></i>Auditoria</h2>
+  </div>
+  
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+        </div>
+        <input type="text" class="form-control" placeholder="Buscar por Nome, ID, Ação ou Detalhes..." (input)="onSearch($event)">
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col" style="width: 20%;"><i class="far fa-clock"></i> Data/Hora</th>
+              <th scope="col" style="width: 15%;"><i class="fas fa-user-cog"></i> Executor</th>
+              <th scope="col" style="width: 15%;"><i class="fas fa-bolt"></i> Ação</th>
+              <th scope="col" style="width: 15%;"><i class="fas fa-cube"></i> Tipo</th>
+              <th scope="col" style="width: 35%;"><i class="fas fa-tag"></i> Nome do Objeto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let log of filteredLogs$ | async">
+              
+              <!-- Linha Principal -->
+              <tr (click)="toggleDetails(log.id)" style="cursor: pointer;" [class.bg-light]="expandedLogId === log.id">
+                <td class="text-nowrap text-primary">
+                  <i class="fas mr-2" [ngClass]="expandedLogId === log.id ? 'fa-chevron-down' : 'fa-chevron-right'"></i> 
+                  {{ log.timestamp | date:'dd/MM/yyyy HH:mm:ss' }}
+                </td>
+                <td>
+                  <span class="text-muted" *ngIf="!log.epersonId">Sistema</span>
+                  <code *ngIf="log.epersonId" title="{{ log.epersonId }}">{{ log.epersonId | slice:0:8 }}...</code>
+                </td>
+                <td>
+                  <span class="badge badge-pill p-2" 
+                        [ngClass]="{
+                          'badge-success bg-success': log.actionType === 'CREATE' || log.actionType === 'ADD_MEMBER',
+                          'badge-warning bg-warning text-dark': log.actionType === 'MODIFY',
+                          'badge-danger bg-danger': log.actionType === 'DELETE' || log.actionType === 'REMOVE_MEMBER'
+                        }">
+                    {{ translateAction(log.actionType) }}
+                  </span>
+                </td>
+                <td><strong>{{ translateSubject(log.subjectType) }}</strong></td>
+                <td><span class="font-weight-bold text-dark">{{ log.subjectName || 'Não registrado' }}</span></td>
+              </tr>
+
+              <!-- Detalhes Expandidos -->
+              <tr *ngIf="expandedLogId === log.id">
+                <td colspan="5" class="p-0 border-0">
+                  <div class="p-3 bg-light border-bottom">
+                    <div class="row ml-1">
+                       <div class="col-12 mb-2">
+                          <i class="fas fa-fingerprint text-muted mr-1"></i> <strong class="text-dark">ID Interno:</strong> <code class="text-muted ml-1">{{ log.subjectId }}</code>
+                       </div>
+                       <div class="col-12">
+                          <div class="border-left border-primary pl-3">
+                            <strong class="d-block mb-1 text-dark">Detalhes da Ação:</strong>
+                            <span class="text-muted" style="white-space: pre-wrap;">{{ log.details || 'Sem informações adicionais registradas.' }}</span>
+                          </div>
+                       </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="text-center p-5 text-muted" *ngIf="(filteredLogs$ | async)?.length === 0">
+        <i class="fas fa-search-minus fa-3x mb-3 text-light"></i>
+        <h5>Nenhum registro encontrado</h5>
+        <p>Ainda não há eventos de auditoria ou sua busca não retornou resultados.</p>
+      </div>
+    </div>
+  </div>
+</div>

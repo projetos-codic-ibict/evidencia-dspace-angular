@@ -15,7 +15,7 @@ import {
 } from './admin-routing-paths';
 import { ThemedAdminSearchPageComponent } from './admin-search-page/themed-admin-search-page.component';
 import { ThemedAdminWorkflowPageComponent } from './admin-workflow-page/themed-admin-workflow-page.component';
-
+import { AuditLogsComponent } from 'src/themes/rdapp/app/admin/audit-logs/audit-logs.component';
 export const ROUTES: Route[] = [
   {
     path: NOTIFICATIONS_MODULE_PATH,
@@ -74,6 +74,12 @@ export const ROUTES: Route[] = [
     resolve: { breadcrumb: i18nBreadcrumbResolver },
     loadChildren: () => import('../system-wide-alert/system-wide-alert-routes').then((m) => m.ROUTES),
     data: { title: 'admin.system-wide-alert.title', breadcrumbKey: 'admin.system-wide-alert' },
+  },
+  {
+    path: 'audit-logs',
+    resolve: {breadcrumb: i18nBreadcrumbResolver},
+    component: AuditLogsComponent,
+    data: { title: 'admin.audit-logs.title', breadcrumbKey: 'admin-audit-logs'},
   },
   {
     path: LDN_PATH,
