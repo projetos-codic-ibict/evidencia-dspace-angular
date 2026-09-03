@@ -17,9 +17,9 @@ import { NgbModal, NgbModalRef, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
-import { BtnDisabledDirective } from '../../../btn-disabled.directive';
-import { SearchService } from '../../../search/search.service';
-import { ClaimedTaskActionsAbstractComponent } from '../abstract/claimed-task-actions-abstract.component';
+import { BtnDisabledDirective } from '../../../../../../../app/shared/btn-disabled.directive';
+import { SearchService } from '../../../../../../../app/shared/search/search.service';
+import { ClaimedTaskActionsAbstractComponent } from '../../../../../../../app/shared/mydspace-actions/claimed-task/abstract/claimed-task-actions-abstract.component';
 
 export const WORKFLOW_TASK_OPTION_RETURN_FOR_ADJUSTMENT =
   'submit_returnForAdjustmentAction';
