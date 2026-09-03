@@ -1,88 +1,84 @@
-<div class="container pt-4 pb-5">
-  <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-    <h2><i class="fas fa-user-shield text-primary mr-2"></i>Auditoria</h2>
-  </div>
-  
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
-        </div>
-        <input type="text" class="form-control" placeholder="Buscar por Nome, ID, Ação ou Detalhes..." (input)="onSearch($event)">
-      </div>
-    </div>
-  </div>
+<div class="container">
+  <div class="audit-logs row">
+    <div class="col-12">
+      <h1 id="header" class="border-bottom pb-2">{{ messagePrefix + 'head' | translate }}</h1>
 
-  <div class="card shadow-sm">
-    <div class="card-body p-0">
+      <div class="mb-3 input-group">
+        <span class="input-group-text">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+        <input type="text" class="form-control"
+          [attr.aria-label]="messagePrefix + 'search.placeholder' | translate"
+          [placeholder]="messagePrefix + 'search.placeholder' | translate"
+          (input)="onSearch($event)">
+      </div>
+
       <div class="table-responsive">
-        <table class="table table-hover mb-0 align-middle">
-          <thead class="thead-light">
+        <table id="audit-logs" class="table table-striped table-hover table-bordered align-middle">
+          <thead>
             <tr>
-              <th scope="col" style="width: 20%;"><i class="far fa-clock"></i> Data/Hora</th>
-              <th scope="col" style="width: 15%;"><i class="fas fa-user-cog"></i> Executor</th>
-              <th scope="col" style="width: 15%;"><i class="fas fa-bolt"></i> Ação</th>
-              <th scope="col" style="width: 15%;"><i class="fas fa-cube"></i> Tipo</th>
-              <th scope="col" style="width: 35%;"><i class="fas fa-tag"></i> Nome do Objeto</th>
+              <th scope="col">{{ messagePrefix + 'table.date' | translate }}</th>
+              <th scope="col">{{ messagePrefix + 'table.executor' | translate }}</th>
+              <th scope="col">{{ messagePrefix + 'table.action' | translate }}</th>
+              <th scope="col">{{ messagePrefix + 'table.type' | translate }}</th>
+              <th scope="col">{{ messagePrefix + 'table.object' | translate }}</th>
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let log of filteredLogs$ | async">
-              
-              <!-- Linha Principal -->
-              <tr (click)="toggleDetails(log.id)" style="cursor: pointer;" [class.bg-light]="expandedLogId === log.id">
-                <td class="text-nowrap text-primary">
-                  <i class="fas mr-2" [ngClass]="expandedLogId === log.id ? 'fa-chevron-down' : 'fa-chevron-right'"></i> 
+            @for (log of (filteredLogs$ | async); track log.id) {
+
+              <tr class="clickable-row" (click)="toggleDetails(log.id)" [class.table-active]="expandedLogId === log.id">
+                <td class="text-nowrap">
+                  <i class="fas fa-fw" [ngClass]="expandedLogId === log.id ? 'fa-chevron-down' : 'fa-chevron-right'" aria-hidden="true"></i>
                   {{ log.timestamp | date:'dd/MM/yyyy HH:mm:ss' }}
                 </td>
                 <td>
-                  <span class="text-muted" *ngIf="!log.epersonId">Sistema</span>
-                  <code *ngIf="log.epersonId" title="{{ log.epersonId }}">{{ log.epersonId | slice:0:8 }}...</code>
+                  @if (log.epersonId) {
+                    <code [title]="log.epersonId">{{ log.epersonId | slice:0:8 }}...</code>
+                  } @else {
+                    <span class="text-muted">{{ messagePrefix + 'system' | translate }}</span>
+                  }
                 </td>
                 <td>
-                  <span class="badge badge-pill p-2" 
+                  <span class="badge rounded-pill"
                         [ngClass]="{
-                          'badge-success bg-success': log.actionType === 'CREATE' || log.actionType === 'ADD_MEMBER',
-                          'badge-warning bg-warning text-dark': log.actionType === 'MODIFY',
-                          'badge-danger bg-danger': log.actionType === 'DELETE' || log.actionType === 'REMOVE_MEMBER'
+                          'bg-success': log.actionType === 'CREATE' || log.actionType === 'ADD_MEMBER',
+                          'bg-warning text-dark': log.actionType === 'MODIFY',
+                          'bg-danger': log.actionType === 'DELETE' || log.actionType === 'REMOVE_MEMBER'
                         }">
                     {{ translateAction(log.actionType) }}
                   </span>
                 </td>
-                <td><strong>{{ translateSubject(log.subjectType) }}</strong></td>
-                <td><span class="font-weight-bold text-dark">{{ log.subjectName || 'Não registrado' }}</span></td>
+                <td>{{ translateSubject(log.subjectType) }}</td>
+                <td>{{ log.subjectName || (messagePrefix + 'not-registered' | translate) }}</td>
               </tr>
 
-              <!-- Detalhes Expandidos -->
-              <tr *ngIf="expandedLogId === log.id">
-                <td colspan="5" class="p-0 border-0">
-                  <div class="p-3 bg-light border-bottom">
-                    <div class="row ml-1">
-                       <div class="col-12 mb-2">
-                          <i class="fas fa-fingerprint text-muted mr-1"></i> <strong class="text-dark">ID Interno:</strong> <code class="text-muted ml-1">{{ log.subjectId }}</code>
-                       </div>
-                       <div class="col-12">
-                          <div class="border-left border-primary pl-3">
-                            <strong class="d-block mb-1 text-dark">Detalhes da Ação:</strong>
-                            <span class="text-muted" style="white-space: pre-wrap;">{{ log.details || 'Sem informações adicionais registradas.' }}</span>
-                          </div>
-                       </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
+              @if (expandedLogId === log.id) {
+                <tr>
+                  <td colspan="5">
+                    <p class="mb-1">
+                      <strong>{{ messagePrefix + 'details.id' | translate }}:</strong>
+                      <code class="ms-1">{{ log.subjectId }}</code>
+                    </p>
+                    <p class="mb-0">
+                      <strong>{{ messagePrefix + 'details.action' | translate }}:</strong>
+                      <span class="d-block text-muted details-text">{{ log.details || (messagePrefix + 'details.empty' | translate) }}</span>
+                    </p>
+                  </td>
+                </tr>
+              }
 
-            </ng-container>
+            }
           </tbody>
         </table>
       </div>
-      
-      <div class="text-center p-5 text-muted" *ngIf="(filteredLogs$ | async)?.length === 0">
-        <i class="fas fa-search-minus fa-3x mb-3 text-light"></i>
-        <h5>Nenhum registro encontrado</h5>
-        <p>Ainda não há eventos de auditoria ou sua busca não retornou resultados.</p>
-      </div>
+
+      @if ((filteredLogs$ | async)?.length === 0) {
+        <div class="alert alert-info w-100 mb-2" role="alert">
+          {{ messagePrefix + 'no-items' | translate }}
+        </div>
+      }
+
     </div>
   </div>
 </div>

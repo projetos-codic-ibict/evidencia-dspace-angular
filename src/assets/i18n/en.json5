@@ -7825,4 +7825,47 @@
   "evidencia.group-governance.type.bundle": "File bundle",
 
   "admin.access-control.groups.table.permissions": "Permissions",
+
+  "evidencia.audit-logs.head": "Audit log",
+
+  "evidencia.audit-logs.search.placeholder": "Search by name, ID, action or details",
+
+  "evidencia.audit-logs.table.date": "Date/time",
+
+  "evidencia.audit-logs.table.executor": "Executor",
+
+  "evidencia.audit-logs.table.action": "Action",
+
+  "evidencia.audit-logs.table.type": "Type",
+
+  "evidencia.audit-logs.table.object": "Object name",
+
+  "evidencia.audit-logs.system": "System",
+
+  "evidencia.audit-logs.not-registered": "Not registered",
+
+  "evidencia.audit-logs.details.id": "Internal ID",
+
+  "evidencia.audit-logs.details.action": "Action details",
+
+  "evidencia.audit-logs.details.empty": "No additional information recorded.",
+
+  "evidencia.audit-logs.no-items": "No audit records found.",
+
+  "evidencia.audit-logs.action.create": "Creation",
+
+  "evidencia.audit-logs.action.modify": "Edit",
+
+  "evidencia.audit-logs.action.delete": "Deletion",
+
+  "evidencia.audit-logs.action.add_member": "Member added",
+
+  "evidencia.audit-logs.action.remove_member": "Member removed",
+
+  "evidencia.audit-logs.subject.eperson": "User",
+
+  "evidencia.audit-logs.subject.group": "Group",
+
+
+
 }

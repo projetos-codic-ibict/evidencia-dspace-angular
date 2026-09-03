@@ -7879,4 +7879,47 @@
   "evidencia.group-governance.type.bundle": "Pacote de arquivos",
 
   "admin.access-control.groups.table.permissions": "Permissões",
+
+  "evidencia.audit-logs.head": "Auditoria",
+
+  "evidencia.audit-logs.search.placeholder": "Buscar por nome, ID, ação ou detalhes",
+
+  "evidencia.audit-logs.table.date": "Data/hora",
+
+  "evidencia.audit-logs.table.executor": "Executor",
+
+  "evidencia.audit-logs.table.action": "Ação",
+
+  "evidencia.audit-logs.table.type": "Tipo",
+
+  "evidencia.audit-logs.table.object": "Nome do objeto",
+
+  "evidencia.audit-logs.system": "Sistema",
+
+  "evidencia.audit-logs.not-registered": "Não registrado",
+
+  "evidencia.audit-logs.details.id": "ID interno",
+
+  "evidencia.audit-logs.details.action": "Detalhes da ação",
+
+  "evidencia.audit-logs.details.empty": "Sem informações adicionais registradas.",
+
+  "evidencia.audit-logs.no-items": "Nenhum registro de auditoria encontrado.",
+
+  "evidencia.audit-logs.action.create": "Criação",
+
+  "evidencia.audit-logs.action.modify": "Edição",
+
+  "evidencia.audit-logs.action.delete": "Exclusão",
+
+  "evidencia.audit-logs.action.add_member": "Inclusão de membro",
+
+  "evidencia.audit-logs.action.remove_member": "Remoção de membro",
+
+  "evidencia.audit-logs.subject.eperson": "Usuário",
+
+  "evidencia.audit-logs.subject.group": "Grupo",
+
+
+
 }

@@ -304,6 +304,28 @@
   // HU009 CA01c — columna de permisos asociados en el listado de grupos
   "admin.access-control.groups.table.permissions": "Permisos",
 
+  // HU009 CA09 — pantalla de auditoría de grupo/eperson
+  "evidencia.audit-logs.head": "Auditoría",
+  "evidencia.audit-logs.search.placeholder": "Buscar por nombre, ID, acción o detalles",
+  "evidencia.audit-logs.table.date": "Fecha/hora",
+  "evidencia.audit-logs.table.executor": "Ejecutor",
+  "evidencia.audit-logs.table.action": "Acción",
+  "evidencia.audit-logs.table.type": "Tipo",
+  "evidencia.audit-logs.table.object": "Nombre del objeto",
+  "evidencia.audit-logs.system": "Sistema",
+  "evidencia.audit-logs.not-registered": "No registrado",
+  "evidencia.audit-logs.details.id": "ID interno",
+  "evidencia.audit-logs.details.action": "Detalles de la acción",
+  "evidencia.audit-logs.details.empty": "Sin información adicional registrada.",
+  "evidencia.audit-logs.no-items": "No se encontraron registros de auditoría.",
+  "evidencia.audit-logs.action.create": "Creación",
+  "evidencia.audit-logs.action.modify": "Edición",
+  "evidencia.audit-logs.action.delete": "Eliminación",
+  "evidencia.audit-logs.action.add_member": "Inclusión de miembro",
+  "evidencia.audit-logs.action.remove_member": "Eliminación de miembro",
+  "evidencia.audit-logs.subject.eperson": "Usuario",
+  "evidencia.audit-logs.subject.group": "Grupo",
+
   // HU009 CA08 — pantalla de gobernanza de permisos
   "evidencia.group-governance.title": "Gobernanza de permisos",
   "evidencia.group-governance.breadcrumbs": "Gobernanza de permisos",
