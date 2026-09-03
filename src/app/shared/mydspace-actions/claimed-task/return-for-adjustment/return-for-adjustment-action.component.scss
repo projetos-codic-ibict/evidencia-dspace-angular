@@ -1,0 +1,17 @@
+.btn-adjustment {
+  background-color: #d97706; /* Âmbar escuro */
+  color: #ffffff;
+  border-color: #b45309;
+  
+  &:hover, &:focus {
+    background-color: #b45309;
+    color: #ffffff;
+  }
+
+  &.disabled, &:disabled {
+    background-color: #fcd34d;
+    border-color: #fcd34d;
+    color: #6b7280;
+    opacity: 0.65;
+  }
+}
