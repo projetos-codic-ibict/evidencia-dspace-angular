@@ -2428,6 +2428,12 @@
 
   "item.edit.delete.confirm": "Borrar",
 
+  "item.edit.delete.confirmation-title": "Confirmar eliminación",
+
+  "item.edit.delete.confirmation-message": "Esta acción no se puede deshacer.",
+
+  "item.edit.delete.confirmation-detail": "El ítem se eliminará de forma permanente, sin posibilidad de recuperación.",
+
   "item.edit.delete.description": "¿Estás seguro de que este ítem debería eliminarse por completo? Precaución: en la actualidad, no se dejaría ningun rastro.",
 
   "item.edit.delete.error": "Se produjo un error al eliminar el ítem.",

@@ -2428,6 +2428,12 @@
 
   "item.edit.delete.confirm": "Excluir",
 
+  "item.edit.delete.confirmation-title": "Confirmar exclusão",
+
+  "item.edit.delete.confirmation-message": "Esta ação não pode ser desfeita.",
+
+  "item.edit.delete.confirmation-detail": "O item será excluído permanentemente, sem possibilidade de recuperação.",
+
   "item.edit.delete.description": "Você tem certeza que deseja excluir completamento este item? Atenção: No momento, nenhum vestígio restará.",
 
   "item.edit.delete.error": "Ocorreu um erro ao excluir o item",

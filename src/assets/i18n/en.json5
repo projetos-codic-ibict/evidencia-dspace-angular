@@ -2428,6 +2428,12 @@
 
   "item.edit.delete.confirm": "Delete",
 
+  "item.edit.delete.confirmation-title": "Confirm deletion",
+
+  "item.edit.delete.confirmation-message": "This action cannot be undone.",
+
+  "item.edit.delete.confirmation-detail": "The item will be permanently deleted, with no way to recover it.",
+
   "item.edit.delete.description": "Are you sure this item should be completely deleted? Caution: At present, no tombstone would be left.",
 
   "item.edit.delete.error": "An error occurred while deleting the item",
