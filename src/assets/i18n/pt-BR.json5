@@ -7863,5 +7863,15 @@
   "admin.edit-user-agreement.title": "Editar Contrato de Usuário",
 
 
-
+"workflow.action.return-for-adjustment.button": "Devolver para ajuste",
+  "workflow.action.return-for-adjustment.modal.title": "Motivo da devolução",
+  "workflow.action.return-for-adjustment.modal.guidance": "Por favor, informe o motivo pela devolução para ajuste da submissão na caixa abaixo.",
+  "workflow.action.return-for-adjustment.modal.label": "Descreva o motivo da devolução para ajuste",
+  "workflow.action.return-for-adjustment.modal.required": "O motivo é obrigatório para devolver o item.",
+  "workflow.action.return-for-adjustment.modal.cancel": "Cancelar",
+  "workflow.action.return-for-adjustment.modal.submit": "Devolver item",
+  "workflow.action.return-for-adjustment.success.title": "Sucesso",
+  "workflow.action.return-for-adjustment.success.msg": "O item foi devolvido ao depositante para ajustes com sucesso.",
+  "workflow.action.return-for-adjustment.error.title": "Erro",
+  "workflow.action.return-for-adjustment.error.msg": "Ocorreu um erro ao tentar devolver o item para ajuste."
 }

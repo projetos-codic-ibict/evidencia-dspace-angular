@@ -27,6 +27,12 @@ import {
   ClaimedTaskActionsRejectComponent,
   WORKFLOW_TASK_OPTION_REJECT,
 } from '../reject/claimed-task-actions-reject.component';
+
+import {
+  ReturnForAdjustmentActionComponent,
+  WORKFLOW_TASK_OPTION_RETURN_FOR_ADJUSTMENT,
+} from '../return-for-adjustment/return-for-adjustment-action.component';
+
 import {
   ClaimedTaskActionsReturnToPoolComponent,
   WORKFLOW_TASK_OPTION_RETURN_TO_POOL,
@@ -40,7 +46,8 @@ export type WorkflowTaskOptionComponent =
   typeof AdvancedClaimedTaskActionRatingComponent |
   typeof ClaimedTaskActionsRejectComponent |
   typeof ClaimedTaskActionsReturnToPoolComponent |
-  typeof AdvancedClaimedTaskActionSelectReviewerComponent;
+  typeof AdvancedClaimedTaskActionSelectReviewerComponent |
+  typeof ReturnForAdjustmentActionComponent;
 
 export type AdvancedWorkflowTaskOptionComponent =
   typeof AdvancedWorkflowActionRatingComponent |
@@ -54,6 +61,7 @@ export const WORKFLOW_TASK_OPTION_DECORATOR_MAP = new Map<string, WorkflowTaskOp
   [WORKFLOW_TASK_OPTION_REJECT, ClaimedTaskActionsRejectComponent],
   [WORKFLOW_TASK_OPTION_RETURN_TO_POOL, ClaimedTaskActionsReturnToPoolComponent],
   [ADVANCED_WORKFLOW_TASK_OPTION_SELECT_REVIEWER, AdvancedClaimedTaskActionSelectReviewerComponent],
+  [WORKFLOW_TASK_OPTION_RETURN_FOR_ADJUSTMENT, ReturnForAdjustmentActionComponent],
 ]);
 
 export const ADVANCED_WORKFLOW_TASK_OPTION_DECORATOR_MAP = new Map<string, AdvancedWorkflowTaskOptionComponent>([

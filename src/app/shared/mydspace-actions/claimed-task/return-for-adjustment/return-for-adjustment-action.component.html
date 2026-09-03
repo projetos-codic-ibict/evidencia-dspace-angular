@@ -1,0 +1,44 @@
+<button class="btn btn-adjustment ml-2 mt-1 mb-1" 
+        [dsBtnDisabled]="(processing$ | async)"
+        (click)="openAdjustmentModal(adjustmentModal)">
+  <i class="fas fa-undo fa-fw"></i> {{ 'workflow.action.return-for-adjustment.button' | translate }}
+</button>
+
+<ng-template #adjustmentModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ 'workflow.action.return-for-adjustment.modal.title' | translate }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  
+  <div class="modal-body">
+    <p>{{ 'workflow.action.return-for-adjustment.modal.guidance' | translate }}</p>
+    
+    <form [formGroup]="adjustmentForm" (ngSubmit)="submitTask()">
+      <div class="mb-3">
+        <label for="reason" class="form-label">{{ 'workflow.action.return-for-adjustment.modal.label' | translate }}</label>
+        <textarea 
+          class="form-control" 
+          id="reason" 
+          rows="5" 
+          formControlName="reason" 
+          [class.is-invalid]="adjustmentForm.get('reason').invalid && adjustmentForm.get('reason').touched">
+        </textarea>
+        <div class="invalid-feedback">
+          {{ 'workflow.action.return-for-adjustment.modal.required' | translate }}
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel')">
+      {{ 'workflow.action.return-for-adjustment.modal.cancel' | translate }}
+    </button>
+    <button type="button" class="btn btn-adjustment" 
+            [dsBtnDisabled]="adjustmentForm.invalid || (processing$ | async)" 
+            (click)="submitTask()">
+      <span *ngIf="(processing$ | async)" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+      {{ 'workflow.action.return-for-adjustment.modal.submit' | translate }}
+    </button>
+  </div>
+</ng-template>
