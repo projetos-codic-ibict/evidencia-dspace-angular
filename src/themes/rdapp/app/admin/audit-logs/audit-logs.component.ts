@@ -19,8 +19,8 @@ import {
   startWith,
 } from 'rxjs/operators';
 
-import { AuditLog } from '../../../../../app/core/audit/model/audit-log.model';
-import { AuditLogService } from '../../../../../app/core/audit/model/audit-log.service';
+import { AuditLog } from '../../core/audit/audit-log.model';
+import { AuditLogService } from '../../core/audit/audit-log.service';
 
 @Component({
   selector: 'ds-audit-logs',

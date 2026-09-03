@@ -6,6 +6,7 @@
  * http://www.dspace.org/license/
  */
 import { AboutRdappMenuProvider } from '../themes/rdapp/app/shared/menu/providers/about-rdapp.menu';
+import { AuditLogAdminMenuProvider } from '../themes/rdapp/app/shared/menu/providers/audit-log.menu';
 import { EstatisticasMenuProvider } from '../themes/rdapp/app/shared/menu/providers/estatisticas.menu';
 import { FaqMenuProvider } from '../themes/rdapp/app/shared/menu/providers/faq.menu';
 import { buildMenuStructure } from './shared/menu/menu.structure';
@@ -39,7 +40,6 @@ import { RegistriesMenuProvider } from './shared/menu/providers/registries.menu'
 import { SystemWideAlertMenuProvider } from './shared/menu/providers/system-wide-alert.menu';
 import { WithdrawnReinstateItemMenuProvider } from './shared/menu/providers/withdrawn-reinstate-item.menu';
 import { WorkflowMenuProvider } from './shared/menu/providers/workflow.menu';
-import { AuditLogAdminMenuProvider } from './shared/menu/providers/audit-log-menu.provider';
 /**
  * Represents and builds the menu structure for the three available menus (public navbar, admin sidebar and the dso edit
  * menus).

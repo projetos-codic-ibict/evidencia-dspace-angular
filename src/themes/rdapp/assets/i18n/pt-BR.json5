@@ -14,6 +14,7 @@
   "evidencia.menu.about.goals": "Acervo e Parcerias",
   "evidencia.menu.about.team": "Quem Somos",
   "evidencia.menu.estatisticas": "Painel de Estatísticas",
+  "evidencia.menu.audit-logs": "Trilha de Auditoria",
 
   // Header
   "evidencia.header.logo-alt": "Logo do EvidencIA - Repositório Digital de Avaliação de Políticas Públicas",
@@ -306,6 +307,8 @@
   "admin.access-control.groups.table.permissions": "Permissões",
 
   // HU009 CA09 — tela de auditoria de grupo/eperson
+  "evidencia.audit-logs.title": "Auditoria",
+  "evidencia.audit-logs.breadcrumbs": "Auditoria",
   "evidencia.audit-logs.head": "Auditoria",
   "evidencia.audit-logs.search.placeholder": "Buscar por nome, ID, ação ou detalhes",
   "evidencia.audit-logs.table.date": "Data/hora",

@@ -7866,6 +7866,9 @@
 
   "evidencia.audit-logs.subject.group": "Group",
 
+  "evidencia.menu.audit-logs": "Audit Log",
 
+  "evidencia.audit-logs.title": "Audit log",
 
+  "evidencia.audit-logs.breadcrumbs": "Audit log",
 }

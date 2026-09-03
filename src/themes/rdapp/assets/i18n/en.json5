@@ -14,6 +14,7 @@
   "evidencia.menu.about.goals": "Goals",
   "evidencia.menu.about.team": "Who We Are",
   "evidencia.menu.estatisticas": "Statistics Dashboard",
+  "evidencia.menu.audit-logs": "Audit Log",
 
   // Header
   "evidencia.header.logo-alt": "EvidencIA Logo - Digital Repository for Public Policy Evaluation",
@@ -299,6 +300,8 @@
   "admin.access-control.groups.table.permissions": "Permissions",
 
   // HU009 CA09 — group/eperson audit log screen
+  "evidencia.audit-logs.title": "Audit log",
+  "evidencia.audit-logs.breadcrumbs": "Audit log",
   "evidencia.audit-logs.head": "Audit log",
   "evidencia.audit-logs.search.placeholder": "Search by name, ID, action or details",
   "evidencia.audit-logs.table.date": "Date/time",

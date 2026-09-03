@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
-import { AuthorizationDataService } from '../../../core/data/feature-authorization/authorization-data.service';
-import { FeatureID } from '../../../core/data/feature-authorization/feature-id';
-import { combineLatest, map, Observable } from 'rxjs';
+import { AuthorizationDataService } from '@dspace/core/data/feature-authorization/authorization-data.service';
+import { FeatureID } from '@dspace/core/data/feature-authorization/feature-id';
+import {
+  combineLatest,
+  map,
+  Observable,
+} from 'rxjs';
 
-import { MenuItemType } from '../menu-item-type.model';
-import { AbstractMenuProvider, PartialMenuSection } from '../menu-provider.model';
-import { MenuID } from '../menu-id.model';
+import { MenuID } from '../../../../../../app/shared/menu/menu-id.model';
+import { MenuItemType } from '../../../../../../app/shared/menu/menu-item-type.model';
+import {
+  AbstractMenuProvider,
+  PartialMenuSection,
+} from '../../../../../../app/shared/menu/menu-provider.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+/**
+ * Menu provider for the "Trilha de Auditoria" link in the DSpace admin sidebar.
+ * Visible only to site administrators.
+ */
+@Injectable()
 export class AuditLogAdminMenuProvider extends AbstractMenuProvider {
-  
+
   menuID = MenuID.ADMIN;
 
   constructor(
@@ -31,7 +40,7 @@ export class AuditLogAdminMenuProvider extends AbstractMenuProvider {
             visible: isSiteAdmin,
             model: {
               type: MenuItemType.LINK,
-              text: 'Trilha de Auditoria',
+              text: 'evidencia.menu.audit-logs',
               link: '/admin/audit-logs',
             },
             icon: 'list-alt',

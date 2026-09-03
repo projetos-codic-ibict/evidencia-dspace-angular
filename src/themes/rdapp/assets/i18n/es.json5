@@ -132,6 +132,7 @@
   "evidencia.menu.about.goals": "Objetivos",
   "evidencia.menu.about.team": "Quiénes Somos",
   "evidencia.menu.estatisticas": "Panel de Estadísticas",
+  "evidencia.menu.audit-logs": "Auditoría",
 
   // Header
   "evidencia.header.logo-alt": "Logo del EvidencIA - Repositorio Digital de Evaluación de Políticas Públicas",
@@ -305,6 +306,8 @@
   "admin.access-control.groups.table.permissions": "Permisos",
 
   // HU009 CA09 — pantalla de auditoría de grupo/eperson
+  "evidencia.audit-logs.title": "Auditoría",
+  "evidencia.audit-logs.breadcrumbs": "Auditoría",
   "evidencia.audit-logs.head": "Auditoría",
   "evidencia.audit-logs.search.placeholder": "Buscar por nombre, ID, acción o detalles",
   "evidencia.audit-logs.table.date": "Fecha/hora",

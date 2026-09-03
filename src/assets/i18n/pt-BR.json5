@@ -7920,6 +7920,9 @@
 
   "evidencia.audit-logs.subject.group": "Grupo",
 
+  "evidencia.menu.audit-logs": "Trilha de Auditoria",
 
+  "evidencia.audit-logs.title": "Auditoria",
 
+  "evidencia.audit-logs.breadcrumbs": "Auditoria",
 }

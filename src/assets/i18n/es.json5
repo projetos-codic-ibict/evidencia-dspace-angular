@@ -7872,6 +7872,9 @@
 
   "evidencia.audit-logs.subject.group": "Grupo",
 
+  "evidencia.menu.audit-logs": "Auditoría",
 
+  "evidencia.audit-logs.title": "Auditoría",
 
+  "evidencia.audit-logs.breadcrumbs": "Auditoría",
 }
