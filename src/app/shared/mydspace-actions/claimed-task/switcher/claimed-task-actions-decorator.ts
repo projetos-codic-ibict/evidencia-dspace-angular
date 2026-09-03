@@ -1,6 +1,10 @@
 import { hasNoValue } from '@dspace/shared/utils/empty.util';
 
 import {
+  ReturnForAdjustmentActionComponent,
+  WORKFLOW_TASK_OPTION_RETURN_FOR_ADJUSTMENT,
+} from '../../../../../themes/rdapp/app/shared/mydspace-actions/claimed-task/return-for-adjustment/return-for-adjustment-action.component';
+import {
   ADVANCED_WORKFLOW_ACTION_RATING,
   ADVANCED_WORKFLOW_TASK_OPTION_RATING,
   AdvancedWorkflowActionRatingComponent,
@@ -27,12 +31,6 @@ import {
   ClaimedTaskActionsRejectComponent,
   WORKFLOW_TASK_OPTION_REJECT,
 } from '../reject/claimed-task-actions-reject.component';
-
-import {
-  ReturnForAdjustmentActionComponent,
-  WORKFLOW_TASK_OPTION_RETURN_FOR_ADJUSTMENT,
-} from '../return-for-adjustment/return-for-adjustment-action.component';
-
 import {
   ClaimedTaskActionsReturnToPoolComponent,
   WORKFLOW_TASK_OPTION_RETURN_TO_POOL,
