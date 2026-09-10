@@ -454,17 +454,12 @@ themes:
         sizes: any
     - tagName: link
       attributes:
-        rel: icon
-        href: assets/rdapp/images/favicons/favicon.svg
-        type: image/svg+xml
-    - tagName: link
-      attributes:
         rel: apple-touch-icon
         href: assets/rdapp/images/favicons/apple-touch-icon.png
     - tagName: link
       attributes:
         rel: manifest
-        href: assets/rdapp/images/favicons/manifest.webmanifest
+        href: assets/rdapp/images/favicons/site.webmanifest
 
 # The default bundles that should always be displayed as suggestions when you upload a new bundle
 bundle:
