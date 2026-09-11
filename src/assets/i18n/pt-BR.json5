@@ -7874,5 +7874,55 @@
   "workflow.action.return-for-adjustment.success.title": "Sucesso",
   "workflow.action.return-for-adjustment.success.msg": "O item foi devolvido ao depositante para ajustes com sucesso.",
   "workflow.action.return-for-adjustment.error.title": "Erro",
-  "workflow.action.return-for-adjustment.error.msg": "Ocorreu um erro ao tentar devolver o item para ajuste."
+  "workflow.action.return-for-adjustment.error.msg": "Ocorreu um erro ao tentar devolver o item para ajuste.",
+
+  "menu.section.audit": "Auditoria",
+
+  "audit.overview": "Auditoria",
+
+  "audit.overview.title": "Trilha de Auditoria",
+
+  "audit.data.not-found": "Nenhum registro de auditoria encontrado.",
+
+  "audit.data.self": "O próprio item",
+
+  "audit.overview.table.entityType": "Tipo de Evento",
+
+  "audit.overview.table.eperson": "Executado por",
+
+  "audit.overview.table.timestamp": "Data/Hora",
+
+  "audit.overview.table.subjectUUID": "ID do Sujeito",
+
+  "audit.overview.table.subjectType": "Tipo do Sujeito",
+
+  "audit.overview.table.objectUUID": "ID do Objeto",
+
+  "audit.overview.table.objectType": "Tipo do Objeto",
+
+  "audit.overview.table.other": "Objeto Relacionado",
+
+  "audit.detail.metadata.field": "Campo:",
+
+  "audit.detail.metadata.value": "Valor:",
+
+  "audit.detail.metadata.authority": "Autoridade:",
+
+  "audit.detail.metadata.confidence": "Confiança:",
+
+  "audit.detail.metadata.place": "Posição:",
+
+  "audit.detail.metadata.action": "Ação:",
+
+  "audit.detail.metadata.checksum": "Checksum:",
+
+  "rdapp.audit-overview.filter.label": "Filtrar por tipo:",
+
+  "rdapp.audit-overview.filter.all": "Todos os eventos",
+
+  "rdapp.audit-overview.filter.eperson": "Usuários",
+
+  "rdapp.audit-overview.filter.group": "Grupos",
+
+  "audit.overview.breadcrumbs": "Auditoria",
 }

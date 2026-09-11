@@ -298,6 +298,35 @@
   "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas Públicas u Objetos Evaluados",
   "vocabulary-treeview.tree.description.rdapp-cidades": "Municipios de Brasil, organizados por Unidad Federativa",
 
+  // Trilha de auditoría nativa (HU009 CA09) — claves nativas del DSpace que faltaban en todo idioma
+  "menu.section.audit": "Auditoría",
+  "audit.overview": "Auditoría",
+  "audit.overview.breadcrumbs": "Auditoría",
+  "audit.overview.title": "Registro de Auditoría",
+  "audit.data.not-found": "No se encontraron registros de auditoría.",
+  "audit.data.self": "El propio ítem",
+  "audit.overview.table.entityType": "Tipo de Evento",
+  "audit.overview.table.eperson": "Ejecutado por",
+  "audit.overview.table.timestamp": "Fecha/Hora",
+  "audit.overview.table.subjectUUID": "ID del Sujeto",
+  "audit.overview.table.subjectType": "Tipo de Sujeto",
+  "audit.overview.table.objectUUID": "ID del Objeto",
+  "audit.overview.table.objectType": "Tipo de Objeto",
+  "audit.overview.table.other": "Objeto Relacionado",
+  "audit.detail.metadata.field": "Campo:",
+  "audit.detail.metadata.value": "Valor:",
+  "audit.detail.metadata.authority": "Autoridad:",
+  "audit.detail.metadata.confidence": "Confianza:",
+  "audit.detail.metadata.place": "Posición:",
+  "audit.detail.metadata.action": "Acción:",
+  "audit.detail.metadata.checksum": "Checksum:",
+
+  // Filtro por tipo de sujeto en el override de la trilla de auditoría (RDAPP)
+  "rdapp.audit-overview.filter.label": "Filtrar por tipo:",
+  "rdapp.audit-overview.filter.all": "Todos los eventos",
+  "rdapp.audit-overview.filter.eperson": "Usuarios",
+  "rdapp.audit-overview.filter.group": "Grupos",
+
   // Etiquetas de estado amigables en la pantalla de curaduría (HU010 CA11)
   "mydspace.status.mydspaceWaitingController": "Esperando curaduría",
   "mydspace.status.mydspaceValidation": "En evaluación",

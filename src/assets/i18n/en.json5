@@ -7799,4 +7799,62 @@
   "workflow.action.return-for-adjustment.error.title": "Error",
 
   "workflow.action.return-for-adjustment.error.msg": "An error occurred while trying to return the item for adjustment.",
+
+  "evidencia.item.meta.external.link": "External Publication Link",
+
+  "vocabulary-treeview.tree.description.rdapp-ufs": "Brazilian Federative Units",
+
+  "vocabulary-treeview.tree.description.rdapp-politicas": "Public Policies or Evaluated Objects",
+
+  "vocabulary-treeview.tree.description.rdapp-cidades": "Brazilian municipalities, organized by Federative Unit",
+
+  "menu.section.audit": "Audit",
+
+  "audit.overview": "Audit",
+
+  "audit.overview.title": "Audit Trail",
+
+  "audit.data.not-found": "No audit records found.",
+
+  "audit.data.self": "The item itself",
+
+  "audit.overview.table.entityType": "Event Type",
+
+  "audit.overview.table.eperson": "Performed by",
+
+  "audit.overview.table.timestamp": "Date/Time",
+
+  "audit.overview.table.subjectUUID": "Subject ID",
+
+  "audit.overview.table.subjectType": "Subject Type",
+
+  "audit.overview.table.objectUUID": "Object ID",
+
+  "audit.overview.table.objectType": "Object Type",
+
+  "audit.overview.table.other": "Related Object",
+
+  "audit.detail.metadata.field": "Field:",
+
+  "audit.detail.metadata.value": "Value:",
+
+  "audit.detail.metadata.authority": "Authority:",
+
+  "audit.detail.metadata.confidence": "Confidence:",
+
+  "audit.detail.metadata.place": "Place:",
+
+  "audit.detail.metadata.action": "Action:",
+
+  "audit.detail.metadata.checksum": "Checksum:",
+
+  "rdapp.audit-overview.filter.label": "Filter by type:",
+
+  "rdapp.audit-overview.filter.all": "All events",
+
+  "rdapp.audit-overview.filter.eperson": "Users",
+
+  "rdapp.audit-overview.filter.group": "Groups",
+
+  "audit.overview.breadcrumbs": "Audit",
 }

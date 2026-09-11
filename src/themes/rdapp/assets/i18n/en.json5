@@ -292,6 +292,35 @@
   "vocabulary-treeview.tree.description.rdapp-politicas": "Public Policies or Evaluated Objects",
   "vocabulary-treeview.tree.description.rdapp-cidades": "Brazilian municipalities, organized by Federative Unit",
 
+  // Native audit trail (HU009 CA09) — native DSpace keys missing in every language
+  "menu.section.audit": "Audit",
+  "audit.overview": "Audit",
+  "audit.overview.breadcrumbs": "Audit",
+  "audit.overview.title": "Audit Trail",
+  "audit.data.not-found": "No audit records found.",
+  "audit.data.self": "The item itself",
+  "audit.overview.table.entityType": "Event Type",
+  "audit.overview.table.eperson": "Performed by",
+  "audit.overview.table.timestamp": "Date/Time",
+  "audit.overview.table.subjectUUID": "Subject ID",
+  "audit.overview.table.subjectType": "Subject Type",
+  "audit.overview.table.objectUUID": "Object ID",
+  "audit.overview.table.objectType": "Object Type",
+  "audit.overview.table.other": "Related Object",
+  "audit.detail.metadata.field": "Field:",
+  "audit.detail.metadata.value": "Value:",
+  "audit.detail.metadata.authority": "Authority:",
+  "audit.detail.metadata.confidence": "Confidence:",
+  "audit.detail.metadata.place": "Place:",
+  "audit.detail.metadata.action": "Action:",
+  "audit.detail.metadata.checksum": "Checksum:",
+
+  // Subject-type filter on the audit overview override (RDAPP)
+  "rdapp.audit-overview.filter.label": "Filter by type:",
+  "rdapp.audit-overview.filter.all": "All events",
+  "rdapp.audit-overview.filter.eperson": "Users",
+  "rdapp.audit-overview.filter.group": "Groups",
+
   // Friendly status labels in the curation screen (HU010 CA11)
   "mydspace.status.mydspaceWaitingController": "Awaiting Curation",
   "mydspace.status.mydspaceValidation": "Under Review",
