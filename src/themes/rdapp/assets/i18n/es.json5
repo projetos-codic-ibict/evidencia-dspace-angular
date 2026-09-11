@@ -297,4 +297,9 @@
   "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades Federativas de Brasil",
   "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas Públicas u Objetos Evaluados",
   "vocabulary-treeview.tree.description.rdapp-cidades": "Municipios de Brasil, organizados por Unidad Federativa",
+
+  // Etiquetas de estado amigables en la pantalla de curaduría (HU010 CA11)
+  "mydspace.status.mydspaceWaitingController": "Esperando curaduría",
+  "mydspace.status.mydspaceValidation": "En evaluación",
+  "mydspace.status.mydspaceArchived": "Disponible en la búsqueda general",
 }

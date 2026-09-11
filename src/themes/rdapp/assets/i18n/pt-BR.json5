@@ -298,4 +298,12 @@
   "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades da Federação do Brasil",
   "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas Públicas ou Objetos Avaliados",
   "vocabulary-treeview.tree.description.rdapp-cidades": "Municípios do Brasil, organizados por Unidade da Federação",
+
+  // Rótulos de status amigáveis na tela de curadoria (HU010 CA11)
+  "mydspace.status": "Situação da submissão:",
+  "mydspace.status.mydspaceWaitingController": "Aguardando Curadoria",
+  "mydspace.status.mydspaceValidation": "Em Avaliação",
+  "mydspace.status.mydspaceArchived": "Disponível na busca geral",
+  "mydspace.status.mydspaceWorkflow": "Em Curadoria",
+  "mydspace.status.mydspaceWorkspace": "Rascunho",
 }
