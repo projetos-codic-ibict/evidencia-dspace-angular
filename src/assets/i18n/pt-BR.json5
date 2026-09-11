@@ -7864,6 +7864,7 @@
 
 
 "workflow.action.return-for-adjustment.button": "Devolver para ajuste",
+  "workflow.action.return-for-adjustment.help": "Solicita correções ao depositante e permite novo envio para avaliação.",
   "workflow.action.return-for-adjustment.modal.title": "Motivo da devolução",
   "workflow.action.return-for-adjustment.modal.guidance": "Por favor, informe o motivo pela devolução para ajuste da submissão na caixa abaixo.",
   "workflow.action.return-for-adjustment.modal.label": "Descreva o motivo da devolução para ajuste",
