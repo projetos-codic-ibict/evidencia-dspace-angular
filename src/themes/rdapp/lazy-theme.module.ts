@@ -14,6 +14,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { RootModule } from '../../app/root.module';
+import { AuditTableComponent } from './app/audit-page/audit-table/audit-table.component';
+import { AuditOverviewComponent } from './app/audit-page/overview/audit-overview.component';
 import { FullItemPageComponent } from './app/item-page/full/full-item-page.component';
 import { ResultsBackButtonComponent } from './app/shared/results-back-button/results-back-button.component';
 import { SearchFormComponent } from './app/shared/search-form/search-form.component';
@@ -23,6 +25,8 @@ const DECLARATIONS = [
 ];
 
 const IMPORTS = [
+  AuditOverviewComponent,
+  AuditTableComponent,
   FullItemPageComponent,
   ResultsBackButtonComponent,
   SearchFormComponent,

@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="audit-overview row">
+    <div class="col-12">
+      <h1 id="header" data-test="audit-title" class="border-bottom pb-2">
+        {{ 'audit.overview.title' | translate }}
+      </h1>
+
+      <div class="audit-overview__filter row align-items-center mb-3">
+        <label for="audit-subject-type-filter" class="col-auto col-form-label">
+          {{ 'rdapp.audit-overview.filter.label' | translate }}
+        </label>
+        <div class="col-auto">
+          <select
+            id="audit-subject-type-filter"
+            class="form-select form-select-sm"
+            [(ngModel)]="selectedType"
+            (ngModelChange)="onFilterChange()">
+            @for (option of subjectTypeOptions; track option.value) {
+              <option [value]="option.value">{{ option.labelKey | translate }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      @if ((auditsRD$ | async)?.payload; as audits) {
+        <ds-themed-audit-table
+          data-test="audit-table"
+          [audits]="audits"
+          [isOverviewPage]="true"
+          [pageConfig]="pageConfig"
+        ></ds-themed-audit-table>
+      } @else {
+        <div data-test="audit-empty" class="alert alert-info w-100 mb-2" role="alert">
+          {{ 'audit.data.not-found' | translate }}
+        </div>
+      }
+    </div>
+  </div>
+</div>

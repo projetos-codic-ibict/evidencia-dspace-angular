@@ -34,6 +34,7 @@ import { RequestService } from './request.service';
 export const AUDIT_PERSON_NOT_AVAILABLE = 'n/a';
 
 export const AUDIT_FIND_BY_OBJECT_SEARCH_METHOD = 'findByObject';
+export const AUDIT_FIND_BY_SUBJECT_TYPE_SEARCH_METHOD = 'findBySubjectType';
 
 @Injectable({ providedIn: 'root' })
 export class AuditDataService extends IdentifiableDataService<Audit>{
@@ -73,6 +74,25 @@ export class AuditDataService extends IdentifiableDataService<Audit>{
       searchParams,
     });
     return this.searchData.searchBy(searchMethod, optionsWithObject, useCachedVersionIfAvailable, true, followLink('eperson'));
+  }
+
+  /**
+   * Get all audit events whose subject is one of the given DSpace object types
+   * (RDAPP: usado pra focar a auditoria em EPerson/Group).
+   *
+   * @param subjectTypes The subject types to filter by, e.g. ['EPerson', 'Group']
+   * @param options The [[FindListOptions]] object
+   * @param useCachedVersionIfAvailable
+   * @return Observable<RemoteData<PaginatedList<Audit>>>
+   */
+  findBySubjectType(subjectTypes: string[], options: FindListOptions = {}, useCachedVersionIfAvailable = true): Observable<RemoteData<PaginatedList<Audit>>> {
+    const searchMethod = AUDIT_FIND_BY_SUBJECT_TYPE_SEARCH_METHOD;
+    const searchParams = [new RequestParam('types', subjectTypes.join(','))];
+
+    const optionsWithTypes = Object.assign(new FindListOptions(), options, {
+      searchParams,
+    });
+    return this.searchData.searchBy(searchMethod, optionsWithTypes, useCachedVersionIfAvailable, true, followLink('eperson'));
   }
 
   /**

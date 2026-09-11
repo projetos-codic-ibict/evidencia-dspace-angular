@@ -1,0 +1,12 @@
+#header {
+  color: var(--rdapp-bg-color-primary);
+  border-bottom-color: var(--rdapp-bg-color-accent) !important;
+  border-bottom-width: 3px !important;
+}
+
+.audit-overview__filter {
+  #audit-subject-type-filter:focus {
+    border-color: var(--rdapp-bg-color-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--rdapp-bg-color-primary-rgb), 0.25);
+  }
+}

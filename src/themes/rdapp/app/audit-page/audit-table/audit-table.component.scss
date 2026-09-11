@@ -1,0 +1,32 @@
+// Badge de tipo de evento — mesma forma do badge de tipo documental do projeto
+// (uppercase, bold, cantos pouco arredondados), com cor semântica por ação.
+.audit-event-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  &--create {
+    background-color: var(--rdapp-bg-color-accent);
+    color: #ffffff;
+  }
+
+  &--modify {
+    background-color: var(--bs-warning);
+    color: #212529;
+  }
+
+  &--delete {
+    background-color: var(--bs-danger);
+    color: #ffffff;
+  }
+
+  &--other {
+    background-color: var(--rdapp-badge-color-bg);
+    color: var(--rdapp-badge-color-text);
+  }
+}
