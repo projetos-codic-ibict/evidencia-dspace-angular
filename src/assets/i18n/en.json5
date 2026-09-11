@@ -3658,11 +3658,11 @@
 
   "mydspace.status": "My DSpace status:",
 
-  "mydspace.status.mydspaceArchived": "Archived",
+  "mydspace.status.mydspaceArchived": "Available in general search",
 
-  "mydspace.status.mydspaceValidation": "Validation",
+  "mydspace.status.mydspaceValidation": "Under Review",
 
-  "mydspace.status.mydspaceWaitingController": "Waiting for reviewer",
+  "mydspace.status.mydspaceWaitingController": "Awaiting Curation",
 
   "mydspace.status.mydspaceWorkflow": "Workflow",
 
@@ -4802,11 +4802,11 @@
 
   "search.filters.filter.supervisedBy.label": "Search Supervised By",
 
-  "search.filters.filter.access_status.head": "Access type",
+  "search.filters.filter.access_status.head": "Evaluation Type",
 
-  "search.filters.filter.access_status.placeholder": "Access type",
+  "search.filters.filter.access_status.placeholder": "Evaluation type",
 
-  "search.filters.filter.access_status.label": "Search by access type",
+  "search.filters.filter.access_status.label": "Search by evaluation type",
 
   "search.filters.entityType.JournalIssue": "Journal Issue",
 
@@ -6944,7 +6944,7 @@
 
   "search.filters.applied.f.notifyRelation": "Notify Relation",
 
-  "search.filters.applied.f.access_status": "Access type",
+  "search.filters.applied.f.access_status": "Evaluation Type",
 
   "search.filters.filter.queue_last_start_time.head": "Last processing time ",
 
