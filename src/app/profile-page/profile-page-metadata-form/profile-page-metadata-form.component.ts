@@ -95,24 +95,6 @@ export class ProfilePageMetadataFormComponent implements OnInit {
       id: 'language',
       name: 'eperson.language',
     }),
-    new DynamicSelectModel<string>({
-      id: 'institution',
-      name: 'eperson.institution',
-      required: true,
-      multiple: true,
-      validators: {
-        required: null,
-      },
-      options: [
-        { label: 'Conselho de Monitoramento e Avaliação de Políticas Públicas - CMAP', value: 'Conselho de Monitoramento e Avaliação de Políticas Públicas - CMAP' },
-        { label: 'Secretaria de Monitoramento e Avaliação de Políticas Públicas e Assuntos Econômicos - SMA', value: 'Secretaria de Monitoramento e Avaliação de Políticas Públicas e Assuntos Econômicos - SMA' },
-        { label: 'Instituto de Pesquisa Econômica Aplicada - IPEA', value: 'Instituto de Pesquisa Econômica Aplicada - IPEA' },
-        { label: 'Escola Nacional de Administração Pública - ENAP', value: 'Escola Nacional de Administração Pública - ENAP' },
-        { label: 'Ministério da Saúde - MS', value: 'Ministério da Saúde - MS' },
-        { label: 'Ministério do Desenvolvimento Social e Combate à Fome - MDS', value: 'Ministério do Desenvolvimento Social e Combate à Fome - MDS' },
-        { label: 'Ministério do Planejamento e Orçamento - MPO', value: 'Ministério do Planejamento e Orçamento - MPO' },
-      ]
-    }),
   ];
 
   /**

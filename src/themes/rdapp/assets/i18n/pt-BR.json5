@@ -328,6 +328,10 @@
   "rdapp.audit-overview.filter.eperson": "Usuários",
   "rdapp.audit-overview.filter.group": "Grupos",
 
+  // Campo "Instituição" no perfil do usuário (HU013 CA09)
+  "profile.metadata.form.label.institution": "Instituição",
+  "profile.metadata.form.error.institution.required": "Instituição é obrigatório",
+
   // Rótulos de status amigáveis na tela de curadoria (HU010 CA11)
   "mydspace.status": "Situação da submissão:",
   "mydspace.status.mydspaceWaitingController": "Aguardando Curadoria",

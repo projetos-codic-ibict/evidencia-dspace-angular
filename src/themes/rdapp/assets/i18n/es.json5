@@ -327,6 +327,10 @@
   "rdapp.audit-overview.filter.eperson": "Usuarios",
   "rdapp.audit-overview.filter.group": "Grupos",
 
+  // Campo "Institución" en el perfil del usuario (HU013 CA09)
+  "profile.metadata.form.label.institution": "Institución",
+  "profile.metadata.form.error.institution.required": "Institución es obligatorio",
+
   // Etiquetas de estado amigables en la pantalla de curaduría (HU010 CA11)
   "mydspace.status.mydspaceWaitingController": "Esperando curaduría",
   "mydspace.status.mydspaceValidation": "En evaluación",
