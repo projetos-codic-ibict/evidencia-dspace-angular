@@ -3662,7 +3662,7 @@
 
   "mydspace.status.mydspaceValidation": "Validação",
 
-  "mydspace.status.mydspaceWaitingController": "Esperando pelo controlador",
+  "mydspace.status.mydspaceWaitingController": "Esperando pelo curador",
 
   "mydspace.status.mydspaceWorkflow": "Fluxo de trabalho",
 
@@ -4125,6 +4125,10 @@
   "profile.metadata.form.label.lastname": "Sobrenome",
 
   "profile.metadata.form.label.phone": "Telefone",
+
+  "profile.metadata.form.label.institution": "Instituição",
+
+  "profile.metadata.form.error.institution.required": " Instituição é obrigatório",
 
   "profile.metadata.form.notifications.success.content": "Suas alterações no perfil foram salvas..",
 
@@ -4836,7 +4840,7 @@
 
   "search.filters.namedresourcetype.Validation": "Validação",
 
-  "search.filters.namedresourcetype.Waiting for Controller": "Esperando por controlador",
+  "search.filters.namedresourcetype.Waiting for Controller": "Esperando por curador",
 
   "search.filters.namedresourcetype.Workflow": "Fluxo de trabalho",
 

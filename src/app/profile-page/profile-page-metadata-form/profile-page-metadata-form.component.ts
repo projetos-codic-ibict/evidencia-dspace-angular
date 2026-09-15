@@ -95,6 +95,30 @@ export class ProfilePageMetadataFormComponent implements OnInit {
       id: 'language',
       name: 'eperson.language',
     }),
+    new DynamicSelectModel<string>({
+      id: 'institution', // O ID é usado para buscar as traduções de label e erro
+      name: 'eperson.institution', // O metadado exato que será salvo no banco do DSpace
+      required: true,
+      multiple: true,
+      validators: {
+        required: null,
+      },
+      options: [
+        // Lembre-se: O 'value' aqui DEVE ser idêntico ao que você configurou 
+        // no input-forms.xml (ex: UESPI, UFPI, etc)
+        { label: 'Conselho de Monitoramento e Avaliação de Políticas Públicas - CMAP', value: 'Conselho de Monitoramento e Avaliação de Políticas Públicas - CMAP' },
+        { label: 'Secretaria de Monitoramento e Avaliação de Políticas Públicas e Assuntos Econômicos - SMA', value: 'Secretaria de Monitoramento e Avaliação de Políticas Públicas e Assuntos Econômicos - SMA' },
+        { label: 'Instituto de Pesquisa Econômica Aplicada - IPEA', value: 'Instituto de Pesquisa Econômica Aplicada - IPEA' },
+        { label: 'Escola Nacional de Administração Pública - ENAP', value: 'Escola Nacional de Administração Pública - ENAP' },
+        { label: 'Ministério da Saúde - MS', value: 'Ministério da Saúde - MS' },
+        { label: 'Ministério do Desenvolvimento Social e Combate à Fome - MDS', value: 'Ministério do Desenvolvimento Social e Combate à Fome - MDS' },
+        { label: 'Ministério do Planejamento e Orçamento - MPO', value: 'Ministério do Planejamento e Orçamento - MPO' },
+      ]
+    }),
+    new DynamicSelectModel<string>({
+      id: 'language',
+      name: 'eperson.language',
+    }),
   ];
 
   /**
