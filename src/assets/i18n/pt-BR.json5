@@ -4126,6 +4126,10 @@
 
   "profile.metadata.form.label.phone": "Telefone",
 
+  "profile.metadata.form.label.institution": "Instituição",
+
+  "profile.metadata.form.error.institution.required": " Instituição é obrigatório",
+
   "profile.metadata.form.notifications.success.content": "Suas alterações no perfil foram salvas..",
 
   "profile.metadata.form.notifications.success.title": "Perfil salvo",
@@ -4836,7 +4840,7 @@
 
   "search.filters.namedresourcetype.Validation": "Validação",
 
-  "search.filters.namedresourcetype.Waiting for Controller": "Esperando por controlador",
+  "search.filters.namedresourcetype.Waiting for Controller": "Esperando por curador",
 
   "search.filters.namedresourcetype.Workflow": "Fluxo de trabalho",
 
