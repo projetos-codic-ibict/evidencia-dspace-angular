@@ -291,4 +291,9 @@
   "vocabulary-treeview.tree.description.rdapp-ufs": "Brazilian Federative Units",
   "vocabulary-treeview.tree.description.rdapp-politicas": "Public Policies or Evaluated Objects",
   "vocabulary-treeview.tree.description.rdapp-cidades": "Brazilian municipalities, organized by Federative Unit",
+
+  // Friendly status labels in the curation screen (HU010 CA11)
+  "mydspace.status.mydspaceWaitingController": "Awaiting Curation",
+  "mydspace.status.mydspaceValidation": "Under Review",
+  "mydspace.status.mydspaceArchived": "Available in general search",
 }

@@ -1,4 +1,5 @@
-<button class="btn btn-adjustment ml-2 mt-1 mb-1" 
+<button class="btn btn-adjustment ml-2 mt-1 mb-1"
+        ngbTooltip="{{ 'workflow.action.return-for-adjustment.help' | translate }}"
         [dsBtnDisabled]="(processing$ | async)"
         (click)="openAdjustmentModal(adjustmentModal)">
   <i class="fas fa-undo fa-fw"></i> {{ 'workflow.action.return-for-adjustment.button' | translate }}
