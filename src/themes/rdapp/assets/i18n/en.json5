@@ -292,6 +292,10 @@
   "vocabulary-treeview.tree.description.rdapp-politicas": "Public Policies or Evaluated Objects",
   "vocabulary-treeview.tree.description.rdapp-cidades": "Brazilian municipalities, organized by Federative Unit",
 
+  // "Institution" field in the user profile (HU013 CA09)
+  "profile.metadata.form.label.institution": "Institution",
+  "profile.metadata.form.error.institution.required": "Institution is required",
+
   // Friendly status labels in the curation screen (HU010 CA11)
   "mydspace.status.mydspaceWaitingController": "Awaiting Curation",
   "mydspace.status.mydspaceValidation": "Under Review",

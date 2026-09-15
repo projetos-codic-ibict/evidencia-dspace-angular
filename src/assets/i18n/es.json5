@@ -3658,11 +3658,11 @@
 
   "mydspace.status": "My DSpace status:",
 
-  "mydspace.status.mydspaceArchived": "Archivado",
+  "mydspace.status.mydspaceArchived": "Disponible en la búsqueda general",
 
-  "mydspace.status.mydspaceValidation": "Validación",
+  "mydspace.status.mydspaceValidation": "En evaluación",
 
-  "mydspace.status.mydspaceWaitingController": "Esperando al controlador",
+  "mydspace.status.mydspaceWaitingController": "Esperando curaduría",
 
   "mydspace.status.mydspaceWorkflow": "Flujo de trabajo",
 
@@ -4802,11 +4802,11 @@
 
   "search.filters.filter.supervisedBy.label": "Búsqueda Supervisada Por",
 
-  "search.filters.filter.access_status.head": "Estado de acceso",
+  "search.filters.filter.access_status.head": "Tipo de Evaluación",
 
-  "search.filters.filter.access_status.placeholder": "Estado de acceso",
+  "search.filters.filter.access_status.placeholder": "Tipo de evaluación",
 
-  "search.filters.filter.access_status.label": "Buscar por estado de acceso",
+  "search.filters.filter.access_status.label": "Buscar por tipo de evaluación",
 
   "search.filters.entityType.JournalIssue": "Número de la revista",
 
@@ -6944,7 +6944,7 @@
 
   "search.filters.applied.f.notifyRelation": "Notificación de Relación",
 
-  "search.filters.applied.f.access_status": "Estado de acceso",
+  "search.filters.applied.f.access_status": "Tipo de Evaluación",
 
   "search.filters.filter.queue_last_start_time.head": "Última hora de procesamiento ",
 
@@ -7746,7 +7746,7 @@
 
   "evidencia.faq.7.a": "El depósito de archivos en el EvidencIA es realizado por organismos o instituciones asociadas. La asociación se formaliza mediante un acuerdo de adhesión celebrado con el Ministerio de Planificación y Presupuesto, garantizando la integridad y el origen de las evidencias depositadas.",
 
-  "evidencia.item-download": "Descargar documento (PDF)",
+  "evidencia.item-download": "Descargar Documento (PDF)",
 
   "evidencia.search.toolbar.export": "Exportar",
 
@@ -7805,4 +7805,16 @@
   "workflow.action.return-for-adjustment.error.title": "Error",
 
   "workflow.action.return-for-adjustment.error.msg": "Ocurrió un error al intentar devolver el ítem para ajuste.",
+
+  "evidencia.item.meta.external.link": "Enlace Externo de la Publicación",
+
+  "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades Federativas de Brasil",
+
+  "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas Públicas u Objetos Evaluados",
+
+  "vocabulary-treeview.tree.description.rdapp-cidades": "Municipios de Brasil, organizados por Unidad Federativa",
+
+  "profile.metadata.form.label.institution": "Institución",
+
+  "profile.metadata.form.error.institution.required": "Institución es obligatorio",
 }

@@ -3656,17 +3656,17 @@
 
   "mydspace.show.supervisedWorkspace": "Itens supervisionados",
 
-  "mydspace.status": "My DSpace status:",
+  "mydspace.status": "Situação da submissão:",
 
-  "mydspace.status.mydspaceArchived": "Arquivado",
+  "mydspace.status.mydspaceArchived": "Disponível na busca geral",
 
-  "mydspace.status.mydspaceValidation": "Validação",
+  "mydspace.status.mydspaceValidation": "Em Avaliação",
 
-  "mydspace.status.mydspaceWaitingController": "Esperando pelo curador",
+  "mydspace.status.mydspaceWaitingController": "Aguardando Curadoria",
 
-  "mydspace.status.mydspaceWorkflow": "Fluxo de trabalho",
+  "mydspace.status.mydspaceWorkflow": "Em Curadoria",
 
-  "mydspace.status.mydspaceWorkspace": "Área de trabalho",
+  "mydspace.status.mydspaceWorkspace": "Rascunho",
 
   "mydspace.title": "MeuDSpace",
 
@@ -4128,7 +4128,7 @@
 
   "profile.metadata.form.label.institution": "Instituição",
 
-  "profile.metadata.form.error.institution.required": " Instituição é obrigatório",
+  "profile.metadata.form.error.institution.required": "Instituição é obrigatório",
 
   "profile.metadata.form.notifications.success.content": "Suas alterações no perfil foram salvas..",
 
@@ -7782,11 +7782,11 @@
 
   "search.form.search-type.hybrid.hint": "Busca por palavra-chave e significado combinada com RRF",
 
-  "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades Federativas",
+  "vocabulary-treeview.tree.description.rdapp-ufs": "Unidades da Federação do Brasil",
 
-  "vocabulary-treeview.tree.description.rdapp-cidades": "Cidades",
+  "vocabulary-treeview.tree.description.rdapp-cidades": "Municípios do Brasil, organizados por Unidade da Federação",
 
-  "vocabulary-treeview.tree.description.rdapp-politicas": "Política Pública ou Objeto Avaliado",
+  "vocabulary-treeview.tree.description.rdapp-politicas": "Políticas Públicas ou Objetos Avaliados",
 
   "browse.metadata.rdapp-politicas.breadcrumbs": "Navegue por Políticas",
 
@@ -7794,89 +7794,75 @@
 
   "browse.metadata.rdapp-politicas.tree.description": "Políticas",
 
-// "admin.edit-cms-metadata.success": "Metadata successfully updated",
   "admin.edit-cms-metadata.success": "Metadados atualizados com sucesso",
 
-  // "admin.edit-cms-metadata.back-button": "Back",
   "admin.edit-cms-metadata.back-button": "Voltar",
 
-  // "admin.edit-cms-metadata.save-button": "Save",
   "admin.edit-cms-metadata.save-button": "Salvar",
 
-  // "admin.edit-cms-metadata.select-metadata": "Select metadata to edit",
   "admin.edit-cms-metadata.select-metadata": "Selecionar metadados para editar",
 
-  // "admin.edit-cms-metadata.edit-button": "Edit",
   "admin.edit-cms-metadata.edit-button": "Editar",
 
-  // "admin.edit-cms-metadata.breadcrumbs": "Edit CMS Metadata",
   "admin.edit-cms-metadata.breadcrumbs": "Editar metadados CMS",
 
-  // "admin.edit-cms-metadata.title": "Edit CMS Metadata",
   "admin.edit-cms-metadata.title": "Editar metadados CMS",
 
-  // "admin.edit-cms-metadata.error": "An error occurred while updating the metadata",
   "admin.edit-cms-metadata.error": "Ocorreu um erro ao atualizar os metadados",
 
-  // "menu.section.edit-cms-metadata": "Edit CMS Metadata",
   "menu.section.edit-cms-metadata": "Editar metadados CMS",
 
-  // "menu.section.cms.edit.metadata.head": "Edit Metadata",
   "menu.section.cms.edit.metadata.head": "Editar Metadados",
 
- // "admin.edit-user-agreement.breadcrumbs": "Edit User Agreement",
   "admin.edit-user-agreement.breadcrumbs": "Editar Contrato de Usuário",
 
-  // "admin.edit-user-agreement.confirm.title": "Force acceptance",
   "admin.edit-user-agreement.confirm.title": "Forçar aceite",
 
-  // "admin.edit-user-agreement.confirm.info": "Do you want to force all users to accept the new user agreement?",
   "admin.edit-user-agreement.confirm.info": "Você deseja forçar todos usuários a aceitar o novo contrato de usuário?",
 
-  // "admin.edit-user-agreement.confirm.cancel": "Cancel",
   "admin.edit-user-agreement.confirm.cancel": "Cancelar",
 
-  // "admin.edit-user-agreement.confirm.no": "No, update only",
   "admin.edit-user-agreement.confirm.no": "Não, somente atualizar",
 
-  // "admin.edit-user-agreement.confirm.yes": "Yes, update and force",
   "admin.edit-user-agreement.confirm.yes": "Sim, atualizar e forçar",
 
-  // "menu.section.edit-user-agreement": "Edit User Agreement",
   "menu.section.edit-user-agreement": "Editar Contrato de Usuário",
 
-  // "admin.edit-user-agreement.save-button": "Save",
   "admin.edit-user-agreement.save-button": "Salvar",
 
-  // "admin.edit-user-agreement.markdown": "<i>End User Agreement</i> text supports <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a> language.",
   "admin.edit-user-agreement.markdown": "Texto do <i>Contrato de Usuário</i> suporta a linguagem <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a>.",
 
-  // "admin.edit-cms-metadata.markdown": "<i>CMS Metadata</i> text supports <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a> language.",
   "admin.edit-cms-metadata.markdown": "Texto <i> Metadados CMS</i> suporta a linguagem <a href=\"https://www.markdownguide.org/basic-syntax/\" target=\"_blank\">Markdown</a>.",
 
-  // "admin.edit-user-agreement.header": "Edit User Agreement",
   "admin.edit-user-agreement.header": "Editar Contrato de Usuário",
 
-  // "admin.edit-user-agreement.success": "User agreement successfully updated",
   "admin.edit-user-agreement.success": "Contrato de Usuário atualizado com sucesso",
 
-  // "admin.edit-user-agreement.error": "An error occurred while updating the user agreement",
   "admin.edit-user-agreement.error": "Ocorreu um erro ao atualizar o Contrato de Usuário",
 
-  // "admin.edit-user-agreement.title": "Edit User Agreement",
   "admin.edit-user-agreement.title": "Editar Contrato de Usuário",
 
+  "workflow.action.return-for-adjustment.button": "Devolver para ajuste",
 
-"workflow.action.return-for-adjustment.button": "Devolver para ajuste",
   "workflow.action.return-for-adjustment.help": "Solicita correções ao depositante e permite novo envio para avaliação.",
+
   "workflow.action.return-for-adjustment.modal.title": "Motivo da devolução",
+
   "workflow.action.return-for-adjustment.modal.guidance": "Por favor, informe o motivo pela devolução para ajuste da submissão na caixa abaixo.",
+
   "workflow.action.return-for-adjustment.modal.label": "Descreva o motivo da devolução para ajuste",
+
   "workflow.action.return-for-adjustment.modal.required": "O motivo é obrigatório para devolver o item.",
+
   "workflow.action.return-for-adjustment.modal.cancel": "Cancelar",
+
   "workflow.action.return-for-adjustment.modal.submit": "Devolver item",
+
   "workflow.action.return-for-adjustment.success.title": "Sucesso",
+
   "workflow.action.return-for-adjustment.success.msg": "O item foi devolvido ao depositante para ajustes com sucesso.",
+
   "workflow.action.return-for-adjustment.error.title": "Erro",
-  "workflow.action.return-for-adjustment.error.msg": "Ocorreu um erro ao tentar devolver o item para ajuste."
+
+  "workflow.action.return-for-adjustment.error.msg": "Ocorreu um erro ao tentar devolver o item para ajuste.",
 }
