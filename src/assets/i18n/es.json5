@@ -7863,4 +7863,8 @@
   "rdapp.audit-overview.filter.group": "Grupos",
 
   "audit.overview.breadcrumbs": "Auditoría",
+
+  "profile.metadata.form.label.institution": "Institución",
+
+  "profile.metadata.form.error.institution.required": "Institución es obligatorio",
 }
