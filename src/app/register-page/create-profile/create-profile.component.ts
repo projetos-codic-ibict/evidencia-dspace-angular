@@ -28,8 +28,13 @@ import { NotificationsService } from '@dspace/core/notification-system/notificat
 import {
   getFirstCompletedRemoteData,
   getFirstSucceededRemoteDataPayload,
+  getFirstSucceededRemoteListPayload,
 } from '@dspace/core/shared/operators';
 import { Registration } from '@dspace/core/shared/registration.model';
+import { PageInfo } from '@dspace/core/shared/page-info.model';
+import { VocabularyEntry } from '@dspace/core/submission/vocabularies/models/vocabulary-entry.model';
+import { VocabularyOptions } from '@dspace/core/submission/vocabularies/models/vocabulary-options.model';
+import { VocabularyService } from '@dspace/core/submission/vocabularies/vocabulary.service';
 import { isEmpty } from '@dspace/shared/utils/empty.util';
 import { Store } from '@ngrx/store';
 import {
@@ -75,6 +80,8 @@ export class CreateProfileComponent implements OnInit {
    */
   NOTIFICATIONS_PREFIX = 'register-page.create-profile.submit.';
 
+  institutions: VocabularyEntry[] = [];
+
   constructor(
     private translateService: TranslateService,
     private ePersonDataService: EPersonDataService,
@@ -84,6 +91,7 @@ export class CreateProfileComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private notificationsService: NotificationsService,
     private endUserAgreementService: EndUserAgreementService,
+    private vocabularyService: VocabularyService
   ) {
 
   }
@@ -108,8 +116,19 @@ export class CreateProfileComponent implements OnInit {
       }),
       contactPhone: new UntypedFormControl(''),
       language: new UntypedFormControl(''),
+      institution: new UntypedFormControl('', { 
+        validators: [Validators.required] 
+      })
     });
 
+    this.vocabularyService.getVocabularyEntries(
+      new VocabularyOptions('rdapp-instituicoes', 'local.instituicao', null, true),
+      new PageInfo(),
+    ).pipe(
+      getFirstSucceededRemoteListPayload(),
+    ).subscribe((entries) => {
+      this.institutions = entries;
+    });
   }
 
   /**
@@ -145,6 +164,10 @@ export class CreateProfileComponent implements OnInit {
     return this.userInfoForm.get('language');
   }
 
+  get institution() {
+    return this.userInfoForm.get('institution');
+  }
+
   /**
    * Submits the eperson to the service to be created.
    * The submission will not be made when the form or the password is not valid.
@@ -171,6 +194,11 @@ export class CreateProfileComponent implements OnInit {
           'eperson.language': [
             {
               value: this.language.value,
+            },
+          ],
+          'eperson.institution': [
+            {
+              value: this.institution.value,
             },
           ],
         },

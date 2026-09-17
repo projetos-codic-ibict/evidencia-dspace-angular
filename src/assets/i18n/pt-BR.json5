@@ -4350,6 +4350,10 @@
 
   "register-page.registration.email.hint": "Este endereço será verificado e usado como seu nome de login.",
 
+  "register-page.create-profile.identification.institution" : "Instituição",
+
+  "register-page.create-profile.identification.institution.error" : "O campo Instituição é obrigatório.",
+
   "register-page.registration.submit": "Cadastrar",
 
   "register-page.registration.success.head": "E-mail de verificação enviado",
@@ -7194,11 +7198,11 @@
 
   "search.filters.filter.notifyEndorsement.label": "Pesquisar Notificação de Avaliação",
 
-  "form.date-picker.placeholder.year": "Year",
+  "form.date-picker.placeholder.year": "Ano",
 
-  "form.date-picker.placeholder.month": "Month",
+  "form.date-picker.placeholder.month": "Mês",
 
-  "form.date-picker.placeholder.day": "Day",
+  "form.date-picker.placeholder.day": "Dia",
 
   "item.page.cc.license.title": "Licença Creative Commons",
 

@@ -67,6 +67,31 @@
                   </select>
                 </div>
               </div>
+              <div class="row">
+  <div class="col-12">
+    <label class="form-label" for="institution">
+      {{'register-page.create-profile.identification.institution' | translate}}
+    </label>
+    <select
+      [className]="(institution.invalid) && (institution.dirty || institution.touched) ? 'form-select is-invalid' :'form-select'"
+      id="institution"
+      formControlName="institution">
+      <option value=""></option>
+      @for (inst of institutions; track inst.value) {
+        <option [value]="inst.value">{{inst.display}}</option>
+      }
+    </select>
+    @if (institution.invalid && (institution.dirty || institution.touched)) {
+      <div class="invalid-feedback show-feedback">
+        @if (institution.errors && institution.errors.required) {
+          <span>
+            {{ 'register-page.create-profile.identification.institution.error' | translate }}
+          </span>
+        }
+      </div>
+    }
+  </div>
+</div>
             </div>
           </form>
         </div>
