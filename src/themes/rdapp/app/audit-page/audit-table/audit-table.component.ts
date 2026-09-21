@@ -47,12 +47,15 @@ export class AuditTableComponent extends BaseAuditTableComponent {
     switch ((eventType || '').toUpperCase()) {
       case 'CREATE':
       case 'ADD':
+      case 'POLICY_CREATE':
         return 'audit-event-badge--create';
       case 'MODIFY':
       case 'MODIFY_METADATA':
+      case 'POLICY_MODIFY':
         return 'audit-event-badge--modify';
       case 'DELETE':
       case 'REMOVE':
+      case 'POLICY_DELETE':
         return 'audit-event-badge--delete';
       default:
         return 'audit-event-badge--other';

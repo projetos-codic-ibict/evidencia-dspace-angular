@@ -7924,6 +7924,8 @@
 
   "rdapp.audit-overview.filter.group": "Grupos",
 
+  "rdapp.audit-overview.filter.resourcepolicy": "Políticas/Permissões",
+
   "audit.overview.breadcrumbs": "Auditoria",
 
   "admin.access-control.groups.table.description": "Descrição",

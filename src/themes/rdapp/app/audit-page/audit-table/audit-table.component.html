@@ -51,18 +51,7 @@
               <td>{{ audit.epersonName }}</td>
               <td>{{ audit.timeStamp | date:dateFormat:'UTC' }}</td>
               @if (isOverviewPage) {
-                <td>
-                  @if (audit.objectUUID) {
-                    <ng-container *ngVar="(getObjectRoute$(audit.objectUUID) | async) as objectRoute">
-                      @if (objectRoute !== ('/' + auditPath)) {
-                        <a [routerLink]="[objectRoute]">{{audit.objectUUID}}</a>
-                      } @else {
-                        <span>{{audit.objectUUID}}</span>
-                      }
-                    </ng-container>
-                  }
-                </td>
-                <td>{{ audit.objectType }}</td>
+                <!-- COLUNAS DO SUJEITO (Agora na ordem correta) -->
                 <td>
                   @if (audit.subjectUUID) {
                     <ng-container *ngVar="(getObjectRoute$(audit.subjectUUID) | async) as subjectRoute">
@@ -75,6 +64,20 @@
                   }
                 </td>
                 <td>{{ audit.subjectType }}</td>
+
+                <!-- COLUNAS DO OBJETO (Agora na ordem correta) -->
+                <td>
+                  @if (audit.objectUUID) {
+                    <ng-container *ngVar="(getObjectRoute$(audit.objectUUID) | async) as objectRoute">
+                      @if (objectRoute !== ('/' + auditPath)) {
+                        <a [routerLink]="[objectRoute]">{{audit.objectUUID}}</a>
+                      } @else {
+                        <span>{{audit.objectUUID}}</span>
+                      }
+                    </ng-container>
+                  }
+                </td>
+                <td>{{ audit.objectType }}</td>
               } @else {
                 <td>
                   <span>
