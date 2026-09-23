@@ -7,8 +7,6 @@
           [ngbTooltip]="dsoNameService.getName(selectedScope | async)"
           type="button"
           (click)="openScopeModal()"
-          role="button"
-          tabindex="0"
         >
           {{
             dsoNameService.getName(selectedScope | async) ||
@@ -27,7 +25,6 @@
         [attr.aria-label]="searchPlaceholder"
         [attr.data-test]="'search-box' | dsBrowserOnly"
         [placeholder]="searchPlaceholder"
-        tabindex="0"
       />
       <div
         class="search-type-toggle search-type-toggle--inline d-none d-lg-flex"
@@ -42,8 +39,6 @@
         type="submit"
         class="search-button btn btn-{{ brandColor }}"
         [attr.data-test]="'search-button' | dsBrowserOnly"
-        role="button"
-        tabindex="0"
       >
         {{ "search.form.search" | translate }}
       </button>
@@ -66,7 +61,6 @@
           type="button"
           class="scope-pill-mobile__btn"
           (click)="openScopeModal()"
-          tabindex="0"
         >
           {{
             dsoNameService.getName(selectedScope | async) ||
@@ -84,6 +78,7 @@
     type="button"
     class="search-type-toggle__btn"
     [class.active]="searchType === 'lexical'"
+    [attr.aria-pressed]="searchType === 'lexical'"
     [attr.title]="'search.form.search-type.lexical.hint' | translate"
     [attr.data-test]="('search-type-lexical' + dataTestSuffix) | dsBrowserOnly"
     (click)="searchType = 'lexical'"
@@ -95,6 +90,7 @@
       type="button"
       class="search-type-toggle__btn"
       [class.active]="searchType === 'semantic'"
+      [attr.aria-pressed]="searchType === 'semantic'"
       [attr.title]="'search.form.search-type.semantic.hint' | translate"
       [attr.data-test]="('search-type-semantic' + dataTestSuffix) | dsBrowserOnly"
       (click)="searchType = 'semantic'"
@@ -107,6 +103,7 @@
       type="button"
       class="search-type-toggle__btn"
       [class.active]="searchType === 'hybrid'"
+      [attr.aria-pressed]="searchType === 'hybrid'"
       [attr.title]="'search.form.search-type.hybrid.hint' | translate"
       [attr.data-test]="('search-type-hybrid' + dataTestSuffix) | dsBrowserOnly"
       (click)="searchType = 'hybrid'"

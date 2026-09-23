@@ -15,8 +15,14 @@
     0 1px 3px rgba(0, 0, 0, 0.04);
   transition: box-shadow 0.2s ease;
 
+  // O anel de foco do campo de texto fica no contêiner (o campo opta por não desenhar o dele), com o
+  // mesmo desenho duplo do anel global. Sem :has(): `&:has(...)` aninhado quebra o build do Angular.
+  // Efeito conhecido: ao focar um botão de dentro, o anel do contêiner soma-se ao do botão.
   &:focus-within {
+    outline: 2px solid var(--rdapp-focus-ring-outer);
+    outline-offset: 2px;
     box-shadow:
+      0 0 0 2px var(--rdapp-focus-ring-inner),
       0 6px 32px rgba(var(--rdapp-bg-color-primary-rgb), 0.14),
       0 1px 3px rgba(0, 0, 0, 0.04);
   }
@@ -46,9 +52,10 @@
       font-weight: 400;
     }
 
-    &:focus {
+    &:focus,
+    &:focus-visible {
       box-shadow: none;
-      outline: 0;
+      outline: none !important;
     }
   }
 
@@ -167,11 +174,6 @@
       color: var(--rdapp-bg-color-primary);
     }
 
-    &:focus-visible {
-      outline: 2px solid var(--rdapp-bg-color-accent);
-      outline-offset: 2px;
-    }
-
     &.active {
       background-color: #ffffff;
       color: var(--rdapp-bg-color-primary);
@@ -210,7 +212,6 @@
     &:focus-visible {
       background-color: var(--rdapp-bg-color-accent);
       color: #ffffff;
-      outline: none;
     }
   }
 
