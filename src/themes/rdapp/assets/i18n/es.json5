@@ -129,6 +129,7 @@
 
   // Menu
   "evidencia.menu.faq": "Preguntas Frecuentes",
+  "evidencia.scroll-to-top.label": "Volver arriba",
   "evidencia.menu.about": "El EvidencIA",
   "evidencia.menu.about.presentation": "Presentación",
   "evidencia.menu.about.goals": "Objetivos",

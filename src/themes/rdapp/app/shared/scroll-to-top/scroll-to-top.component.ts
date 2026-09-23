@@ -5,9 +5,13 @@ import {
   Inject,
   PLATFORM_ID,
 } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ds-scroll-to-top',
+  imports: [
+    TranslateModule,
+  ],
   templateUrl: './scroll-to-top.component.html',
   styleUrls: ['./scroll-to-top.component.scss'],
 })
