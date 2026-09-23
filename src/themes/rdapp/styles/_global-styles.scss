@@ -61,6 +61,16 @@ html {
     0 0 0 calc(var(--rdapp-focus-ring-width) * 2) var(--rdapp-focus-ring-outer) !important;
 }
 
+// Dois pontos do base tiram o outline com !important e especificidade maior que a da regra global:
+// o switch de visibilidade do perfil de pesquisador (src/styles/_global-styles.scss) e os botões de
+// nível de segurança de metadado (edit-metadata-security.component.scss, que também zera o
+// box-shadow). O elemento no seletor sobe a especificidade para vencer os dois.
+.researcher-profile-switch button:focus-visible:not([tabindex="-1"]),
+ds-edit-metadata-security .btn-link:focus-visible:not([tabindex="-1"]) {
+  outline: var(--rdapp-focus-ring-width) solid var(--rdapp-focus-ring-outer) !important;
+  outline-offset: var(--rdapp-focus-ring-width) !important;
+}
+
 // Acessibilidade (WCAG 2.5.8): alvo mínimo em botões. Link de texto no meio de parágrafo é exceção da
 // norma. .sr-only e .visually-hidden dependem de 1px para sumir da tela, e o .btn-close do Bootstrap
 // já tem 1em mais padding (content-box), então a regra só o incharia.
