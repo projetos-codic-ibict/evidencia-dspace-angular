@@ -5,30 +5,42 @@
     <p class="about-hero__subtitle">{{ 'evidencia.about.hero.subtitle' | translate }}</p>
   </div>
   <div class="about-tabs-wrap">
-    <div class="about-tabs" role="tablist">
+    <div class="about-tabs" role="tablist" (keydown)="onTabKeydown($event)">
       <button
+        #tabBtn
+        id="about-tab-apresentacao"
         class="about-tabs__btn"
         [class.is-active-apresentacao]="activeTab === 'apresentacao'"
         (click)="setTab('apresentacao')"
         type="button"
         role="tab"
+        aria-controls="about-panel-apresentacao"
         [attr.aria-selected]="activeTab === 'apresentacao'"
+        [attr.tabindex]="activeTab === 'apresentacao' ? 0 : -1"
       >{{ 'evidencia.about.tab.apresentacao' | translate }}</button>
       <button
+        #tabBtn
+        id="about-tab-acervo"
         class="about-tabs__btn"
         [class.is-active-acervo]="activeTab === 'acervo'"
         (click)="setTab('acervo')"
         type="button"
         role="tab"
+        aria-controls="about-panel-acervo"
         [attr.aria-selected]="activeTab === 'acervo'"
+        [attr.tabindex]="activeTab === 'acervo' ? 0 : -1"
       >{{ 'evidencia.about.tab.acervo' | translate }}</button>
       <button
+        #tabBtn
+        id="about-tab-quemsomos"
         class="about-tabs__btn"
         [class.is-active-quemsomos]="activeTab === 'quemsomos'"
         (click)="setTab('quemsomos')"
         type="button"
         role="tab"
+        aria-controls="about-panel-quemsomos"
         [attr.aria-selected]="activeTab === 'quemsomos'"
+        [attr.tabindex]="activeTab === 'quemsomos' ? 0 : -1"
       >{{ 'evidencia.about.tab.quemsomos' | translate }}</button>
     </div>
   </div>
@@ -38,7 +50,7 @@
   <div class="container">
 
     @if (activeTab === 'apresentacao') {
-      <div class="about-card" role="tabpanel">
+      <div class="about-card" role="tabpanel" id="about-panel-apresentacao" aria-labelledby="about-tab-apresentacao">
         <div class="about-card__header">
           <i class="fas fa-circle-info" aria-hidden="true"></i>
           <h2>{{ 'evidencia.about.apresentacao.title' | translate }}</h2>
@@ -69,7 +81,7 @@
     }
 
     @if (activeTab === 'acervo') {
-      <div class="about-card" role="tabpanel">
+      <div class="about-card" role="tabpanel" id="about-panel-acervo" aria-labelledby="about-tab-acervo">
         <div class="about-card__header">
           <i class="fas fa-folder-open" aria-hidden="true"></i>
           <h2>{{ 'evidencia.about.acervo.title' | translate }}</h2>
@@ -109,7 +121,7 @@
     }
 
     @if (activeTab === 'quemsomos') {
-      <div class="about-card" role="tabpanel">
+      <div class="about-card" role="tabpanel" id="about-panel-quemsomos" aria-labelledby="about-tab-quemsomos">
         <div class="about-card__header">
           <i class="fas fa-people-group" aria-hidden="true"></i>
           <h2>{{ 'evidencia.about.quemsomos.title' | translate }}</h2>
