@@ -30,6 +30,8 @@
   "evidencia.search.no-results.title": "No se encontraron resultados",
   "evidencia.search.no-results.hint": "Intente ajustar sus filtros o términos de búsqueda.",
   "evidencia.search.clear-filters": "Limpiar filtros",
+  "evidencia.search.result.ods.show-more": "Mostrar {{ count }} ODS más",
+  "evidencia.search.result.ods.show-less": "Mostrar menos ODS",
   "evidencia.search.placeholder.title": "¿Listo para explorar?",
   "evidencia.search.placeholder.subtitle": "Escriba un término en la barra de búsqueda o seleccione un filtro al lado para ver los resultados.",
   "search.sidebar.section.filter": "Filtros",

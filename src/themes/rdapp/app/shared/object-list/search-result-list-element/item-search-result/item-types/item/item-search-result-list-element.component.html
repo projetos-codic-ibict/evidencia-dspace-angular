@@ -65,6 +65,7 @@
             @if (odsAll.length > 3) {
               <button type="button" class="badge rounded-pill ods-badge-more"
                       [attr.aria-expanded]="odsExpanded"
+                      [attr.aria-label]="(odsExpanded ? 'evidencia.search.result.ods.show-less' : 'evidencia.search.result.ods.show-more') | translate: { count: odsAll.length - 3 }"
                       (click)="toggleOdsExpanded()">
                 {{ odsExpanded ? '−' : '+' + (odsAll.length - 3) }}
               </button>

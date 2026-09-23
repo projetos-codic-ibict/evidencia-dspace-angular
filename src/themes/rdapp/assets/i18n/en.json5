@@ -6,6 +6,8 @@
   "evidencia.search.no-results.title": "No results found",
   "evidencia.search.no-results.hint": "Try adjusting your filters or search terms.",
   "evidencia.search.clear-filters": "Clear filters",
+  "evidencia.search.result.ods.show-more": "Show {{ count }} more SDGs",
+  "evidencia.search.result.ods.show-less": "Show fewer SDGs",
   "evidencia.search.placeholder.title": "Ready to explore?",
   "evidencia.search.placeholder.subtitle": "Type a term in the search bar or select a filter on the side to view results.",
   "evidencia.menu.faq": "FAQ",
