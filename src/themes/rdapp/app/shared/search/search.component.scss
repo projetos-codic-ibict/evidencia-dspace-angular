@@ -20,6 +20,16 @@
         &:focus {
           box-shadow: none;
         }
+
+        // O .btn-group corta o que sai dele (overflow: hidden), então o anel vai por dentro do botão.
+        // No botão ativo (fundo azul-escuro) o anel inverte para branco.
+        &:focus-visible {
+          outline-offset: -4px !important;
+        }
+
+        &.active:focus-visible {
+          outline-color: var(--rdapp-focus-ring-inner) !important;
+        }
       }
     }
   }

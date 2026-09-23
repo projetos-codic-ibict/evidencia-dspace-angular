@@ -63,14 +63,11 @@
               </span>
             }
             @if (odsAll.length > 3) {
-              <span class="badge rounded-pill ods-badge-more"
-                    role="button"
-                    tabindex="0"
-                    (click)="toggleOdsExpanded()"
-                    (keydown.enter)="toggleOdsExpanded()"
-                    (keydown.space)="$event.preventDefault(); toggleOdsExpanded()">
+              <button type="button" class="badge rounded-pill ods-badge-more"
+                      [attr.aria-expanded]="odsExpanded"
+                      (click)="toggleOdsExpanded()">
                 {{ odsExpanded ? '−' : '+' + (odsAll.length - 3) }}
-              </span>
+              </button>
             }
           </div>
         }
