@@ -27,6 +27,11 @@
   --rdapp-badge-color-bg: #f0f4f8;
   --rdapp-color-blue-light: #2f56be;
 
+  // Acessibilidade: anel de foco e alvo mínimo (regras em _global-styles.scss)
+  --rdapp-focus-ring-outer: var(--rdapp-bg-color-primary);
+  --rdapp-focus-ring-inner: #ffffff;
+  --rdapp-target-min: 24px;
+
   --rdapp-border-radius-1rem: 1rem;
   --rdapp-border-radius-2rem: 2rem;
   --rdapp-border-radius-3rem: 3rem;

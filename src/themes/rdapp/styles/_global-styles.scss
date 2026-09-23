@@ -28,6 +28,49 @@ body {
   background-color: #f8f9fa;
 }
 
+// Acessibilidade (WCAG 2.4.7, 2.4.11 e 1.4.11): o cabeçalho é sticky, então o elemento focado por
+// teclado não pode ficar por baixo dele ao rolar. O acréscimo deixa espaço para o anel de foco.
+html {
+  scroll-padding-top: calc(var(--ds-header-height) + 0.75rem);
+}
+
+// Acessibilidade (WCAG 2.4.7 e 1.4.11): anel de foco duplo e neutro, com fio branco por dentro
+// (box-shadow) e azul-escuro do tema por fora (outline), legível sobre fundo claro ou escuro. Vale
+// para o app inteiro, inclusive componentes do base que o tema não sobrescreve. Tokens em
+// _theme_css_variable_overrides.scss.
+// O outline usa !important para vencer o `outline: none` do Bootstrap e de componentes. Quando o anel
+// deve aparecer num contêiner (ex.: campo dentro de input-group), o campo opta por sair com
+// `outline: none !important` local, de especificidade maior, e o contêiner desenha o anel.
+// tabindex="-1" fica de fora: é foco programático (ex.: #main-content do skip link), não alvo de Tab.
+:focus-visible:not([tabindex="-1"]) {
+  outline: 2px solid var(--rdapp-focus-ring-outer) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px var(--rdapp-focus-ring-inner);
+}
+
+// O base zera o box-shadow do .btn com !important; sem isto o fio branco some justamente nos botões.
+.btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--rdapp-focus-ring-inner) !important;
+}
+
+// Os alertas e notificações do base tiram o outline do .btn-close com !important, então o anel duplo
+// é desenhado só com sombras.
+.btn-close:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--rdapp-focus-ring-inner),
+    0 0 0 4px var(--rdapp-focus-ring-outer) !important;
+}
+
+// Acessibilidade (WCAG 2.5.8): alvo mínimo em botões. Link de texto no meio de parágrafo é exceção da
+// norma. .sr-only e .visually-hidden dependem de 1px para sumir da tela, e o .btn-close do Bootstrap
+// já tem 1em mais padding (content-box), então a regra só o incharia.
+button:not(.sr-only):not(.visually-hidden):not(.btn-close),
+[role="button"]:not(.sr-only):not(.visually-hidden),
+.btn:not(.btn-close) {
+  min-width: var(--rdapp-target-min);
+  min-height: var(--rdapp-target-min);
+}
+
 // override bootstrap buttons
 
 .btn {
@@ -36,14 +79,6 @@ body {
 
 .btn-group .btn {
   border-radius: var(--bs-border-radius);
-}
-
-.btn.btn-secondary:focus {
-  outline-color: #aab7c4;
-}
-
-.btn.btn-primary:focus {
-  outline-color: var(--rdapp-bg-color-primary);
 }
 
 // B1 — HU003: capitalizar labels dos facets na sidebar de busca
