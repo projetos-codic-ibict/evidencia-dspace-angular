@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-center">
       @if ((dataSource.loading$ | async) !== true) {
         <button (click)="getNextPage(node)"
-          class="btn btn-outline-primary btn-sm" role="button" tabindex="0">
+          class="btn btn-outline-primary btn-sm">
           <i class="fas fa-angle-down"></i> {{ 'communityList.showMore' | translate }}
         </button>
       }
@@ -24,6 +24,8 @@
     [class.is-expanded]="node.isExpanded"
     [class.is-root]="node.level === 0">
 
+    <!-- Os botões de expandir mantêm tabindex="0" e os keyup: o cdkTreeNodeToggle força tabindex="-1" e
+         cancela o click no keydown de Enter e Espaço, então só o keyup chama toggleExpanded. -->
     <!-- nível raiz: cabeçalho da comunidade -->
     @if (node.level === 0) {
       <div class="community-header d-flex align-items-center">
@@ -31,7 +33,7 @@
         <div class="community-info">
           <span class="community-label">{{ 'evidencia.communityList.communityLabel' | translate }}</span>
           <span class="d-flex align-items-center">
-            <a [routerLink]="node.route" class="community-name" role="link" tabindex="0">{{ dsoNameService.getName(node.payload) }}</a>
+            <a [routerLink]="node.route" class="community-name">{{ dsoNameService.getName(node.payload) }}</a>
             @if (node.payload.archivedItemsCount >= 0) {
               <span class="badge rounded-pill bg-secondary archived-items-lead ms-2 ps-2 pe-2">{{node.payload.archivedItemsCount}}</span>
             }
@@ -43,7 +45,6 @@
           (keyup.enter)="toggleExpanded(node)"
           (keyup.space)="toggleExpanded(node)"
           data-test="expand-button"
-          role="button"
           tabindex="0">
           <span class="{{node.isExpanded ? 'fa fa-chevron-up' : 'fa fa-chevron-down'}}" aria-hidden="true"></span>
         </button>
@@ -67,21 +68,20 @@
       @if (node.isExpandable$ | async) {
         <div class="collection-pill d-flex align-items-center">
           <i class="fas fa-folder-open collection-file-icon" aria-hidden="true"></i>
-          <a [routerLink]="node.route" class="collection-name" role="link" tabindex="0">{{ dsoNameService.getName(node.payload) }}</a>
+          <a [routerLink]="node.route" class="collection-name">{{ dsoNameService.getName(node.payload) }}</a>
           <button type="button" class="btn toggle-btn ms-auto" cdkTreeNodeToggle
             [attr.aria-label]="(node.isExpanded ? 'communityList.collapse' : 'communityList.expand') | translate:{ name: dsoNameService.getName(node.payload) }"
             (click)="toggleExpanded(node)"
             (keyup.enter)="toggleExpanded(node)"
             (keyup.space)="toggleExpanded(node)"
             data-test="expand-button"
-            role="button"
             tabindex="0">
             <span class="{{node.isExpanded ? 'fa fa-chevron-up' : 'fa fa-chevron-down'}}" aria-hidden="true"></span>
           </button>
         </div>
       } @else {
         <!-- coleção (folha) → pílula-link com chevron direito -->
-        <a [routerLink]="node.route" class="collection-pill d-flex align-items-center text-decoration-none" role="link" tabindex="0">
+        <a [routerLink]="node.route" class="collection-pill d-flex align-items-center text-decoration-none">
           <i class="fas fa-file-alt collection-file-icon" aria-hidden="true"></i>
           <span class="collection-name">{{ dsoNameService.getName(node.payload) }}</span>
           <i class="fas fa-chevron-right collection-chevron ms-auto" aria-hidden="true"></i>
@@ -99,7 +99,7 @@
   <!-- nó folha (coleções) -->
   <cdk-tree-node *cdkTreeNodeDef="let node; when: !(hasChild && isShowMore)"
     class="example-tree-node childless-node">
-    <a [routerLink]="node.route" class="collection-pill d-flex align-items-center text-decoration-none" role="link" tabindex="0">
+    <a [routerLink]="node.route" class="collection-pill d-flex align-items-center text-decoration-none">
       <i class="fas fa-file-alt collection-file-icon" aria-hidden="true"></i>
       <span class="collection-name">{{ dsoNameService.getName(node.payload) }}</span>
       <i class="fas fa-chevron-right collection-chevron ms-auto" aria-hidden="true"></i>
