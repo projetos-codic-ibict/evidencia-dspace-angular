@@ -19,10 +19,10 @@
   // mesmo desenho duplo do anel global. Sem :has(): `&:has(...)` aninhado quebra o build do Angular.
   // Efeito conhecido: ao focar um botão de dentro, o anel do contêiner soma-se ao do botão.
   &:focus-within {
-    outline: 2px solid var(--rdapp-focus-ring-outer);
-    outline-offset: 2px;
+    outline: var(--rdapp-focus-ring-width) solid var(--rdapp-focus-ring-outer);
+    outline-offset: var(--rdapp-focus-ring-width);
     box-shadow:
-      0 0 0 2px var(--rdapp-focus-ring-inner),
+      0 0 0 var(--rdapp-focus-ring-width) var(--rdapp-focus-ring-inner),
       0 6px 32px rgba(var(--rdapp-bg-color-primary-rgb), 0.14),
       0 1px 3px rgba(0, 0, 0, 0.04);
   }

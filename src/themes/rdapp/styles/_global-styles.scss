@@ -43,22 +43,22 @@ html {
 // `outline: none !important` local, de especificidade maior, e o contêiner desenha o anel.
 // tabindex="-1" fica de fora: é foco programático (ex.: #main-content do skip link), não alvo de Tab.
 :focus-visible:not([tabindex="-1"]) {
-  outline: 2px solid var(--rdapp-focus-ring-outer) !important;
-  outline-offset: 2px !important;
-  box-shadow: 0 0 0 2px var(--rdapp-focus-ring-inner);
+  outline: var(--rdapp-focus-ring-width) solid var(--rdapp-focus-ring-outer) !important;
+  outline-offset: var(--rdapp-focus-ring-width) !important;
+  box-shadow: 0 0 0 var(--rdapp-focus-ring-width) var(--rdapp-focus-ring-inner);
 }
 
 // O base zera o box-shadow do .btn com !important; sem isto o fio branco some justamente nos botões.
-.btn:focus-visible {
-  box-shadow: 0 0 0 2px var(--rdapp-focus-ring-inner) !important;
+.btn:focus-visible:not([tabindex="-1"]) {
+  box-shadow: 0 0 0 var(--rdapp-focus-ring-width) var(--rdapp-focus-ring-inner) !important;
 }
 
 // Os alertas e notificações do base tiram o outline do .btn-close com !important, então o anel duplo
 // é desenhado só com sombras.
-.btn-close:focus-visible {
+.btn-close:focus-visible:not([tabindex="-1"]) {
   box-shadow:
-    0 0 0 2px var(--rdapp-focus-ring-inner),
-    0 0 0 4px var(--rdapp-focus-ring-outer) !important;
+    0 0 0 var(--rdapp-focus-ring-width) var(--rdapp-focus-ring-inner),
+    0 0 0 calc(var(--rdapp-focus-ring-width) * 2) var(--rdapp-focus-ring-outer) !important;
 }
 
 // Acessibilidade (WCAG 2.5.8): alvo mínimo em botões. Link de texto no meio de parágrafo é exceção da

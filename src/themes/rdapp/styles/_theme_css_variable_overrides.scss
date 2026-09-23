@@ -30,6 +30,7 @@
   // Acessibilidade: anel de foco e alvo mínimo (regras em _global-styles.scss)
   --rdapp-focus-ring-outer: var(--rdapp-bg-color-primary);
   --rdapp-focus-ring-inner: #ffffff;
+  --rdapp-focus-ring-width: 2px;
   --rdapp-target-min: 24px;
 
   --rdapp-border-radius-1rem: 1rem;

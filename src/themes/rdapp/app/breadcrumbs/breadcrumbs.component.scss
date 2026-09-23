@@ -18,7 +18,7 @@
 
   // O limiter corta o que sai dele (overflow: hidden), então o anel vai por dentro do link.
   a:focus-visible {
-    outline-offset: -2px !important;
+    outline-offset: calc(var(--rdapp-focus-ring-width) * -1) !important;
   }
 
   @include media-breakpoint-up(sm) {

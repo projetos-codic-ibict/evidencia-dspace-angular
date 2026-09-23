@@ -78,8 +78,8 @@ h3 {
       // O base tira o outline deste botão com !important e o :host corta o anel (overflow: hidden),
       // então o anel vai por dentro do botão. O seletor dobrado vence o do base.
       &.filter-name:focus-visible {
-        outline: 2px solid var(--rdapp-focus-ring-outer) !important;
-        outline-offset: -4px !important;
+        outline: var(--rdapp-focus-ring-width) solid var(--rdapp-focus-ring-outer) !important;
+        outline-offset: calc(var(--rdapp-focus-ring-width) * -2) !important;
       }
 
       &[aria-expanded="true"] {
