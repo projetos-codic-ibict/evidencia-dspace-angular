@@ -95,6 +95,8 @@ export class NuvemPalavrasComponent implements AfterViewInit, OnChanges, OnDestr
     this.dica.visivel = true;
   }
   esconderDica(): void { this.dica.visivel = false; }
+  // Usado na dica visual e no texto para leitor de tela (o painel ainda nao usa i18n).
+  rotuloOcorrencias(n: number): string { return `${n} ${n === 1 ? 'ocorrência' : 'ocorrências'}`; }
 
   private montarNuvem(animar = true): void {
     if (!this.isBrowser) { return; }

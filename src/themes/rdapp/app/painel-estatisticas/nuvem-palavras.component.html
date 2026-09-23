@@ -4,12 +4,12 @@
           (mouseenter)="mostrarDica($event, p)" (mousemove)="moverDica($event)"
           (mouseleave)="esconderDica()"
           (focus)="mostrarDicaFoco($event, p)" (blur)="esconderDica()"
-          (keydown.escape)="esconderDica()">{{ p.label }}<span class="visually-hidden"> ({{ p.count }} {{ p.count === 1 ? 'ocorrência' : 'ocorrências' }})</span></span>
+          (keydown.escape)="esconderDica()">{{ p.label }}<span class="visually-hidden"> ({{ rotuloOcorrencias(p.count) }})</span></span>
   }
   @if (dica.visivel) {
     <div class="dica" aria-hidden="true" [ngStyle]="{ left: dica.x + 'px', top: dica.y + 'px' }">
       <span class="dica-nome">{{ dica.nome }}</span>
-      <span class="dica-val">{{ dica.count }} {{ dica.count === 1 ? 'ocorrência' : 'ocorrências' }}</span>
+      <span class="dica-val">{{ rotuloOcorrencias(dica.count) }}</span>
     </div>
   }
   @if (!nuvem.length) {
