@@ -16,6 +16,11 @@
   max-width: 12rem;
   overflow: hidden;
 
+  // O limiter corta o que sai dele (overflow: hidden), então o anel vai por dentro do link.
+  a:focus-visible {
+    outline-offset: -2px !important;
+  }
+
   @include media-breakpoint-up(sm) {
     max-width: 20rem;
   }
