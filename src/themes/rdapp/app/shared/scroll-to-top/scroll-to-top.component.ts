@@ -26,6 +26,13 @@ export class ScrollToTopComponent {
   scrollToTop(): void {
     if (isPlatformBrowser(this.platformId)) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      // O botão some no topo (visibility: hidden) e o foco se perderia com ele. Leva o foco para o
+      // conteúdo principal, como o skip link do base, sem interromper a rolagem suave.
+      const conteudo = document.getElementById('main-content');
+      if (conteudo) {
+        conteudo.tabIndex = -1;
+        conteudo.focus({ preventScroll: true });
+      }
     }
   }
 }
