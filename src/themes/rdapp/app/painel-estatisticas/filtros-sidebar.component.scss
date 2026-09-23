@@ -46,7 +46,7 @@
     border: 1.5px solid #e5e7eb; border-radius: var(--rdapp-border-radius-2rem, 2rem);
     background: #f9fafb; padding: 0.4rem 0.875rem; box-shadow: none;
     transition: border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
-    &:focus { border-color: var(--rdapp-bg-color-accent); outline: none; box-shadow: 0 0 0 2px rgba(var(--rdapp-bg-color-accent-rgb), 0.15); background: #fff; }
+    &:focus { border-color: var(--rdapp-bg-color-accent); box-shadow: 0 0 0 2px rgba(var(--rdapp-bg-color-accent-rgb), 0.15); background: #fff; }
   }
 
   .opcoes {
