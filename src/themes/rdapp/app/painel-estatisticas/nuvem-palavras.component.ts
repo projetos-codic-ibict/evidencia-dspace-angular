@@ -71,9 +71,7 @@ export class NuvemPalavrasComponent implements AfterViewInit, OnChanges, OnDestr
 
   // ---- Tooltip (segue o cursor) ------------------------------------------
   mostrarDica(ev: MouseEvent, p: { label: string; count: number }): void {
-    this.dica.nome = p.label;
-    this.dica.count = p.count;
-    this.dica.visivel = true;
+    this.abrirDica(p);
     this.moverDica(ev);
   }
   moverDica(ev: MouseEvent): void {
@@ -81,6 +79,20 @@ export class NuvemPalavrasComponent implements AfterViewInit, OnChanges, OnDestr
     if (!r) { return; }
     this.dica.x = ev.clientX - r.left + 12;
     this.dica.y = ev.clientY - r.top - 12;
+  }
+  // Foco por teclado: a dica aparece sobre o termo focado (nao ha cursor nesse caso).
+  mostrarDicaFoco(ev: FocusEvent, p: { label: string; count: number }): void {
+    const caixa = this.nuvemBox?.nativeElement.getBoundingClientRect();
+    if (!caixa) { return; }
+    const termo = (ev.target as HTMLElement).getBoundingClientRect();
+    this.abrirDica(p);
+    this.dica.x = termo.left - caixa.left + termo.width / 2;
+    this.dica.y = termo.top - caixa.top - 12;
+  }
+  private abrirDica(p: { label: string; count: number }): void {
+    this.dica.nome = p.label;
+    this.dica.count = p.count;
+    this.dica.visivel = true;
   }
   esconderDica(): void { this.dica.visivel = false; }
 

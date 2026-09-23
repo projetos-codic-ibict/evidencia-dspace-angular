@@ -4,10 +4,14 @@
   <header class="hero">
     <h1 class="hero-titulo">Painel de Estatísticas</h1>
     <p class="hero-sub">Indicadores consolidados sobre a produção científica e técnica do acervo.</p>
-    <div class="alternador" role="tablist" aria-label="Seletor de visão">
-      <button type="button" role="tab" [attr.aria-selected]="aba === 'acervo'"
+    <div class="alternador" role="tablist" aria-label="Seletor de visão" (keydown)="onAbaKeydown($event)">
+      <button #abaBtn id="painel-tab-acervo" type="button" role="tab"
+              [attr.aria-controls]="(!loading && !erro) ? 'painel-aba-acervo' : null"
+              [attr.aria-selected]="aba === 'acervo'" [attr.tabindex]="aba === 'acervo' ? 0 : -1"
               [class.ativo]="aba === 'acervo'" (click)="trocarAba('acervo')">Indicadores do Acervo</button>
-      <button type="button" role="tab" [attr.aria-selected]="aba === 'visualizacoes'"
+      <button #abaBtn id="painel-tab-visualizacoes" type="button" role="tab"
+              [attr.aria-controls]="(!loading && !erro) ? 'painel-aba-visualizacoes' : null"
+              [attr.aria-selected]="aba === 'visualizacoes'" [attr.tabindex]="aba === 'visualizacoes' ? 0 : -1"
               [class.ativo]="aba === 'visualizacoes'" (click)="trocarAba('visualizacoes')">Total de Visualizações</button>
     </div>
   </header>
@@ -37,7 +41,8 @@
         }
 
         <!-- ABA: Indicadores do Acervo -->
-        <div [style.display]="aba === 'acervo' ? 'block' : 'none'">
+        <div id="painel-aba-acervo" role="tabpanel" aria-labelledby="painel-tab-acervo"
+             [style.display]="aba === 'acervo' ? 'block' : 'none'">
 
           <section class="pcards">
             <div class="pcard">
@@ -186,7 +191,7 @@
 
         <!-- ABA: Total de Visualizacoes -->
         @if (aba === 'visualizacoes') {
-          <div>
+          <div id="painel-aba-visualizacoes" role="tabpanel" aria-labelledby="painel-tab-visualizacoes">
             <section class="bloco aviso">
               <p class="bloco-ante">ENGAJAMENTO</p>
               <h2>Total de Visualizações</h2>

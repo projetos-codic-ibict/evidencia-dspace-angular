@@ -1,11 +1,13 @@
 <div class="nuvem" #nuvemBox>
   @for (p of nuvem; track trackNuvem($index)) {
-    <span class="termo" [ngStyle]="p.estilo"
+    <span class="termo" tabindex="0" [ngStyle]="p.estilo"
           (mouseenter)="mostrarDica($event, p)" (mousemove)="moverDica($event)"
-          (mouseleave)="esconderDica()">{{ p.label }}</span>
+          (mouseleave)="esconderDica()"
+          (focus)="mostrarDicaFoco($event, p)" (blur)="esconderDica()"
+          (keydown.escape)="esconderDica()">{{ p.label }}<span class="visually-hidden"> ({{ p.count }} {{ p.count === 1 ? 'ocorrência' : 'ocorrências' }})</span></span>
   }
   @if (dica.visivel) {
-    <div class="dica" [ngStyle]="{ left: dica.x + 'px', top: dica.y + 'px' }">
+    <div class="dica" aria-hidden="true" [ngStyle]="{ left: dica.x + 'px', top: dica.y + 'px' }">
       <span class="dica-nome">{{ dica.nome }}</span>
       <span class="dica-val">{{ dica.count }} {{ dica.count === 1 ? 'ocorrência' : 'ocorrências' }}</span>
     </div>

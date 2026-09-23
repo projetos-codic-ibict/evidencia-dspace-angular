@@ -10,7 +10,9 @@ import {
   Inject,
   OnInit,
   PLATFORM_ID,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { EChartsType } from 'echarts/core';
@@ -20,6 +22,7 @@ import {
   Observable,
 } from 'rxjs';
 
+import { proximoIndiceAba } from '../shared/tab-keyboard';
 import {
   FiltrosSidebarComponent,
   GrupoFiltro,
@@ -31,6 +34,8 @@ import {
   FacetValue,
   PainelEstatisticasService,
 } from './painel-estatisticas.service';
+
+type AbaPainel = 'acervo' | 'visualizacoes';
 
 interface SerieEvolucao { nome: string; dados: number[]; }
 
@@ -101,7 +106,10 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   loading = true;
   recarregando = false;
   erro: string | null = null;
-  aba: 'acervo' | 'visualizacoes' = 'acervo';
+  aba: AbaPainel = 'acervo';
+
+  readonly abas: AbaPainel[] = ['acervo', 'visualizacoes'];
+  @ViewChildren('abaBtn') abaBotoes?: QueryList<ElementRef<HTMLButtonElement>>;
 
   grupos: GrupoFiltro[] = [];
   selecionados: { [nome: string]: Set<string> } = {};
@@ -338,8 +346,17 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   // ---- Render ------------------------------------------------------------
 
-  trocarAba(aba: 'acervo' | 'visualizacoes'): void {
+  trocarAba(aba: AbaPainel): void {
     this.aba = aba;
+  }
+
+  /** Setas, Home e End movem o foco entre as abas e ativam a nova (so a aba ativa entra no Tab). */
+  onAbaKeydown(ev: KeyboardEvent): void {
+    const proxima = proximoIndiceAba(ev.key, this.abas.indexOf(this.aba), this.abas.length);
+    if (proxima === null) { return; }
+    ev.preventDefault();
+    this.trocarAba(this.abas[proxima]);
+    this.abaBotoes?.get(proxima)?.nativeElement.focus();
   }
 
   private recomputarGraficos(): void {
