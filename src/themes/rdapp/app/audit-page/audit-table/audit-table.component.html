@@ -28,18 +28,19 @@
             <tr>
               <td>
                 @if (audit.hasDetails) {
-                  <div role="button" class="d-flex align-items-center" (click)="toggleCollapse(audit)">
-                    <div class="btn btn-link p-1 mr-1">
+                  <button type="button" class="btn btn-link d-flex align-items-center p-0 border-0 text-decoration-none"
+                          [attr.aria-expanded]="!audit.isCollapsed" (click)="toggleCollapse(audit)">
+                    <span class="p-1 mr-1" aria-hidden="true">
                       @if (audit.isCollapsed) {
                         <i class="fas fa-caret-right"></i>
                       } @else {
                         <i class="fas fa-caret-down"></i>
                       }
-                    </div>
+                    </span>
                     <span class="audit-event-badge" [ngClass]="getEventTypeBadgeClass(audit.eventType)">
                       {{ audit.eventType }}
                     </span>
-                  </div>
+                  </button>
                 } @else {
                   <div class="ml-4">
                     <span class="audit-event-badge" [ngClass]="getEventTypeBadgeClass(audit.eventType)">
