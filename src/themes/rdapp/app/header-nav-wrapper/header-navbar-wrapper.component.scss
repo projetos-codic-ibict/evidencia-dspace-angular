@@ -27,6 +27,11 @@
         height: auto;
         // border-bottom: var(--ds-header-navbar-border-bottom-style);
         background-color: #fff;
+
+        // O wrapper corta o que sai dele (overflow: hidden), então o anel vai por dentro dos itens.
+        ::ng-deep :focus-visible {
+          outline-offset: -2px !important;
+        }
       }
     }
   }
