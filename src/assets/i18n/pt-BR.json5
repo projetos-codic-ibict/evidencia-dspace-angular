@@ -1574,7 +1574,7 @@
 
   "comcol-role.edit.reviewer.name": "Revisores",
 
-  "comcol-role.edit.reviewer.description": "Revisores podem aceitar ou rejeitar submissões recebidas. Entretanto, eles não podem editar os metadados da submissão.",
+  "comcol-role.edit.reviewer.description": "Revisores podem aceitar, rejeitar e devolver para ajustes as submissões recebidas. Entretanto, eles não podem editar os metadados da submissão.",
 
   "comcol-role.edit.scorereviewers.name": "Revisores de pontuação",
 

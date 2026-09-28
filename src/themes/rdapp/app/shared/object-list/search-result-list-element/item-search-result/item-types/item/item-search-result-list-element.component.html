@@ -2,15 +2,28 @@
   @if (showThumbnails) {
     <div class="col-3 col-md-2">
       @if (linkType !== linkTypes.None) {
-        <a [target]="(linkType === linkTypes.ExternalLink) ? '_blank' : '_self'" [attr.rel]="(linkType === linkTypes.ExternalLink) ? 'noopener noreferrer' : null"
-          [routerLink]="[itemPageRoute]" class="dont-break-out" tabindex="-1">
-          <ds-thumbnail [thumbnail]="dso?.thumbnail | async" [limitWidth]="true">
+        <a
+          [target]="linkType === linkTypes.ExternalLink ? '_blank' : '_self'"
+          [attr.rel]="
+            linkType === linkTypes.ExternalLink ? 'noopener noreferrer' : null
+          "
+          [routerLink]="[itemPageRoute]"
+          class="dont-break-out"
+          tabindex="-1"
+        >
+          <ds-thumbnail
+            [thumbnail]="dso?.thumbnail | async"
+            [limitWidth]="true"
+          >
           </ds-thumbnail>
         </a>
       }
       @if (linkType === linkTypes.None) {
         <span class="dont-break-out">
-          <ds-thumbnail [thumbnail]="dso?.thumbnail | async" [limitWidth]="true">
+          <ds-thumbnail
+            [thumbnail]="dso?.thumbnail | async"
+            [limitWidth]="true"
+          >
           </ds-thumbnail>
         </span>
       }
@@ -19,43 +32,73 @@
   <div [ngClass]="showThumbnails ? 'col-9' : 'col-md-12'">
     @if (object !== undefined && object !== null) {
       <ds-truncatable [id]="dso.id">
-
         @if (object?.score !== undefined && object?.score !== null) {
-      <div class="text-muted small mb-1">Score: {{ object.score.toFixed(2) }}</div>
-    }
-        
-<div class="d-flex align-items-start gap-2 mb-2">
-          <input type="checkbox" 
-                 class="form-check-input mt-1 flex-shrink-0 item-checkbox" 
-                 [id]="'checkbox-' + dso.id">
-          
+          <div class="text-muted small mb-1">
+            Score: {{ object.score.toFixed(2) }}
+          </div>
+        }
+
+        <div class="d-flex align-items-start gap-2 mb-2">
+          @if (isAuthenticated$ | async) {
+            <button
+              class="btn btn-link p-0 mt-1 favorite-btn"
+              (click)="toggleFavorite($event)"
+              [title]="
+                (isFavorite$ | async)
+                  ? 'Remover dos favoritos'
+                  : 'Adicionar aos favoritos'
+              "
+            >
+              <i
+                [ngClass]="
+                  (isFavorite$ | async)
+                    ? 'fas fa-star text-warning'
+                    : 'far fa-star text-muted'
+                "
+              ></i>
+            </button>
+          }
+          <input
+            type="checkbox"
+            class="form-check-input mt-1 flex-shrink-0 item-checkbox"
+            [id]="'checkbox-' + dso.id"
+          />
+
           <div class="flex-grow-1">
-            <span class="lead item-list-title dont-break-out mb-0 fw-bold"
-                  style="color: #0F49BD;"
-                  [innerHTML]="dsoTitle?.value">
+            <span
+              class="lead item-list-title dont-break-out mb-0 fw-bold"
+              style="color: #0f49bd"
+              [innerHTML]="dsoTitle?.value"
+            >
             </span>
           </div>
         </div>
 
         <div class="item-meta-top">
-          @if (dso.firstMetadataValue('local.tipodocumento')) {
+          @if (dso.firstMetadataValue("local.tipodocumento")) {
             <span class="item-type-badge">
               <i class="fas fa-file-alt" aria-hidden="true"></i>
-              {{ dso.firstMetadataValue('local.tipodocumento') }}
+              {{ dso.firstMetadataValue("local.tipodocumento") }}
             </span>
           }
-          @if (dso.firstMetadataValue('dc.date.issued')) {
+          @if (dso.firstMetadataValue("dc.date.issued")) {
             <span class="item-list-date">
               <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-              {{ dso.firstMetadataValue('dc.date.issued') }}
+              {{ dso.firstMetadataValue("dc.date.issued") }}
             </span>
           }
         </div>
 
         @if (odsAll.length > 0) {
           <div class="item-ods-row">
-            @for (ods of (odsExpanded ? odsAll : odsAll.slice(0, 3)); track $index) {
-              <span class="badge rounded-pill ods-badge" [style.background-color]="getOdsBg(ods)">
+            @for (
+              ods of odsExpanded ? odsAll : odsAll.slice(0, 3);
+              track $index
+            ) {
+              <span
+                class="badge rounded-pill ods-badge"
+                [style.background-color]="getOdsBg(ods)"
+              >
                 @if (getOdsNumber(ods)) {
                   <span class="ods-number">{{ getOdsNumber(ods) }}</span>
                 }
@@ -63,13 +106,15 @@
               </span>
             }
             @if (odsAll.length > 3) {
-              <span class="badge rounded-pill ods-badge-more"
-                    role="button"
-                    tabindex="0"
-                    (click)="toggleOdsExpanded()"
-                    (keydown.enter)="toggleOdsExpanded()"
-                    (keydown.space)="$event.preventDefault(); toggleOdsExpanded()">
-                {{ odsExpanded ? '−' : '+' + (odsAll.length - 3) }}
+              <span
+                class="badge rounded-pill ods-badge-more"
+                role="button"
+                tabindex="0"
+                (click)="toggleOdsExpanded()"
+                (keydown.enter)="toggleOdsExpanded()"
+                (keydown.space)="$event.preventDefault(); toggleOdsExpanded()"
+              >
+                {{ odsExpanded ? "−" : "+" + (odsAll.length - 3) }}
               </span>
             }
           </div>
@@ -77,12 +122,29 @@
 
         <span class="text-muted">
           <ds-truncatable-part [id]="dso.id" [minLines]="1">
-            @if (dso.firstMetadataValue('dc.publisher')) {
-              <span class="item-list-publisher" [innerHTML]="firstMetadataValue('dc.publisher')"></span>
+            @if (dso.firstMetadataValue("dc.publisher")) {
+              <span
+                class="item-list-publisher"
+                [innerHTML]="firstMetadataValue('dc.publisher')"
+              ></span>
             }
-            @if (dso.allMetadata(['dc.contributor.author', 'dc.creator', 'dc.contributor.*']).length > 0) {
+            @if (
+              dso.allMetadata([
+                "dc.contributor.author",
+                "dc.creator",
+                "dc.contributor.*",
+              ]).length > 0
+            ) {
               <span class="item-list-authors">
-                @for (author of allMetadataValues(['dc.contributor.author', 'dc.creator', 'dc.contributor.*']); track author; let last = $last) {
+                @for (
+                  author of allMetadataValues([
+                    "dc.contributor.author",
+                    "dc.creator",
+                    "dc.contributor.*",
+                  ]);
+                  track author;
+                  let last = $last
+                ) {
                   <span>
                     <span [innerHTML]="author"></span>
                     @if (!last) {
@@ -95,10 +157,12 @@
           </ds-truncatable-part>
         </span>
 
-        @if (dso.firstMetadataValue('dc.description.abstract')) {
+        @if (dso.firstMetadataValue("dc.description.abstract")) {
           <div class="item-list-abstract">
             <ds-truncatable-part [id]="dso.id" [minLines]="3">
-              <span [innerHTML]="firstMetadataValue('dc.description.abstract')"></span>
+              <span
+                [innerHTML]="firstMetadataValue('dc.description.abstract')"
+              ></span>
             </ds-truncatable-part>
           </div>
         }
@@ -106,15 +170,15 @@
 
       @if (linkType !== linkTypes.None) {
         <div class="item-list-source">
-          <span>{{ 'evidencia.item-card.source' | translate }}</span>
+          <span>{{ "evidencia.item-card.source" | translate }}</span>
           @if (pdfDownloadRoute$ | async; as pdfUrl) {
             <a [href]="pdfUrl" target="_blank" rel="noopener noreferrer">
-              {{ 'evidencia.item-card.access-pdf' | translate }}
+              {{ "evidencia.item-card.access-pdf" | translate }}
               <i class="fas fa-file-pdf" aria-hidden="true"></i>
             </a>
           } @else {
             <a [routerLink]="[itemPageRoute]">
-              {{ 'evidencia.item-card.access-pdf' | translate }}
+              {{ "evidencia.item-card.access-pdf" | translate }}
               <i class="fas fa-file-pdf" aria-hidden="true"></i>
             </a>
           }
@@ -123,7 +187,7 @@
         <div class="item-actions-row">
           <a [routerLink]="[itemPageRoute]" class="btn-item-page">
             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-            {{ 'evidencia.item-card.access-page' | translate }}
+            {{ "evidencia.item-card.access-page" | translate }}
           </a>
           <ds-document-more-results [item]="dso"></ds-document-more-results>
         </div>

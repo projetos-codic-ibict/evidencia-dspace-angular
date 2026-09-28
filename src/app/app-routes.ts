@@ -97,6 +97,10 @@ export const APP_ROUTES: Route[] = [
           .then((m) => m.ROUTES),
         data: { showBreadcrumbs: false },
       },
+      { path: 'favorites',
+        loadChildren: () => import('../themes/rdapp/app/favorite-items/favorite-items-routes').then((m) => m.ROUTES),
+        data: {showBreadcrumbs: false},
+      },
       {
         path: 'community-list',
         loadChildren: () => import('./community-list-page/community-list-page-routes')

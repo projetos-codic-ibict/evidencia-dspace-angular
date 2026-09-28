@@ -205,6 +205,27 @@
   }
 }
 
+.favorite-btn {
+  border: none;
+  background: transparent;
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: transform 0.2s ease, color 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.15);
+  }
+  
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.text-warning {
+  color: #f5b041 !important; // Cor da estrela amarela
+}
+
 :host ::ng-deep {
   // Espaçamento vertical entre os blocos internos do card
   // (título, meta, ODS, autores, abstract — todos filhos do ds-truncatable)
