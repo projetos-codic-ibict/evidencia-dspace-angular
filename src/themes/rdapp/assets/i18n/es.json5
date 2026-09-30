@@ -127,6 +127,9 @@
 
   // Menu
   "evidencia.menu.faq": "Preguntas Frecuentes",
+  "evidencia.menu.favorites": "Favoritos",
+  "evidencia.favorites.add": "Añadir a favoritos: {{ title }}",
+  "evidencia.favorites.remove": "Quitar de favoritos: {{ title }}",
   "evidencia.menu.about": "El EvidencIA",
   "evidencia.menu.about.presentation": "Presentación",
   "evidencia.menu.about.goals": "Objetivos",

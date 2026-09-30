@@ -22,7 +22,7 @@ export class FavoritesMenuProvider extends AbstractMenuProvider {
           text: 'evidencia.menu.favorites',
           link: '/favorites',
         },
-        icon: 'chart-column',
+        icon: 'star',
       },
     ] as PartialMenuSection[]);
   }

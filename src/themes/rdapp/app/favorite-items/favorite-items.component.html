@@ -32,7 +32,7 @@
         } @else {
           
           <div class="favorite-list-container">
-            @for (item of items; track item.id) {
+            @for (item of items; track item.indexableObject.uuid) {
               <div class="mb-4 list-element-wrapper">
                 <ds-listable-object-component-loader 
                   [object]="item" 

@@ -4350,9 +4350,9 @@
 
   "register-page.registration.email.hint": "Este endereço será verificado e usado como seu nome de login.",
 
-  "register-page.create-profile.identification.institution" : "Instituição",
+  "register-page.create-profile.identification.institution": "Instituição",
 
-  "register-page.create-profile.identification.institution.error" : "O campo Instituição é obrigatório.",
+  "register-page.create-profile.identification.institution.error": "O campo Instituição é obrigatório.",
 
   "register-page.registration.submit": "Cadastrar",
 
@@ -7969,4 +7969,10 @@
   "evidencia.group-governance.type.bundle": "Pacote de arquivos",
 
   "admin.access-control.groups.table.permissions": "Permissões",
+
+  "evidencia.menu.favorites": "Favoritos",
+
+  "evidencia.favorites.add": "Adicionar aos favoritos: {{ title }}",
+
+  "evidencia.favorites.remove": "Remover dos favoritos: {{ title }}",
 }

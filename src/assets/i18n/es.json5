@@ -7915,4 +7915,10 @@
   "evidencia.group-governance.type.bundle": "Paquete de archivos",
 
   "admin.access-control.groups.table.permissions": "Permisos",
+
+  "evidencia.menu.favorites": "Favoritos",
+
+  "evidencia.favorites.add": "Añadir a favoritos: {{ title }}",
+
+  "evidencia.favorites.remove": "Quitar de favoritos: {{ title }}",
 }

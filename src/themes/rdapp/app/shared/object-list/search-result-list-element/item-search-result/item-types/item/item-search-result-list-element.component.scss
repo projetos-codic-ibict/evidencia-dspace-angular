@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   display: block;
   background-color: #ffffff;
   border-radius: var(--rdapp-border-radius-1rem);
@@ -37,6 +38,44 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  font-size: 1.1rem;
+  color: #6b7280;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    color: #d97706;
+    transform: scale(1.1);
+  }
+
+  &.is-favorite {
+    color: #d97706;
+    border-color: #d97706;
+  }
+}
+
+// Sem miniatura o título ocupa a largura toda e passaria por baixo da estrela
+[class*="col-md-12"] .item-list-title {
+  padding-right: 3rem;
 }
 
 .item-list-title {
@@ -203,27 +242,6 @@
     font-weight: 700;
     text-transform: uppercase;
   }
-}
-
-.favorite-btn {
-  border: none;
-  background: transparent;
-  font-size: 1.3rem;
-  line-height: 1;
-  transition: transform 0.2s ease, color 0.2s ease;
-  
-  &:hover {
-    transform: scale(1.15);
-  }
-  
-  &:focus {
-    box-shadow: none;
-    outline: none;
-  }
-}
-
-.text-warning {
-  color: #f5b041 !important; // Cor da estrela amarela
 }
 
 :host ::ng-deep {

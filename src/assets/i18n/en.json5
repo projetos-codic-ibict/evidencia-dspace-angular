@@ -7909,4 +7909,10 @@
   "evidencia.group-governance.type.bundle": "File bundle",
 
   "admin.access-control.groups.table.permissions": "Permissions",
+
+  "evidencia.menu.favorites": "Favorites",
+
+  "evidencia.favorites.add": "Add to favorites: {{ title }}",
+
+  "evidencia.favorites.remove": "Remove from favorites: {{ title }}",
 }
