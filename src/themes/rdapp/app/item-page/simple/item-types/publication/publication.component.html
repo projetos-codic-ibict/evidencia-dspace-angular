@@ -151,7 +151,7 @@
             {{ 'evidencia.item.metrics.copy-count' | translate }}
           </span>
           <span class="rdapp-item-metrics__stat-value">
-            {{ referenceCopiesCount !== undefined ? referenceCopiesCount : '–' }}
+            @if (metrics) { {{ getReportTotal(metrics, 'TotalReferenceCopies') }} } @else { – }
           </span>
           <i class="fas fa-copy rdapp-item-metrics__stat-icon rdapp-item-metrics__stat-icon--green" aria-hidden="true"></i>
         </div>

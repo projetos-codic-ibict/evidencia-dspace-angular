@@ -10,9 +10,13 @@ import {
 import { RouterLink } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { catchError, combineLatest, Observable, of } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, take } from 'rxjs';
 
+import { RequestService } from '@dspace/core/data/request.service';
+import { RestRequest } from '@dspace/core/data/rest-request.model';
+import { HALEndpointService } from '@dspace/core/shared/hal-endpoint.service';
 import { ItemBibliographyService } from '../../../../../../../app/core/data/bibliography-data.service';
+import { TrackRequest } from '../../../../../../../app/statistics/track-request.model';
 import { Bibliography } from '../../../../../../../app/core/shared/bibliography/bibliography.model';
 import { Item } from '../../../../../../../app/core/shared/item.model';
 import { UsageReportDataService } from '../../../../../../../app/core/statistics/usage-report-data.service';
@@ -58,7 +62,6 @@ export class PublicationComponent extends BasePublicationComponent implements On
 
   // ── CA07: métricas de uso ────────────────────────────────────────────────────
   reports$: Observable<UsageReport[]>;
-  referenceCopiesCount: number = 0;
 
   // ── Referências via backend ──────────────────────────────────────────────────
   bibliographies: Bibliography[] = [];
@@ -84,11 +87,13 @@ export class PublicationComponent extends BasePublicationComponent implements On
   private usageReportService = inject(UsageReportDataService);
   private bibliographySvc = inject(ItemBibliographyService);
   private cd = inject(ChangeDetectorRef);
+  private requestService = inject(RequestService);
+  private halService = inject(HALEndpointService);
 
   override ngOnInit(): void {
     super.ngOnInit();
     this.reports$ = combineLatest(
-      ['TotalVisits', 'TotalVisitsPerMonth', 'TotalDownloads'].map(type =>
+      ['TotalVisits', 'TotalVisitsPerMonth', 'TotalDownloads', 'TotalReferenceCopies'].map(type =>
         this.usageReportService.getStatistic((this.object as Item).id, type).pipe(
           catchError(() => of({ reportType: type, points: [] } as unknown as UsageReport)),
         )
@@ -151,6 +156,25 @@ export class PublicationComponent extends BasePublicationComponent implements On
       this.referenceIsCopied = false;
       this.cd.markForCheck();
     }, 2000);
+    this.trackReferenceCopyEvent();
+  }
+
+  /**
+   * Loga o evento de cópia de referência no core de estatísticas do Solr, pelo mesmo endpoint
+   * (/statistics/viewevents) que o DSpace já usa para acesso/download, com eventType diferenciando o evento.
+   */
+  private trackReferenceCopyEvent(): void {
+    const item = this.object as Item;
+    if (!item?.uuid) return;
+    const requestId = this.requestService.generateRequestId();
+    this.halService.getEndpoint('/statistics/viewevents').pipe(
+      map((endpoint: string) => new TrackRequest(requestId, endpoint, JSON.stringify({
+        targetId: item.uuid,
+        targetType: (item as any).type,
+        eventType: 'reference_copy',
+      }))),
+      take(1),
+    ).subscribe((request: RestRequest) => this.requestService.send(request));
   }
 
   ngOnDestroy(): void {
