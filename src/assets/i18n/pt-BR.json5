@@ -7975,4 +7975,12 @@
   "evidencia.favorites.add": "Adicionar aos favoritos: {{ title }}",
 
   "evidencia.favorites.remove": "Remover dos favoritos: {{ title }}",
+
+  "evidencia.favorites.title": "Meus itens favoritos",
+
+  "evidencia.favorites.loading": "Carregando seus favoritos...",
+
+  "evidencia.favorites.empty.title": "Nenhum favorito encontrado",
+
+  "evidencia.favorites.empty.text": "Você ainda não marcou nenhum item como favorito. Navegue pelo repositório e clique na estrela para salvar itens aqui.",
 }

@@ -6,7 +6,6 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { followLink } from '@dspace/core/shared/follow-link-config.model';
 import { Item } from '@dspace/core/shared/item.model';
-import { AuthService } from '@dspace/core/auth/auth.service';
 import { ViewMode } from '@dspace/core/shared/view-mode.model';
 import { ListableObjectComponentLoaderComponent } from '../../../../app/shared/object-collection/shared/listable-object/listable-object-component-loader.component';
 import { ItemDataService } from '../../../../app/core/data/item-data.service';
@@ -28,7 +27,6 @@ import { ItemSearchResult } from '@dspace/core/shared/object-collection/item-sea
 export class FavoriteItemsComponent implements OnInit {
   private favoriteService = inject(FavoriteService);
   private itemService = inject(ItemDataService);
-  public authService = inject(AuthService);
 
   isLoading$ = new BehaviorSubject<boolean>(true);
   viewMode = ViewMode.ListElement;

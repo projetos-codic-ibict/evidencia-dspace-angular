@@ -13,3 +13,12 @@
 .alert {
   border-radius: var(--rdapp-border-radius-1rem, 1rem);
 }
+
+.favorites-title {
+  color: var(--rdapp-bg-color-primary);
+}
+
+.favorites-spinner {
+  width: 3rem;
+  height: 3rem;
+}
