@@ -148,7 +148,10 @@ export class PublicationComponent extends BasePublicationComponent implements On
   }
 
   copyReference(): void {
-    navigator.clipboard?.writeText(this.selectedReference).catch(() => {});
+    // Só conta a cópia quando a área de transferência aceitou o texto (sem HTTPS ou sem permissão ela rejeita)
+    navigator.clipboard?.writeText(this.selectedReference)
+      .then(() => this.trackReferenceCopyEvent())
+      .catch(() => {});
     if (this.copyRefTimer) clearTimeout(this.copyRefTimer);
     this.referenceIsCopied = true;
     this.cd.markForCheck();
@@ -156,7 +159,6 @@ export class PublicationComponent extends BasePublicationComponent implements On
       this.referenceIsCopied = false;
       this.cd.markForCheck();
     }, 2000);
-    this.trackReferenceCopyEvent();
   }
 
   /**
