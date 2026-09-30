@@ -7923,4 +7923,10 @@
   "evidencia.favorites.empty.title": "No favorites found",
 
   "evidencia.favorites.empty.text": "You have not marked any item as a favorite yet. Browse the repository and click the star to save items here.",
+
+  "evidencia.favorites.error": "Could not update the favorite. Please try again.",
+
+  "evidencia.favorites.load-error": "Could not load your favorites.",
+
+  "evidencia.favorites.retry": "Try again",
 }

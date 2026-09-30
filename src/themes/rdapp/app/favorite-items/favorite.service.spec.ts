@@ -44,6 +44,17 @@ describe('FavoriteService', () => {
     expect(results).toEqual([true, false]);
   });
 
+  it('tenta carregar os IDs de novo depois de uma falha', () => {
+    service.isFavorite('a').subscribe();
+    http.expectOne(`${apiUrl}/ids`).flush('erro', { status: 500, statusText: 'Server Error' });
+
+    const results: boolean[] = [];
+    service.isFavorite('a').subscribe((v) => results.push(v));
+    http.expectOne(`${apiUrl}/ids`).flush(['a']);
+
+    expect(results).toEqual([true]);
+  });
+
   it('marca na hora e mantém o cache quando o POST dá certo', () => {
     let ids: ReadonlySet<string> | null = null;
     service.favoriteIds$.subscribe((v) => ids = v);
@@ -61,7 +72,7 @@ describe('FavoriteService', () => {
     let failed = false;
 
     service.setFavorite('x', true).subscribe({ error: () => failed = true });
-    http.expectOne({ method: 'POST', url: `${apiUrl}/x` }).flush('erro', { status: 403, statusText: 'Forbidden' });
+    http.expectOne({ method: 'POST', url: `${apiUrl}/x` }).flush('erro', { status: 500, statusText: 'Server Error' });
 
     expect(failed).toBeTrue();
     expect(ids!.has('x')).toBeFalse();

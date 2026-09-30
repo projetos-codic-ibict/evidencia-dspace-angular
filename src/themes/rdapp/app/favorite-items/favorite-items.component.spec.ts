@@ -11,6 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   BehaviorSubject,
   of,
+  throwError,
 } from 'rxjs';
 
 import { ItemDataService } from '../../../../app/core/data/item-data.service';
@@ -34,11 +35,14 @@ describe('FavoriteItemsComponent', () => {
 
   const cards = () => fixture.nativeElement.querySelectorAll('ds-listable-object-component-loader');
 
-  async function create(ids: string[], failing: string[] = []) {
+  async function create(ids: string[], failing: string[] = [], idsFail = false) {
     favoriteIds$ = new BehaviorSubject<ReadonlySet<string> | null>(null);
     favoriteService = {
       favoriteIds$,
       getFavoriteIds: jasmine.createSpy('getFavoriteIds').and.callFake(() => {
+        if (idsFail) {
+          return throwError(() => new Error('falhou'));
+        }
         favoriteIds$.next(new Set(ids));
         return of(ids);
       }),
@@ -84,6 +88,13 @@ describe('FavoriteItemsComponent', () => {
     await create(['a', 'b'], ['b']);
 
     expect(cards().length).toBe(1);
+  });
+
+  it('mostra o erro, e não o estado vazio, quando a lista de IDs não carrega', async () => {
+    await create([], [], true);
+
+    expect(fixture.nativeElement.querySelector('.alert-danger')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('.alert-info')).toBeNull();
   });
 
   it('tira o card na hora quando a estrela é desmarcada', async () => {

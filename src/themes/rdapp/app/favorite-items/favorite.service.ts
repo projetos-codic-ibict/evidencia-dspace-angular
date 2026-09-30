@@ -47,9 +47,15 @@ export class FavoriteService {
   /** IDs dos favoritos, do mais recente para o mais antigo. Aproveita para preencher o cache. */
   getFavoriteIds(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/ids`).pipe(
-      tap((ids) => {
-        this.favoriteIds.next(new Set(ids));
-        this.idsRequested = true;
+      tap({
+        next: (ids) => {
+          this.favoriteIds.next(new Set(ids));
+          this.idsRequested = true;
+        },
+        // Falhou: o cache continua vazio e a próxima tela tenta de novo
+        error: () => {
+          this.idsRequested = false;
+        },
       }),
     );
   }
@@ -89,10 +95,7 @@ export class FavoriteService {
       return;
     }
     this.idsRequested = true;
-    this.http.get<string[]>(`${this.apiUrl}/ids`).subscribe({
-      next: (ids) => this.favoriteIds.next(new Set(ids)),
-      error: () => this.favoriteIds.next(new Set()),
-    });
+    this.getFavoriteIds().subscribe({ error: () => undefined });
   }
 
   private updateCache(itemId: string, favorite: boolean): void {

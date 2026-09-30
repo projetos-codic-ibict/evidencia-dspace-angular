@@ -7983,4 +7983,10 @@
   "evidencia.favorites.empty.title": "Nenhum favorito encontrado",
 
   "evidencia.favorites.empty.text": "Você ainda não marcou nenhum item como favorito. Navegue pelo repositório e clique na estrela para salvar itens aqui.",
+
+  "evidencia.favorites.error": "Não foi possível atualizar o favorito. Tente novamente.",
+
+  "evidencia.favorites.load-error": "Não foi possível carregar seus favoritos.",
+
+  "evidencia.favorites.retry": "Tentar novamente",
 }

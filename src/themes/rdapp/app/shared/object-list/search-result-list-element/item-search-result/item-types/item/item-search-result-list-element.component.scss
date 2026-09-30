@@ -52,9 +52,9 @@
   height: 2.5rem;
   padding: 0;
   font-size: 1.1rem;
-  color: #6b7280;
+  color: var(--rdapp-bg-color-primary);
   background-color: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--rdapp-border-color-muted);
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   cursor: pointer;
@@ -63,13 +63,13 @@
     color 0.2s ease;
 
   &:hover {
-    color: #d97706;
+    color: var(--rdapp-favorite-color);
     transform: scale(1.1);
   }
 
   &.is-favorite {
-    color: #d97706;
-    border-color: #d97706;
+    color: var(--rdapp-favorite-color);
+    border-color: var(--rdapp-favorite-color);
   }
 }
 

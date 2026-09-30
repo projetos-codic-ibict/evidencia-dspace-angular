@@ -10,6 +10,15 @@
       </div>
       <span class="ms-3 lead text-muted">{{ 'evidencia.favorites.loading' | translate }}</span>
     </div>
+  } @else if (hasError$ | async) {
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+      <div>
+        <p class="mb-2">{{ 'evidencia.favorites.load-error' | translate }}</p>
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="loadFavorites()">
+          {{ 'evidencia.favorites.retry' | translate }}
+        </button>
+      </div>
+    </div>
   } @else {
     @if (favoriteItems$ | async; as items) {
       @if (items.length === 0) {
