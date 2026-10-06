@@ -26,7 +26,7 @@
   "evidencia.menu.estatisticas": "Statistics Dashboard",
 
   // Header
-  "evidencia.header.logo-alt": "EvidencIA Logo - Digital Repository for Public Policy Evaluation",
+  "evidencia.home.logo-alt": "EvidencIA Logo - Digital Repository for Public Policy Evaluation",
   "evidencia.header.mpo-link-aria-label": "External link to Ministry of Planning and Budget",
   "evidencia.header.mpo-logo-alt": "Logo of the Ministry of Planning and Budget",
 
@@ -34,7 +34,7 @@
   "evidencia.home.hero.aria-label": "Explore the Digital Repository for Public Policy Evaluation",
   "evidencia.home.hero.title-dark": "Explore the<br />Digital Repository for",
   "evidencia.home.hero.title-light": "Public Policy<br />Evaluation",
-  "evidencia.home.hero.description": "Access the complete evidencIA collection and use our artificial intelligence to simplify the understanding of complex studies.",
+  "evidencia.home.hero.description": "Access the Evidencia collection and use artificial intelligence tools to quickly and efficiently locate, explore, and synthesize evidence on public policies.",
   "evidencia.home.hero.link": "How to use",
 
   // Search
@@ -175,7 +175,7 @@
   // Footer
   "evidencia.footer.mpo-logo-alt": "Logo of the Ministry of Planning and Budget",
   "evidencia.footer.org-name": "Ministry of Planning and Budget",
-  "evidencia.footer.org-sector": "Secretariat for Monitoring and Evaluation of Public Policies and Economic Affairs",
+  "evidencia.footer.org-sector": "Secretariat for Monitoring and Evaluation of Public Policies",
   "evidencia.footer.org-address": "Esplanada dos Ministérios, Bloco K, Zona Cívico-Administrativa, CEP: 70040-906, Brasília - DF, Brazil",
   "evidencia.footer.org-email": "gabin.sma@planejamento.gov.br",
   "evidencia.footer.org-phone": "+55 (61) 2020-4399",

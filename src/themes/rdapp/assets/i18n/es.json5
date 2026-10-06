@@ -144,7 +144,7 @@
   "evidencia.menu.estatisticas": "Panel de Estadísticas",
 
   // Header
-  "evidencia.header.logo-alt": "Logo del EvidencIA - Repositorio Digital de Evaluación de Políticas Públicas",
+  "evidencia.home.logo-alt": "Logo del EvidencIA - Repositorio Digital de Evaluación de Políticas Públicas",
   "evidencia.header.mpo-link-aria-label": "Enlace externo al Ministerio de Planificación y Presupuesto",
   "evidencia.header.mpo-logo-alt": "Logo del Ministerio de Planificación y Presupuesto",
 
@@ -152,7 +152,7 @@
   "evidencia.home.hero.aria-label": "Conozca el Repositorio Digital de Evaluación de Políticas Públicas",
   "evidencia.home.hero.title-dark": "Conozca el<br />Repositorio Digital de",
   "evidencia.home.hero.title-light": "Evaluación de Políticas<br />Públicas",
-  "evidencia.home.hero.description": "Acceda al acervo completo del evidencIA y utilice nuestra inteligencia artificial para simplificar la comprensión de estudios complejos.",
+  "evidencia.home.hero.description": "Acceda al acervo de Evidencia y utilice recursos de inteligencia artificial para localizar, explorar y sintetizar evidencias sobre políticas públicas de manera rápida y eficiente.",
   "evidencia.home.hero.link": "Como usar",
 
   // Full item page
@@ -169,7 +169,7 @@
   // Footer
   "evidencia.footer.mpo-logo-alt": "Logo del Ministerio de Planificación y Presupuesto",
   "evidencia.footer.org-name": "Ministerio de Planificación y Presupuesto",
-  "evidencia.footer.org-sector": "Secretaría de Monitoreo y Evaluación de Políticas Públicas y Asuntos Económicos",
+  "evidencia.footer.org-sector": "Secretaría de Monitoreo y Evaluación de Políticas Públicas",
   "evidencia.footer.org-address": "Esplanada dos Ministérios, Bloco K, Zona Cívico-Administrativa, CEP: 70040-906, Brasília - DF, Brasil",
   "evidencia.footer.org-email": "gabin.sma@planejamento.gov.br",
   "evidencia.footer.org-phone": "+55 (61) 2020-4399",

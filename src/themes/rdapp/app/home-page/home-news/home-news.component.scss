@@ -6,6 +6,14 @@
   overflow: hidden;
 }
 
+.hero-logo {
+  width: 400px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 .rdapp-home-news-hero-container {
   padding-top: 3rem;
   padding-bottom: 2rem;
