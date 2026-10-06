@@ -7770,11 +7770,11 @@
 
   "evidencia.footer.org-phone": "+55 (61) 2020-4399",
 
-  "search.form.search-type.lexical": "Lexical",
+  "search.form.search-type.lexical": "Exact",
 
   "search.form.search-type.semantic": "Semantic",
 
-  "search.form.search-type.hybrid": "Hybrid",
+  "search.form.search-type.hybrid": "Smart",
 
   "search.form.search-type.lexical.hint": "Keyword search with operators",
 
