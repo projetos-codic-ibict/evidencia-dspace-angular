@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   display: block;
   background-color: #ffffff;
   border-radius: var(--rdapp-border-radius-1rem);
@@ -37,6 +38,44 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  font-size: 1.1rem;
+  color: var(--rdapp-bg-color-primary);
+  background-color: #ffffff;
+  border: 1px solid var(--rdapp-border-color-muted);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    color: var(--rdapp-favorite-color);
+    transform: scale(1.1);
+  }
+
+  &.is-favorite {
+    color: var(--rdapp-favorite-color);
+    border-color: var(--rdapp-favorite-color);
+  }
+}
+
+// Sem miniatura o título ocupa a largura toda e passaria por baixo da estrela
+[class*="col-md-12"] .item-list-title {
+  padding-right: 3rem;
 }
 
 .item-list-title {

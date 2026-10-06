@@ -7909,4 +7909,24 @@
   "evidencia.group-governance.type.bundle": "File bundle",
 
   "admin.access-control.groups.table.permissions": "Permissions",
+
+  "evidencia.menu.favorites": "Favorites",
+
+  "evidencia.favorites.add": "Add to favorites: {{ title }}",
+
+  "evidencia.favorites.remove": "Remove from favorites: {{ title }}",
+
+  "evidencia.favorites.title": "My favorite items",
+
+  "evidencia.favorites.loading": "Loading your favorites...",
+
+  "evidencia.favorites.empty.title": "No favorites found",
+
+  "evidencia.favorites.empty.text": "You have not marked any item as a favorite yet. Browse the repository and click the star to save items here.",
+
+  "evidencia.favorites.error": "Could not update the favorite. Please try again.",
+
+  "evidencia.favorites.load-error": "Could not load your favorites.",
+
+  "evidencia.favorites.retry": "Try again",
 }

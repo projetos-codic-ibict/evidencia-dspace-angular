@@ -1,0 +1,47 @@
+<div class="container mt-5 mb-5">
+  <div class="d-flex align-items-center mb-4">
+    <h2 class="mb-0 favorites-title">{{ 'evidencia.favorites.title' | translate }}</h2>
+  </div>
+
+  @if (isLoading$ | async) {
+    <div class="d-flex justify-content-center align-items-center py-5 my-5" aria-live="polite">
+      <div class="spinner-border text-primary favorites-spinner" role="status">
+        <span class="visually-hidden">{{ 'loading.default' | translate }}</span>
+      </div>
+      <span class="ms-3 lead text-muted">{{ 'evidencia.favorites.loading' | translate }}</span>
+    </div>
+  } @else if (hasError$ | async) {
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+      <div>
+        <p class="mb-2">{{ 'evidencia.favorites.load-error' | translate }}</p>
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="loadFavorites()">
+          {{ 'evidencia.favorites.retry' | translate }}
+        </button>
+      </div>
+    </div>
+  } @else {
+    @if (favoriteItems$ | async; as items) {
+      @if (items.length === 0) {
+        <div class="alert alert-info border-0 shadow-sm d-flex align-items-center" role="status">
+          <i class="fas fa-info-circle fa-2x me-3 text-info" aria-hidden="true"></i>
+          <div>
+            <h3 class="alert-heading h5 mb-1">{{ 'evidencia.favorites.empty.title' | translate }}</h3>
+            <p class="mb-0">{{ 'evidencia.favorites.empty.text' | translate }}</p>
+          </div>
+        </div>
+      } @else {
+        <div class="favorite-list-container">
+          @for (item of items; track item.indexableObject.uuid) {
+            <div class="mb-4 list-element-wrapper">
+              <ds-listable-object-component-loader
+                [object]="item"
+                [viewMode]="viewMode"
+                [context]="'rdapp'">
+              </ds-listable-object-component-loader>
+            </div>
+          }
+        </div>
+      }
+    }
+  }
+</div>

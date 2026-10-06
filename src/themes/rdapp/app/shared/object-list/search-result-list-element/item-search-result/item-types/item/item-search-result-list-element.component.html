@@ -18,6 +18,17 @@
   }
   <div [ngClass]="showThumbnails ? 'col-9' : 'col-md-12'">
     @if (object !== undefined && object !== null) {
+      @if (isAuthenticated$ | async) {
+        @let isFavorite = (isFavorite$ | async) === true;
+        <button type="button" class="favorite-btn"
+          [class.is-favorite]="isFavorite"
+          [attr.aria-pressed]="isFavorite"
+          [attr.aria-label]="(isFavorite ? 'evidencia.favorites.remove' : 'evidencia.favorites.add') | translate: { title: dso.firstMetadataValue('dc.title') }"
+          [title]="(isFavorite ? 'evidencia.favorites.remove' : 'evidencia.favorites.add') | translate: { title: dso.firstMetadataValue('dc.title') }"
+          (click)="toggleFavorite($event, isFavorite)">
+          <i [ngClass]="isFavorite ? 'fas fa-star' : 'far fa-star'" aria-hidden="true"></i>
+        </button>
+      }
       <ds-truncatable [id]="dso.id">
 
         @if (object?.score !== undefined && object?.score !== null) {

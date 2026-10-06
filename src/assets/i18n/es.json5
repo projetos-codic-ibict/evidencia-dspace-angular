@@ -7915,4 +7915,24 @@
   "evidencia.group-governance.type.bundle": "Paquete de archivos",
 
   "admin.access-control.groups.table.permissions": "Permisos",
+
+  "evidencia.menu.favorites": "Favoritos",
+
+  "evidencia.favorites.add": "Añadir a favoritos: {{ title }}",
+
+  "evidencia.favorites.remove": "Quitar de favoritos: {{ title }}",
+
+  "evidencia.favorites.title": "Mis ítems favoritos",
+
+  "evidencia.favorites.loading": "Cargando tus favoritos...",
+
+  "evidencia.favorites.empty.title": "No se encontraron favoritos",
+
+  "evidencia.favorites.empty.text": "Aún no has marcado ningún ítem como favorito. Navega por el repositorio y haz clic en la estrella para guardar ítems aquí.",
+
+  "evidencia.favorites.error": "No se pudo actualizar el favorito. Inténtelo de nuevo.",
+
+  "evidencia.favorites.load-error": "No se pudieron cargar sus favoritos.",
+
+  "evidencia.favorites.retry": "Reintentar",
 }

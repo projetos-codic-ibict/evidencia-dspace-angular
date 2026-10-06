@@ -1574,7 +1574,7 @@
 
   "comcol-role.edit.reviewer.name": "Revisores",
 
-  "comcol-role.edit.reviewer.description": "Revisores podem aceitar ou rejeitar submissões recebidas. Entretanto, eles não podem editar os metadados da submissão.",
+  "comcol-role.edit.reviewer.description": "Revisores podem aceitar, rejeitar e devolver para ajustes as submissões recebidas. Entretanto, eles não podem editar os metadados da submissão.",
 
   "comcol-role.edit.scorereviewers.name": "Revisores de pontuação",
 
@@ -4350,9 +4350,9 @@
 
   "register-page.registration.email.hint": "Este endereço será verificado e usado como seu nome de login.",
 
-  "register-page.create-profile.identification.institution" : "Instituição",
+  "register-page.create-profile.identification.institution": "Instituição",
 
-  "register-page.create-profile.identification.institution.error" : "O campo Instituição é obrigatório.",
+  "register-page.create-profile.identification.institution.error": "O campo Instituição é obrigatório.",
 
   "register-page.registration.submit": "Cadastrar",
 
@@ -7969,4 +7969,24 @@
   "evidencia.group-governance.type.bundle": "Pacote de arquivos",
 
   "admin.access-control.groups.table.permissions": "Permissões",
+
+  "evidencia.menu.favorites": "Favoritos",
+
+  "evidencia.favorites.add": "Adicionar aos favoritos: {{ title }}",
+
+  "evidencia.favorites.remove": "Remover dos favoritos: {{ title }}",
+
+  "evidencia.favorites.title": "Meus itens favoritos",
+
+  "evidencia.favorites.loading": "Carregando seus favoritos...",
+
+  "evidencia.favorites.empty.title": "Nenhum favorito encontrado",
+
+  "evidencia.favorites.empty.text": "Você ainda não marcou nenhum item como favorito. Navegue pelo repositório e clique na estrela para salvar itens aqui.",
+
+  "evidencia.favorites.error": "Não foi possível atualizar o favorito. Tente novamente.",
+
+  "evidencia.favorites.load-error": "Não foi possível carregar seus favoritos.",
+
+  "evidencia.favorites.retry": "Tentar novamente",
 }

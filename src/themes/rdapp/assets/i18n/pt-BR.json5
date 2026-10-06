@@ -9,6 +9,16 @@
   "evidencia.search.placeholder.title": "Pronto para explorar?",
   "evidencia.search.placeholder.subtitle": "Digite um termo na barra de busca ou selecione um filtro ao lado para visualizar os resultados.",
   "evidencia.menu.faq": "Dúvidas",
+  "evidencia.menu.favorites": "Favoritos",
+  "evidencia.favorites.add": "Adicionar aos favoritos: {{ title }}",
+  "evidencia.favorites.remove": "Remover dos favoritos: {{ title }}",
+  "evidencia.favorites.title": "Meus itens favoritos",
+  "evidencia.favorites.loading": "Carregando seus favoritos...",
+  "evidencia.favorites.empty.title": "Nenhum favorito encontrado",
+  "evidencia.favorites.empty.text": "Você ainda não marcou nenhum item como favorito. Navegue pelo repositório e clique na estrela para salvar itens aqui.",
+  "evidencia.favorites.error": "Não foi possível atualizar o favorito. Tente novamente.",
+  "evidencia.favorites.load-error": "Não foi possível carregar seus favoritos.",
+  "evidencia.favorites.retry": "Tentar novamente",
   "evidencia.menu.about": "EvidencIA",
   "evidencia.menu.about.presentation": "Apresentação",
   "evidencia.menu.about.goals": "Acervo e Parcerias",
@@ -366,4 +376,7 @@
   "evidencia.group-governance.no-items": "Este grupo não tem nenhuma política de acesso associada.",
   "evidencia.group-governance.notification.deleted.success": "Política removida com sucesso.",
   "evidencia.group-governance.notification.deleted.failure": "Não foi possível remover a política.",
+
+  // Papéis da coleção (texto do fluxo devolver-para-ajuste)
+  "comcol-role.edit.reviewer.description": "Revisores podem aceitar, rejeitar e devolver para ajustes as submissões recebidas. Entretanto, eles não podem editar os metadados da submissão."
 }

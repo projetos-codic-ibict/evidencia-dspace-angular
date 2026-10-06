@@ -7,6 +7,7 @@
  */
 import { AboutRdappMenuProvider } from '../themes/rdapp/app/shared/menu/providers/about-rdapp.menu';
 import { EstatisticasMenuProvider } from '../themes/rdapp/app/shared/menu/providers/estatisticas.menu';
+import { FavoritesMenuProvider } from '../themes/rdapp/app/shared/menu/providers/favorites.menu';
 import { FaqMenuProvider } from '../themes/rdapp/app/shared/menu/providers/faq.menu';
 import { buildMenuStructure } from './shared/menu/menu.structure';
 import { MenuID } from './shared/menu/menu-id.model';
@@ -61,6 +62,7 @@ export const MENUS = buildMenuStructure({
     EstatisticasMenuProvider,
     FaqMenuProvider,
     AboutRdappMenuProvider,
+    FavoritesMenuProvider,
   ],
   [MenuID.ADMIN]: [
     NewMenuProvider,

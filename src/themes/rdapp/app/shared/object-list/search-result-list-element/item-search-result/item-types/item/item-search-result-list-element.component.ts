@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { TranslateModule } from '@ngx-translate/core';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { getBitstreamDownloadRoute } from '@dspace/core/router/utils/dso-route.utils';
 import { BitstreamDataService } from '../../../../../../../../../app/core/data/bitstream-data.service';
@@ -18,6 +18,9 @@ import { getFirstSucceededRemoteListPayload } from '../../../../../../../../../a
 import { Context } from '../../../../../../../../../app/core/shared/context.model';
 import { ViewMode } from '../../../../../../../../../app/core/shared/view-mode.model';
 import { ItemSearchResult } from '@dspace/core/shared/object-collection/item-search-result.model';
+import { NotificationsService } from '@dspace/core/notification-system/notifications.service';
+import { AuthService } from '../../../../../../../../../app/core/auth/auth.service';
+import { FavoriteService } from '../../../../../../favorite-items/favorite.service';
 import { listableObjectComponent } from '../../../../../../../../../app/shared/object-collection/shared/listable-object/listable-object.decorator';
 import { TruncatableComponent } from '../../../../../../../../../app/shared/truncatable/truncatable.component';
 import { TruncatablePartComponent } from '../../../../../../../../../app/shared/truncatable/truncatable-part/truncatable-part.component';
@@ -49,13 +52,34 @@ export class ItemSearchResultListElementComponent extends BaseComponent {
   pdfDownloadRoute$: Observable<string | null>;
   odsExpanded = false;
 
+  isAuthenticated$: Observable<boolean>;
+  isFavorite$: Observable<boolean>;
+
   private bitstreamDataService = inject(BitstreamDataService);
+  private authService = inject(AuthService);
+  private favoriteService = inject(FavoriteService);
+  private notificationsService = inject(NotificationsService);
+  private translateService = inject(TranslateService);
 
   selected$ = new BehaviorSubject<boolean>(false);
 
   toggleSelection() {
     const estadoAtual = this.selected$.getValue();
     this.selected$.next(!estadoAtual);
+  }
+
+  toggleFavorite(event: Event, isFavorite: boolean): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!this.dso?.id) {
+      return;
+    }
+
+    // O serviço atualiza o cache na hora e desfaz sozinho se a requisição falhar
+    this.favoriteService.setFavorite(this.dso.id, !isFavorite).subscribe({
+      error: () => this.notificationsService.error(this.translateService.instant('evidencia.favorites.error')),
+    });
   }
 
   get odsAll(): string[] {
@@ -69,6 +93,11 @@ export class ItemSearchResultListElementComponent extends BaseComponent {
   override ngOnInit(): void {
     super.ngOnInit();
     this.pdfDownloadRoute$ = this.resolvePdfDownloadRoute();
+
+    this.isAuthenticated$ = this.authService.isAuthenticated();
+    this.isFavorite$ = this.isAuthenticated$.pipe(
+      switchMap((isAuth) => isAuth && this.dso?.id ? this.favoriteService.isFavorite(this.dso.id) : of(false)),
+    );
   }
 
   getOdsNumber(ods: string): string {
