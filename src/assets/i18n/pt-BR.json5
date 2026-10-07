@@ -7372,7 +7372,7 @@
 
   "evidencia.menu.faq": "Dúvidas",
 
-  "evidencia.menu.about": "EvidencIA",
+  "evidencia.menu.about": "Evidencia",
 
   "evidencia.menu.about.presentation": "Apresentação",
 
@@ -7406,9 +7406,9 @@
 
   "evidencia.item-download": "Baixar Documento (PDF)",
 
-  "evidencia.header.logo-alt": "Logo do EvidencIA - Repositório Digital de Avaliação de Políticas Públicas",
+  "evidencia.header.logo-alt": "Logo do Evidencia - Repositório Digital de Avaliação de Políticas Públicas",
   "evidencia.filters.select-all": "Selecionar todos",
-  "evidencia.home.logo-alt": "Logo do EvidencIA - Repositório Digital de Avaliação de Políticas Públicas",
+  "evidencia.home.logo-alt": "Logo do Evidencia - Repositório Digital de Avaliação de Políticas Públicas",
 
   "evidencia.header.mpo-link-aria-label": "Link externo para Ministério do Planejamento e Orçamento",
 
@@ -7548,7 +7548,7 @@
 
   "evidencia.faq.9.q": "Posso realizar o upload de documentos no sistema?",
 
-  "evidencia.faq.9.a": "O depósito de arquivos no EvidencIA é realizado por órgãos ou instituições parceiras. A parceria é formalizada por meio de termo de adesão celebrado com o Ministério do Planejamento e Orçamento, garantindo a integridade e a origem das evidências depositadas.",
+  "evidencia.faq.9.a": "O depósito de arquivos no Evidencia é realizado por órgãos ou instituições parceiras. A parceria é formalizada por meio de termo de adesão celebrado com o Ministério do Planejamento e Orçamento, garantindo a integridade e a origem das evidências depositadas.",
 
   "evidencia.faq.10.q" : "Minha instituição tem interesse em ser parceira do Evidencia. Como proceder?",
 
@@ -7742,7 +7742,7 @@
 
   "evidencia.about.tab.quemsomos": "QUEM SOMOS",
 
-  "evidencia.about.apresentacao.finalidades.label": "FINALIDADES DO EvidencIA",
+  "evidencia.about.apresentacao.finalidades.label": "FINALIDADES DO Evidencia",
 
   "evidencia.about.apresentacao.finalidades.0": "Centralizar, preservar, organizar e disseminar evidências de políticas públicas, seus produtos e metadados;",
 
@@ -7792,7 +7792,7 @@
 
   "evidencia.about.quemsomos.pilares.3": "Fomento ao compartilhamento de dados por órgãos da administração pública federal direta e indireta, necessários à gestão e à avaliação de políticas públicas",
 
-  "evidencia.about.quemsomos.gestao.label": "GESTÃO DO EvidencIA",
+  "evidencia.about.quemsomos.gestao.label": "GESTÃO DO Evidencia",
 
   "evidencia.about.quemsomos.gestao.p1": "A gestão do Repositório é de responsabilidade da Secretaria de Monitoramento e Avaliação de Políticas Públicas (SMA/MPO), a quem compete, nos termos da <a href=\"#\">Portaria instituidora</a>:",
 
