@@ -64,6 +64,30 @@
 
   --rdapp-home-hero-title-color: #28408b;
 
+  /* Superfícies, bordas e texto de apoio usados em cards, dropdowns e formulários */
+  --rdapp-bg-color-surface: #ffffff;
+  --rdapp-bg-color-subtle: #f9fafb;
+  --rdapp-border-color: #e5e7eb;
+  --rdapp-border-color-card: #edf0f7;
+  --rdapp-color-text-muted: #4b5563;
+  --rdapp-shadow-popover: 0 4px 25px rgba(15, 41, 110, 0.15);
+  --rdapp-focus-ring-alpha: 0.15;
+
+  /* Botões da barra de busca (Pesquisa Exata e Pesquisa com IA) */
+  --rdapp-search-button-gap: 0.5rem;
+  --rdapp-shadow-button: 0 2px 6px rgba(var(--rdapp-bg-color-primary-rgb), 0.25);
+  --rdapp-shadow-button-hover: 0 4px 12px rgba(var(--rdapp-bg-color-primary-rgb), 0.3);
+
+  /* Dropdown de configurações da busca */
+  --rdapp-settings-dropdown-min-width: 20rem;
+
+  /* Ícones dos ODS sob a capa do card */
+  --rdapp-ods-icon-size: 2.5rem;
+  --rdapp-ods-icon-gap: 0.25rem;
+
+  /* Logo da home */
+  --rdapp-home-hero-logo-width: 25rem;
+
   /* Header sticky fica na mesma faixa do $zindex-fixed do Bootstrap (1030) —
   abaixo de dropdown/modal/popover/tooltip/toast, pra não cobrir nada disso. */
   --ds-nav-z-index: 1030;

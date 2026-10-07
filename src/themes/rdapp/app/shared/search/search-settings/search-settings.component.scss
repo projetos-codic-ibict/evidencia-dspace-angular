@@ -1,19 +1,20 @@
+// Dropdown de configurações da busca (ordenação e resultados por página), exibido acima dos resultados.
 .settings-modal-wrapper {
   padding: 0;
   border: none;
   background: transparent;
-  min-width: 320px;
+  min-width: var(--rdapp-settings-dropdown-min-width);
   margin-top: 0.5rem;
 }
 
 .settings-modal-content {
   display: block;
-  background: #ffffff;
-  border-radius: var(--rdapp-border-radius-1rem, 1rem);
-  border: 1px solid #edf0f7;
+  background: var(--rdapp-bg-color-surface);
+  border-radius: var(--rdapp-border-radius-1rem);
+  border: 1px solid var(--rdapp-border-color-card);
   overflow: hidden;
-  box-shadow: 0 4px 25px rgba(15, 41, 110, 0.15); 
-  
+  box-shadow: var(--rdapp-shadow-popover);
+
   h3 {
     display: flex;
     align-items: center;
@@ -22,9 +23,9 @@
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--rdapp-color-navy-secondary, #2b3b84);
+    color: var(--rdapp-color-navy-secondary);
     padding: 1.25rem 1.75rem 1.125rem;
-    border-bottom: 1px solid var(--rdapp-border-color-muted, #e5e7eb);
+    border-bottom: 1px solid var(--rdapp-border-color-muted);
     margin: 0;
   }
 
@@ -33,12 +34,13 @@
   }
 }
 
-::ng-deep {
+// O seletor de resultados por página é outro componente, então estas regras precisam de ::ng-deep
+:host ::ng-deep {
   .settings-modal-content {
     .setting-option {
       padding: 0.875rem 1.375rem !important;
       margin-bottom: 0 !important;
-      border-bottom: 1px solid var(--rdapp-border-color-muted, #e5e7eb);
+      border-bottom: 1px solid var(--rdapp-border-color-muted);
 
       &:last-of-type,
       &:last-child {
@@ -53,7 +55,7 @@
           font-weight: 800;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #4b5563;
+          color: var(--rdapp-color-text-muted);
           margin-bottom: 0;
           cursor: pointer;
         }
@@ -62,10 +64,10 @@
       select.form-select {
         font-size: 0.8rem;
         font-weight: 600;
-        color: var(--rdapp-color-navy-secondary, #2b3b84);
-        border: 1.5px solid #e5e7eb;
-        border-radius: var(--rdapp-border-radius-2rem, 2rem);
-        background-color: #f9fafb;
+        color: var(--rdapp-color-navy-secondary);
+        border: 1.5px solid var(--rdapp-border-color);
+        border-radius: var(--rdapp-border-radius-2rem);
+        background-color: var(--rdapp-bg-color-subtle);
         padding: 0.425rem 2.25rem 0.425rem 0.875rem;
         box-shadow: none;
         cursor: pointer;
@@ -81,13 +83,13 @@
           background-color 0.18s ease;
 
         &:hover {
-          border-color: var(--rdapp-bg-color-primary, #00a88f);
+          border-color: var(--rdapp-bg-color-primary);
         }
 
         &:focus {
-          border-color: var(--rdapp-bg-color-accent, #007bff);
-          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
-          background-color: #ffffff;
+          border-color: var(--rdapp-bg-color-accent);
+          box-shadow: 0 0 0 2px rgba(var(--rdapp-bg-color-accent-rgb), var(--rdapp-focus-ring-alpha));
+          background-color: var(--rdapp-bg-color-surface);
           outline: none;
         }
       }

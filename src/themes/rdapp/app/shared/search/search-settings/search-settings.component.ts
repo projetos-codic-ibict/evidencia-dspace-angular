@@ -13,7 +13,6 @@ import { PaginationService } from '../../../../../../app/core/pagination/paginat
 import { SearchConfigurationService } from '../../../../../../app/core/shared/search/search-configuration.service';
 import { SEARCH_CONFIG_SERVICE } from '../../../../../../app/my-dspace-page/my-dspace-configuration.service';
 import { PageSizeSelectorComponent } from '../../../../../../app/shared/page-size-selector/page-size-selector.component';
-import { SidebarDropdownComponent } from '../../../../../../app/shared/sidebar/sidebar-dropdown.component';
 import { SearchSettingsComponent as BaseComponent } from '../../../../../../app/shared/search/search-settings/search-settings.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -24,9 +23,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     FormsModule,
     PageSizeSelectorComponent,
-    SidebarDropdownComponent,
     TranslateModule,
-    NgbDropdownModule
+    NgbDropdownModule,
   ],
 })
 
