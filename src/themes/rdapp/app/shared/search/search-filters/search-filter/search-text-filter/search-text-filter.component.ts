@@ -74,14 +74,17 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
       this.searchService.getSelectedValuesForFilter(this.filterConfig.name),
       this.facetValues$,
       this.selectAllValues$,
+      this.isLastPage$,
     ]).pipe(
-      map(([applied, pages, selectAllValues]) => {
+      map(([applied, pages, selectAllValues, isLastPage]) => {
         const isApplied = (value: string) => applied.some((a) => a.value === value);
         if (selectAllValues.length > 0) {
           return selectAllValues.every(isApplied);
         }
+        // Sem o estado do "Selecionar todos" (ex.: página recarregada), só vale como marcado quando o filtro
+        // inteiro já está na tela, senão marcar os valores visíveis daria falso positivo.
         const values = pages.reduce((acc: FacetValue[], p: FacetValues) => acc.concat(p.page), []);
-        return values.length > 0 && values.every((v) => isApplied(stripOperatorFromFilterValue(getFacetValueForType(v, this.filterConfig))));
+        return isLastPage && values.length > 0 && values.every((v) => isApplied(stripOperatorFromFilterValue(getFacetValueForType(v, this.filterConfig))));
       }),
     );
   }
