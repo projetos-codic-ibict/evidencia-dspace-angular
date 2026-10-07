@@ -7554,7 +7554,7 @@
 
   "search.filters.filter.ods.placeholder": "ODS",
 
-  "search.filters.filter.ods.label": "Buscar por ODS",
+  "search.filters.filter.ods.label": "Buscar por Objetivos de Desenvolvimento Sustentável (ODS)",
 
   "search.filters.applied.f.ods": "ODS",
 
@@ -7989,4 +7989,8 @@
   "evidencia.favorites.load-error": "Não foi possível carregar seus favoritos.",
 
   "evidencia.favorites.retry": "Tentar novamente",
+
+  "search.filters.filter.dateIssued.label" : "Buscar por Data",
+
+  "search.filters.filter.dateIssued.placeholder" : "Data",
 }
