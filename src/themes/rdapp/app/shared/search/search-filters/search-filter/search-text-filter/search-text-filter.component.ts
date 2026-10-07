@@ -8,24 +8,15 @@ import { getFirstSucceededRemoteDataPayload } from '@dspace/core/shared/operator
 import { FacetValue } from '@dspace/core/shared/search/models/facet-value.model';
 import { FacetValues } from '@dspace/core/shared/search/models/facet-values.model';
 import { SearchOptions } from '@dspace/core/shared/search/models/search-options.model';
-import {
-  hasNoValue,
-  hasValue,
-} from '@dspace/shared/utils/empty.util';
+import { hasNoValue } from '@dspace/shared/utils/empty.util';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  BehaviorSubject,
   combineLatest as observableCombineLatest,
-  EMPTY,
   Observable,
-  of,
 } from 'rxjs';
 import {
-  expand,
   map,
-  reduce,
   switchMap,
-  take,
   tap,
 } from 'rxjs/operators';
 
@@ -33,10 +24,7 @@ import { FilterInputSuggestionsComponent } from '../../../../../../../../app/sha
 import { facetLoad } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter/search-facet-filter.component';
 import { RdappSearchFacetOptionComponent } from '../search-facet-filter-options/search-facet-option/search-facet-option.component';
 import { SearchFacetSelectedOptionComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter-options/search-facet-selected-option/search-facet-selected-option.component';
-import {
-  getFacetValueForType,
-  stripOperatorFromFilterValue,
-} from '../../../../../../../../app/shared/search/search.utils';
+import { getFacetValueForType } from '../../../../../../../../app/shared/search/search.utils';
 import { SearchTextFilterComponent as BaseComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-text-filter/search-text-filter.component';
 
 @Component({
@@ -53,42 +41,6 @@ import { SearchTextFilterComponent as BaseComponent } from '../../../../../../..
   ],
 })
 export class RdappSearchTextFilterComponent extends BaseComponent implements OnInit {
-  /** Teto de páginas buscadas pelo "Selecionar todos", para um filtro enorme não virar dezenas de requisições */
-  private static readonly SELECT_ALL_MAX_PAGES = 20;
-
-  /** Seleção que o usuário tinha antes do "Selecionar todos", devolvida ao desmarcar */
-  private selectionBeforeSelectAll: string[] | null = null;
-
-  /**
-   * Valores (sem operador) que o "Selecionar todos" aplicou. O checkbox só fica marcado enquanto todos eles
-   * continuam aplicados, mesmo os que não estão entre os valores carregados na sidebar.
-   */
-  private selectAllValues$ = new BehaviorSubject<string[]>([]);
-
-  /** Verdadeiro quando o "Selecionar todos" está valendo, ou quando todos os valores carregados estão aplicados */
-  allSelected$: Observable<boolean>;
-
-  override ngOnInit(): void {
-    super.ngOnInit();
-    this.allSelected$ = observableCombineLatest([
-      this.searchService.getSelectedValuesForFilter(this.filterConfig.name),
-      this.facetValues$,
-      this.selectAllValues$,
-      this.isLastPage$,
-    ]).pipe(
-      map(([applied, pages, selectAllValues, isLastPage]) => {
-        const isApplied = (value: string) => applied.some((a) => a.value === value);
-        if (selectAllValues.length > 0) {
-          return selectAllValues.every(isApplied);
-        }
-        // Sem o estado do "Selecionar todos" (ex.: página recarregada), só vale como marcado quando o filtro
-        // inteiro já está na tela, senão marcar os valores visíveis daria falso positivo.
-        const values = pages.reduce((acc: FacetValue[], p: FacetValues) => acc.concat(p.page), []);
-        return isLastPage && values.length > 0 && values.every((v) => isApplied(stripOperatorFromFilterValue(getFacetValueForType(v, this.filterConfig))));
-      }),
-    );
-  }
-
   /**
    * Overrides the base facet retrieval so the search-by-text input stays visible regardless of
    * facetLimit (discovery.xml). facetLimit doubles as the facet page size there, so tying the input's
@@ -134,68 +86,44 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
   }
 
   selectAll(event: Event): void {
-    if ((event.target as HTMLInputElement).checked) {
-      const current = this.currentFilterValues();
-      this.selectionBeforeSelectAll = current;
-      this.loadAllFacetValues().pipe(take(1)).subscribe((facetValues: FacetValue[]) => {
-        const merged = [...current];
-        facetValues.forEach((facetValue: FacetValue) => {
-          const value = getFacetValueForType(facetValue, this.filterConfig);
-          if (!merged.some((m) => stripOperatorFromFilterValue(m) === stripOperatorFromFilterValue(value))) {
-            merged.push(value);
-          }
-        });
-        this.selectAllValues$.next(facetValues.map((facetValue: FacetValue) =>
-          stripOperatorFromFilterValue(getFacetValueForType(facetValue, this.filterConfig))));
-        this.applyFilterValues(merged);
-      });
-    } else {
-      this.selectAllValues$.next([]);
-      this.applyFilterValues(this.selectionBeforeSelectAll ?? []);
-      this.selectionBeforeSelectAll = null;
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    const allPages: FacetValues[] = this.facetValues$.getValue();
+
+    const allVisibleValues: FacetValue[] = allPages.reduce(
+      (acc: FacetValue[], pageObj: FacetValues) => acc.concat(pageObj.page),
+      [],
+    );
+
+    if (allVisibleValues.length === 0) {
+      return;
     }
-  }
 
-  /** Valores deste filtro que estão hoje na URL, com o operador */
-  private currentFilterValues(): string[] {
-    const raw = this.router.parseUrl(this.router.url).queryParams[this.filterConfig.paramName];
-    return hasValue(raw) ? [].concat(raw) : [];
-  }
+    const urlTree = this.router.parseUrl(this.router.url);
+    const queryParams = { ...urlTree.queryParams };
 
-  /** Troca os valores deste filtro na URL e volta os resultados para a primeira página */
-  private applyFilterValues(values: string[]): void {
+    const paramName = this.filterConfig.paramName;
+
+    if (isChecked) {
+      const allFormattedValues = allVisibleValues.map(
+        (facetValue: FacetValue) => {
+          const baseValue = getFacetValueForType(facetValue, this.filterConfig);
+
+          if (baseValue.match(new RegExp(`^.+,(equals|query|authority)$`))) {
+            return baseValue;
+          }
+          return `${baseValue},equals`;
+        },
+      );
+
+      queryParams[paramName] = allFormattedValues;
+    } else {
+      delete queryParams[paramName];
+    }
+
     this.router.navigate(this.getSearchLinkParts(), {
-      queryParams: {
-        [this.filterConfig.paramName]: values.length > 0 ? values : null,
-        [`${this.searchConfigService.paginationID}.page`]: 1,
-      },
+      queryParams: queryParams,
       queryParamsHandling: 'merge',
     });
-  }
-
-  /** Valores já carregados mais os das páginas seguintes, até o fim ou o teto de páginas */
-  private loadAllFacetValues(): Observable<FacetValue[]> {
-    const loaded: FacetValues[] = this.facetValues$.getValue();
-    const loadedValues = loaded.reduce((acc: FacetValue[], p: FacetValues) => acc.concat(p.page), []);
-    const last = loaded[loaded.length - 1];
-    if (hasNoValue(last) || hasNoValue(last.next)) {
-      return of(loadedValues);
-    }
-    return this.searchOptions$.pipe(
-      take(1),
-      switchMap((options: SearchOptions) => {
-        const fetchPage = (page: number) => this.searchService.getFacetValuesFor(this.filterConfig, page, options).pipe(
-          getFirstSucceededRemoteDataPayload(),
-        );
-        const firstPage = last.pageInfo.currentPage + 1;
-        return fetchPage(firstPage).pipe(
-          expand((facetValues: FacetValues) => hasValue(facetValues.next) &&
-            facetValues.pageInfo.currentPage < firstPage + RdappSearchTextFilterComponent.SELECT_ALL_MAX_PAGES
-            ? fetchPage(facetValues.pageInfo.currentPage + 1)
-            : EMPTY),
-          reduce((acc: FacetValue[], facetValues: FacetValues) => acc.concat(facetValues.page), loadedValues),
-        );
-      }),
-    );
   }
 }
