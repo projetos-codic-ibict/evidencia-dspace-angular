@@ -4586,6 +4586,8 @@
 
   "search.filters.applied.f.author": "Autor",
 
+  "search.filters.applied.f.dateIssued": "Data",
+
   "search.filters.applied.f.dateIssued.max": "Data final",
 
   "search.filters.applied.f.dateIssued.min": "Data inicial",
