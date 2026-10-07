@@ -1,26 +1,10 @@
 <form (ngSubmit)="onSubmit({ query: query, searchType: 'lexical' })" action="/search">
   <div>
     <div class="mb-1 input-group">
-      <!-- @if (showScopeSelector) {
-        <button
-          class="scope-button btn btn-outline-secondary text-truncate d-none d-lg-flex"
-          [ngbTooltip]="dsoNameService.getName(selectedScope | async)"
-          type="button"
-          (click)="openScopeModal()"
-          role="button"
-          tabindex="0"
-        >
-          {{
-            dsoNameService.getName(selectedScope | async) ||
-              ("search.form.scope.all" | translate)
-          }}
-        </button>
-      } -->
-      
       <span class="input-group-text">
         <i class="fas fa-search" aria-hidden="true"></i>
       </span>
-      
+
       <input
         type="text"
         [(ngModel)]="query"
@@ -31,7 +15,7 @@
         [placeholder]="searchPlaceholder"
         tabindex="0"
       />
-      
+
       <!-- BOTÃO 1: Pesquisa Exata -->
       <button
         type="button"
@@ -64,27 +48,5 @@
         </button>
       }
     </div>
-
-    <!-- @if (showScopeSelector) {
-      <div
-        class="scope-pill-mobile d-flex d-lg-none align-items-center gap-2 mt-2 mb-3 ps-1"
-      >
-        <span class="text-muted small"
-          >{{ "search.form.scope.searching-in" | translate }}:</span
-        >
-        <button
-          type="button"
-          class="scope-pill-mobile__btn"
-          (click)="openScopeModal()"
-          tabindex="0"
-        >
-          {{
-            dsoNameService.getName(selectedScope | async) ||
-              ("search.form.scope.all" | translate)
-          }}
-          <i class="fas fa-chevron-down ms-1" aria-hidden="true"></i>
-        </button>
-      </div>
-    } -->
   </div>
 </form>

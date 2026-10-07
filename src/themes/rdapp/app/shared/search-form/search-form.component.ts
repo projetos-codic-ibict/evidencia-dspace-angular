@@ -1,4 +1,3 @@
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,11 +11,9 @@ import { BrowserOnlyPipe } from '../../../../../app/shared/utils/browser-only.pi
   styleUrls: ['./search-form.component.scss'],
   templateUrl: './search-form.component.html',
   imports: [
-    AsyncPipe,
     BrowserOnlyPipe,
     FormsModule,
     NgbTooltipModule,
-    NgTemplateOutlet,
     TranslateModule,
   ],
 })

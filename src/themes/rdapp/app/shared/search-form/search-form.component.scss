@@ -52,36 +52,10 @@
     }
   }
 
-  .scope-button {
-    border-radius: var(--rdapp-border-radius-2rem);
-    border-top-right-radius: var(--rdapp-border-radius-2rem) !important;
-    border-bottom-right-radius: var(--rdapp-border-radius-2rem) !important;
-    background-color: var(--rdapp-bg-color-accent);
-    border-color: var(--rdapp-bg-color-accent);
-    color: #ffffff;
-    padding: 1rem 2.25rem;
-    font-size: 0.775rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-    max-width: 14rem;
-    transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease;
-
-    &:hover,
-    &:focus-visible {
-      background-color: #009580;
-      border-color: #009580;
-      color: #ffffff;
-    }
-  }
-
   .search-button {
     // Pílulas independentes: o input-group do Bootstrap zera o raio e cola os botões
-    border-radius: 50rem !important;
-    margin-left: 0.5rem !important;
+    border-radius: var(--rdapp-border-radius-2rem) !important;
+    margin-left: var(--rdapp-search-button-gap) !important;
     padding: 0.75rem 1.75rem;
     font-size: 0.8125rem;
     font-weight: 700;
@@ -92,7 +66,7 @@
     color: #ffffff;
     white-space: nowrap;
     flex-shrink: 0;
-    box-shadow: 0 2px 6px rgba(var(--rdapp-bg-color-primary-rgb), 0.25);
+    box-shadow: var(--rdapp-shadow-button);
     transition:
       background-color 0.2s ease,
       border-color 0.2s ease,
@@ -103,7 +77,7 @@
     &:focus-visible {
       background-color: #273d94;
       border-color: #273d94;
-      box-shadow: 0 4px 12px rgba(var(--rdapp-bg-color-primary-rgb), 0.3);
+      box-shadow: var(--rdapp-shadow-button-hover);
       transform: translateY(-1px);
     }
 
@@ -130,92 +104,7 @@
     .search-button {
       padding: 0.6rem 1rem;
       font-size: 0.75rem;
-      margin-left: 0.25rem !important;
+      margin-left: calc(var(--rdapp-search-button-gap) / 2) !important;
     }
   }
-}
-
-.search-type-row {
-  margin-top: 0.625rem;
-  padding: 0 0.25rem;
-}
-
-.search-type-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.125rem;
-  padding: 0.25rem;
-  border-radius: var(--rdapp-border-radius-2rem);
-  background-color: #eef1f6;
-
-  &__btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    border: none;
-    background: transparent;
-    border-radius: var(--rdapp-border-radius-2rem);
-    padding: 0.45rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #64748b;
-    cursor: pointer;
-    transition:
-      background-color 0.2s ease,
-      color 0.2s ease,
-      box-shadow 0.2s ease;
-
-    &:hover {
-      color: var(--rdapp-bg-color-primary);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--rdapp-bg-color-accent);
-      outline-offset: 2px;
-    }
-
-    &.active {
-      background-color: #ffffff;
-      color: var(--rdapp-bg-color-primary);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-    }
-  }
-}
-
-.search-type-toggle--inline {
-  margin-right: 0.75rem;
-  flex-shrink: 0;
-  border-radius: var(--rdapp-border-radius-2rem) !important;
-}
-
-.scope-pill-mobile {
-  &__btn {
-    display: inline-flex;
-    align-items: center;
-    background: none;
-    border: 1px solid var(--rdapp-bg-color-accent);
-    border-radius: var(--rdapp-border-radius-2rem);
-    color: var(--rdapp-bg-color-accent);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.85rem;
-    max-width: 14rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-
-    &:hover,
-    &:focus-visible {
-      background-color: var(--rdapp-bg-color-accent);
-      color: #ffffff;
-      outline: none;
-    }
-  }
-
 }
