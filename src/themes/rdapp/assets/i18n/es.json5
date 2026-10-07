@@ -145,6 +145,7 @@
 
   // Header
   "evidencia.header.logo-alt": "Logo del EvidencIA - Repositorio Digital de Evaluación de Políticas Públicas",
+  "evidencia.filters.select-all": "Seleccionar todos",
   "evidencia.home.logo-alt": "Logo del EvidencIA - Repositorio Digital de Evaluación de Políticas Públicas",
   "evidencia.header.mpo-link-aria-label": "Enlace externo al Ministerio de Planificación y Presupuesto",
   "evidencia.header.mpo-logo-alt": "Logo del Ministerio de Planificación y Presupuesto",

@@ -15,15 +15,14 @@
 
   <div class="filters py-2">
     <div class="d-flex flex-row mb-3 px-1">
-      <label class="mb-0 d-flex w-100 fw-bold" style="cursor: pointer;">
-        <input type="checkbox" 
-               class="my-1 align-self-stretch filter-checkbox" 
-               (change)="selectAll($event)" 
-               role="checkbox" 
+      <label class="mb-0 d-flex w-100 fw-bold">
+        <input type="checkbox"
+               class="my-1 align-self-stretch filter-checkbox"
+               [checked]="allSelected$ | async"
+               (change)="selectAll($event)"
+               role="checkbox"
                tabindex="0"/>
-        <span class="w-100 ps-2">
-          {{ 'search.filters.select-all' | translate: { default: 'Selecionar Tudo' } }}
-        </span>
+        <span class="w-100 ps-2">{{ 'evidencia.filters.select-all' | translate }}</span>
       </label>
     </div>
     @for (value of (selectedAppliedFilters$ | async); track value) {
