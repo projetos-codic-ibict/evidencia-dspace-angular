@@ -6,6 +6,7 @@ import { RootModule } from '../../app/root.module';
 import { renderFacetFor } from '../../app/shared/search/search-filters/search-filter/search-filter-type-decorator';
 import { GroupsRegistryComponent } from './app/access-control/group-registry/groups-registry.component';
 import { BreadcrumbsComponent } from './app/breadcrumbs/breadcrumbs.component';
+import { CollectionPageComponent } from './app/collection-page/collection-page.component';
 import { CommunityListComponent } from './app/community-list-page/community-list/community-list.component';
 import { CommunityListPageComponent } from './app/community-list-page/community-list-page.component';
 import { FooterComponent } from './app/footer/footer.component';
@@ -56,6 +57,7 @@ const DECLARATIONS = [
   NavbarComponent,
   PaginationComponent,
   RootComponent,
+  CollectionPageComponent,
   CommunityListPageComponent,
   CommunityListComponent,
   GroupsRegistryComponent,
