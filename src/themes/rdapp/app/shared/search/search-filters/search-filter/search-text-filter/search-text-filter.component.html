@@ -32,11 +32,11 @@
     @for (page of (facetValues$ | async); track page) {
       <div [@facetLoad]="animationState">
         @for (value of page.page; track trackUpdate($index, value)) {
-          <ds-search-facet-option
+          <ds-rdapp-search-facet-option
             [filterConfig]="filterConfig"
             [filterValue]="value"
             [inPlaceSearch]="inPlaceSearch">
-          </ds-search-facet-option>
+          </ds-rdapp-search-facet-option>
         }
       </div>
     }

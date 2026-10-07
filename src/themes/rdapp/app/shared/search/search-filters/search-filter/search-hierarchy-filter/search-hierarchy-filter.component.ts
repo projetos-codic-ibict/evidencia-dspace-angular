@@ -25,7 +25,7 @@ import {
 
 import { FilterInputSuggestionsComponent } from '../../../../../../../../app/shared/input-suggestions/filter-suggestions/filter-input-suggestions.component';
 import { facetLoad } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter/search-facet-filter.component';
-import { SearchFacetOptionComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter-options/search-facet-option/search-facet-option.component';
+import { RdappSearchFacetOptionComponent } from '../search-facet-filter-options/search-facet-option/search-facet-option.component';
 import { SearchFacetSelectedOptionComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter-options/search-facet-selected-option/search-facet-selected-option.component';
 import { SearchHierarchyFilterComponent as BaseComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-hierarchy-filter/search-hierarchy-filter.component';
 
@@ -38,7 +38,7 @@ import { SearchHierarchyFilterComponent as BaseComponent } from '../../../../../
     FilterInputSuggestionsComponent,
     FormsModule,
     LowerCasePipe,
-    SearchFacetOptionComponent,
+    RdappSearchFacetOptionComponent,
     SearchFacetSelectedOptionComponent,
     TranslateModule,
   ],
