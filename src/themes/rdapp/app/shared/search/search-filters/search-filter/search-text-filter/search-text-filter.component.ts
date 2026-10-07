@@ -6,7 +6,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { getFirstSucceededRemoteDataPayload } from '@dspace/core/shared/operators';
 import { FacetValue } from '@dspace/core/shared/search/models/facet-value.model';
+import { HALLink } from '@dspace/core/shared/hal-link.model';
 import { FacetValues } from '@dspace/core/shared/search/models/facet-values.model';
+import { SearchFilterConfig } from '@dspace/core/shared/search/models/search-filter-config.model';
 import { SearchOptions } from '@dspace/core/shared/search/models/search-options.model';
 import { hasNoValue } from '@dspace/shared/utils/empty.util';
 import { TranslateModule } from '@ngx-translate/core';
@@ -41,6 +43,9 @@ import { SearchTextFilterComponent as BaseComponent } from '../../../../../../..
   ],
 })
 export class RdappSearchTextFilterComponent extends BaseComponent implements OnInit {
+  /** Quantos anos pedir de uma vez ao backend no filtro de data */
+  private static readonly ALL_YEARS_PAGE_SIZE = 50;
+
   /**
    * Overrides the base facet retrieval so the search-by-text input stays visible regardless of
    * facetLimit (discovery.xml). facetLimit doubles as the facet page size there, so tying the input's
@@ -48,21 +53,13 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
    */
   protected retrieveFilterValues(): Observable<FacetValues[]> {
     return observableCombineLatest([this.searchOptions$, this.currentPage]).pipe(
-      switchMap(([options, page]: [SearchOptions, number]) => this.searchService.getFacetValuesFor(this.filterConfig, page, options).pipe(
-        getFirstSucceededRemoteDataPayload(),
+      switchMap(([options, page]: [SearchOptions, number]) => this.getFacetValuesPage(options, page).pipe(
         tap((facetValues: FacetValues) => {
           this.isLastPage$.next(hasNoValue(facetValues?.next));
           this.isAvailableForShowSearchText.next(false);
         }),
       )),
       map((newFacetValues: FacetValues) => {
-        // Anos do mais recente para o mais antigo (o backend entrega em ordem crescente, ver discovery.xml)
-        if (this.filterConfig.name === 'dateIssued') {
-          newFacetValues = Object.assign(Object.create(Object.getPrototypeOf(newFacetValues)), newFacetValues, {
-            page: [...newFacetValues.page].reverse(),
-          });
-        }
-
         let filterValues: FacetValues[] = this.facetValues$.value;
 
         if (this.collapseNextUpdate) {
@@ -81,6 +78,32 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
       tap((allFacetValues: FacetValues[]) => {
         this.animationState = 'ready';
         this.facetValues$.next(allFacetValues);
+      }),
+    );
+  }
+
+  /**
+   * Uma página de valores da faceta. O filtro de data (dateIssued) mostra os anos do mais recente para o mais
+   * antigo, mas o Solr só ordena por valor em ordem crescente. Por isso busca todos os anos de uma vez e
+   * pagina aqui, do mesmo jeito dos outros filtros ("Mostrar mais" e "Mostrar menos").
+   */
+  private getFacetValuesPage(options: SearchOptions, page: number): Observable<FacetValues> {
+    if (this.filterConfig.name !== 'dateIssued') {
+      return this.searchService.getFacetValuesFor(this.filterConfig, page, options).pipe(
+        getFirstSucceededRemoteDataPayload(),
+      );
+    }
+    const allYears = Object.assign(new SearchFilterConfig(), this.filterConfig, { pageSize: RdappSearchTextFilterComponent.ALL_YEARS_PAGE_SIZE });
+    return this.searchService.getFacetValuesFor(allYears, 1, options).pipe(
+      getFirstSucceededRemoteDataPayload(),
+      map((facetValues: FacetValues) => {
+        const pageSize = this.filterConfig.pageSize;
+        const years = [...facetValues.page].reverse();
+        return Object.assign(Object.create(Object.getPrototypeOf(facetValues)), facetValues, {
+          page: years.slice((page - 1) * pageSize, page * pageSize),
+          next: years.length > page * pageSize ? Object.assign(new HALLink(), { href: facetValues._links?.self?.href }) : undefined,
+          pageInfo: Object.assign({}, facetValues.pageInfo, { currentPage: page }),
+        });
       }),
     );
   }
