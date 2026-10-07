@@ -141,34 +141,23 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
 
   selectAll(event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
-
-    const allPages: FacetValues[] = this.facetValues$.getValue();
-
-    const allVisibleValues: FacetValue[] = allPages.reduce(
-      (acc: FacetValue[], pageObj: FacetValues) => acc.concat(pageObj.page),
-      [],
-    );
-
-    if (allVisibleValues.length === 0) {
-      return;
-    }
-
-    const urlTree = this.router.parseUrl(this.router.url);
-    const queryParams = { ...urlTree.queryParams };
-
     const paramName = this.filterConfig.paramName;
+    const queryParams = { ...this.router.parseUrl(this.router.url).queryParams };
 
     if (isChecked) {
-      const allFormattedValues = allVisibleValues.map(
-        (facetValue: FacetValue) => {
-          const baseValue = getFacetValueForType(facetValue, this.filterConfig);
-
-          if (baseValue.match(new RegExp(`^.+,(equals|query|authority)$`))) {
-            return baseValue;
-          }
-          return `${baseValue},equals`;
-        },
+      const allVisibleValues: FacetValue[] = this.facetValues$.getValue().reduce(
+        (acc: FacetValue[], pageObj: FacetValues) => acc.concat(pageObj.page),
+        [],
       );
+
+      if (allVisibleValues.length === 0) {
+        return;
+      }
+
+      const allFormattedValues = allVisibleValues.map((facetValue: FacetValue) => {
+        const baseValue = getFacetValueForType(facetValue, this.filterConfig);
+        return baseValue.match(new RegExp(`^.+,(equals|query|authority)$`)) ? baseValue : `${baseValue},equals`;
+      });
 
       queryParams[paramName] = allFormattedValues;
       this.selectAllState.set(this.filterConfig.name, allFormattedValues.map((value: string) => stripOperatorFromFilterValue(value)));
@@ -177,6 +166,9 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
       queryParams[paramName] = null;
       this.selectAllState.set(this.filterConfig.name, []);
     }
+
+    // A lista de resultados muda de tamanho, então volta para a primeira página
+    queryParams[`${this.searchConfigService.paginationID}.page`] = 1;
 
     this.router.navigate(this.getSearchLinkParts(), {
       queryParams: queryParams,
