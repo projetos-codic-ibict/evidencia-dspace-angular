@@ -173,7 +173,8 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
       queryParams[paramName] = allFormattedValues;
       this.selectAllState.set(this.filterConfig.name, allFormattedValues.map((value: string) => stripOperatorFromFilterValue(value)));
     } else {
-      delete queryParams[paramName];
+      // Com queryParamsHandling 'merge' o parâmetro ausente volta da URL atual, então a remoção é com null
+      queryParams[paramName] = null;
       this.selectAllState.set(this.filterConfig.name, []);
     }
 
