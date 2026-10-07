@@ -6,7 +6,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { getFirstSucceededRemoteDataPayload } from '@dspace/core/shared/operators';
 import { FacetValue } from '@dspace/core/shared/search/models/facet-value.model';
-import { HALLink } from '@dspace/core/shared/hal-link.model';
 import { FacetValues } from '@dspace/core/shared/search/models/facet-values.model';
 import { SearchFilterConfig } from '@dspace/core/shared/search/models/search-filter-config.model';
 import { SearchOptions } from '@dspace/core/shared/search/models/search-options.model';
@@ -99,9 +98,12 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
       map((facetValues: FacetValues) => {
         const pageSize = this.filterConfig.pageSize;
         const years = [...facetValues.page].reverse();
+        const hasMore = years.length > page * pageSize;
+        // Só propriedades de dados: next, currentPage e afins são accessors com setter na PaginatedList e
+        // quebram (pageInfo._links é indefinido nesta resposta). O getter next lê _links.next.
         return Object.assign(Object.create(Object.getPrototypeOf(facetValues)), facetValues, {
           page: years.slice((page - 1) * pageSize, page * pageSize),
-          next: years.length > page * pageSize ? Object.assign(new HALLink(), { href: facetValues._links?.self?.href }) : undefined,
+          _links: Object.assign({}, facetValues._links, { next: hasMore ? { href: facetValues._links?.self?.href } : undefined }),
           pageInfo: Object.assign({}, facetValues.pageInfo, { currentPage: page }),
         });
       }),
