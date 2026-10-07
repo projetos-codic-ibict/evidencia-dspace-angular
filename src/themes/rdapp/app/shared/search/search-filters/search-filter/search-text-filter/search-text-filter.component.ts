@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import {
   Component,
+  inject,
   OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -25,8 +26,13 @@ import { FilterInputSuggestionsComponent } from '../../../../../../../../app/sha
 import { facetLoad } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter/search-facet-filter.component';
 import { RdappSearchFacetOptionComponent } from '../search-facet-filter-options/search-facet-option/search-facet-option.component';
 import { SearchFacetSelectedOptionComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-facet-filter-options/search-facet-selected-option/search-facet-selected-option.component';
-import { getFacetValueForType } from '../../../../../../../../app/shared/search/search.utils';
+import {
+  getFacetValueForType,
+  stripOperatorFromFilterValue,
+} from '../../../../../../../../app/shared/search/search.utils';
 import { SearchTextFilterComponent as BaseComponent } from '../../../../../../../../app/shared/search/search-filters/search-filter/search-text-filter/search-text-filter.component';
+
+import { FacetSelectAllStateService } from './facet-select-all-state.service';
 
 @Component({
   selector: 'ds-search-text-filter',
@@ -44,6 +50,29 @@ import { SearchTextFilterComponent as BaseComponent } from '../../../../../../..
 export class RdappSearchTextFilterComponent extends BaseComponent implements OnInit {
   /** Quantos anos pedir de uma vez ao backend no filtro de data */
   private static readonly ALL_YEARS_PAGE_SIZE = 50;
+
+  private selectAllState = inject(FacetSelectAllStateService);
+
+  /** Marcado enquanto os valores aplicados pelo "Selecionar todos" continuam todos aplicados */
+  allSelected$: Observable<boolean>;
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.allSelected$ = observableCombineLatest([
+      this.searchService.getSelectedValuesForFilter(this.filterConfig.name),
+      this.facetValues$,
+      this.selectAllState.get(this.filterConfig.name),
+    ]).pipe(
+      map(([applied, pages, selectAllValues]) => {
+        const isApplied = (value: string) => applied.some((a) => a.value === value);
+        if (selectAllValues.length > 0) {
+          return selectAllValues.every(isApplied);
+        }
+        const values = pages.reduce((acc: FacetValue[], p: FacetValues) => acc.concat(p.page), []);
+        return values.length > 0 && values.every((v) => isApplied(stripOperatorFromFilterValue(getFacetValueForType(v, this.filterConfig))));
+      }),
+    );
+  }
 
   /**
    * Overrides the base facet retrieval so the search-by-text input stays visible regardless of
@@ -142,8 +171,10 @@ export class RdappSearchTextFilterComponent extends BaseComponent implements OnI
       );
 
       queryParams[paramName] = allFormattedValues;
+      this.selectAllState.set(this.filterConfig.name, allFormattedValues.map((value: string) => stripOperatorFromFilterValue(value)));
     } else {
       delete queryParams[paramName];
+      this.selectAllState.set(this.filterConfig.name, []);
     }
 
     this.router.navigate(this.getSearchLinkParts(), {
