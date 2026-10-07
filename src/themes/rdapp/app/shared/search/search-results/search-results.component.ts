@@ -1,9 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import {
   Component,
+  ElementRef,
   HostListener,
   inject,
   Input,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -52,16 +55,19 @@ import { SearchSettingsComponent } from '../search-settings/search-settings.comp
     TranslateModule,
   ],
 })
-export class SearchResultsComponent extends BaseComponent {
+export class SearchResultsComponent extends BaseComponent implements OnChanges {
 
   @Input() sortOptionsList: SortOptions[];
 
   selectedCount = 0;
+  /** Marcado quando todos os itens da página estão selecionados */
+  allSelected = false;
   isExporting = false;
   isExportingDocx = false;
   isExportingPdf = false;
 
   private itemDataService = inject(ItemDataService);
+  private host = inject(ElementRef<HTMLElement>);
 
   @HostListener('change', ['$event'])
   onChange(event: Event) {
@@ -71,23 +77,39 @@ export class SearchResultsComponent extends BaseComponent {
     }
   }
 
-  updateSelectedCount() {
-    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-    this.selectedCount = checkboxes.length;
+  ngOnChanges(changes: SimpleChanges): void {
+    // Os checkboxes são recriados quando os resultados mudam, então o estado volta a ser lido deles
+    if (changes.searchResults) {
+      setTimeout(() => this.updateSelectedCount());
+    }
   }
 
-  toggleSelectAll(event: any) {
-    const isChecked = event.target.checked;
-    const checkboxes = document.querySelectorAll('.item-checkbox');
-    checkboxes.forEach((cb: any) => (cb.checked = isChecked));
+  /** Checkboxes dos itens desta lista de resultados */
+  private itemCheckboxes(): HTMLInputElement[] {
+    return Array.from(this.host.nativeElement.querySelectorAll('.item-checkbox'));
+  }
+
+  /** Ids dos itens marcados, usados na exportação */
+  private selectedItemIds(): string[] {
+    return this.itemCheckboxes()
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.id.replace('checkbox-', ''));
+  }
+
+  updateSelectedCount() {
+    const checkboxes = this.itemCheckboxes();
+    this.selectedCount = checkboxes.filter((checkbox) => checkbox.checked).length;
+    this.allSelected = checkboxes.length > 0 && this.selectedCount === checkboxes.length;
+  }
+
+  toggleSelectAll(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.itemCheckboxes().forEach((checkbox) => (checkbox.checked = isChecked));
     this.updateSelectedCount();
   }
 
   async exportSelectedToCsv() {
-    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-    const selectedIds = Array.from(checkboxes).map((cb) =>
-      cb.id.replace('checkbox-', ''),
-    );
+    const selectedIds = this.selectedItemIds();
 
     if (selectedIds.length === 0) return;
 
@@ -163,10 +185,7 @@ export class SearchResultsComponent extends BaseComponent {
   }
 
   async exportSelectedToDocx() {
-    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-    const selectedIds = Array.from(checkboxes).map((cb) =>
-      cb.id.replace('checkbox-', ''),
-    );
+    const selectedIds = this.selectedItemIds();
 
     if (selectedIds.length === 0) return;
 
@@ -269,10 +288,7 @@ export class SearchResultsComponent extends BaseComponent {
   }
 
   async exportSelectedToPdf() {
-    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-    const selectedIds = Array.from(checkboxes).map((cb) =>
-      cb.id.replace('checkbox-', ''),
-    );
+    const selectedIds = this.selectedItemIds();
 
     if (selectedIds.length === 0) return;
 
