@@ -1,4 +1,7 @@
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import {
+  AsyncPipe,
+  NgTemplateOutlet,
+} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,7 +14,9 @@ import { SearchComponent as BaseSearchComponent } from '../../../../../app/share
 import { ThemedSearchFormComponent } from '../../../../../app/shared/search-form/themed-search-form.component';
 import { PageWithSidebarComponent } from '../../../../../app/shared/sidebar/page-with-sidebar.component';
 import { ViewModeSwitchComponent } from '../../../../../app/shared/view-mode-switch/view-mode-switch.component';
+
 import { SearchResultsComponent } from './search-results/search-results.component';
+
 @Component({
   selector: 'ds-base-search',
   styleUrls: ['./search.component.scss'],
@@ -22,11 +27,11 @@ import { SearchResultsComponent } from './search-results/search-results.componen
     AsyncPipe,
     NgTemplateOutlet,
     PageWithSidebarComponent,
+    SearchResultsComponent,
     ThemedSearchFormComponent,
     ThemedSearchSidebarComponent,
     TranslateModule,
     ViewModeSwitchComponent,
-    SearchResultsComponent
   ],
 })
 export class SearchComponent extends BaseSearchComponent {}

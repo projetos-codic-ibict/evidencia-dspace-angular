@@ -69,7 +69,7 @@
       </div>
       <ng-content select="[searchContentTop]"></ng-content>
       @if (inPlaceSearch) {
-  <ds-search-results
+  <ds-themed-search-results
     [searchResults]="resultsRD$ | async"
     [searchConfig]="searchOptions$ | async"
     [configuration]="currentConfiguration$ | async"
@@ -85,7 +85,7 @@
     (contentChange)="onContentChange($event)"
     (deselectObject)="deselectObject.emit($event)"
     (selectObject)="selectObject.emit($event)"
-  ></ds-search-results>
+  ></ds-themed-search-results>
 }
     </div>
   </div>

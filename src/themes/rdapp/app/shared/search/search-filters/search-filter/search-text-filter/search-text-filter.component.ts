@@ -1,11 +1,17 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { getFirstSucceededRemoteDataPayload } from '@dspace/core/shared/operators';
-import { FacetValues } from '@dspace/core/shared/search/models/facet-values.model';
 import { FacetValue } from '@dspace/core/shared/search/models/facet-value.model';
+import { FacetValues } from '@dspace/core/shared/search/models/facet-values.model';
 import { SearchOptions } from '@dspace/core/shared/search/models/search-options.model';
-import { hasNoValue, hasValue } from '@dspace/shared/utils/empty.util';
+import {
+  hasNoValue,
+  hasValue,
+} from '@dspace/shared/utils/empty.util';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   BehaviorSubject,
@@ -46,10 +52,7 @@ import { SearchTextFilterComponent as BaseComponent } from '../../../../../../..
     TranslateModule,
   ],
 })
-export class RdappSearchTextFilterComponent
-  extends BaseComponent
-  implements OnInit
-{
+export class RdappSearchTextFilterComponent extends BaseComponent implements OnInit {
   /** Teto de páginas buscadas pelo "Selecionar todos", para um filtro enorme não virar dezenas de requisições */
   private static readonly SELECT_ALL_MAX_PAGES = 20;
 
@@ -89,21 +92,14 @@ export class RdappSearchTextFilterComponent
    * visibility to it also shrinks pagination whenever it's lowered to force the input to show.
    */
   protected retrieveFilterValues(): Observable<FacetValues[]> {
-    return observableCombineLatest([
-      this.searchOptions$,
-      this.currentPage,
-    ]).pipe(
-      switchMap(([options, page]: [SearchOptions, number]) =>
-        this.searchService
-          .getFacetValuesFor(this.filterConfig, page, options)
-          .pipe(
-            getFirstSucceededRemoteDataPayload(),
-            tap((facetValues: FacetValues) => {
-              this.isLastPage$.next(hasNoValue(facetValues?.next));
-              this.isAvailableForShowSearchText.next(false);
-            }),
-          ),
-      ),
+    return observableCombineLatest([this.searchOptions$, this.currentPage]).pipe(
+      switchMap(([options, page]: [SearchOptions, number]) => this.searchService.getFacetValuesFor(this.filterConfig, page, options).pipe(
+        getFirstSucceededRemoteDataPayload(),
+        tap((facetValues: FacetValues) => {
+          this.isLastPage$.next(hasNoValue(facetValues?.next));
+          this.isAvailableForShowSearchText.next(false);
+        }),
+      )),
       map((newFacetValues: FacetValues) => {
         // Anos do mais recente para o mais antigo (o backend entrega em ordem crescente, ver discovery.xml)
         if (this.filterConfig.name === 'dateIssued') {

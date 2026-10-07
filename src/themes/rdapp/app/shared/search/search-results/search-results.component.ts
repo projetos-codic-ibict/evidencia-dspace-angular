@@ -1,11 +1,18 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, HostListener, inject } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  Input,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { SortOptions } from '@dspace/core/cache/models/sort-options.model';
 
 // Importações dos serviços oficiais do DSpace para varredura completa
 import { ItemDataService } from '../../../../../../app/core/data/item-data.service';
@@ -22,10 +29,9 @@ import { SearchLabelsComponent } from '../../../../../../app/shared/search/searc
 import { SearchResultsSkeletonComponent } from '../../../../../../app/shared/search/search-results/search-results-skeleton/search-results-skeleton.component';
 import { SearchResultsComponent as BaseComponent } from '../../../../../../app/shared/search/search-results/search-results.component';
 import { SearchSettingsComponent } from '../search-settings/search-settings.component';
-import { SortOptions } from '@dspace/core/cache/models/sort-options.model';
-import { Input } from '@angular/core';
+
 @Component({
-  selector: 'ds-search-results',
+  selector: 'ds-themed-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: [
     '../../../../../../app/shared/search/search-results/search-results.component.scss',
@@ -42,8 +48,8 @@ import { Input } from '@angular/core';
     SearchExportCsvComponent,
     SearchLabelsComponent,
     SearchResultsSkeletonComponent,
+    SearchSettingsComponent,
     TranslateModule,
-    SearchSettingsComponent
   ],
 })
 export class SearchResultsComponent extends BaseComponent {
