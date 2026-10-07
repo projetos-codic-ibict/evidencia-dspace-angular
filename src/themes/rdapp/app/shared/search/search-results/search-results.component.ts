@@ -50,7 +50,6 @@ export class SearchResultsComponent extends BaseComponent {
 
   @Input() sortOptionsList: SortOptions[];
 
-@Input() currentSortOption: SortOptions;
   selectedCount = 0;
   isExporting = false;
   isExportingDocx = false;

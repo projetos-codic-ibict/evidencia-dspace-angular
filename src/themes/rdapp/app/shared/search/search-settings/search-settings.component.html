@@ -33,7 +33,7 @@
 
         @if (sortOptionsList) {
           <select class="form-select w-100" (change)="reloadOrder($event)">
-            @for (sortOptionsEntry of sortOptionsList; track sortOptionsEntry) {
+            @for (sortOptionsEntry of sortOptionsList; track sortOptionsEntry; let first = $first) {
               <option
                 [value]="
                   sortOptionsEntry.field +
@@ -45,7 +45,7 @@
                     sortOptionsEntry.field === currentSortOption.field &&
                     sortOptionsEntry.direction ===
                       currentSortOption.direction) ||
-                  (!currentSortOption && sortOptionsEntry.field === 'score')
+                  (!currentSortOption && first)
                 "
               >
                 {{
