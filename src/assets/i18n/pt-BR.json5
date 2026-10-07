@@ -7456,29 +7456,49 @@
 
   "evidencia.faq.cta.btn": "Enviar E-mail",
 
-  "evidencia.faq.0.q": "O que é o EvidencIA?",
+  "evidencia.faq.0.q": "O que é o Evidencia?",
 
-  "evidencia.faq.0.a": "O EvidencIA é um repositório digital destinado a centralizar, preservar e organizar as avaliações de políticas públicas e a produção técnica da instituição. Sua finalidade é promover a transparência ativa, garantir o acesso público a evidências e apoiar a cooperação entre órgãos governamentais para uma tomada de decisão mais qualificada. O EvidencIA serve tanto a servidores e pesquisadores quanto ao público em geral, promovendo a transparência sobre a eficácia das políticas públicas nacionais.",
+  "evidencia.faq.0.a": "O Evidencia é um repositório digital destinado a centralizar, preservar e organizar as evidências de políticas públicas. Sua finalidade é promover a transparência ativa, garantir o acesso público a evidências e apoiar a cooperação entre órgãos governamentais para uma tomada de decisão mais qualificada. O Evidencia serve tanto a servidores e pesquisadores quanto ao público em geral, promovendo a transparência sobre as políticas públicas nacionais.",
 
   "evidencia.faq.1.q": "Quem exerce a gestão do repositório?",
 
-  "evidencia.faq.1.a": "A gestão e a curadoria técnica são de responsabilidade da Secretaria de Monitoramento e Avaliação de Políticas Públicas e Assuntos Econômicos do Ministério do Planejamento e Orçamento (SMA/MPO).",
+  "evidencia.faq.1.a": "A gestão e a curadoria técnica são de responsabilidade da Secretaria de Monitoramento e Avaliação de Políticas Públicas do Ministério do Planejamento e Orçamento (SMA/MPO).",
 
   "evidencia.faq.2.q": "Qual a política de privacidade do sistema?",
 
   "evidencia.faq.2.a": "Todos os documentos contidos no repositório são de domínio público. O depositante deve garantir a anonimização de dados sensíveis antes do envio, assegurando que a publicidade do documento respeite a privacidade conforme a Lei Geral de Proteção de Dados Pessoais (LGPD).",
 
-  "evidencia.faq.3.q": "Como a Inteligência Artificial é utilizada na busca?",
+  "evidencia.faq.3.q": "Como funciona a Pesquisa Exata?",
 
-  "evidencia.faq.3.a": "O sistema utiliza IA para extrair resultados diretamente do corpo dos arquivos durante as pesquisas. Ele também oferece um \"Resumo de IA\", que gera uma síntese automática dos 5 primeiros documentos mais relevantes com base no seu termo de pesquisa, permitindo uma análise rápida do acervo.",
+  "evidencia.faq.3.a": "A Pesquisa Exata recupera conteúdos a partir das palavras-chave informadas pelo usuário. Nessa modalidade, é possível utilizar operadores booleanos para combinar termos e refinar os resultados da busca:<br><br>- <strong>AND:</strong> Restringe a pesquisa. Exige que todas as palavras conectadas estejam no resultado (ex: ensino AND tecnologia).<br>- <strong>OR:</strong> Amplia a pesquisa. Retorna resultados que contenham pelo menos uma das palavras (ex: ensino OR educação).<br>- <strong>NOT / Sinal de Menos (-):</strong> Exclui termos. Remove dos resultados qualquer documento que contenha a palavra seguinte (ex: tecnologia NOT internet ou tecnologia -internet).<br>- <strong>Aspas Duplas (\" \"):</strong>Busca exata. Força a pesquisa a encontrar a frase completa, com as palavras na exata ordem digitada (ex: \"acesso à água\").<br>- <strong>Parênteses ( ):</strong>Agrupamento. Usado para organizar buscas complexas e definir a ordem de prioridade da pesquisa, muito útil no DSpace (ex: (gato OR cachorro) AND ração).<br>- <strong>Asterisco (*): </strong> Truncamento/Curinga. Adicionado ao radical de uma palavra (no DSpace) para buscar todas as suas variações e sufixos (ex: psicolog* encontra psicologia, psicólogo, psicológico).<br>- <strong>Sinal de Mais (+):</strong>Obrigatoriedade. No DSpace, exige que o termo que vem logo após o sinal esteja obrigatoriamente presente nos resultados.",
 
-  "evidencia.faq.4.q": "Como buscar documentos de forma eficiente?",
+  "evidencia.faq.4.q": "O que é a Pesquisa com IA?",
 
-  "evidencia.faq.4.a": "O sistema oferece uma barra de busca direta com filtros específicos por Política Pública, Instituição responsável, Área de atuação ou Tipo de documento. Adicionalmente, é possível realizar pesquisas booleanas para refinar os resultados:<br><br>- <strong>AND (E):</strong> Para encontrar termos que devem aparecer juntos (ex: saúde AND educação).<br>- <strong>OR (OU):</strong> Para ampliar a busca com sinônimos (ex: avaliação OR monitoramento).<br>- <strong>NOT (NÃO):</strong> Para excluir termos indesejados (ex: transporte NOT rodoviário).<br><br>Exemplo prático: Uma busca por \"segurança pública\" AND avaliação NOT câmeras trará documentos sobre avaliação de segurança pública, mas filtrará aqueles focados especificamente em câmeras de vigilância.",
+  "evidencia.faq.4.a": "A Pesquisa com IA combina recursos de busca por palavras-chave e inteligência artificial para compreender o significado da consulta realizada pelo usuário. Além dos termos digitados, a ferramenta pode identificar conceitos relacionados, sinônimos e diferentes formas de expressar uma mesma ideia, ampliando a recuperação de conteúdos relevantes.<br><br>O usuário deve descrever o tema, os conceitos e/ou os termos mais relevantes para sua pesquisa, podendo utilizar perguntas ou frases completas. Exemplo: \"Quais são as evidências sobre o uso de remédios para hipertensão em adultos?\"<br><br>Nesse caso, a busca também poderá considerar termos relacionados, como medicamentos, fármacos, anti-hipertensivos e outras expressões semelhantes, ampliando a recuperação de conteúdos relevantes.",
 
-  "evidencia.faq.5.q": "Qual o ganho esperado ao utilizar o EvidencIA com IA?",
+  "evidencia.faq.5.q": "Qual a diferença entre Pesquisa Exata e Pesquisa com IA?",
+  
+  "evidencia.faq.5.a": "A Pesquisa Exata procura correspondências diretas com as palavras-chave informadas pelo usuário, podendo utilizar operadores booleanos para refinar os resultados.<br><br>Já a Pesquisa com IA busca compreender o contexto e o significado da consulta, considerando também sinônimos, termos relacionados e conceitos semanticamente semelhantes.",
 
-  "evidencia.faq.5.a": "Espera-se um ganho significativo de escala e eficiência. Enquanto uma extração manual pode levar algumas horas de trabalho, o EvidencIA realiza a mesma tarefa em poucos segundos, otimizando o tempo da equipe técnica e dos cidadãos, além de abranger um volume de documentos muito maior do que seria viável processar manualmente.",
+  "evidencia.faq.6.q": "Como a Inteligência Artificial é utilizada na busca?",
+
+  "evidencia.faq.6.a": "O sistema utiliza IA para extrair resultados diretamente do corpo dos arquivos durante as pesquisas. Ele também oferece um \"Resumo de IA\", que gera uma síntese automática de dez documentos mais relevantes com base no seu termo de pesquisa, permitindo uma análise rápida do acervo.",
+
+  "evidencia.faq.7.q": "Qual o ganho esperado ao utilizar o Evidencia com IA?",
+
+  "evidencia.faq.7.a": "Espera-se um ganho significativo de escala e eficiência. Enquanto uma extração manual pode levar algumas horas de trabalho, o Evidencia realiza a mesma tarefa em poucos segundos, otimizando o tempo da equipe técnica e dos cidadãos, além de abranger um volume de documentos muito maior do que seria viável processar manualmente.",
+
+  "evidencia.faq.8.q": "Quais cuidados tomar ao utilizar o repositório e suas ferramentas de IA?",
+
+  "evidencia.faq.8.a": "O usuário é responsável por verificar a exatidão das informações geradas por IA. As sínteses e extrações devem servir de apoio estratégico e não substituem o julgamento humano e a validação técnica dos especialistas e gestores.",
+
+  "evidencia.faq.9.q": "Posso realizar o upload de documentos no sistema?",
+
+  "evidencia.faq.9.a": "O depósito de arquivos no EvidencIA é realizado por órgãos ou instituições parceiras. A parceria é formalizada por meio de termo de adesão celebrado com o Ministério do Planejamento e Orçamento, garantindo a integridade e a origem das evidências depositadas.",
+
+  "evidencia.faq.10.q" : "Minha instituição tem interesse em ser parceira do Evidencia. Como proceder?",
+
+  "evidencia.faq.10.a" : "Os representantes dos órgãos ou entidades da administração pública federal, estadual, distrital ou municipal, direta ou indireta, podem entrar em contato com a equipe do Evidencia pelos canais informados no portal, apresentando o interesse da instituição em estabelecer uma parceria. A equipe analisará a proposta e orientará sobre os próximos passos para construção e formalização da colaboração.",
 
   "evidencia.home.hero.stats-value": "+1.2k",
 
@@ -7486,7 +7506,7 @@
 
   "evidencia.about.hero.label": "INSTITUCIONAL",
 
-  "evidencia.about.hero.title": "O EvidencIA",
+  "evidencia.about.hero.title": "Evidencia",
 
   "evidencia.about.hero.subtitle": "Conheça a iniciativa, nossos propósitos e quem faz acontecer.",
 
@@ -7494,9 +7514,9 @@
 
   "evidencia.about.apresentacao.title": "Apresentação",
 
-  "evidencia.about.apresentacao.p1": "O Repositório Digital de Avaliação de Políticas Públicas (EvidencIA) é uma iniciativa institucional do Ministério do Planejamento e Orçamento (MPO), instituída no âmbito da Administração Pública Federal com a finalidade de centralizar, preservar, organizar e disseminar avaliações de políticas públicas, em consonância com os princípios da transparência, do governo digital e do uso de evidências na gestão pública.",
+  "evidencia.about.apresentacao.p1": "O Repositório de Evidências de Políticas Públicas (Evidencia) é uma iniciativa institucional do Ministério do Planejamento e Orçamento (MPO), instituída no âmbito da Administração Pública Federal com a finalidade de centralizar, preservar, organizar e disseminar evidências de políticas públicas, em consonância com os princípios da transparência, do governo digital e do uso de evidências na gestão pública.",
 
-  "evidencia.about.apresentacao.p2": "O EvidencIA visa a enfrentar a dispersão e a heterogeneidade das avaliações produzidas no setor público, ampliando o acesso público às avaliações de políticas públicas, fortalecendo sua utilização por gestores, pesquisadores e pela sociedade e promovendo maior integração entre órgãos e instituições produtoras de avaliações.",
+  "evidencia.about.apresentacao.p2": "O Evidencia visa a enfrentar a dispersão e a heterogeneidade das evidências produzidas no setor público, ampliando o seu acesso público, fortalecendo sua utilização por gestores, pesquisadores e pela sociedade e promovendo maior integração entre órgãos e instituições produtoras de evidências.",
 
   "evidencia.about.apresentacao.quote": "A iniciativa apoia-se em solução tecnológica baseada em software livre e incorpora ferramentas de inteligência artificial, adotando padrões de interoperabilidade, preservação digital e governança da informação, em conformidade com a legislação vigente, especialmente no que se refere à proteção de dados pessoais, aos direitos autorais e às regras de acesso à informação.",
 
@@ -7670,53 +7690,43 @@
 
   "evidencia.about.apresentacao.finalidades.label": "FINALIDADES DO EvidencIA",
 
-  "evidencia.about.apresentacao.finalidades.0": "Centralizar, preservar, organizar e disseminar avaliações de políticas públicas, seus produtos e metadados;",
+  "evidencia.about.apresentacao.finalidades.0": "Centralizar, preservar, organizar e disseminar evidências de políticas públicas, seus produtos e metadados;",
 
   "evidencia.about.apresentacao.finalidades.1": "Promover transparência ativa e acesso público a evidências;",
 
   "evidencia.about.apresentacao.finalidades.2": "Fomentar a tomada de decisão informada por evidências, por meio do fortalecimento de seu uso na formulação, na implementação, no monitoramento, na avaliação e no aperfeiçoamento de políticas públicas;",
 
-  "evidencia.about.apresentacao.finalidades.3": "Incentivar a padronização mínima de documentação e metadados para avaliações; e",
+  "evidencia.about.apresentacao.finalidades.3": "Incentivar a padronização mínima de documentação e metadados para evidências; e",
 
-  "evidencia.about.apresentacao.finalidades.4": "Apoiar a cooperação e a integração entre órgãos e instituições produtoras de avaliações.",
+  "evidencia.about.apresentacao.finalidades.4": "Apoiar a cooperação e a integração entre órgãos e instituições produtoras de evidências.",
 
-  "evidencia.about.apresentacao.guia.label": "Conheça mais: Acesse o Guia de Uso do EvidencIA",
+  "evidencia.about.apresentacao.guia.label": "Conheça mais: Acesse o Guia de Uso do Evidencia",
 
   "evidencia.about.acervo.title": "Acervo e Parcerias",
 
-  "evidencia.about.acervo.p1": "O acervo do EvidencIA é composto por relatórios de avaliação, relatórios de recomendações, resumos executivos/sumários executivos, resumos de 2 páginas/<em>one-page reports</em> e notas técnicas/<em>policy briefs</em> derivados de processos avaliativos de políticas públicas, programas, projetos e intervenções governamentais no âmbito da Administração Pública Federal. Novas coleções podem ser adicionadas futuramente.",
+  "evidencia.about.acervo.p1": "O acervo do Evidencia é composto por relatórios de avaliação, relatórios de recomendações, resumos executivos/sumários executivos e resumos de 2 páginas/<em>one-page reports</em> derivados de processos avaliativos de políticas públicas, programas, projetos e intervenções governamentais no âmbito da Administração Pública Federal. Novas coleções podem ser adicionadas futuramente.",
 
-  "evidencia.about.acervo.comunidades.label": "O EvidencIA está organizado atualmente nas seguintes comunidades:",
+  "evidencia.about.acervo.comunidades.label": "O Evidencia está organizado atualmente nas seguintes comunidades:",
 
-  "evidencia.about.acervo.comunidades.0": "Conselho de Monitoramento e Avaliação de Políticas Públicas",
 
-  "evidencia.about.acervo.comunidades.1": "Ministério do Planejamento e Orçamento",
 
-  "evidencia.about.acervo.comunidades.2": "Órgãos Públicos Parceiros",
+  "evidencia.about.acervo.comunidades.0": "Ministério do Planejamento e Orçamento",
 
-  "evidencia.about.acervo.comunidades.3": "Entidades da Sociedade Civil",
+  "evidencia.about.acervo.comunidades.1": "Órgãos Públicos Parceiros",
+
+
 
   "evidencia.about.acervo.parcerias.title": "Parcerias Institucionais",
 
-  "evidencia.about.acervo.parcerias.p1": "O EvidencIA é um repositório institucional do Ministério do Planejamento e Orçamento (MPO) concebido como uma plataforma colaborativa, aberta à cooperação com:",
-
-  "evidencia.about.acervo.parcerias.natureza.label": "NATUREZA DOS PARCEIROS",
-
-  "evidencia.about.acervo.parcerias.natureza.0": "órgãos e entidades da administração pública federal, estadual, distrital e municipal;",
-
-  "evidencia.about.acervo.parcerias.natureza.1": "instituições públicas de ensino e pesquisa;",
-
-  "evidencia.about.acervo.parcerias.natureza.2": "entidades privadas, com ou sem fins lucrativos, observada a legislação aplicável; ou",
-
-  "evidencia.about.acervo.parcerias.natureza.3": "organizações internacionais.",
+  "evidencia.about.acervo.parcerias.p1": "O Evidencia é um repositório institucional do Ministério do Planejamento e Orçamento (MPO) concebido como uma plataforma colaborativa, aberta à cooperação com órgãos e entidades da administração pública federal, direta ou indireta. Também são firmadas parcerias com órgãos e entidades da administração pública estadual, distrital ou municipal, direta ou indireta, para testar, validar e aperfeiçoar procedimentos, padrões de interoperabilidade, mecanismos de depósito, processos de curadoria e modelos de governança do repositório.",
 
   "evidencia.about.acervo.dev.label": "DESENVOLVIMENTO DO REPOSITÓRIO",
 
-  "evidencia.about.acervo.dev.p1": "O EvidencIA contou com parceria institucional do MPO com o Instituto Brasileiro de Informação em Ciência e Tecnologia (IBICT), para o desenvolvimento tecnológico, implantação e operação do Repositório, contando com uma equipe multidisciplinar composta por especialistas em ciência da informação, gestão de dados, desenvolvimento de sistemas, acessibilidade, experiência do usuário, curadoria digital e inteligência artificial.",
+  "evidencia.about.acervo.dev.p1": "O Evidencia contou com parceria institucional do MPO com o Instituto Brasileiro de Informação em Ciência e Tecnologia (IBICT), para o desenvolvimento tecnológico, implantação e operação do Repositório, com uma equipe multidisciplinar composta por especialistas em ciência da informação, gestão de dados, desenvolvimento de sistemas, acessibilidade, experiência do usuário, curadoria digital e inteligência artificial.",
 
   "evidencia.about.quemsomos.title": "Quem Somos",
 
-  "evidencia.about.quemsomos.p1": "A Secretaria de Monitoramento e Avaliação de Políticas Públicas e Assuntos Econômicos (SMA) integra a estrutura do Ministério do Planejamento e Orçamento (MPO) e atua no fortalecimento da avaliação e do monitoramento das políticas públicas, com foco em:",
+  "evidencia.about.quemsomos.p1": "A Secretaria de Monitoramento e Avaliação de Políticas Públicas (SMA) integra a estrutura do Ministério do Planejamento e Orçamento (MPO) e atua no fortalecimento da avaliação e do monitoramento das políticas públicas, com foco em:",
 
   "evidencia.about.quemsomos.pilares.title": "PILARES DE ATUAÇÃO DA SMA EM M&A",
 
@@ -7728,11 +7738,11 @@
 
   "evidencia.about.quemsomos.pilares.3": "Fomento ao compartilhamento de dados por órgãos da administração pública federal direta e indireta, necessários à gestão e à avaliação de políticas públicas",
 
-  "evidencia.about.quemsomos.gestao.label": "GESTÃO DO EvidencIA",
+  "evidencia.about.quemsomos.gestao.label": "GESTÃO DO Evidencia",
 
-  "evidencia.about.quemsomos.gestao.p1": "A gestão do Repositório é de responsabilidade da Secretaria de Monitoramento e Avaliação de Políticas Públicas e Assuntos Econômicos (SMA/MPO), a quem compete, nos termos da <a href=\"#\">Portaria instituidora</a>:",
+  "evidencia.about.quemsomos.gestao.p1": "A gestão do Repositório é de responsabilidade da Secretaria de Monitoramento e Avaliação de Políticas Públicas (SMA/MPO), a quem compete, nos termos da <a href=\"#\">Portaria instituidora</a>:",
 
-  "evidencia.about.quemsomos.gestao.competencias.0": "realizar a <strong>curadoria do Repositório</strong>, compreendendo os procedimentos técnicos e administrativos aplicados à validação de forma, organização, descrição, contextualização, preservação, controle de qualidade e publicação de documentos, com o objetivo de assegurar autenticidade, integridade, confiabilidade, rastreabilidade, transparência e acesso qualificado à informação;",
+  "evidencia.about.quemsomos.gestao.competencias.0": "realizar a <strong>curadoria do Repositório</strong>, compreendendo atividades de verificação de conformidade formal, documental e normativa do depósito, sem implicar avaliação do mérito metodológico ou chancela institucional das conclusões constantes do material;",
 
   "evidencia.about.quemsomos.gestao.competencias.1": "definir e atualizar <strong>padrões mínimos de metadados, taxonomias e formatos</strong>;",
 
@@ -7744,19 +7754,11 @@
 
   "evidencia.about.acervo.p2": "Todo o acervo é organizado segundo padrões de curadoria e documentação, assegurando qualidade, rastreabilidade, preservação digital e possibilidade de reutilização das evidências por gestores públicos, pesquisadores, órgãos de controle e pela sociedade civil.",
 
-  "evidencia.about.acervo.acesso": "O EvidencIA adota o princípio do acesso aberto, respeitados os limites legais relativos à proteção de dados pessoais, aos direitos autorais e às informações protegidas por sigilo, nos termos da legislação vigente.",
+  "evidencia.about.acervo.acesso": "O Evidencia adota o princípio do acesso aberto, respeitados os limites legais relativos à proteção de dados pessoais, aos direitos autorais e às informações protegidas por sigilo, nos termos da legislação vigente.",
 
   "evidencia.about.acervo.parcerias.p2": "Essas parcerias podem abranger, entre outros aspectos, o desenvolvimento tecnológico, a definição e a adoção de padrões de metadados, a capacitação de equipes, a curadoria compartilhada de conteúdos, a interoperabilidade entre sistemas de informação e o fortalecimento das estratégias de preservação digital e segurança da informação.",
 
-  "evidencia.about.acervo.parcerias.p3": "Por meio da articulação institucional e da cooperação interorganizacional, o EvidencIA busca ampliar a cobertura e a diversidade de seu acervo e promover maior integração entre os produtores e usuários de avaliações de políticas públicas no Brasil.",
-
-  "evidencia.faq.6.q": "Quais cuidados tomar ao utilizar o repositório e suas ferramentas de IA?",
-
-  "evidencia.faq.6.a": "O usuário é responsável por verificar a exatidão das informações geradas por IA. As sínteses e extrações devem servir de apoio estratégico e não substituem o julgamento humano e a validação técnica dos especialistas e gestores.",
-
-  "evidencia.faq.7.q": "Posso realizar o upload de documentos no sistema?",
-
-  "evidencia.faq.7.a": "O depósito de arquivos no EvidencIA é realizado por órgãos ou instituições parceiras. A parceria é formalizada por meio de termo de adesão celebrado com o Ministério do Planejamento e Orçamento, garantindo a integridade e a origem das evidências depositadas.",
+  "evidencia.about.acervo.parcerias.p3": "Por meio da articulação e da cooperação institucional, o Evidencia busca ampliar a cobertura e a diversidade de seu acervo e promover maior integração entre os produtores e usuários de evidências de políticas públicas no Brasil.",
 
   "evidencia.search.toolbar.export": "Exportar",
 
