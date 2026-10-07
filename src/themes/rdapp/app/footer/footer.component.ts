@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FooterComponent as BaseFooterComponent } from '../../../../app/footer/footer.component';
@@ -9,7 +8,6 @@ import { FooterComponent as BaseFooterComponent } from '../../../../app/footer/f
   styleUrls: ['footer.component.scss'],
   templateUrl: 'footer.component.html',
   imports: [
-    RouterLink,
     TranslateModule,
   ],
 })

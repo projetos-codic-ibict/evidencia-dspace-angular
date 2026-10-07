@@ -143,18 +143,18 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #4b5563;
+  color: var(--rdapp-color-text-muted);
 }
 
 .item-ods-icons {
   display: grid;
-  grid-template-columns: repeat(2, 2.5rem);
-  gap: 4px;
+  grid-template-columns: repeat(2, var(--rdapp-ods-icon-size));
+  gap: var(--rdapp-ods-icon-gap);
 }
 
 .item-ods-icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--rdapp-ods-icon-size);
+  height: var(--rdapp-ods-icon-size);
 }
 
 .item-actions-row {

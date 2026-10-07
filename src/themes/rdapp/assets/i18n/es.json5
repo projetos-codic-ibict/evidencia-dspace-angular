@@ -151,9 +151,6 @@
   "evidencia.header.mpo-logo-alt": "Logo del Ministerio de Planificación y Presupuesto",
 
   // Home hero
-  "evidencia.home.hero.aria-label": "Conozca el Repositorio Digital de Evaluación de Políticas Públicas",
-  "evidencia.home.hero.title-dark": "Conozca el<br />Repositorio Digital de",
-  "evidencia.home.hero.title-light": "Evaluación de Políticas<br />Públicas",
   "evidencia.home.hero.description": "Acceda al acervo de Evidencia y utilice recursos de inteligencia artificial para localizar, explorar y sintetizar evidencias sobre políticas públicas de manera rápida y eficiente.",
   "evidencia.home.hero.link": "Como usar",
 

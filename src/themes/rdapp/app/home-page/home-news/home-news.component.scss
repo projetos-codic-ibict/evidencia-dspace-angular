@@ -7,7 +7,7 @@
 }
 
 .hero-logo {
-  width: 400px;
+  width: var(--rdapp-home-hero-logo-width);
   height: auto;
   max-width: 100%;
   object-fit: contain;
@@ -31,26 +31,6 @@
   @include media-breakpoint-up(lg) {
     margin: 0;
   }
-}
-
-.rdapp-home-news-title {
-  font-size: clamp(1.5rem, 3rem, 3.5rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 1.5rem;
-}
-
-.rdapp-home-news-title-tone-dark,
-.rdapp-home-news-title-tone-light {
-  display: block;
-}
-
-.rdapp-home-news-title-tone-dark {
-  color: var(--rdapp-home-hero-title-color);
-}
-
-.rdapp-home-news-title-tone-light {
-  color: var(--rdapp-color-blue-light);
 }
 
 .rdapp-home-news-description {
