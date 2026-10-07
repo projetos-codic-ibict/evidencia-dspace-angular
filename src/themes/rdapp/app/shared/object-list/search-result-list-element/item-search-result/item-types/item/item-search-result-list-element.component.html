@@ -14,6 +14,16 @@
           </ds-thumbnail>
         </span>
       }
+      @if (odsIcons.length > 0) {
+        <div class="item-ods">
+          <span class="item-ods-title">{{ 'evidencia.search-result.ods' | translate }}</span>
+          <div class="item-ods-icons">
+            @for (ods of odsIcons; track ods.number) {
+              <img class="item-ods-icon" [src]="ods.src" [alt]="ods.label" [title]="ods.label" width="40" height="40" />
+            }
+          </div>
+        </div>
+      }
     </div>
   }
   <div [ngClass]="showThumbnails ? 'col-9' : 'col-md-12'">
@@ -31,11 +41,7 @@
       }
       <ds-truncatable [id]="dso.id">
 
-        @if (object?.score !== undefined && object?.score !== null) {
-      <div class="text-muted small mb-1">Score: {{ object.score.toFixed(2) }}</div>
-    }
-        
-<div class="d-flex align-items-start gap-2 mb-2">
+        <div class="d-flex align-items-start gap-2 mb-2">
           <input type="checkbox" 
                  class="form-check-input mt-1 flex-shrink-0 item-checkbox" 
                  [id]="'checkbox-' + dso.id">
@@ -62,29 +68,6 @@
             </span>
           }
         </div>
-
-        @if (odsAll.length > 0) {
-          <div class="item-ods-row">
-            @for (ods of (odsExpanded ? odsAll : odsAll.slice(0, 3)); track $index) {
-              <span class="badge rounded-pill ods-badge" [style.background-color]="getOdsBg(ods)">
-                @if (getOdsNumber(ods)) {
-                  <span class="ods-number">{{ getOdsNumber(ods) }}</span>
-                }
-                {{ getOdsLabel(ods) }}
-              </span>
-            }
-            @if (odsAll.length > 3) {
-              <span class="badge rounded-pill ods-badge-more"
-                    role="button"
-                    tabindex="0"
-                    (click)="toggleOdsExpanded()"
-                    (keydown.enter)="toggleOdsExpanded()"
-                    (keydown.space)="$event.preventDefault(); toggleOdsExpanded()">
-                {{ odsExpanded ? '−' : '+' + (odsAll.length - 3) }}
-              </span>
-            }
-          </div>
-        }
 
         <span class="text-muted">
           <ds-truncatable-part [id]="dso.id" [minLines]="1">

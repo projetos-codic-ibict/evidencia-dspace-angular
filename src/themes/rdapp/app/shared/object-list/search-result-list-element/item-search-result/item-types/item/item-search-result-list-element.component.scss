@@ -131,51 +131,30 @@
   text-transform: uppercase;
 }
 
-.item-ods-row {
+.item-ods {
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
 }
 
-.ods-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: #ffffff;
-  padding: 3px 9px;
-  font-size: 0.72rem;
+.item-ods-title {
+  font-size: 0.7rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.ods-badge-more {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #e5e7eb;
   color: #4b5563;
-  padding: 3px 9px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.15s ease;
-
-  &:hover,
-  &:focus-visible { background-color: #d1d5db; }
 }
 
-.ods-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.1rem;
-  height: 1.1rem;
-  background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 50%;
-  font-size: 0.65rem;
-  font-weight: 900;
+.item-ods-icons {
+  display: grid;
+  grid-template-columns: repeat(2, 2.5rem);
+  gap: 4px;
+}
+
+.item-ods-icon {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 .item-actions-row {
@@ -280,8 +259,6 @@
   .col-3,
   .col-md-2 {
     width: 100%;
-    max-height: 9rem;
-    overflow: hidden;
   }
 
   :host ::ng-deep ds-thumbnail .thumbnail {

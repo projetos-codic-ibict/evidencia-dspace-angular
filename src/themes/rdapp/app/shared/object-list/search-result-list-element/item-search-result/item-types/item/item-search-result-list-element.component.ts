@@ -50,7 +50,6 @@ import { ActivatedRoute } from '@angular/router';
 export class ItemSearchResultListElementComponent extends BaseComponent {
 
   pdfDownloadRoute$: Observable<string | null>;
-  odsExpanded = false;
 
   isAuthenticated$: Observable<boolean>;
   isFavorite$: Observable<boolean>;
@@ -82,12 +81,17 @@ export class ItemSearchResultListElementComponent extends BaseComponent {
     });
   }
 
-  get odsAll(): string[] {
-    return this.dso?.allMetadataValues('local.ods') ?? [];
-  }
-
-  toggleOdsExpanded(): void {
-    this.odsExpanded = !this.odsExpanded;
+  /** Ícones dos ODS do item (até 4), na ordem em que estão no metadado. Valores sem número 1 a 17 são ignorados. */
+  get odsIcons(): { number: number; label: string; src: string }[] {
+    const values: string[] = this.dso?.allMetadataValues('local.ods') ?? [];
+    return values
+      .map((ods) => ({ number: Number(this.getOdsNumber(ods)), label: ods }))
+      .filter((ods) => ods.number >= 1 && ods.number <= 17)
+      .slice(0, 4)
+      .map((ods) => ({
+        ...ods,
+        src: `assets/rdapp/images/ods/ods-${String(ods.number).padStart(2, '0')}.svg`,
+      }));
   }
 
   override ngOnInit(): void {
@@ -102,20 +106,6 @@ export class ItemSearchResultListElementComponent extends BaseComponent {
 
   getOdsNumber(ods: string): string {
     return ods?.match(/^(\d+)/)?.[1] ?? '';
-  }
-
-  getOdsLabel(ods: string): string {
-    return ods?.replace(/^\d+\s*-\s*/, '').trim() ?? ods;
-  }
-
-  getOdsBg(ods: string): string {
-    if (!ods) { return '#6c757d'; }
-    const clean = ods.replace(/^\d+\s*-\s*/, '').toLowerCase().trim();
-    let hash = 0;
-    for (let i = 0; i < clean.length; i++) {
-      hash = clean.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return `hsl(${Math.abs(hash) % 360}, 70%, 40%)`;
   }
 
   private resolvePdfDownloadRoute(): Observable<string | null> {
