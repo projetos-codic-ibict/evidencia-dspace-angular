@@ -22,14 +22,14 @@ ds-header-navbar-wrapper {
   .sidebar-content {
     top: var(--ds-header-height);
     max-height: var(--rdapp-sidebar-max-height);
+    // overflow-y diferente de visible faz o eixo x virar auto também, por isso o x fica travado
+    overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: var(--rdapp-border-color) transparent;
-    // Folga para a sombra dos cards não ser cortada pela rolagem
-    padding-inline: var(--rdapp-sidebar-scroll-gutter);
+    // Folga embaixo para a sombra do último card não ser cortada
     padding-bottom: var(--rdapp-sidebar-scroll-gutter);
-    margin-inline: calc(-1 * var(--rdapp-sidebar-scroll-gutter));
   }
 }
 
