@@ -69,23 +69,25 @@
       </div>
       <ng-content select="[searchContentTop]"></ng-content>
       @if (inPlaceSearch) {
-        <ds-search-results
-          [searchResults]="resultsRD$ | async"
-          [searchConfig]="searchOptions$ | async"
-          [configuration]="currentConfiguration$ | async"
-          [disableHeader]="!searchEnabled"
-          [linkType]="linkType"
-          [context]="currentContext$ | async"
-          [selectable]="selectable"
-          [selectionConfig]="selectionConfig"
-          [showCsvExport]="showCsvExport"
-          [showThumbnails]="showThumbnails"
-          [inPlaceSearch]="inPlaceSearch"
-          (contentChange)="onContentChange($event)"
-          (deselectObject)="deselectObject.emit($event)"
-          (selectObject)="selectObject.emit($event)"
-        ></ds-search-results>
-      }
+  <ds-search-results
+    [searchResults]="resultsRD$ | async"
+    [searchConfig]="searchOptions$ | async"
+    [configuration]="currentConfiguration$ | async"
+    [sortOptionsList]="sortOptionsList$ | async"
+    [currentSortOption]="currentSortOptions$ | async"
+    [disableHeader]="!searchEnabled"
+    [linkType]="linkType"
+    [context]="currentContext$ | async"
+    [selectable]="selectable"
+    [selectionConfig]="selectionConfig"
+    [showCsvExport]="showCsvExport"
+    [showThumbnails]="showThumbnails"
+    [inPlaceSearch]="inPlaceSearch"
+    (contentChange)="onContentChange($event)"
+    (deselectObject)="deselectObject.emit($event)"
+    (selectObject)="selectObject.emit($event)"
+  ></ds-search-results>
+}
     </div>
   </div>
 </ng-template>

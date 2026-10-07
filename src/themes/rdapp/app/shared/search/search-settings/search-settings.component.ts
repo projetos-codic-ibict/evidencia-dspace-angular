@@ -16,6 +16,7 @@ import { PageSizeSelectorComponent } from '../../../../../../app/shared/page-siz
 import { SidebarDropdownComponent } from '../../../../../../app/shared/sidebar/sidebar-dropdown.component';
 import { SearchSettingsComponent as BaseComponent } from '../../../../../../app/shared/search/search-settings/search-settings.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'ds-base-search-settings',
   styleUrls: ['./search-settings.component.scss'],
@@ -25,6 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
     PageSizeSelectorComponent,
     SidebarDropdownComponent,
     TranslateModule,
+    NgbDropdownModule
   ],
 })
 

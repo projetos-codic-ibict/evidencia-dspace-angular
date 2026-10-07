@@ -66,6 +66,12 @@
     <span class="d-none d-sm-inline">{{ "evidencia.search.tab.ai-observation" | translate }}</span>
     <span class="d-sm-none">{{ "evidencia.search.tab.ai-observation.short" | translate }}</span>
   </button>
+  <div>
+    <ds-base-search-settings 
+      [currentSortOption]="searchConfig?.sort" 
+      [sortOptionsList]="sortOptionsList">
+    </ds-base-search-settings>
+  </div>
 </div>
 
 <div class="rdapp-search-toolbar d-flex flex-wrap justify-content-between align-items-center gap-2 p-3 bg-white border mb-3">

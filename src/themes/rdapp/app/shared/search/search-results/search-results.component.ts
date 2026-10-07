@@ -21,9 +21,11 @@ import { SearchExportCsvComponent } from '../../../../../../app/shared/search/se
 import { SearchLabelsComponent } from '../../../../../../app/shared/search/search-labels/search-labels.component';
 import { SearchResultsSkeletonComponent } from '../../../../../../app/shared/search/search-results/search-results-skeleton/search-results-skeleton.component';
 import { SearchResultsComponent as BaseComponent } from '../../../../../../app/shared/search/search-results/search-results.component';
-
+import { SearchSettingsComponent } from '../search-settings/search-settings.component';
+import { SortOptions } from '@dspace/core/cache/models/sort-options.model';
+import { Input } from '@angular/core';
 @Component({
-  selector: 'ds-themed-search-results',
+  selector: 'ds-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: [
     '../../../../../../app/shared/search/search-results/search-results.component.scss',
@@ -41,9 +43,14 @@ import { SearchResultsComponent as BaseComponent } from '../../../../../../app/s
     SearchLabelsComponent,
     SearchResultsSkeletonComponent,
     TranslateModule,
+    SearchSettingsComponent
   ],
 })
 export class SearchResultsComponent extends BaseComponent {
+
+  @Input() sortOptionsList: SortOptions[];
+
+@Input() currentSortOption: SortOptions;
   selectedCount = 0;
   isExporting = false;
   isExportingDocx = false;

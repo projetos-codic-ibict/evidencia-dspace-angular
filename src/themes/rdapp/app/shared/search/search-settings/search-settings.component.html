@@ -1,20 +1,68 @@
-<ng-container>
-  <h3>{{ 'search.sidebar.settings.title' | translate}}</h3>
-  <div class="result-order-settings">
-    @if (sortOptionsList) {
-      <ds-sidebar-dropdown
-        [id]="'search-sidebar-sort'"
-        [label]="'search.sidebar.settings.sort-by'"
-        (changed)="reloadOrder($event)">
-        @for (sortOptionsEntry of sortOptionsList; track sortOptionsEntry) {
-          <option
-            [value]="sortOptionsEntry.field + ',' + sortOptionsEntry.direction.toString()"
-            [selected]="sortOptionsEntry.field === currentSortOption?.field && sortOptionsEntry.direction === (currentSortOption?.direction)? 'selected': null">
-            {{'sorting.' + sortOptionsEntry.field + '.' + sortOptionsEntry.direction | translate}}
-          </option>
+<div
+  ngbDropdown
+  class="d-inline-block"
+  display="dynamic"
+  placement="bottom-end"
+>
+  <button
+    class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold d-flex align-items-center gap-2 shadow-sm"
+    id="searchSettingsDropdown"
+    ngbDropdownToggle
+  >
+    <i class="fas fa-sliders-h"></i>
+    <span>{{ "search.sidebar.settings.title" | translate }}</span>
+  </button>
+
+  <div
+    ngbDropdownMenu
+    aria-labelledby="searchSettingsDropdown"
+    class="settings-modal-wrapper shadow-lg p-0"
+  >
+    <div class="settings-modal-content">
+      <h3>
+        <i class="fas fa-cog text-primary"></i>
+        {{ "search.sidebar.settings.title" | translate }}
+      </h3>
+
+      <div class="setting-option result-order-settings">
+        <h4>
+          <label class="form-label">{{
+            "search.sidebar.settings.sort-by" | translate
+          }}</label>
+        </h4>
+
+        @if (sortOptionsList) {
+          <select class="form-select w-100" (change)="reloadOrder($event)">
+            @for (sortOptionsEntry of sortOptionsList; track sortOptionsEntry) {
+              <option
+                [value]="
+                  sortOptionsEntry.field +
+                  ',' +
+                  sortOptionsEntry.direction.toString()
+                "
+                [selected]="
+                  (currentSortOption &&
+                    sortOptionsEntry.field === currentSortOption.field &&
+                    sortOptionsEntry.direction ===
+                      currentSortOption.direction) ||
+                  (!currentSortOption && sortOptionsEntry.field === 'score')
+                "
+              >
+                {{
+                  "sorting." +
+                    sortOptionsEntry.field +
+                    "." +
+                    sortOptionsEntry.direction | translate
+                }}
+              </option>
+            }
+          </select>
         }
-      </ds-sidebar-dropdown>
-    }
+      </div>
+
+      <div class="setting-option page-size-settings">
+        <ds-page-size-selector></ds-page-size-selector>
+      </div>
+    </div>
   </div>
-  <ds-page-size-selector></ds-page-size-selector>
-</ng-container>
+</div>
