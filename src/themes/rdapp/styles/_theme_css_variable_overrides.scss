@@ -85,6 +85,10 @@
   --rdapp-ods-icon-size: 2.5rem;
   --rdapp-ods-icon-gap: 0.25rem;
 
+  /* Coluna de filtros da busca: altura máxima (tela menos o header fixo) e folga para a sombra */
+  --rdapp-sidebar-max-height: calc(100vh - var(--ds-header-height));
+  --rdapp-sidebar-scroll-gutter: 0.5rem;
+
   /* Logo da home */
   --rdapp-home-hero-logo-width: 25rem;
 

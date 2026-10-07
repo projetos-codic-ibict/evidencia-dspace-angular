@@ -16,10 +16,20 @@ ds-header-navbar-wrapper {
   display: contents;
 }
 
-// Sidebar sticks below the sticky header
+// Sidebar sticks below the sticky header. A altura é limitada à tela e a coluna rola por conta própria,
+// senão os filtros expandidos passam do rodapé e só aparecem quando a página inteira chega ao fim.
 @include media-breakpoint-up(md) {
   .sidebar-content {
     top: var(--ds-header-height);
+    max-height: var(--rdapp-sidebar-max-height);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rdapp-border-color) transparent;
+    // Folga para a sombra dos cards não ser cortada pela rolagem
+    padding-inline: var(--rdapp-sidebar-scroll-gutter);
+    padding-bottom: var(--rdapp-sidebar-scroll-gutter);
+    margin-inline: calc(-1 * var(--rdapp-sidebar-scroll-gutter));
   }
 }
 
