@@ -57,6 +57,13 @@ export class RdappSearchTextFilterComponent
           ),
       ),
       map((newFacetValues: FacetValues) => {
+        // Anos do mais recente para o mais antigo (o backend entrega em ordem crescente, ver discovery.xml)
+        if (this.filterConfig.name === 'dateIssued') {
+          newFacetValues = Object.assign(Object.create(Object.getPrototypeOf(newFacetValues)), newFacetValues, {
+            page: [...newFacetValues.page].reverse(),
+          });
+        }
+
         let filterValues: FacetValues[] = this.facetValues$.value;
 
         if (this.collapseNextUpdate) {
