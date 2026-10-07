@@ -8,6 +8,7 @@ import { SearchOptions } from '@dspace/core/shared/search/models/search-options.
 import { hasNoValue, hasValue } from '@dspace/shared/utils/empty.util';
 import { TranslateModule } from '@ngx-translate/core';
 import {
+  BehaviorSubject,
   combineLatest as observableCombineLatest,
   EMPTY,
   Observable,
@@ -55,7 +56,13 @@ export class RdappSearchTextFilterComponent
   /** Seleção que o usuário tinha antes do "Selecionar todos", devolvida ao desmarcar */
   private selectionBeforeSelectAll: string[] | null = null;
 
-  /** Verdadeiro quando todos os valores carregados do filtro estão aplicados */
+  /**
+   * Valores (sem operador) que o "Selecionar todos" aplicou. O checkbox só fica marcado enquanto todos eles
+   * continuam aplicados, mesmo os que não estão entre os valores carregados na sidebar.
+   */
+  private selectAllValues$ = new BehaviorSubject<string[]>([]);
+
+  /** Verdadeiro quando o "Selecionar todos" está valendo, ou quando todos os valores carregados estão aplicados */
   allSelected$: Observable<boolean>;
 
   override ngOnInit(): void {
@@ -63,12 +70,15 @@ export class RdappSearchTextFilterComponent
     this.allSelected$ = observableCombineLatest([
       this.searchService.getSelectedValuesForFilter(this.filterConfig.name),
       this.facetValues$,
+      this.selectAllValues$,
     ]).pipe(
-      map(([applied, pages]) => {
+      map(([applied, pages, selectAllValues]) => {
+        const isApplied = (value: string) => applied.some((a) => a.value === value);
+        if (selectAllValues.length > 0) {
+          return selectAllValues.every(isApplied);
+        }
         const values = pages.reduce((acc: FacetValue[], p: FacetValues) => acc.concat(p.page), []);
-        return values.length > 0 && values.every((v) => applied.some(
-          (a) => a.value === stripOperatorFromFilterValue(getFacetValueForType(v, this.filterConfig)),
-        ));
+        return values.length > 0 && values.every((v) => isApplied(stripOperatorFromFilterValue(getFacetValueForType(v, this.filterConfig))));
       }),
     );
   }
@@ -136,9 +146,12 @@ export class RdappSearchTextFilterComponent
             merged.push(value);
           }
         });
+        this.selectAllValues$.next(facetValues.map((facetValue: FacetValue) =>
+          stripOperatorFromFilterValue(getFacetValueForType(facetValue, this.filterConfig))));
         this.applyFilterValues(merged);
       });
     } else {
+      this.selectAllValues$.next([]);
       this.applyFilterValues(this.selectionBeforeSelectAll ?? []);
       this.selectionBeforeSelectAll = null;
     }
