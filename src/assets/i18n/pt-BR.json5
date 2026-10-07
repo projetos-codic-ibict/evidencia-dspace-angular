@@ -4688,7 +4688,7 @@
 
   "search.filters.filter.creativeWorkPublisher.label": "Search editora",
 
-  "search.filters.filter.dateIssued.head": "Data",
+  "search.filters.filter.dateIssued.head": "Ano de publicação",
 
   "search.filters.filter.dateIssued.max.placeholder": "Data final",
 
@@ -8046,7 +8046,7 @@
 
   "evidencia.favorites.retry": "Tentar novamente",
 
-  "search.filters.filter.dateIssued.label" : "Buscar por Data",
+  "search.filters.filter.dateIssued.label": "Buscar por ano de publicação",
 
-  "search.filters.filter.dateIssued.placeholder" : "Data",
+  "search.filters.filter.dateIssued.placeholder": "Ano de publicação",
 }
