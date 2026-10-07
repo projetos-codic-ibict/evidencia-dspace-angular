@@ -40,7 +40,6 @@
         (click)="onSubmit({ query: query, searchType: 'lexical' })"
         role="button"
         tabindex="0"
-        style="border-left: 1px solid rgba(255,255,255,0.2);"
       >
         {{ "search.form.search-type.lexical" | translate: { default: 'Pesquisa Exata' } }}
       </button>
@@ -54,7 +53,6 @@
           (click)="onSubmit({ query: query, searchType: 'hybrid' })"
           role="button"
           tabindex="0"
-          style="border-left: 1px solid rgba(255,255,255,0.2);"
         >
           {{ "search.form.search-type.hybrid" | translate: { default: 'Pesquisa com IA' } }}
         </button>
