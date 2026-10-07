@@ -42,7 +42,9 @@
                     @for (mdEntry of (metadata$ | async) | keyvalue; track mdEntry) {
                       @for (mdValue of mdEntry.value; track mdValue) {
                         <tr>
-                          <td>{{ mdEntry.key }}</td>
+                          @let fieldKey = 'evidencia.full-item.field.' + mdEntry.key;
+                          @let fieldLabel = fieldKey | translate;
+                          <td [title]="mdEntry.key">{{ fieldLabel === fieldKey ? mdEntry.key : fieldLabel }}</td>
                           <td>
                             @if (isUrl(mdValue.value)) {
                               <a [href]="mdValue.value" target="_blank" rel="noopener noreferrer">{{ mdValue.value }}</a>
