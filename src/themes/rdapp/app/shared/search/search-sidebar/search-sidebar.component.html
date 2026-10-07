@@ -28,20 +28,6 @@
       [refreshFilters]="refreshFilters"
       [inPlaceSearch]="inPlaceSearch">
     </ds-search-filters>
-    @if (inPlaceSearch && (this.showAdvancedSearch$ | async) === true) {
-      <ds-advanced-search
-        [configuration]="configuration"
-        [filtersConfig]="(filters | async)?.payload"
-        [inPlaceSearch]="inPlaceSearch"
-        [scope]="currentScope">
-      </ds-advanced-search>
-    }
-    @if (inPlaceSearch) {
-      <ds-search-settings
-        [currentSortOption]="currentSortOption"
-        [sortOptionsList]="sortOptionsList">
-      </ds-search-settings>
-    }
   </div>
 </div>
 </div>

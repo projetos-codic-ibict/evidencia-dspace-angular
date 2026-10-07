@@ -28,6 +28,7 @@ import { RdappSearchHierarchyFilterComponent } from './app/shared/search/search-
 import { RdappSearchTextFilterComponent } from './app/shared/search/search-filters/search-filter/search-text-filter/search-text-filter.component';
 import { SearchFiltersComponent } from './app/shared/search/search-filters/search-filters.component';
 import { SearchResultsComponent } from './app/shared/search/search-results/search-results.component';
+import { SearchSidebarComponent } from './app/shared/search/search-sidebar/search-sidebar.component';
 import { SearchSettingsComponent } from './app/shared/search/search-settings/search-settings.component';
 
 // Registra os overrides rdapp no mapa de tipos de filtro (substituem os componentes base)
@@ -64,6 +65,7 @@ const DECLARATIONS = [
   ScrollToTopComponent,
   SearchComponent,
   SearchResultsComponent,
+  SearchSidebarComponent,
   SearchFiltersComponent,
   SearchSettingsComponent,
   RdappSearchTextFilterComponent,
