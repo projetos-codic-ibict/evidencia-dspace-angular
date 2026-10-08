@@ -9,6 +9,7 @@ import { BreadcrumbsComponent } from './app/breadcrumbs/breadcrumbs.component';
 import { CollectionPageComponent } from './app/collection-page/collection-page.component';
 import { CommunityListComponent } from './app/community-list-page/community-list/community-list.component';
 import { CommunityListPageComponent } from './app/community-list-page/community-list-page.component';
+import { CommunityPageComponent } from './app/community-page/community-page.component';
 import { FooterComponent } from './app/footer/footer.component';
 import { HeaderComponent } from './app/header/header.component';
 import { HeaderNavbarWrapperComponent } from './app/header-nav-wrapper/header-navbar-wrapper.component';
@@ -59,6 +60,7 @@ const DECLARATIONS = [
   PaginationComponent,
   RootComponent,
   CollectionPageComponent,
+  CommunityPageComponent,
   CommunityListPageComponent,
   CommunityListComponent,
   GroupsRegistryComponent,
