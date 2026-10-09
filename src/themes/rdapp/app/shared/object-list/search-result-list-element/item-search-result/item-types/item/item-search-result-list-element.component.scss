@@ -248,9 +248,22 @@
 @include media-breakpoint-down(sm) {
   .row { flex-direction: column; }
 
+  // Capa à esquerda e ícones dos ODS à direita dela.
   .col-3,
   .col-md-2 {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
     width: 100%;
+
+    > .dont-break-out {
+      flex: 0 0 9rem;
+      max-width: 9rem;
+    }
+
+    .item-ods {
+      margin-top: 0;
+    }
   }
 
   :host ::ng-deep ds-thumbnail .thumbnail {
