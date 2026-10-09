@@ -13,7 +13,6 @@ import { ThemedSearchSidebarComponent } from '../../../../../app/shared/search/s
 import { SearchComponent as BaseSearchComponent } from '../../../../../app/shared/search/search.component';
 import { ThemedSearchFormComponent } from '../../../../../app/shared/search-form/themed-search-form.component';
 import { PageWithSidebarComponent } from '../../../../../app/shared/sidebar/page-with-sidebar.component';
-import { ViewModeSwitchComponent } from '../../../../../app/shared/view-mode-switch/view-mode-switch.component';
 
 import { SearchResultsComponent } from './search-results/search-results.component';
 
@@ -31,7 +30,6 @@ import { SearchResultsComponent } from './search-results/search-results.componen
     ThemedSearchFormComponent,
     ThemedSearchSidebarComponent,
     TranslateModule,
-    ViewModeSwitchComponent,
   ],
 })
 export class SearchComponent extends BaseSearchComponent {}

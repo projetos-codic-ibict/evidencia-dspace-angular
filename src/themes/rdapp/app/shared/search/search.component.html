@@ -53,12 +53,6 @@
       <div
         class="d-flex d-md-none justify-content-between align-items-center search-controls"
       >
-        @if (inPlaceSearch && showViewModes) {
-          <ds-view-mode-switch
-            [viewModeList]="viewModeList"
-            [inPlaceSearch]="inPlaceSearch"
-          ></ds-view-mode-switch>
-        }
         <button
           (click)="openSidebar()"
           aria-controls="#search-body"

@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ViewModeSwitchComponent } from '../../../../../../app/shared/view-mode-switch/view-mode-switch.component';
 import { ThemedSearchFiltersComponent } from '../../../../../../app/shared/search/search-filters/themed-search-filters.component';
 import { SearchSwitchConfigurationComponent } from '../../../../../../app/shared/search/search-switch-configuration/search-switch-configuration.component';
 import { SearchSidebarComponent as BaseComponent } from '../../../../../../app/shared/search/search-sidebar/search-sidebar.component';
@@ -20,7 +19,6 @@ import { SearchSidebarComponent as BaseComponent } from '../../../../../../app/s
     SearchSwitchConfigurationComponent,
     ThemedSearchFiltersComponent,
     TranslateModule,
-    ViewModeSwitchComponent,
   ],
 })
 export class SearchSidebarComponent extends BaseComponent {}

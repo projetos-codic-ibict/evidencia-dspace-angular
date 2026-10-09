@@ -16,7 +16,6 @@
       }
       @if (odsIcons.length > 0) {
         <div class="item-ods">
-          <span class="item-ods-title">{{ 'evidencia.search-result.ods' | translate }}</span>
           <div class="item-ods-icons">
             @for (ods of odsIcons; track ods.number) {
               <img class="item-ods-icon" [src]="ods.src" [alt]="ods.label" [title]="ods.label" width="40" height="40" />
