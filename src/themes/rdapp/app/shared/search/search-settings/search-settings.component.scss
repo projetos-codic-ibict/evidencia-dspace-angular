@@ -100,3 +100,13 @@
     }
   }
 }
+
+// Botão só com ícone: sem o texto, a altura cai para a do ícone (line-height 1).
+// Iguala à altura das abas ao lado (.rdapp-search-tab: line-height 1.5, padding 0.45rem/0.5rem, borda 1px).
+#searchSettingsDropdown {
+  min-height: calc(1.2rem + 0.9rem + 2px);
+
+  @media (min-width: 576px) {
+    min-height: calc(1.5em + 1rem + 2px);
+  }
+}
