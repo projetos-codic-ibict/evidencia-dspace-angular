@@ -39,7 +39,7 @@ interface SerieEvolucao { nome: string; dados: number[]; }
 
 /** Metrica exibida no Top 10 da aba de visualizacoes. */
 type MetricaUso = 'views' | 'downloads';
-interface ItemUso { id: string; titulo: string; views: number; downloads: number; }
+interface ItemUso { id: string; titulo: string; instituicao: string; ano: string; views: number; downloads: number; }
 interface PoliticaUso { label: string; views: number; downloads: number; }
 
 /**
@@ -86,6 +86,8 @@ const CORES_LINHAS = ['#1f4ea3', '#0a97d9', '#1aa179', '#f0a500', '#a21942', '#6
 // Cor unica da aba de visualizacoes (barras do Top 10), conforme a proposta de design.
 const COR_USO = '#0B6256';
 const TOP_N = 10;
+// Ate este numero de publicacoes o Top vira cards comparativos (recomendacao 3.1).
+const TOP_MAX_CARDS = 4;
 
 @Component({
   selector: 'ds-painel-estatisticas',
@@ -158,6 +160,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   itensUso: ItemUso[] = [];
   politicaUso: PoliticaUso[] = [];
   opcaoTopVM: any = null;
+  mostrarTabelaTop = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -491,7 +494,14 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
         porPolitica[nome].views += u.views;
         porPolitica[nome].downloads += u.downloads;
       });
-      return { id, titulo: this.tituloItem(it), views: u.views, downloads: u.downloads };
+      return {
+        id,
+        titulo: this.tituloItem(it),
+        instituicao: this.sigla(this.primeiroValor(it, 'local.instituicao')),
+        ano: this.primeiroValor(it, 'dc.date.issued').substring(0, 4),
+        views: u.views,
+        downloads: u.downloads,
+      };
     });
 
     this.totalSite = uso.totais.site;
@@ -507,8 +517,11 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   }
 
   private tituloItem(it: any): string {
-    const t = (it?.metadata?.['dc.title'] ?? [])[0]?.value;
-    return (t ?? '').trim() || 'Sem título';
+    return this.primeiroValor(it, 'dc.title') || 'Sem título';
+  }
+
+  private primeiroValor(it: any, campo: string): string {
+    return ((it?.metadata?.[campo] ?? [])[0]?.value ?? '').trim();
   }
 
   get temFiltroAtivo(): boolean {
@@ -537,10 +550,42 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       .slice(0, TOP_N);
   }
 
+  /** Com poucas publicacoes (1 a 4) o ranking vira cards comparativos (recomendacao 3.1). */
+  get topEmCards(): boolean {
+    const n = this.topItens.length;
+    return n > 0 && n <= TOP_MAX_CARDS;
+  }
+
+  /** Altura do grafico proporcional ao numero de barras, para nao sobrar espaco vazio. */
+  get alturaTop(): number {
+    return 56 + 44 * this.topItens.length;
+  }
+
+  /** Sintese textual do ranking (recomendacao 4.1): quem lidera e quanto o Top representa. */
+  get sinteseTop(): string {
+    const top = this.topItens;
+    if (!top.length) { return ''; }
+    const m = this.metricaTop;
+    const soma = top.reduce((acc, i) => acc + i[m], 0);
+    const total = m === 'views' ? this.totalDocsViews : this.totalDownloads;
+    const lider = `«${top[0].titulo}» lidera com ${this.fmt(top[0][m])} ${this.rotuloMetricaTop}`;
+    if (top.length === 1) { return `${lider}.`; }
+    const pct = total > 0 ? Math.round((soma / total) * 100) : 0;
+    return `${lider}; as ${top.length} publicações listadas somam ${this.fmt(soma)} (${pct}% das ${this.rotuloMetricaTop} nos documentos).`;
+  }
+
+  private fmt(n: number): string {
+    return n.toLocaleString('pt-BR');
+  }
+
   trocarMetricaTop(m: MetricaUso): void {
     if (m === this.metricaTop) { return; }
     this.metricaTop = m;
     this.opcaoTopVM = this.opcaoTop();
+  }
+
+  alternarTabelaTop(): void {
+    this.mostrarTabelaTop = !this.mostrarTabelaTop;
   }
 
   /** Sigla curta de uma instituicao ("... - CMAP" -> "CMAP"). */

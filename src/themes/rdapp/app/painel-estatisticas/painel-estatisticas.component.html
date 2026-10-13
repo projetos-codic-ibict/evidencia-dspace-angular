@@ -263,14 +263,56 @@
                                 (click)="trocarMetricaTop('downloads')">Downloads</button>
                       </div>
                     </div>
-                    <p class="bloco-sub">Ordenado por {{ rotuloMetricaTop }}.</p>
                     @if (topItens.length) {
-                      <ds-grafico-echarts class="grafico grafico-top" [opcao]="opcaoTopVM"></ds-grafico-echarts>
-                      <ol class="sr-only">
-                        @for (i of topItens; track i.id) {
-                          <li>{{ i.titulo }}: {{ (metricaTop === 'views' ? i.views : i.downloads) | number }} {{ rotuloMetricaTop }}</li>
-                        }
-                      </ol>
+                      <p class="bloco-sub">{{ sinteseTop }}</p>
+
+                      @if (topEmCards) {
+                        <!-- 1 a 4 publicacoes: cards comparativos no lugar do grafico (recomendacao 3.1) -->
+                        <ol class="top-cards" [attr.aria-label]="'Ranking por ' + rotuloMetricaTop">
+                          @for (i of topItens; track i.id; let pos = $index) {
+                            <li class="top-card">
+                              <span class="top-posicao" aria-hidden="true">{{ pos + 1 }}º</span>
+                              <a class="top-titulo" [routerLink]="['/items', i.id]">{{ i.titulo }}</a>
+                              <span class="top-metrica">
+                                <span class="top-valor">{{ (metricaTop === 'views' ? i.views : i.downloads) | number }}</span>
+                                <span class="top-unidade">{{ rotuloMetricaTop }}</span>
+                              </span>
+                              @if (i.instituicao || i.ano) {
+                                <span class="top-extra">{{ i.instituicao }}{{ i.instituicao && i.ano ? ' · ' : '' }}{{ i.ano }}</span>
+                              }
+                            </li>
+                          }
+                        </ol>
+                      } @else {
+                        <ds-grafico-echarts class="grafico" [style.height.px]="alturaTop" [opcao]="opcaoTopVM"
+                                            role="img" [attr.aria-label]="'Gráfico de barras: ' + sinteseTop"></ds-grafico-echarts>
+                      }
+
+                      <!-- Alternativa tabular (recomendacao 4.1) com link para o item (CA07) -->
+                      <button type="button" class="btn-tabela" (click)="alternarTabelaTop()"
+                              [attr.aria-expanded]="mostrarTabelaTop" aria-controls="tabela-top">
+                        {{ mostrarTabelaTop ? 'Ocultar tabela' : 'Ver como tabela' }}
+                      </button>
+                      @if (mostrarTabelaTop) {
+                        <div class="tabela-box sem-fade" id="tabela-top">
+                          <div class="tabela-wrap">
+                            <table class="tabela">
+                              <caption class="sr-only">Top 10 avaliações mais acessadas, ordenado por {{ rotuloMetricaTop }}</caption>
+                              <thead><tr><th class="num">#</th><th>Avaliação</th><th class="num">Visualizações</th><th class="num">Downloads</th></tr></thead>
+                              <tbody>
+                                @for (i of topItens; track i.id; let pos = $index) {
+                                  <tr>
+                                    <td class="num">{{ pos + 1 }}</td>
+                                    <td><a [routerLink]="['/items', i.id]">{{ i.titulo }}</a></td>
+                                    <td class="num">{{ i.views | number }}</td>
+                                    <td class="num">{{ i.downloads | number }}</td>
+                                  </tr>
+                                }
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      }
                     } @else {
                       <p class="vazio">Nenhuma avaliação com {{ rotuloMetricaTop }} neste recorte.</p>
                     }
