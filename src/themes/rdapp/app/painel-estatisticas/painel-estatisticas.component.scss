@@ -50,6 +50,7 @@
       svg { width: 22px; height: 22px; display: block; }
       &.icone-azul { background: #e8edfb; color: var(--rdapp-color-blue); }
       &.icone-ambar { background: #fdf2dd; color: #c98a00; }
+      &.icone-verde { background: #e3efec; color: #0B6256; }
     }
     .card-texto { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
     .card-rotulo { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #6c757d; }
@@ -116,7 +117,25 @@
   }
 
   // ---- Graficos ------------------------------------------------------
+  // ---- Aba 2: Total de Visualizacoes --------------------------------------
+  .nota-uso { color: #6c757d; font-size: 0.8rem; margin: -0.5rem 0 1.25rem; }
+  .bloco-cabecalho { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
+  .bloco-sub { color: #6c757d; font-size: 0.8rem; margin: 0 0 0.75rem; }
+  // Alternador Visualizacoes/Downloads: o estado ativo e indicado por cor E por
+  // aria-pressed (texto para leitores de tela), nao so pela cor.
+  .alternador-metrica {
+    display: inline-flex; border: 1px solid #0B6256; border-radius: 999px; overflow: hidden;
+    button {
+      border: 0; background: #fff; color: #0B6256; font-size: 0.8rem; font-weight: 600;
+      padding: 0.35rem 0.9rem; cursor: pointer; min-height: 24px;
+      &[aria-pressed='true'] { background: #0B6256; color: #fff; }
+      &:focus-visible { outline: 2px solid #0B6256; outline-offset: -2px; }
+    }
+  }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
   .grafico { width: 100%; height: 340px; }
+  .grafico-top { height: 420px; }
   .grafico-alto { height: 460px; }
   .grafico-matriz { height: 560px; }
 }

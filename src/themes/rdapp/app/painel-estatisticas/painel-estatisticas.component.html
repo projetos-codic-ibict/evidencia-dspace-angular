@@ -187,22 +187,121 @@
         <!-- ABA: Total de Visualizacoes -->
         @if (aba === 'visualizacoes') {
           <div>
-            <section class="bloco aviso">
-              <p class="bloco-ante">ENGAJAMENTO</p>
-              <h2>Total de Visualizações</h2>
-              <p>
-                As métricas de visualizações e downloads vêm do módulo de estatísticas de uso do
-                DSpace (Solr). A versão integrada desta aba, com cards e gráficos por acessos,
-                está em desenvolvimento.
-              </p>
-              <p>
-                Enquanto isso, os dados de uso podem ser consultados na página de
-                estatísticas nativa do repositório:
-              </p>
-              <a class="btn-estatisticas-nativas" routerLink="/statistics">
-                Ver estatísticas de uso do repositório →
-              </a>
-            </section>
+            @if (usoIndisponivel) {
+              <section class="bloco aviso">
+                <p class="bloco-ante">ENGAJAMENTO</p>
+                <h2>Total de Visualizações</h2>
+                <p>
+                  Não foi possível consultar as estatísticas de uso
+                  (<code>/api/statistics/painel/uso</code>). Verifique se o backend está no ar
+                  com o endpoint do painel.
+                </p>
+                <a class="btn-estatisticas-nativas" routerLink="/statistics">
+                  Ver estatísticas de uso do repositório →
+                </a>
+              </section>
+            } @else {
+              <section class="pcards">
+                <div class="pcard">
+                  <span class="card-icone icone-verde" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </span>
+                  <div class="card-texto">
+                    <span class="card-rotulo">Visualizações no site</span>
+                    <span class="card-valor">{{ totalSite | number }}</span>
+                  </div>
+                </div>
+                <div class="pcard">
+                  <span class="card-icone icone-verde" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/>
+                    </svg>
+                  </span>
+                  <div class="card-texto">
+                    <span class="card-rotulo">Visualizações nos documentos</span>
+                    <span class="card-valor">{{ totalDocsViews | number }}</span>
+                  </div>
+                </div>
+                <div class="pcard">
+                  <span class="card-icone icone-verde" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 3v12M6 11l6 6 6-6M4 21h16"/>
+                    </svg>
+                  </span>
+                  <div class="card-texto">
+                    <span class="card-rotulo">Total de downloads</span>
+                    <span class="card-valor">{{ totalDownloads | number }}</span>
+                  </div>
+                </div>
+              </section>
+              @if (temFiltroAtivo) {
+                <p class="nota-uso">Visualizações nos documentos e downloads consideram apenas o recorte dos filtros; o total do site é sempre global.</p>
+              }
+
+              @if (!temEventosUso) {
+                <section class="bloco aviso">
+                  <p class="bloco-ante">ENGAJAMENTO</p>
+                  <h2>Ainda não há eventos de uso registrados</h2>
+                  <p>
+                    As visualizações e os downloads são contados a partir dos acessos reais às
+                    páginas de item e aos arquivos. Os gráficos desta aba aparecem assim que
+                    houver eventos.
+                  </p>
+                </section>
+              } @else {
+                <div class="grade">
+                  <section class="bloco span-2">
+                    <p class="bloco-ante">RANKING</p>
+                    <div class="bloco-cabecalho">
+                      <h2>Top 10 avaliações mais acessadas</h2>
+                      <div class="alternador-metrica" role="group" aria-label="Métrica do ranking">
+                        <button type="button" [attr.aria-pressed]="metricaTop === 'views'"
+                                (click)="trocarMetricaTop('views')">Visualizações</button>
+                        <button type="button" [attr.aria-pressed]="metricaTop === 'downloads'"
+                                (click)="trocarMetricaTop('downloads')">Downloads</button>
+                      </div>
+                    </div>
+                    <p class="bloco-sub">Ordenado por {{ rotuloMetricaTop }}.</p>
+                    @if (topItens.length) {
+                      <ds-grafico-echarts class="grafico grafico-top" [opcao]="opcaoTopVM"></ds-grafico-echarts>
+                      <ol class="sr-only">
+                        @for (i of topItens; track i.id) {
+                          <li>{{ i.titulo }}: {{ (metricaTop === 'views' ? i.views : i.downloads) | number }} {{ rotuloMetricaTop }}</li>
+                        }
+                      </ol>
+                    } @else {
+                      <p class="vazio">Nenhuma avaliação com {{ rotuloMetricaTop }} neste recorte.</p>
+                    }
+                  </section>
+
+                  <section class="bloco span-2">
+                    <p class="bloco-ante">DETALHAMENTO</p>
+                    <h2>Acessos por Política Pública ou Objeto Avaliado</h2>
+                    @if (politicaUso.length) {
+                      <div class="tabela-box sem-fade">
+                        <div class="tabela-wrap">
+                          <table class="tabela">
+                            <thead><tr><th>Nome da Política</th><th class="num">Visualizações</th><th class="num">Downloads</th></tr></thead>
+                            <tbody>
+                              @for (p of politicaUso; track p.label) {
+                                <tr><td>{{ p.label }}</td><td class="num">{{ p.views | number }}</td><td class="num">{{ p.downloads | number }}</td></tr>
+                              }
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    } @else {
+                      <p class="vazio">Sem dados de política pública para este recorte.</p>
+                    }
+                  </section>
+                </div>
+              }
+              @if (usoGeradoEm) {
+                <p class="nota-uso">Estatísticas de uso consolidadas em {{ usoGeradoEm | date:'dd/MM/yyyy HH:mm' }}.</p>
+              }
+            }
           </div>
         }
 
