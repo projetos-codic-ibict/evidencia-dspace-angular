@@ -20,6 +20,23 @@ import {
 
 export interface FacetValue { label: string; count: number; }
 
+/** Uso de um item: visualizacoes da pagina e downloads dos bitstreams (core statistics). */
+export interface UsoItem { views: number; downloads: number; }
+
+/** Totais gerais de uso do repositorio; nao dependem dos filtros do painel. */
+export interface UsoTotais { site: number; documentos: number; downloads: number; }
+
+/**
+ * Resposta de GET /api/statistics/painel/uso ja indexada por uuid de item, para o
+ * cruzamento com os itens do Discovery (ver agregarUso no componente).
+ */
+export interface PainelUso {
+  totais: UsoTotais;
+  porItem: Map<string, UsoItem>;
+  termosBuscados: FacetValue[];
+  geradoEm: string | null;
+}
+
 // Campo do Solr para contar avaliacoes que POSSUEM ODS (query de presenca no indice).
 // Deve casar com o campo de faceta gerado pelo Discovery para o filtro "ods".
 // Confirme na instancia; se nao bater, troque para 'ods_filter'.
@@ -84,6 +101,35 @@ export class PainelEstatisticasService {
         return acc.concat(objs.map((o: any) => o?._embedded?.indexableObject).filter((x: any) => !!x));
       }, [] as any[]),
       catchError(() => of([] as any[])),
+    );
+  }
+
+  /**
+   * Estatisticas de uso do painel (endpoint proprio do EvidencIA, read-only).
+   * Devolve null se o endpoint nao responder, para a aba 2 mostrar aviso sem
+   * derrubar o carregamento da aba 1.
+   */
+  fetchUso(): Observable<PainelUso | null> {
+    const url = `${this.restApi}/statistics/painel/uso`;
+    return this.http.get<any>(url).pipe(
+      map((res) => {
+        const porItem = new Map<string, UsoItem>();
+        (res?.porItem ?? []).forEach((u: any) => {
+          if (u?.id) { porItem.set(u.id, { views: u.views ?? 0, downloads: u.downloads ?? 0 }); }
+        });
+        return {
+          totais: {
+            site: res?.totais?.site ?? 0,
+            documentos: res?.totais?.documentos ?? 0,
+            downloads: res?.totais?.downloads ?? 0,
+          },
+          porItem,
+          termosBuscados: (res?.termosBuscados ?? [])
+            .map((t: any) => ({ label: t.label, count: t.count } as FacetValue)),
+          geradoEm: res?.geradoEm ?? null,
+        } as PainelUso;
+      }),
+      catchError(() => of(null)),
     );
   }
 

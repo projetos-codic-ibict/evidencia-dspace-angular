@@ -1,4 +1,5 @@
 import {
+  DatePipe,
   DecimalPipe,
   isPlatformBrowser,
 } from '@angular/common';
@@ -30,9 +31,16 @@ import { NuvemPalavrasComponent } from './nuvem-palavras.component';
 import {
   FacetValue,
   PainelEstatisticasService,
+  PainelUso,
+  UsoItem,
 } from './painel-estatisticas.service';
 
 interface SerieEvolucao { nome: string; dados: number[]; }
+
+/** Metrica exibida no Top 10 da aba de visualizacoes. */
+type MetricaUso = 'views' | 'downloads';
+interface ItemUso { id: string; titulo: string; views: number; downloads: number; }
+interface PoliticaUso { label: string; views: number; downloads: number; }
 
 /**
  * FONTE UNICA da composicao da barra de filtros (CA18 da padronizacao):
@@ -75,12 +83,16 @@ const NOMES_ODS: { [n: number]: string } = {
 const ESCALA_HEATMAP = ['#d80000', '#f07800', '#f2c200', '#8bc34a', '#1a9850'];
 // Paleta para as linhas da evolucao.
 const CORES_LINHAS = ['#1f4ea3', '#0a97d9', '#1aa179', '#f0a500', '#a21942', '#6f42c1', '#fd6925'];
+// Cor unica da aba de visualizacoes (barras do Top 10), conforme a proposta de design.
+const COR_USO = '#0B6256';
+const TOP_N = 10;
 
 @Component({
   selector: 'ds-painel-estatisticas',
   templateUrl: './painel-estatisticas.component.html',
   styleUrls: ['./painel-estatisticas.component.scss'],
   imports: [
+    DatePipe,
     DecimalPipe,
     FiltrosSidebarComponent,
     GraficoEchartsComponent,
@@ -133,6 +145,19 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   opcaoTipoVM: any = null;
   opcaoAnoVM: any = null;
   opcaoMatrizVM: any = null;
+
+  // ---- Aba 2: Total de Visualizacoes --------------------------------------
+  // Fonte: GET /api/statistics/painel/uso (core statistics do Solr), cruzado com
+  // os itens do recorte. usoIndisponivel = endpoint nao respondeu.
+  usoIndisponivel = false;
+  usoGeradoEm: string | null = null;
+  totalSite = 0;
+  totalDocsViews = 0;
+  totalDownloads = 0;
+  metricaTop: MetricaUso = 'views';
+  itensUso: ItemUso[] = [];
+  politicaUso: PoliticaUso[] = [];
+  opcaoTopVM: any = null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -251,6 +276,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       politicaPublica: this.fetchFacetDupla('politicaPublica'),
       itens: this.stats.fetchItens(this.paramsFiltro()),
       itensAno: this.stats.fetchItens(this.paramsFiltro('dateIssued')),
+      uso: this.stats.fetchUso(),
     }).subscribe({
       next: (r) => {
         this.totalAvaliacoes = r.total;
@@ -270,6 +296,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
         this.agregarEvolucao(r.itens);
         this.agregarMatriz(r.itens);
         this.agregarPalavras(r.itens);
+        this.agregarUso(r.itens, r.uso);
         this.construirOpcoes(r);
 
         this.recomputarGraficos();
@@ -350,6 +377,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     this.opcaoTipoVM = this.opcaoBarras(this.tipoDocumento, '#1f4ea3');
     this.opcaoAnoVM = this.opcaoLinhaTempo();
     this.opcaoMatrizVM = this.opcaoMatriz();
+    this.opcaoTopVM = this.opcaoTop();
   }
 
   // ---- Agregacoes --------------------------------------------------------
@@ -428,6 +456,93 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       .slice(0, 40);
   }
 
+  /**
+   * Cruza os itens do recorte (ja filtrados pela sidebar) com as contagens de uso
+   * por item do endpoint. Daqui saem os cards, o Top 10 e a tabela de politicas.
+   * Sem filtro ativo, os cards mostram os totais do backend (fonte da verdade,
+   * cobrem todo o acervo); com filtro, a soma dos itens do recorte.
+   */
+  private agregarUso(itens: any[], uso: PainelUso | null): void {
+    this.usoIndisponivel = uso == null;
+    if (!uso) {
+      this.usoGeradoEm = null;
+      this.totalSite = 0;
+      this.totalDocsViews = 0;
+      this.totalDownloads = 0;
+      this.itensUso = [];
+      this.politicaUso = [];
+      return;
+    }
+    this.usoGeradoEm = uso.geradoEm;
+    const zero: UsoItem = { views: 0, downloads: 0 };
+    const porPolitica: { [p: string]: PoliticaUso } = {};
+    let somaViews = 0;
+    let somaDownloads = 0;
+
+    this.itensUso = itens.map((it) => {
+      const id: string = it?.uuid ?? it?.id ?? '';
+      const u = uso.porItem.get(id) ?? zero;
+      somaViews += u.views;
+      somaDownloads += u.downloads;
+      (it?.metadata?.['local.politicapublica'] ?? []).forEach((v: any) => {
+        const nome = (v?.value ?? '').trim();
+        if (!nome) { return; }
+        porPolitica[nome] = porPolitica[nome] ?? { label: nome, views: 0, downloads: 0 };
+        porPolitica[nome].views += u.views;
+        porPolitica[nome].downloads += u.downloads;
+      });
+      return { id, titulo: this.tituloItem(it), views: u.views, downloads: u.downloads };
+    });
+
+    this.totalSite = uso.totais.site;
+    if (this.temFiltroAtivo) {
+      this.totalDocsViews = somaViews;
+      this.totalDownloads = somaDownloads;
+    } else {
+      this.totalDocsViews = uso.totais.documentos;
+      this.totalDownloads = uso.totais.downloads;
+    }
+    this.politicaUso = Object.values(porPolitica)
+      .sort((a, b) => b.views - a.views || b.downloads - a.downloads || a.label.localeCompare(b.label, 'pt-BR'));
+  }
+
+  private tituloItem(it: any): string {
+    const t = (it?.metadata?.['dc.title'] ?? [])[0]?.value;
+    return (t ?? '').trim() || 'Sem título';
+  }
+
+  get temFiltroAtivo(): boolean {
+    return Object.values(this.selecionados).some((sel) => sel.size > 0);
+  }
+
+  /**
+   * Ha visualizacoes de documento ou downloads (no acervo ou no recorte)? Controla o
+   * estado vazio da aba 2: so esses eventos alimentam o Top 10 e a tabela; o total
+   * do site (home, colecoes) aparece no card mesmo sem eles.
+   */
+  get temEventosUso(): boolean {
+    return this.totalDocsViews > 0 || this.totalDownloads > 0;
+  }
+
+  get rotuloMetricaTop(): string {
+    return this.metricaTop === 'views' ? 'visualizações' : 'downloads';
+  }
+
+  /** Top N itens pela metrica selecionada, maior primeiro; ignora itens sem uso. */
+  get topItens(): ItemUso[] {
+    const m = this.metricaTop;
+    return this.itensUso
+      .filter((i) => i[m] > 0)
+      .sort((a, b) => b[m] - a[m] || a.titulo.localeCompare(b.titulo, 'pt-BR'))
+      .slice(0, TOP_N);
+  }
+
+  trocarMetricaTop(m: MetricaUso): void {
+    if (m === this.metricaTop) { return; }
+    this.metricaTop = m;
+    this.opcaoTopVM = this.opcaoTop();
+  }
+
   /** Sigla curta de uma instituicao ("... - CMAP" -> "CMAP"). */
   private sigla(nome: string): string {
     const partes = nome.split(' - ');
@@ -469,6 +584,36 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
         type: 'bar',
         data: invertido.map((v) => v.count),
         itemStyle: { color: cor, borderRadius: [0, 4, 4, 0] },
+        label: { show: true, position: 'right' },
+      }],
+    };
+  }
+
+  /** Top 10 em barras horizontais: titulo truncado no eixo, valor na ponta da barra. */
+  private opcaoTop(): any {
+    const top = this.topItens;
+    if (!top.length) { return null; }
+    const m = this.metricaTop;
+    const invertido = [...top].reverse();
+    return {
+      tooltip: {
+        trigger: 'axis', axisPointer: { type: 'shadow' },
+        formatter: (params: any) => {
+          const i = invertido[params[0].dataIndex];
+          return `${i.titulo}<br/><b>${i[m]}</b> ${this.rotuloMetricaTop}`;
+        },
+      },
+      grid: { left: 8, right: 48, top: 8, bottom: 8, containLabel: true },
+      xAxis: { type: 'value', minInterval: 1 },
+      yAxis: {
+        type: 'category',
+        data: invertido.map((i) => i.titulo),
+        axisLabel: { width: 260, overflow: 'truncate' },
+      },
+      series: [{
+        type: 'bar',
+        data: invertido.map((i) => i[m]),
+        itemStyle: { color: COR_USO, borderRadius: [0, 4, 4, 0] },
         label: { show: true, position: 'right' },
       }],
     };
