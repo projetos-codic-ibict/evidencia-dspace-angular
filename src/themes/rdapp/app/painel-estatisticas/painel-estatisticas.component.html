@@ -256,15 +256,74 @@
               }
             </section>
 
-            <section class="bloco span-1">
-              <p class="bloco-ante">COMPOSIÇÃO</p>
-              <h2>Instituição</h2>
-              @if (instituicao.length) {
-                <ds-grafico-echarts class="grafico grafico-alto" [opcao]="opcaoInstVM"></ds-grafico-echarts>
-              } @else {
-                <p class="vazio">Sem dados de instituição.</p>
-              }
-            </section>
+
+<section class="bloco span-1">
+  <p class="bloco-ante">COMPOSIÇÃO</p>
+  <h2>Instituição</h2>
+
+  @if (instituicao.length) {
+
+    @if (instituicao.length <= 3) {
+
+      <ul class="instituicoes-valores">
+        @for (inst of instituicao; track inst.label) {
+          <li class="instituicao-valor-item">
+            <span class="instituicao-nome">
+              {{ inst.label }}
+            </span>
+
+            <span class="instituicao-quantidade">
+              <strong>{{ inst.count | number }}</strong>
+<span>
+  {{ inst.count === 1 ? 'avaliação' : 'avaliações' }}
+</span>
+            </span>
+          </li>
+        }
+      </ul>
+
+      @if (instituicao.length >= 2) {
+        <p class="instituicao-diferenca">
+          Diferença entre a maior e a menor quantidade:
+          <strong>
+            {{
+              (instituicao[0].count -
+              instituicao[instituicao.length - 1].count) | number
+            }}
+{{ (instituicao[0].count - instituicao[instituicao.length - 1].count) === 1
+  ? 'avaliação'
+  : 'avaliações' }}
+          </strong>
+        </p>
+      }
+
+    } @else {
+
+      <ds-grafico-echarts
+        class="grafico grafico-alto"
+        [opcao]="opcaoInstVM"
+        role="img"
+        aria-label="Gráfico de pontos com o número de avaliações por instituição"
+        aria-describedby="dados-instituicoes">
+      </ds-grafico-echarts>
+
+      <ul id="dados-instituicoes" class="sr-only">
+        @for (inst of instituicao; track inst.label) {
+          <li>
+{{ inst.label }}:
+{{ inst.count | number }}
+{{ inst.count === 1 ? 'avaliação' : 'avaliações' }}.
+          </li>
+        }
+      </ul>
+
+    }
+
+  } @else {
+    <p class="vazio">Sem dados de instituição.</p>
+  }
+</section>
+
 
             <section class="bloco span-1">
               <p class="bloco-ante">DISTRIBUIÇÃO</p>

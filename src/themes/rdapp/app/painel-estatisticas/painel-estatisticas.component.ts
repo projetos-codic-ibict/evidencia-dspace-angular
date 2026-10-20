@@ -444,7 +444,7 @@ alternarTabelaMatriz(): void {
   private recomputarGraficos(): void {
     this.opcaoOdsVM = this.opcaoOds();
     this.opcaoAreaVM = this.opcaoBarras(this.areaTematica, '#1E5CC8');
-    this.opcaoInstVM = this.opcaoTreemap(this.instituicao);
+    this.opcaoInstVM = this.opcaoDotPlot(this.instituicao);
     this.opcaoAbrVM = this.opcaoBarras(this.abrangencia, '#f0a500');
     this.opcaoTipoVM = this.opcaoBarras(this.tipoDocumento, '#1f4ea3');
     this.opcaoAnoVM = this.opcaoLinhaTempo();
@@ -733,17 +733,95 @@ alternarTabelaMatriz(): void {
     };
   }
 
-  private opcaoTreemap(dados: FacetValue[]): any {
-    if (!dados.length) { return null; }
-    return {
-      tooltip: { formatter: (info: any) => `${info.name}<br/>${info.value} avaliações` },
-      series: [{
-        type: 'treemap', roam: false, breadcrumb: { show: false },
-        label: { show: true, formatter: '{b}\n{c}' },
-        data: dados.map((v) => ({ name: v.label, value: v.count })),
-      }],
-    };
-  }
+
+/**
+ * Dot plot horizontal para comparar o número
+ * de avaliações por instituição.
+ */
+private opcaoDotPlot(dados: FacetValue[]): any {
+  if (!dados.length) { return null; }
+
+  // O ECharts desenha a primeira categoria na base.
+  // Assim, o maior valor aparece no topo.
+  const ordenados = [...dados].sort(
+    (a, b) => a.count - b.count
+  );
+
+  return {
+    tooltip: {
+      trigger: 'item',
+      formatter: (p: any) => {
+        const d = ordenados[p.dataIndex];
+        return `${d.label}<br/><b>${d.count.toLocaleString('pt-BR')}</b> avaliações`;
+      },
+    },
+
+    grid: {
+      left: 330,
+      right: 85,
+      top: 15,
+      bottom: 30,
+      containLabel: false,
+    },
+
+    xAxis: {
+      type: 'value',
+      min: 0,
+      minInterval: 1,
+      axisLabel: {
+        color: '#6A6F76',
+      },
+      splitLine: {
+        lineStyle: {
+          color: '#E9EDF2',
+        },
+      },
+    },
+
+yAxis: {
+  type: 'category',
+  data: ordenados.map((d) => d.label),
+  axisLabel: {
+    color: '#6A6F76',
+    width: 290,
+    overflow: 'break',
+    lineHeight: 16,
+    fontSize: 12,
+    margin: 12,
+    align: 'right',
+  },
+  axisLine: { show: false },
+  axisTick: { show: false },
+},
+
+    series: [{
+      type: 'scatter',
+      symbolSize: 14,
+
+      data: ordenados.map((d, indice) => ({
+        name: d.label,
+        value: [d.count, indice],
+      })),
+
+      itemStyle: {
+        color: '#0B3A82',
+      },
+
+      label: {
+        show: true,
+        position: 'right',
+        color: '#4F5B66',
+        formatter: (p: any) =>
+          Number(p.value[0]).toLocaleString('pt-BR'),
+      },
+
+      emphasis: {
+        scale: 1.3,
+      },
+    }],
+  };
+}
+
 
   /** Linha do tempo: uma linha por instituicao (ordem cronologica no eixo X). */
   private opcaoLinhaTempo(): any {

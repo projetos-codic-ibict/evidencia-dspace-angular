@@ -348,3 +348,72 @@
     align-items: flex-start;
   }
 }
+
+// ---- Instituição: comparação com poucas categorias ------------
+
+.instituicoes-valores {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.instituicao-valor-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  padding: 1.1rem 0;
+  border-bottom: 1px solid #E9EDF2;
+}
+
+.instituicao-nome {
+  flex: 1;
+  min-width: 0;
+
+  color: #4F5B66;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.instituicao-quantidade {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+
+  strong {
+    color: #0B3A82;
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  span {
+    color: #6A6F76;
+    font-size: 0.78rem;
+  }
+}
+
+.instituicao-diferenca {
+  margin: 1.1rem 0 0;
+  color: #4F5B66;
+  font-size: 0.85rem;
+  line-height: 1.5;
+
+  strong {
+    color: #0B3A82;
+  }
+}
+
+@media (max-width: 575px) {
+  .instituicao-valor-item {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .instituicao-quantidade {
+    align-items: flex-start;
+  }
+}
