@@ -668,3 +668,71 @@
     align-items: flex-start;
   }
 }
+// ---- ODS: cards para poucas categorias ----------------------
+
+.ods-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(180px, 1fr)
+  );
+  gap: 1rem;
+}
+
+.ods-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  gap: 0.5rem;
+  padding: 1.25rem;
+
+  background: #FFFFFF;
+  border: 1px solid #E9EDF2;
+  border-top: 5px solid;
+  border-radius: 10px;
+}
+
+.ods-card-numero {
+  color: #4F5B66;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.ods-card-nome {
+  color: #4F5B66;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.ods-card-valor {
+  color: #0B3A82;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.ods-card-unidade {
+  color: #6A6F76;
+  font-size: 0.8rem;
+}
+
+.ods-nao-informado {
+  margin: 1rem 0 0;
+  color: #4F5B66;
+  font-size: 0.85rem;
+}
+
+.ods-card-icone {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: 0.4rem;
+}

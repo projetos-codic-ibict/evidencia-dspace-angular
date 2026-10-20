@@ -226,25 +226,112 @@
 </section>
 
 
-            <section class="bloco span-1">
-              <p class="bloco-ante">SUSTENTABILIDADE</p>
-              <h2>Objetivos de Desenvolvimento Sustentável (ODS)</h2>
-              @if (totalAvaliacoes) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoOdsVM"></ds-grafico-echarts>
-                <div class="legenda-grafico">
-                  <span class="lg-titulo">Legenda dos Objetivos</span>
-                  <div class="lg-grid">
-                    @for (l of legendaOds; track l.label) {
-                      <span class="lg-item">
-                        <span class="lg-dot" [style.background]="l.cor" aria-hidden="true"></span>{{ l.label }}
-                      </span>
-                    }
-                  </div>
-                </div>
-              } @else {
-                <p class="vazio">Sem dados de ODS.</p>
-              }
-            </section>
+
+<section class="bloco span-1">
+  <p class="bloco-ante">SUSTENTABILIDADE</p>
+  <h2>Objetivos de Desenvolvimento Sustentável (ODS)</h2>
+
+  @if (totalAvaliacoes) {
+
+    @if (odsComDados.length > 0 && odsComDados.length <= 3) {
+
+      <!-- Cards quando houver de 1 a 3 ODS com avaliações -->
+      <ul class="ods-cards"
+          aria-label="Avaliações por Objetivo de Desenvolvimento Sustentável">
+
+        @for (ods of odsComDados; track ods.num) {
+          <li class="ods-card"
+              [style.border-top-color]="ods.cor">
+
+@if (ods.icone) {
+  <img
+    class="ods-card-icone"
+    [src]="ods.icone"
+    alt=""
+    aria-hidden="true"
+    width="72"
+    height="72">
+} @else {
+  <span class="ods-card-numero">
+    ODS {{ ods.num }}
+  </span>
+}
+
+<span class="sr-only">
+  ODS {{ ods.num }} —
+</span>
+
+            <span class="ods-card-nome">
+              {{ ods.nome }}
+            </span>
+
+            <span class="ods-card-valor">
+              {{ ods.count | number }}
+            </span>
+
+            <span class="ods-card-unidade">
+              {{ ods.count === 1 ? 'avaliação' : 'avaliações' }}
+            </span>
+
+          </li>
+        }
+      </ul>
+
+      @if (odsNaoInformado > 0) {
+        <p class="ods-nao-informado">
+          Sem ODS informado:
+          <strong>{{ odsNaoInformado | number }}</strong>
+          {{ odsNaoInformado === 1 ? 'avaliação' : 'avaliações' }}.
+        </p>
+      }
+
+    } @else if (odsComDados.length === 0) {
+
+      <p class="vazio">
+        Nenhuma avaliação associada a um ODS neste recorte.
+      </p>
+
+      @if (odsNaoInformado > 0) {
+        <p class="ods-nao-informado">
+          Sem ODS informado:
+          <strong>{{ odsNaoInformado | number }}</strong>
+          {{ odsNaoInformado === 1 ? 'avaliação' : 'avaliações' }}.
+        </p>
+      }
+
+    } @else {
+
+      <!-- Gráfico convencional para quatro ou mais ODS -->
+      <ds-grafico-echarts
+        class="grafico"
+        [opcao]="opcaoOdsVM">
+      </ds-grafico-echarts>
+
+      <div class="legenda-grafico">
+        <span class="lg-titulo">Legenda dos Objetivos</span>
+
+        <div class="lg-grid">
+          @for (l of legendaOds; track l.label) {
+            <span class="lg-item">
+              <span
+                class="lg-dot"
+                [style.background]="l.cor"
+                aria-hidden="true">
+              </span>
+              {{ l.label }}
+            </span>
+          }
+        </div>
+      </div>
+
+    }
+
+  } @else {
+    <p class="vazio">Sem dados de ODS.</p>
+  }
+
+</section>
+
 
             <section class="bloco span-1">
               <p class="bloco-ante">EVOLUÇÃO</p>

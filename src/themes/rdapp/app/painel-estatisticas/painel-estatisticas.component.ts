@@ -690,13 +690,39 @@ alternarTabelaAno(): void {
           return `${o.label}<br/><b>${o.count}</b> avaliações`;
         },
       },
-      grid: { left: 40, right: 16, top: 16, bottom: 40 },
+      grid: { left: 40, right: 16, top: 36, bottom: 40 },
       xAxis: { type: 'category', data: dados.map((o) => (o.ni ? 'N/I' : String(o.num))), axisLabel: { interval: 0 } },
       yAxis: { type: 'value' },
-      series: [{
-        type: 'bar',
-        data: dados.map((o) => ({ value: o.count, name: o.label, itemStyle: { color: o.cor } })),
-      }],
+series: [{
+  type: 'bar',
+
+  data: dados.map((o) => ({
+    value: o.count,
+    name: o.label,
+    itemStyle: {
+      color: o.cor,
+    },
+  })),
+
+  label: {
+    show: true,
+    position: 'top',
+    distance: 5,
+
+    color: '#4F5B66',
+    fontSize: 11,
+    fontWeight: 600,
+
+    formatter: (params: any) => {
+      const valor = Number(params.value);
+
+      return valor > 0
+        ? valor.toLocaleString('pt-BR')
+        : '';
+    },
+  },
+}],
+
     };
   }
 
@@ -1124,12 +1150,31 @@ endLabel: {
    * ODS completo para o grafico e a legenda: faixa fixa de 1 a 18 (zero nos ausentes,
    * com o nome oficial de fallback) mais a coluna "Nao Informado" ao final.
    */
-  get odsCompleto(): { num: number; label: string; count: number; cor: string; ni: boolean }[] {
+
+  get odsCompleto(): {
+    num: number;
+    label: string;
+    count: number;
+    cor: string;
+    ni: boolean;
+  }[] {
     const porNum: { [n: number]: FacetValue } = {};
-    this.ods.forEach((v) => { porNum[this.numeroOds(v.label)] = v; });
-    const arr: { num: number; label: string; count: number; cor: string; ni: boolean }[] = [];
+
+    this.ods.forEach((v) => {
+      porNum[this.numeroOds(v.label)] = v;
+    });
+
+    const arr: {
+      num: number;
+      label: string;
+      count: number;
+      cor: string;
+      ni: boolean;
+    }[] = [];
+
     for (let n = 1; n <= 18; n++) {
       const fv = porNum[n];
+
       arr.push({
         num: n,
         label: fv ? fv.label : `${n} - ${NOMES_ODS[n] ?? 'ODS ' + n}`,
@@ -1138,12 +1183,54 @@ endLabel: {
         ni: false,
       });
     }
-    arr.push({ num: 19, label: 'Não Informado', count: this.odsNaoInformado, cor: '#9aa5b1', ni: true });
+
+    arr.push({
+      num: 19,
+      label: 'Não Informado',
+      count: this.odsNaoInformado,
+      cor: '#9aa5b1',
+      ni: true,
+    });
+
     return arr;
   }
 
-  /** Legenda dos ODS: 1 a 18 mais "Nao Informado", cada um com sua cor. */
-  get legendaOds(): { num: number; label: string; cor: string }[] {
-    return this.odsCompleto.map((o) => ({ num: o.num, label: o.label, cor: o.cor }));
+  /**
+   * ODS que possuem avaliações no recorte atual.
+   * Exclui valores zerados e a categoria Não Informado.
+   */
+  get odsComDados(): {
+    num: number;
+    nome: string;
+    count: number;
+    cor: string;
+    icone: string | null;
+  }[] {
+    return this.odsCompleto
+      .filter((o) => !o.ni && o.count > 0)
+      .map((o) => ({
+        num: o.num,
+        nome: NOMES_ODS[o.num] ?? o.label,
+        count: o.count,
+        cor: o.cor,
+        icone: o.num <= 17
+          ? `assets/rdapp/images/ods/ods-${String(o.num).padStart(2, '0')}.svg`
+          : null,
+      }));
+  }
+
+  /**
+   * Legenda dos ODS, incluindo Não Informado.
+   */
+  get legendaOds(): {
+    num: number;
+    label: string;
+    cor: string;
+  }[] {
+    return this.odsCompleto.map((o) => ({
+      num: o.num,
+      label: o.label,
+      cor: o.cor,
+    }));
   }
 }
