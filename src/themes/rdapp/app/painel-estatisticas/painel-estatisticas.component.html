@@ -86,25 +86,145 @@
               }
             </section>
 
-            <section class="bloco span-2">
-              <p class="bloco-ante">MATRIZ CRUZADA</p>
-              <h2>Tipo de Documento vs. Tipo de Avaliação</h2>
-              @if (matrizData.length) {
-                <ds-grafico-echarts class="grafico grafico-matriz" [opcao]="opcaoMatrizVM" (pronto)="ligarCruzMatriz($event)"></ds-grafico-echarts>
-                <div class="legenda-grafico">
-                  <span class="lg-titulo">Tipo de Avaliação</span>
-                  <div class="lg-grid">
-                    @for (l of legendaMatriz; track l.num) {
-                      <span class="lg-item">
-                        <span class="lg-dot lg-dot-neutro" aria-hidden="true"></span>{{ l.num }} - {{ l.nome }}
-                      </span>
-                    }
-                  </div>
-                </div>
-              } @else {
-                <p class="vazio">Sem cruzamentos para este recorte.</p>
+<section class="bloco span-2">
+  <p class="bloco-ante">MATRIZ CRUZADA</p>
+  <h2>Tipo de Documento vs. Tipo de Avaliação</h2>
+
+  @if (matrizData.length) {
+
+    <!-- CASO 1: Apenas uma combinação -->
+    @if (matrizDocs.length === 1 && matrizAvals.length === 1) {
+
+      <div class="matriz-valor-unico">
+
+        <div class="matriz-valor-categorias">
+          <p>
+            <strong>Tipo de Documento:</strong>
+            {{ matrizDocs[0] }}
+          </p>
+
+          <p>
+            <strong>Tipo de Avaliação:</strong>
+            {{ matrizAvals[0] }}
+          </p>
+        </div>
+
+        <div class="matriz-valor-destaque">
+          <strong>
+            {{ matrizData[0][2] | number }}
+          </strong>
+
+          <span>
+            {{ matrizData[0][2] === 1 ? 'avaliação' : 'avaliações' }}
+          </span>
+        </div>
+
+      </div>
+
+    } @else {
+
+      <!-- CASO 2: Matriz maior, com heatmap -->
+      @if (!matrizPoucasCategorias) {
+
+        <ds-grafico-echarts
+          class="grafico grafico-matriz"
+          [style.height.px]="alturaMatriz"
+          [opcao]="opcaoMatrizVM"
+          (pronto)="ligarCruzMatriz($event)">
+        </ds-grafico-echarts>
+
+        <div class="legenda-grafico">
+          <span class="lg-titulo">
+            Tipo de Avaliação
+          </span>
+
+          <div class="lg-grid">
+            @for (l of legendaMatriz; track l.num) {
+              <span class="lg-item">
+                <span
+                  class="lg-dot lg-dot-neutro"
+                  aria-hidden="true">
+                </span>
+                {{ l.num }} - {{ l.nome }}
+              </span>
+            }
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-tabela-matriz"
+          (click)="alternarTabelaMatriz()"
+          [attr.aria-expanded]="mostrarTabelaMatriz"
+          aria-controls="tabela-matriz-documentos">
+
+          {{ mostrarTabelaMatriz ? 'Ocultar tabela' : 'Ver como tabela' }}
+
+        </button>
+
+      }
+
+      <!-- CASO 3: Tabela simplificada ou alternativa ao heatmap -->
+      <div
+        id="tabela-matriz-documentos"
+        class="matriz-tabela-container"
+        [hidden]="!matrizPoucasCategorias && !mostrarTabelaMatriz"
+        tabindex="0"
+        role="region"
+        aria-label="Tabela de tipos de documento por tipos de avaliação">
+
+        <table class="matriz-tabela">
+
+          <caption>
+            Quantidade de avaliações por tipo de documento
+            e tipo de avaliação
+          </caption>
+
+          <thead>
+            <tr>
+              <th scope="col">
+                Tipo de Documento
+              </th>
+
+              @for (avaliacao of matrizAvals; track avaliacao) {
+                <th scope="col">
+                  {{ avaliacao }}
+                </th>
               }
-            </section>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (linha of linhasMatrizTabela; track linha.nome) {
+              <tr>
+                <th scope="row">
+                  {{ linha.nome }}
+                </th>
+
+                @for (valor of linha.valores; track $index) {
+                  <td class="matriz-numero">
+                    {{ valor | number }}
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+
+        </table>
+      </div>
+
+    }
+
+  } @else {
+
+    <p class="vazio">
+      Sem cruzamentos para este recorte.
+    </p>
+
+  }
+
+</section>
+
 
             <section class="bloco span-1">
               <p class="bloco-ante">SUSTENTABILIDADE</p>

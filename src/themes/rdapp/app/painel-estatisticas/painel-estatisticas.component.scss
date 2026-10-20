@@ -153,3 +153,152 @@
   .grafico-alto { height: 460px; }
   .grafico-matriz { height: 560px; }
 }
+
+
+// ---- Heatmap: alternativa tabular acessível -------------------
+
+.btn-tabela-matriz {
+  display: inline-block;
+  margin: 1rem 0 0.75rem;
+  padding: 0.35rem 0;
+
+  background: transparent;
+  border: none;
+
+  color: #0B3A82;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid #1E5CC8;
+    outline-offset: 3px;
+  }
+}
+
+.matriz-tabela-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+
+  border: 1px solid #E9EDF2;
+  border-radius: 8px;
+
+  &:focus-visible {
+    outline: 2px solid #1E5CC8;
+    outline-offset: 2px;
+  }
+}
+
+.matriz-tabela {
+  width: 100%;
+  min-width: max-content;
+  border-collapse: collapse;
+
+  caption {
+    caption-side: top;
+    text-align: left;
+    padding: 0.8rem;
+
+    color: #4F5B66;
+    font-size: 0.82rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #E9EDF2;
+
+    font-size: 0.8rem;
+    line-height: 1.4;
+    vertical-align: middle;
+  }
+
+  thead th {
+    min-width: 145px;
+    max-width: 180px;
+    background: #F5F8FC;
+    color: #0B3A82;
+
+    text-align: left;
+    font-weight: 700;
+    white-space: normal;
+  }
+
+  tbody th {
+    min-width: 200px;
+    max-width: 260px;
+
+    color: #4F5B66;
+    font-weight: 600;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .matriz-numero {
+    text-align: center;
+    color: #4F5B66;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+
+// ---- Heatmap: apresentação de combinação única -----------
+
+.matriz-valor-unico {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+
+  padding: 1.25rem 0;
+}
+
+.matriz-valor-categorias {
+  flex: 1;
+  min-width: 0;
+
+  p {
+    margin: 0 0 0.65rem;
+    color: #4F5B66;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  strong {
+    color: #0B3A82;
+    font-weight: 600;
+  }
+}
+
+.matriz-valor-destaque {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+
+  strong {
+    color: #0B3A82;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  span {
+    color: #6A6F76;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .matriz-valor-unico {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .matriz-valor-destaque {
+    align-items: flex-start;
+  }
+}

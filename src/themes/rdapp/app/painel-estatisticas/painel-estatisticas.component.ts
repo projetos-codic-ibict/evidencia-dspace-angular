@@ -79,8 +79,16 @@ const NOMES_ODS: { [n: number]: string } = {
   17: 'Parcerias e Meios de Implementação', 18: 'Igualdade Étnico-Racial',
 };
 
-// Escala do heatmap da HU: vermelho (baixo) -> laranja -> amarelo -> verde (alto).
-const ESCALA_HEATMAP = ['#d80000', '#f07800', '#f2c200', '#8bc34a', '#1a9850'];
+// Escala sequencial em tons de azul para o heatmap de Indicadores do Acervo.
+// Valores menores: tons claros; valores maiores: tons escuros.
+const ESCALA_HEATMAP = [
+  '#E9EDF2',
+  '#A9C4E8',
+  '#7FA7D8',
+  '#4E739C',
+  '#1E5CC8',
+  '#0B3A82',
+];
 // Paleta para as linhas da evolucao.
 const CORES_LINHAS = ['#1f4ea3', '#0a97d9', '#1aa179', '#f0a500', '#a21942', '#6f42c1', '#fd6925'];
 // Cor unica da aba de visualizacoes (barras do Top 10), conforme a proposta de design.
@@ -137,7 +145,68 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   matrizDocs: string[] = [];
   matrizAvals: string[] = [];
   matrizData: number[][] = [];
+  mostrarTabelaMatriz = false;
   matrizMax = 0;
+
+/**
+ * Ajusta a altura do heatmap conforme a quantidade
+ * de tipos de documento apresentados.
+ */
+get alturaMatriz(): number {
+  const alturaPorLinha = 58;
+  const espacoAdicional = 100;
+
+  return Math.max(
+    210,
+    Math.min(
+      560,
+      espacoAdicional + this.matrizDocs.length * alturaPorLinha
+    )
+  );
+}
+
+/**
+ * Identifica quando a matriz pode ser apresentada
+ * diretamente como tabela simplificada.
+ */
+get matrizPoucasCategorias(): boolean {
+  return (
+    this.matrizDocs.length > 0 &&
+    this.matrizAvals.length > 0 &&
+    this.matrizDocs.length <= 3 &&
+    this.matrizAvals.length <= 3
+  );
+}
+
+/**
+ * Prepara as linhas da tabela acessível do heatmap.
+ * Mantém os mesmos valores e a mesma ordenação visual.
+ */
+get linhasMatrizTabela(): {
+  nome: string;
+  valores: number[];
+}[] {
+  const totalColunas = this.matrizAvals.length;
+
+  if (!totalColunas) {
+    return [];
+  }
+
+  return this.matrizDocs
+    .map((nome, y) => ({
+      nome,
+      valores: this.matrizAvals.map(
+        (_avaliacao, x) =>
+          this.matrizData[y * totalColunas + x]?.[2] ?? 0
+      ),
+    }))
+    .reverse();
+}
+
+/** Exibe ou oculta a alternativa tabular do heatmap. */
+alternarTabelaMatriz(): void {
+  this.mostrarTabelaMatriz = !this.mostrarTabelaMatriz;
+}
 
   // Opcoes ECharts calculadas apos cada carga; ligadas aos <ds-grafico-echarts>.
   opcaoOdsVM: any = null;
