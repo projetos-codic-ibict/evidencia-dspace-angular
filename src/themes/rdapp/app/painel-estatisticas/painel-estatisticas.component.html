@@ -286,15 +286,47 @@
               }
             </section>
 
-            <section class="bloco span-1">
-              <p class="bloco-ante">DISTRIBUIÇÃO</p>
-              <h2>Área Temática</h2>
-              @if (areaTematica.length) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoAreaVM"></ds-grafico-echarts>
-              } @else {
-                <p class="vazio">Sem dados de área temática para este recorte.</p>
-              }
-            </section>
+<section class="bloco span-1">
+  <p class="bloco-ante">DISTRIBUIÇÃO</p>
+  <h2>Área Temática</h2>
+
+  @if (areaTematica.length) {
+
+    @if (areaTematica.length <= 3) {
+      <ul class="area-cards" aria-label="Áreas temáticas">
+        @for (area of areaTematica; track area.label) {
+          <li class="area-card">
+            <span class="area-card-rotulo">{{ area.label }}</span>
+
+            <span class="area-card-metrica">
+              <span class="area-card-valor">{{ area.count | number }}</span>
+              <span class="area-card-unidade">avaliações</span>
+            </span>
+          </li>
+        }
+      </ul>
+    } @else {
+  <ds-grafico-echarts
+    class="grafico"
+    [opcao]="opcaoAreaVM"
+    role="img"
+    aria-label="Gráfico de barras horizontais com a distribuição das avaliações por área temática."
+    aria-describedby="dados-area-tematica">
+  </ds-grafico-echarts>
+
+  <ul id="dados-area-tematica" class="sr-only">
+    @for (area of areaTematica; track area.label) {
+      <li>
+        {{ area.label }}: {{ area.count | number }} avaliações.
+      </li>
+    }
+  </ul>
+}
+
+  } @else {
+    <p class="vazio">Sem dados de área temática para este recorte.</p>
+  }
+</section>
 
             <section class="bloco span-2">
               <p class="bloco-ante">SEMÂNTICA</p>

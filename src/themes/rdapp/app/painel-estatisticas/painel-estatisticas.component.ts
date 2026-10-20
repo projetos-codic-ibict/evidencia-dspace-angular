@@ -443,7 +443,7 @@ alternarTabelaMatriz(): void {
 
   private recomputarGraficos(): void {
     this.opcaoOdsVM = this.opcaoOds();
-    this.opcaoAreaVM = this.opcaoBarras(this.areaTematica, '#2f6fd1');
+    this.opcaoAreaVM = this.opcaoBarras(this.areaTematica, '#1E5CC8');
     this.opcaoInstVM = this.opcaoTreemap(this.instituicao);
     this.opcaoAbrVM = this.opcaoBarras(this.abrangencia, '#f0a500');
     this.opcaoTipoVM = this.opcaoBarras(this.tipoDocumento, '#1f4ea3');
