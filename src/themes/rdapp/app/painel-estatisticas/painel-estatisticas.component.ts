@@ -453,7 +453,7 @@ alternarTabelaMatriz(): void {
     this.opcaoOdsVM = this.opcaoOds();
     this.opcaoAreaVM = this.opcaoBarras(this.areaTematica, '#1E5CC8');
     this.opcaoInstVM = this.opcaoDotPlot(this.instituicao);
-    this.opcaoAbrVM = this.opcaoBarras(this.abrangencia, '#f0a500');
+    this.opcaoAbrVM = this.opcaoLollipop(this.abrangencia);
     this.opcaoTipoVM = this.opcaoBarras(this.tipoDocumento, '#1f4ea3');
     this.opcaoAnoVM = this.opcaoLinhaTempo();
     this.sparklinesVM = this.construirSparklines();
@@ -745,22 +745,85 @@ alternarTabelaAno(): void {
         label: { show: true, position: 'right' },
       }],
     };
-  }
+}
+/**
+ * Lollipop horizontal para Abrangência Territorial.
+ * Quantidades absolutas de avaliações (sem percentuais).
+ */
+private opcaoLollipop(dados: FacetValue[]): any {
+  if (!dados.length) { return null; }
 
+  // A ordem é invertida porque a primeira categoria fica na base do eixo Y.
+  const ordenados = [...dados].sort((a, b) => a.count - b.count);
+  const maiorValor = Math.max(1, ...ordenados.map((d) => d.count));
+
+  return {
+    animation: false,
+    tooltip: {
+      trigger: 'item',
+      renderMode: 'richText',
+      formatter: (p: any) => {
+        const quantidade = Array.isArray(p.value) ? p.value[0] : p.value;
+        return `${p.name}\n${Number(quantidade).toLocaleString('pt-BR')} avaliações`;
+      },
+    },
+    grid: { left: 235, right: 65, top: 20, bottom: 40, containLabel: false },
+    xAxis: {
+      type: 'value',
+      min: 0,
+      max: Math.ceil(maiorValor * 1.2),
+      minInterval: 1,
+      name: 'Número de avaliações',
+      nameLocation: 'middle',
+      nameGap: 30,
+      axisLabel: { color: '#6A6F76' },
+      splitLine: { lineStyle: { color: '#E9EDF2' } },
+    },
+    yAxis: {
+      type: 'category',
+      data: ordenados.map((d) => d.label),
+      axisLabel: { color: '#6A6F76', width: 205, overflow: 'break', lineHeight: 17, fontSize: 12 },
+      axisLine: { show: false },
+      axisTick: { show: false },
+    },
+    series: [
+      {
+        name: 'Hastes',
+        type: 'bar',
+        barWidth: 2,
+        silent: true,
+        data: ordenados.map((d) => ({ name: d.label, value: d.count })),
+        itemStyle: { color: '#5F8CC4' },
+      },
+      {
+        name: 'Avaliações',
+        type: 'scatter',
+        symbol: 'circle',
+        symbolSize: 15,
+        data: ordenados.map((d) => ({ name: d.label, value: [d.count, d.label] })),
+        itemStyle: { color: '#5F8CC4' },
+        label: {
+          show: true,
+          position: 'right',
+          distance: 8,
+          color: '#0B3A82',
+          fontWeight: 'bold',
+          fontSize: 12,
+          formatter: (p: any) => Number(p.value[0]).toLocaleString('pt-BR'),
+        },
+        emphasis: { scale: 1.3 },
+      },
+    ],
+  };
+}
 
 /**
- * Dot plot horizontal para comparar o número
- * de avaliações por instituição.
+ * Dot plot horizontal para comparar o número de avaliações por instituição.
  */
 private opcaoDotPlot(dados: FacetValue[]): any {
   if (!dados.length) { return null; }
 
-  // O ECharts desenha a primeira categoria na base.
-  // Assim, o maior valor aparece no topo.
-  const ordenados = [...dados].sort(
-    (a, b) => a.count - b.count
-  );
-
+  const ordenados = [...dados].sort((a, b) => a.count - b.count);
   return {
     tooltip: {
       trigger: 'item',
@@ -769,74 +832,39 @@ private opcaoDotPlot(dados: FacetValue[]): any {
         return `${d.label}<br/><b>${d.count.toLocaleString('pt-BR')}</b> avaliações`;
       },
     },
-
-    grid: {
-      left: 330,
-      right: 85,
-      top: 15,
-      bottom: 30,
-      containLabel: false,
-    },
-
+    grid: { left: 330, right: 85, top: 15, bottom: 30, containLabel: false },
     xAxis: {
       type: 'value',
       min: 0,
       minInterval: 1,
-      axisLabel: {
-        color: '#6A6F76',
-      },
-      splitLine: {
-        lineStyle: {
-          color: '#E9EDF2',
-        },
-      },
+      axisLabel: { color: '#6A6F76' },
+      splitLine: { lineStyle: { color: '#E9EDF2' } },
     },
-
-yAxis: {
-  type: 'category',
-  data: ordenados.map((d) => d.label),
-  axisLabel: {
-    color: '#6A6F76',
-    width: 290,
-    overflow: 'break',
-    lineHeight: 16,
-    fontSize: 12,
-    margin: 12,
-    align: 'right',
-  },
-  axisLine: { show: false },
-  axisTick: { show: false },
-},
-
+    yAxis: {
+      type: 'category',
+      data: ordenados.map((d) => d.label),
+      axisLabel: {
+        color: '#6A6F76', width: 290, overflow: 'break',
+        lineHeight: 16, fontSize: 12, margin: 12, align: 'right',
+      },
+      axisLine: { show: false },
+      axisTick: { show: false },
+    },
     series: [{
       type: 'scatter',
       symbolSize: 14,
-
-      data: ordenados.map((d, indice) => ({
-        name: d.label,
-        value: [d.count, indice],
-      })),
-
-      itemStyle: {
-        color: '#0B3A82',
-      },
-
+      data: ordenados.map((d, indice) => ({ name: d.label, value: [d.count, indice] })),
+      itemStyle: { color: '#0B3A82' },
       label: {
         show: true,
         position: 'right',
         color: '#4F5B66',
-        formatter: (p: any) =>
-          Number(p.value[0]).toLocaleString('pt-BR'),
+        formatter: (p: any) => Number(p.value[0]).toLocaleString('pt-BR'),
       },
-
-      emphasis: {
-        scale: 1.3,
-      },
+      emphasis: { scale: 1.3 },
     }],
   };
 }
-
-
 
 /**
  * Cria uma sparkline para cada instituição.

@@ -450,15 +450,70 @@
               }
             </section>
 
-            <section class="bloco span-1">
-              <p class="bloco-ante">GEOGRAFIA</p>
-              <h2>Abrangência Territorial</h2>
-              @if (abrangencia.length) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoAbrVM"></ds-grafico-echarts>
-              } @else {
-                <p class="vazio">Sem dados de abrangência.</p>
-              }
-            </section>
+
+<section class="bloco span-1">
+  <p class="bloco-ante">GEOGRAFIA</p>
+  <h2>Abrangência Territorial</h2>
+
+  @if (abrangencia.length) {
+
+    @if (abrangencia.length <= 3) {
+
+      <!-- Apresentação simplificada: 1 a 3 categorias -->
+      <ul
+        class="abrangencia-valores"
+        aria-label="Quantidade de avaliações por abrangência territorial">
+
+        @for (territorio of abrangencia; track territorio.label) {
+          <li class="abrangencia-item">
+
+            <span class="abrangencia-nome">
+              {{ territorio.label }}
+            </span>
+
+            <span class="abrangencia-quantidade">
+              <strong>
+                {{ territorio.count | number }}
+              </strong>
+
+              <span>
+                {{ territorio.count === 1 ? 'avaliação' : 'avaliações' }}
+              </span>
+            </span>
+
+          </li>
+        }
+
+      </ul>
+
+    } @else {
+
+      <!-- Lollipop: 4 ou mais categorias -->
+      <ds-grafico-echarts
+        class="grafico"
+        [opcao]="opcaoAbrVM"
+        role="img"
+        aria-label="Gráfico de abrangência territorial, com quantidades de avaliações por categoria"
+        aria-describedby="dados-abrangencia">
+      </ds-grafico-echarts>
+
+      <ul id="dados-abrangencia" class="sr-only">
+        @for (territorio of abrangencia; track territorio.label) {
+          <li>
+            {{ territorio.label }}:
+            {{ territorio.count | number }}
+            {{ territorio.count === 1 ? 'avaliação' : 'avaliações' }}.
+          </li>
+        }
+      </ul>
+
+    }
+
+  } @else {
+    <p class="vazio">Sem dados de abrangência.</p>
+  }
+</section>
+
 
 <section class="bloco span-1">
   <p class="bloco-ante">DISTRIBUIÇÃO</p>

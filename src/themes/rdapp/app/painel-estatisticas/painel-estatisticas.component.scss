@@ -607,3 +607,64 @@
     font-variant-numeric: tabular-nums;
   }
 }
+
+
+// ---- Abrangência Territorial: poucas categorias ----------------
+
+.abrangencia-valores {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.abrangencia-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #E9EDF2;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.abrangencia-nome {
+  flex: 1;
+  min-width: 0;
+  color: #4F5B66;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.abrangencia-quantidade {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+
+  strong {
+    color: #0B3A82;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  span {
+    color: #6A6F76;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .abrangencia-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .abrangencia-quantidade {
+    align-items: flex-start;
+  }
+}
