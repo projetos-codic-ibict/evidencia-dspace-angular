@@ -37,6 +37,12 @@ import {
 
 interface SerieEvolucao { nome: string; dados: number[]; }
 
+interface SparklineVM {
+  nome: string;
+  valorFinal: number;
+  opcao: any;
+}
+
 /** Metrica exibida no Top 10 da aba de visualizacoes. */
 type MetricaUso = 'views' | 'downloads';
 interface ItemUso { id: string; titulo: string; instituicao: string; ano: string; views: number; downloads: number; }
@@ -90,7 +96,7 @@ const ESCALA_HEATMAP = [
   '#0B3A82',
 ];
 // Paleta para as linhas da evolucao.
-const CORES_LINHAS = ['#1f4ea3', '#0a97d9', '#1aa179', '#f0a500', '#a21942', '#6f42c1', '#fd6925'];
+// eu tirei as cores (joao)
 // Cor unica da aba de visualizacoes (barras do Top 10), conforme a proposta de design.
 const COR_USO = '#0B6256';
 const TOP_N = 10;
@@ -142,6 +148,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   anos: string[] = [];
   evolucaoSeries: SerieEvolucao[] = [];
+  sparklinesVM: SparklineVM[] = [];
   matrizDocs: string[] = [];
   matrizAvals: string[] = [];
   matrizData: number[][] = [];
@@ -230,6 +237,7 @@ alternarTabelaMatriz(): void {
   politicaUso: PoliticaUso[] = [];
   opcaoTopVM: any = null;
   mostrarTabelaTop = false;
+  mostrarTabelaAno = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -448,6 +456,7 @@ alternarTabelaMatriz(): void {
     this.opcaoAbrVM = this.opcaoBarras(this.abrangencia, '#f0a500');
     this.opcaoTipoVM = this.opcaoBarras(this.tipoDocumento, '#1f4ea3');
     this.opcaoAnoVM = this.opcaoLinhaTempo();
+    this.sparklinesVM = this.construirSparklines();
     this.opcaoMatrizVM = this.opcaoMatriz();
     this.opcaoTopVM = this.opcaoTop();
   }
@@ -657,6 +666,11 @@ alternarTabelaMatriz(): void {
     this.mostrarTabelaTop = !this.mostrarTabelaTop;
   }
 
+  /** Exibe ou oculta a alternativa tabular do Ano de Publicação. */
+alternarTabelaAno(): void {
+  this.mostrarTabelaAno = !this.mostrarTabelaAno;
+}
+
   /** Sigla curta de uma instituicao ("... - CMAP" -> "CMAP"). */
   private sigla(nome: string): string {
     const partes = nome.split(' - ');
@@ -823,26 +837,188 @@ yAxis: {
 }
 
 
-  /** Linha do tempo: uma linha por instituicao (ordem cronologica no eixo X). */
-  private opcaoLinhaTempo(): any {
-    if (!this.anos.length) { return null; }
-    return {
-      tooltip: { trigger: 'axis' },
-      legend: { type: 'scroll', top: 0, textStyle: { fontSize: 11 } },
-      grid: { left: 8, right: 24, top: 44, bottom: 8, containLabel: true },
-      xAxis: { type: 'category', data: this.anos, boundaryGap: false },
-      yAxis: { type: 'value' },
-      series: this.evolucaoSeries.map((s, i) => ({
-        name: this.sigla(s.nome),
-        type: 'line',
-        smooth: true,
-        showSymbol: false,
-        data: s.dados,
-        lineStyle: { width: 2, color: CORES_LINHAS[i % CORES_LINHAS.length] },
-        itemStyle: { color: CORES_LINHAS[i % CORES_LINHAS.length] },
-      })),
-    };
+
+/**
+ * Cria uma sparkline para cada instituição.
+ * Todas usam o mesmo intervalo temporal e a mesma escala.
+ */
+private construirSparklines(): SparklineVM[] {
+  if (!this.anos.length || !this.evolucaoSeries.length) {
+    return [];
   }
+
+  const maximo = Math.max(
+    1,
+    ...this.evolucaoSeries.flatMap((s) => s.dados)
+  );
+
+  return this.evolucaoSeries.map((serie) => ({
+    nome: serie.nome,
+    valorFinal: serie.dados[serie.dados.length - 1] ?? 0,
+
+    opcao: {
+      animation: false,
+
+      tooltip: {
+        trigger: 'axis',
+      },
+
+      grid: {
+        left: 8,
+        right: 8,
+        top: 5,
+        bottom: 5,
+      },
+
+      xAxis: {
+        type: 'category',
+        data: this.anos,
+        boundaryGap: false,
+        show: false,
+      },
+
+      yAxis: {
+        type: 'value',
+        min: 0,
+        max: maximo,
+        show: false,
+      },
+
+      series: [{
+        name: serie.nome,
+        type: 'line',
+        data: serie.dados,
+        smooth: false,
+        showSymbol: false,
+
+        lineStyle: {
+          color: '#5B84B1',
+          width: 2.5,
+        },
+
+        itemStyle: {
+          color: '#5B84B1',
+        },
+      }],
+    },
+  }));
+}
+
+
+
+/**
+ * Gráfico de linhas convencional para até 3 instituições.
+ * Usa uma única tonalidade de azul, com marcadores e
+ * estilos de linha distintos para acessibilidade.
+ */
+private opcaoLinhaTempo(): any {
+  if (!this.anos.length || !this.evolucaoSeries.length) {
+    return null;
+  }
+
+  const corLinha = '#5B84B1';
+  const simbolos = ['circle', 'diamond', 'triangle'];
+  const estilos = ['solid', 'dashed', 'dotted'];
+
+  return {
+    animation: false,
+
+    tooltip: {
+      trigger: 'axis',
+    },
+
+    legend: {
+      show: false,
+    },
+
+    grid: {
+      left: 48,
+      right: 220,
+      top: 24,
+      bottom: 40,
+    },
+
+    xAxis: {
+      type: 'category',
+      data: this.anos,
+      boundaryGap: false,
+      axisLabel: {
+        color: '#6A6F76',
+      },
+    },
+
+    yAxis: {
+      type: 'value',
+      min: 0,
+      minInterval: 1,
+      axisLabel: {
+        color: '#6A6F76',
+      },
+      splitLine: {
+        lineStyle: {
+          color: '#E9EDF2',
+        },
+      },
+    },
+
+    series: this.evolucaoSeries.map((serie, i) => {
+      const ultimoValor =
+        serie.dados[serie.dados.length - 1] ?? 0;
+
+      return {
+        name: serie.nome,
+        type: 'line',
+
+        data: serie.dados,
+        smooth: false,
+
+        showSymbol: true,
+        symbol: simbolos[i % simbolos.length],
+        symbolSize: 7,
+
+        lineStyle: {
+          color: corLinha,
+          width: 2.5,
+          type: estilos[i % estilos.length],
+        },
+
+        itemStyle: {
+          color: corLinha,
+        },
+
+
+endLabel: {
+  show: true,
+
+  formatter: () => {
+    const nome = serie.nome;
+
+    // Identifica siglas entre parênteses.
+    const siglaFinal = nome.match(/\(([^()]+)\)\s*$/);
+    const quantidadeSiglas = (nome.match(/\(/g) ?? []).length;
+
+    // Só utiliza a sigla isoladamente quando não há
+    // várias instituições identificadas no mesmo nome.
+    const rotulo = siglaFinal && quantidadeSiglas === 1
+      ? siglaFinal[1]
+      : this.sigla(nome);
+
+    return `${rotulo}: ${ultimoValor.toLocaleString('pt-BR')}`;
+  },
+
+  color: '#0B3A82',
+  fontSize: 12,
+  fontWeight: 600,
+  distance: 8,
+  width: 200,
+  overflow: 'break',
+},
+
+      };
+    }),
+  };
+}
+
 
   /** Heatmap em tons de uma unica cor, eixos ja ordenados por quantidade. */
   private opcaoMatriz(): any {

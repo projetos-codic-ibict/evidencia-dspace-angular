@@ -417,3 +417,193 @@
     align-items: flex-start;
   }
 }
+
+
+// ---- Ano de Publicação: Sparklines ----------------------------
+
+.sparklines {
+  width: 100%;
+}
+
+.sparkline-cabecalho,
+.sparkline-linha {
+  display: grid;
+  grid-template-columns: minmax(220px, 35%) minmax(0, 1fr) 70px;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sparkline-cabecalho {
+  margin-bottom: 0.6rem;
+}
+
+.sparkline-eixo-anos {
+  grid-column: 2;
+
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+
+  color: #6A6F76;
+  font-size: 0.75rem;
+}
+
+.sparkline-linha {
+  min-height: 72px;
+  border-bottom: 1px solid #E9EDF2;
+  padding: 0.5rem 0;
+}
+
+.sparkline-nome {
+  color: #6A6F76;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.sparkline-grafico {
+  width: 100%;
+  height: 56px;
+  min-width: 0;
+}
+
+.sparkline-valor {
+  color: #0B3A82;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 767px) {
+  .sparkline-linha {
+    grid-template-columns: minmax(0, 1fr) 70px;
+    gap: 0.4rem;
+  }
+
+  .sparkline-nome {
+    grid-column: 1 / -1;
+  }
+
+  .sparkline-grafico {
+    grid-column: 1;
+  }
+
+  .sparkline-valor {
+    grid-column: 2;
+  }
+
+.sparkline-cabecalho {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px;
+  gap: 0.5rem;
+  padding-right: 0;
+}
+
+.sparkline-eixo-anos {
+  grid-column: 1;
+}
+
+.sparkline-cabecalho-valor {
+  grid-column: 2;
+  justify-self: end;
+}
+  .sparkline-eixo-anos {
+    padding: 0 8px;
+  }
+}
+
+.sparkline-cabecalho-valor {
+  grid-column: 3;
+  justify-self: end;
+  color: #6A6F76;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+
+// ---- Ano de Publicação: alternativa tabular ---------------------
+
+.btn-tabela-ano {
+  display: inline-block;
+  margin: 1rem 0 0.75rem;
+  padding: 0.35rem 0;
+
+  background: transparent;
+  border: none;
+
+  color: #0B3A82;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: underline;
+
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid #1E5CC8;
+    outline-offset: 3px;
+  }
+}
+
+.ano-tabela-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+
+  border: 1px solid #E9EDF2;
+  border-radius: 8px;
+
+  &:focus-visible {
+    outline: 2px solid #1E5CC8;
+    outline-offset: 2px;
+  }
+}
+
+.ano-tabela {
+  width: 100%;
+  min-width: max-content;
+
+  border-collapse: collapse;
+
+  caption {
+    caption-side: top;
+    text-align: left;
+    padding: 0.8rem;
+
+    color: #4F5B66;
+    font-size: 0.82rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #E9EDF2;
+
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  thead th {
+    background: #F5F8FC;
+    color: #0B3A82;
+    font-weight: 700;
+  }
+
+  tbody th {
+    min-width: 240px;
+    max-width: 360px;
+
+    color: #4F5B66;
+    font-weight: 500;
+    text-align: left;
+
+    white-space: normal;
+  }
+
+  .ano-num {
+    min-width: 65px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}

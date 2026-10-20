@@ -249,11 +249,126 @@
             <section class="bloco span-1">
               <p class="bloco-ante">EVOLUÇÃO</p>
               <h2>Ano de Publicação</h2>
-              @if (anos.length) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoAnoVM"></ds-grafico-echarts>
-              } @else {
-                <p class="vazio">Sem dados de ano.</p>
-              }
+
+@if (anos.length) {
+
+  @if (evolucaoSeries.length > 3) {
+
+    <div class="sparklines">
+
+<div class="sparkline-cabecalho">
+  <div class="sparkline-eixo-anos">
+    <span>{{ anos[0] }}</span>
+    <span>{{ anos[anos.length - 1] }}</span>
+  </div>
+
+  <span class="sparkline-cabecalho-valor">
+    Em {{ anos[anos.length - 1] }}
+  </span>
+</div>
+
+      @for (spark of sparklinesVM; track spark.nome) {
+        <div class="sparkline-linha">
+
+          <span class="sparkline-nome">
+            {{ spark.nome }}
+          </span>
+
+          <ds-grafico-echarts
+            class="sparkline-grafico"
+            [opcao]="spark.opcao"
+            role="img"
+            [attr.aria-label]="
+              'Evolução anual de publicações de ' +
+              spark.nome +
+              '. Valor no último ano: ' +
+              spark.valorFinal
+            ">
+          </ds-grafico-echarts>
+
+          <strong class="sparkline-valor">
+            {{ spark.valorFinal | number }}
+          </strong>
+
+        </div>
+      }
+
+    </div>
+
+  } @else {
+
+    <ds-grafico-echarts
+      class="grafico"
+      [opcao]="opcaoAnoVM">
+    </ds-grafico-echarts>
+
+  }
+
+<!-- Alternativa tabular para todas as visualizações temporais -->
+
+<button
+  type="button"
+  class="btn-tabela-ano"
+  (click)="alternarTabelaAno()"
+  [attr.aria-expanded]="mostrarTabelaAno"
+  aria-controls="tabela-ano-publicacao">
+
+  {{ mostrarTabelaAno ? 'Ocultar tabela' : 'Ver como tabela' }}
+
+</button>
+
+<div
+  id="tabela-ano-publicacao"
+  class="ano-tabela-wrap"
+  [hidden]="!mostrarTabelaAno"
+  tabindex="0"
+  role="region"
+  aria-label="Tabela de avaliações por instituição e ano de publicação">
+
+  <table class="ano-tabela">
+
+    <caption>
+      Quantidade de avaliações publicadas por instituição e ano
+    </caption>
+
+    <thead>
+      <tr>
+        <th scope="col">Instituição</th>
+
+        @for (ano of anos; track ano) {
+          <th scope="col" class="ano-num">
+            {{ ano }}
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (serie of evolucaoSeries; track serie.nome) {
+        <tr>
+          <th scope="row">
+            {{ serie.nome }}
+          </th>
+
+          @for (ano of anos; track ano; let indiceAno = $index) {
+            <td class="ano-num">
+              {{ (serie.dados[indiceAno] ?? 0) | number }}
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+
+  </table>
+</div>
+
+
+} @else {
+  <p class="vazio">Sem dados de ano.</p>
+
+
+}
+
             </section>
 
 
