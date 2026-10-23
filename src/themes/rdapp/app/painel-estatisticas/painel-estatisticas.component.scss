@@ -736,3 +736,35 @@
   object-fit: contain;
   margin-bottom: 0.4rem;
 }
+
+
+// Botões de exportação dos gráficos
+
+.exportacao-grafico {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+
+  button {
+    padding: 0.45rem 0.85rem;
+    background: #FFFFFF;
+    border: 1px solid #1E5CC8;
+    border-radius: 6px;
+
+    color: #0B3A82;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background: #E9EDF2;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #1E5CC8;
+      outline-offset: 2px;
+    }
+  }
+}

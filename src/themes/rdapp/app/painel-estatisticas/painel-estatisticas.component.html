@@ -90,6 +90,37 @@
   <p class="bloco-ante">MATRIZ CRUZADA</p>
   <h2>Tipo de Documento vs. Tipo de Avaliação</h2>
 
+
+@if (matrizData.length) {
+  <div class="exportacao-grafico">
+    <button
+      type="button"
+      (click)="exportarMatrizCSV()"
+      aria-label="Exportar dados da matriz Documento por Avaliação em CSV">
+      Baixar CSV
+    </button>
+
+<button
+  type="button"
+  (click)="exportarMatrizXLSX()"
+  [disabled]="exportandoMatrizXlsx"
+  aria-label="Exportar matriz Documento por Avaliação em Excel">
+
+  {{ exportandoMatrizXlsx
+    ? 'Gerando Excel...'
+    : 'Baixar XLSX' }}
+
+</button>
+
+  </div>
+  @if (erroExportacaoMatriz) {
+  <p role="alert" class="vazio">
+    {{ erroExportacaoMatriz }}
+  </p>
+}
+}
+
+
   @if (matrizData.length) {
 
     <!-- CASO 1: Apenas uma combinação -->
@@ -127,11 +158,35 @@
       @if (!matrizPoucasCategorias) {
 
         <ds-grafico-echarts
+        #graficoMatriz
           class="grafico grafico-matriz"
           [style.height.px]="alturaMatriz"
           [opcao]="opcaoMatrizVM"
           (pronto)="ligarCruzMatriz($event)">
         </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+
+  <button
+    type="button"
+    (click)="graficoMatriz.exportarImagem(
+      'png',
+      'rdapp-documento-avaliacao'
+    )">
+    Baixar PNG
+  </button>
+
+  <button
+    type="button"
+    (click)="graficoMatriz.exportarImagem(
+      'jpeg',
+      'rdapp-documento-avaliacao'
+    )">
+    Baixar JPG
+  </button>
+
+</div>
+
 
         <div class="legenda-grafico">
           <span class="lg-titulo">
@@ -502,12 +557,36 @@
     } @else {
 
       <ds-grafico-echarts
+      #graficoInstituicao
         class="grafico grafico-alto"
         [opcao]="opcaoInstVM"
         role="img"
         aria-label="Gráfico de pontos com o número de avaliações por instituição"
         aria-describedby="dados-instituicoes">
       </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+
+  <button
+    type="button"
+    (click)="graficoInstituicao.exportarImagem(
+      'png',
+      'rdapp-instituicao'
+    )">
+    Baixar PNG
+  </button>
+
+  <button
+    type="button"
+    (click)="graficoInstituicao.exportarImagem(
+      'jpeg',
+      'rdapp-instituicao'
+    )">
+    Baixar JPG
+  </button>
+
+</div>
+
 
       <ul id="dados-instituicoes" class="sr-only">
         @for (inst of instituicao; track inst.label) {
@@ -623,12 +702,36 @@
       </ul>
     } @else {
   <ds-grafico-echarts
+  #graficoArea
     class="grafico"
     [opcao]="opcaoAreaVM"
     role="img"
     aria-label="Gráfico de barras horizontais com a distribuição das avaliações por área temática."
     aria-describedby="dados-area-tematica">
   </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+
+  <button
+    type="button"
+    (click)="graficoArea.exportarImagem(
+      'png',
+      'rdapp-area-tematica'
+    )">
+    Baixar PNG
+  </button>
+
+  <button
+    type="button"
+    (click)="graficoArea.exportarImagem(
+      'jpeg',
+      'rdapp-area-tematica'
+    )">
+    Baixar JPG
+  </button>
+
+</div>
+
 
   <ul id="dados-area-tematica" class="sr-only">
     @for (area of areaTematica; track area.label) {

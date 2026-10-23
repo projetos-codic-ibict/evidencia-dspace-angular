@@ -151,6 +151,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.0",
     "uuid": "^14.0.1",
+    "write-excel-file": "4.1.1",
     "xhr2": "^0.2.1",
     "zone.js": "~0.15.1"
   },

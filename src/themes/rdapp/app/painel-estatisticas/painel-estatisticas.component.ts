@@ -153,6 +153,8 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   matrizAvals: string[] = [];
   matrizData: number[][] = [];
   mostrarTabelaMatriz = false;
+  exportandoMatrizXlsx = false;
+  erroExportacaoMatriz: string | null = null;
   matrizMax = 0;
 
 /**
@@ -214,6 +216,129 @@ get linhasMatrizTabela(): {
 alternarTabelaMatriz(): void {
   this.mostrarTabelaMatriz = !this.mostrarTabelaMatriz;
 }
+
+
+/**
+ * Exporta a matriz Documento x Avaliação em CSV.
+ * Utiliza os dados do recorte atual dos filtros.
+ */
+exportarMatrizCSV(): void {
+  if (!this.isBrowser || !this.matrizData.length) {
+    return;
+  }
+
+  // Protege campos textuais contra fórmulas em planilhas.
+  const escapar = (valor: string | number): string => {
+    if (typeof valor === 'number') {
+      return String(valor);
+    }
+
+    const seguro = /^[\s]*[=+\-@]/.test(valor)
+      ? `'${valor}`
+      : valor;
+
+    return `"${seguro.replace(/"/g, '""')}"`;
+  };
+
+  // Cabeçalhos com os nomes completos das avaliações.
+  const linhas: (string | number)[][] = [
+    ['Tipo de Documento', ...this.matrizAvals],
+    ...this.linhasMatrizTabela.map(linha => [
+      linha.nome,
+      ...linha.valores,
+    ]),
+  ];
+
+  const csv = '\uFEFF' + linhas
+    .map(linha => linha.map(escapar).join(';'))
+    .join('\r\n');
+
+  const blob = new Blob([csv], {
+    type: 'text/csv;charset=utf-8;',
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'rdapp-documento-avaliacao.csv';
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/**
+ * Exporta Documento x Avaliação em formato Excel (.xlsx).
+ * Preserva o recorte atual dos filtros e os valores numéricos.
+ */
+async exportarMatrizXLSX(): Promise<void> {
+  if (!this.isBrowser || !this.matrizData.length ||
+      this.exportandoMatrizXlsx) {
+    return;
+  }
+
+  this.exportandoMatrizXlsx = true;
+  this.erroExportacaoMatriz = null;
+
+  try {
+    // Carregamento apenas quando o usuário solicita a exportação.
+    const { default: writeExcelFile } =
+      await import('write-excel-file/browser');
+
+    // Evita interpretar conteúdos externos como fórmulas.
+    const textoSeguro = (valor: string): string =>
+      /^\s*[=+\-@]/.test(valor)
+        ? `'${valor}`
+        : valor;
+
+    // Cabeçalho com os nomes completos das avaliações.
+    const cabecalho = [
+      'Tipo de Documento',
+      ...this.matrizAvals,
+    ].map((nome) => ({
+      value: textoSeguro(nome),
+      fontWeight: 'bold' as const,
+      backgroundColor: '#E9EDF2',
+      textColor: '#0B3A82',
+      wrap: true,
+    }));
+
+    // Dados da mesma matriz já utilizada na exportação CSV.
+    const linhas = this.linhasMatrizTabela.map((linha) => [
+      {
+        value: textoSeguro(linha.nome),
+        wrap: true,
+      },
+      ...linha.valores.map((valor) => ({
+        value: valor,
+      })),
+    ]);
+
+    const dados = [cabecalho, ...linhas];
+    const colunas = [
+      { width: 42 },
+      ...this.matrizAvals.map(() => ({ width: 28 })),
+    ];
+
+    await writeExcelFile(dados, {
+      sheet: 'Documento x Avaliacao',
+      columns: colunas,
+      stickyRowsCount: 1,
+      stickyColumnsCount: 1,
+    }).toFile('rdapp-documento-avaliacao.xlsx');
+
+  } catch (erro) {
+    console.error('Erro ao exportar XLSX:', erro);
+    this.erroExportacaoMatriz =
+      'Não foi possível gerar a planilha Excel.';
+  } finally {
+    this.exportandoMatrizXlsx = false;
+  }
+}
+
 
   // Opcoes ECharts calculadas apos cada carga; ligadas aos <ds-grafico-echarts>.
   opcaoOdsVM: any = null;

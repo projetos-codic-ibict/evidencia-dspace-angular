@@ -91,6 +91,35 @@ export class GraficoEchartsComponent implements OnChanges, OnDestroy {
     this.chart.setOption(this.opcao, true);
   }
 
+/**
+ * Exporta o gráfico ECharts em PNG ou JPG.
+ */
+exportarImagem(
+  formato: 'png' | 'jpeg',
+  nomeArquivo: string
+): void {
+  if (!this.isBrowser || !this.chart) {
+    return;
+  }
+
+  const imagem = this.chart.getDataURL({
+    type: formato,
+    pixelRatio: 2,
+    backgroundColor: '#FFFFFF',
+  });
+
+  const link = document.createElement('a');
+
+  link.href = imagem;
+  link.download =
+    `${nomeArquivo}.${formato === 'jpeg' ? 'jpg' : 'png'}`;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+
   ngOnDestroy(): void { this.destruir(); }
 
   private observarResize(): void {
