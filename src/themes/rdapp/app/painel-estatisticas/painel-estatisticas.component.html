@@ -321,6 +321,32 @@
   <p class="bloco-ante">SUSTENTABILIDADE</p>
   <h2>Objetivos de Desenvolvimento Sustentável (ODS)</h2>
 
+
+@if (
+  totalAvaliacoes > 0 &&
+  odsComDados.length <= 3 &&
+  (odsComDados.length > 0 || odsNaoInformado > 0)
+) {
+
+  <div class="exportacao-grafico">
+
+    <button
+      type="button"
+      (click)="exportarCardsOds('png')">
+      Baixar PNG
+    </button>
+
+    <button
+      type="button"
+      (click)="exportarCardsOds('jpeg')">
+      Baixar JPG
+    </button>
+
+  </div>
+
+}
+
+
   @if (totalAvaliacoes) {
 
     @if (odsComDados.length > 0 && odsComDados.length <= 3) {
@@ -393,9 +419,37 @@
 
       <!-- Gráfico convencional para quatro ou mais ODS -->
       <ds-grafico-echarts
+      #graficoOds
         class="grafico"
         [opcao]="opcaoOdsVM">
       </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+
+  <button
+    type="button"
+    (click)="graficoOds.exportarImagemComLegenda(
+      'png',
+      'rdapp-ods',
+      'Objetivos de Desenvolvimento Sustentável',
+      legendaOds
+    )">
+    Baixar PNG
+  </button>
+
+  <button
+    type="button"
+    (click)="graficoOds.exportarImagemComLegenda(
+      'jpeg',
+      'rdapp-ods',
+      'Objetivos de Desenvolvimento Sustentável',
+      legendaOds
+    )">
+    Baixar JPG
+  </button>
+
+</div>
+
 
       <div class="legenda-grafico">
         <span class="lg-titulo">Legenda dos Objetivos</span>
@@ -426,6 +480,28 @@
             <section class="bloco span-1">
               <p class="bloco-ante">EVOLUÇÃO</p>
               <h2>Ano de Publicação</h2>
+
+
+@if (anos.length && evolucaoSeries.length > 3) {
+
+  <div class="exportacao-grafico">
+
+    <button
+      type="button"
+      (click)="exportarSparklinesImagem('png')">
+      Baixar PNG
+    </button>
+
+    <button
+      type="button"
+      (click)="exportarSparklinesImagem('jpeg')">
+      Baixar JPG
+    </button>
+
+  </div>
+
+}
+
 
 @if (anos.length && linhasAnoExportacao.length) {
   <div class="exportacao-grafico">
@@ -506,9 +582,45 @@
   } @else {
 
     <ds-grafico-echarts
+    #graficoAno
       class="grafico"
       [opcao]="opcaoAnoVM">
     </ds-grafico-echarts>
+
+
+@if (
+  evolucaoSeries.length > 0 &&
+  evolucaoSeries.length <= 3
+) {
+  <div class="exportacao-grafico">
+
+    <button
+      type="button"
+      (click)="graficoAno.exportarImagemComLegenda(
+        'png',
+        'rdapp-ano-publicacao',
+        'Ano de Publicação',
+        legendaAnoExportacao
+      )"
+      aria-label="Exportar gráfico de Ano de Publicação em PNG">
+      Baixar PNG
+    </button>
+
+    <button
+      type="button"
+      (click)="graficoAno.exportarImagemComLegenda(
+        'jpeg',
+        'rdapp-ano-publicacao',
+        'Ano de Publicação',
+        legendaAnoExportacao
+      )"
+      aria-label="Exportar gráfico de Ano de Publicação em JPG">
+      Baixar JPG
+    </button>
+
+  </div>
+}
+
 
   }
 
@@ -676,7 +788,32 @@
               <p class="bloco-ante">DISTRIBUIÇÃO</p>
               <h2>Tipo de Documento</h2>
               @if (tipoDocumento.length) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoTipoVM"></ds-grafico-echarts>
+                <ds-grafico-echarts #graficoTipoDocumento class="grafico" [opcao]="opcaoTipoVM"></ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+
+  <button
+    type="button"
+    (click)="graficoTipoDocumento.exportarImagem(
+      'png',
+      'rdapp-tipo-documento'
+    )"
+    aria-label="Exportar gráfico Tipo de Documento em PNG">
+    Baixar PNG
+  </button>
+
+  <button
+    type="button"
+    (click)="graficoTipoDocumento.exportarImagem(
+      'jpeg',
+      'rdapp-tipo-documento'
+    )"
+    aria-label="Exportar gráfico Tipo de Documento em JPG">
+    Baixar JPG
+  </button>
+
+</div>
+
               } @else {
                 <p class="vazio">Sem dados de tipo de documento.</p>
               }
@@ -686,6 +823,28 @@
 <section class="bloco span-1">
   <p class="bloco-ante">GEOGRAFIA</p>
   <h2>Abrangência Territorial</h2>
+
+
+@if (abrangencia.length > 0 && abrangencia.length <= 3) {
+
+  <div class="exportacao-grafico">
+
+    <button
+      type="button"
+      (click)="exportarCardsAbrangencia('png')">
+      Baixar PNG
+    </button>
+
+    <button
+      type="button"
+      (click)="exportarCardsAbrangencia('jpeg')">
+      Baixar JPG
+    </button>
+
+  </div>
+
+}
+
 
   @if (abrangencia.length) {
 
@@ -722,12 +881,36 @@
 
       <!-- Lollipop: 4 ou mais categorias -->
       <ds-grafico-echarts
+      #graficoAbrangencia
         class="grafico"
         [opcao]="opcaoAbrVM"
         role="img"
         aria-label="Gráfico de abrangência territorial, com quantidades de avaliações por categoria"
         aria-describedby="dados-abrangencia">
       </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+
+  <button
+    type="button"
+    (click)="graficoAbrangencia.exportarImagem(
+      'png',
+      'rdapp-abrangencia-territorial'
+    )">
+    Baixar PNG
+  </button>
+
+  <button
+    type="button"
+    (click)="graficoAbrangencia.exportarImagem(
+      'jpeg',
+      'rdapp-abrangencia-territorial'
+    )">
+    Baixar JPG
+  </button>
+
+</div>
+
 
       <ul id="dados-abrangencia" class="sr-only">
         @for (territorio of abrangencia; track territorio.label) {
@@ -750,6 +933,28 @@
 <section class="bloco span-1">
   <p class="bloco-ante">DISTRIBUIÇÃO</p>
   <h2>Área Temática</h2>
+
+
+@if (areaTematica.length > 0 && areaTematica.length <= 3) {
+
+  <div class="exportacao-grafico">
+
+    <button
+      type="button"
+      (click)="exportarCardsAreaTematica('png')">
+      Baixar PNG
+    </button>
+
+    <button
+      type="button"
+      (click)="exportarCardsAreaTematica('jpeg')">
+      Baixar JPG
+    </button>
+
+  </div>
+
+}
+
 
   @if (areaTematica.length) {
 

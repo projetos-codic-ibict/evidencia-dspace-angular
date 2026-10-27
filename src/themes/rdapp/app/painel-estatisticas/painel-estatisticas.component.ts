@@ -35,6 +35,8 @@ import {
   UsoItem,
 } from './painel-estatisticas.service';
 
+import { exportarCategoriasImagem } from './exportacao-imagem-categorias';
+
 interface SerieEvolucao { nome: string; dados: number[]; }
 
 interface SparklineVM {
@@ -495,6 +497,254 @@ async exportarMatrizXLSX(): Promise<void> {
     // margem de 4px absorve arredondamento de zoom/subpixel
     return el.scrollHeight - el.scrollTop - el.clientHeight > 4;
   }
+
+
+/**
+ * Exporta os cards de Abrangência Territorial.
+ */
+exportarCardsAbrangencia(
+  formato: 'png' | 'jpeg'
+): void {
+  exportarCategoriasImagem(
+    this.abrangencia,
+    'Abrangência Territorial',
+    'rdapp-abrangencia-territorial',
+    formato
+  );
+}
+
+
+/**
+ * Exporta os cards de Área Temática em PNG ou JPG.
+ * Utiliza os dados filtrados exibidos no painel.
+ */
+exportarCardsAreaTematica(
+  formato: 'png' | 'jpeg'
+): void {
+  exportarCategoriasImagem(
+    this.areaTematica,
+    'Área Temática',
+    'rdapp-area-tematica',
+    formato
+  );
+}
+
+
+/**
+ * Exporta os cards dos ODS em PNG ou JPG.
+ * Mantém os números, nomes e cores dos objetivos.
+ */
+exportarCardsOds(
+  formato: 'png' | 'jpeg'
+): void {
+
+  const dados = this.odsComDados.map((ods) => ({
+    label: `ODS ${ods.num} — ${ods.nome}`,
+    count: ods.count,
+    cor: ods.cor,
+  }));
+
+  // Inclui avaliações sem ODS informado.
+  if (this.odsNaoInformado > 0) {
+    dados.push({
+      label: 'Não informado',
+      count: this.odsNaoInformado,
+      cor: '#9AA5B1',
+    });
+  }
+
+  if (!dados.length) {
+    return;
+  }
+
+  exportarCategoriasImagem(
+    dados,
+    'Objetivos de Desenvolvimento Sustentável',
+    'rdapp-ods',
+    formato
+  );
+}
+
+
+/**
+ * Exporta todas as sparklines de Ano de Publicação
+ * em uma imagem consolidada.
+ */
+exportarSparklinesImagem(formato: 'png' | 'jpeg'): void {
+  if (!this.isBrowser ||
+      !this.anos.length ||
+      this.evolucaoSeries.length <= 3) {
+    return;
+  }
+
+  const largura = 1400;
+  const canvas = document.createElement('canvas');
+  canvas.width = largura;
+  canvas.height = 200;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) { return; }
+
+  // Divide nomes longos em várias linhas.
+  ctx.font = '20px Arial';
+
+  const quebrarTexto = (texto: string): string[] => {
+    const linhas: string[] = [];
+    let atual = '';
+
+    texto.split(/\s+/).forEach((palavra) => {
+      const teste = atual ? `${atual} ${palavra}` : palavra;
+
+      if (atual && ctx.measureText(teste).width > 500) {
+        linhas.push(atual);
+        atual = palavra;
+      } else {
+        atual = teste;
+      }
+    });
+
+    if (atual) { linhas.push(atual); }
+    return linhas;
+  };
+
+  const registros = this.evolucaoSeries.map((serie) => ({
+    serie,
+    linhasNome: quebrarTexto(serie.nome),
+  }));
+
+  const alturas = registros.map((r) =>
+    Math.max(145, r.linhasNome.length * 27 + 48)
+  );
+
+  const altura = 145 + alturas.reduce(
+    (total, valor) => total + valor, 0
+  ) + 65;
+
+  canvas.height = altura;
+
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, largura, altura);
+
+  // Cabeçalho.
+  ctx.fillStyle = '#0B3A82';
+  ctx.font = 'bold 32px Arial';
+  ctx.fillText('Ano de Publicação', 45, 65);
+
+  ctx.fillStyle = '#555555';
+  ctx.font = '19px Arial';
+  ctx.fillText(
+    'Evolução por instituição — dados do recorte selecionado',
+    45, 100
+  );
+
+  const maximo = Math.max(
+    1,
+    ...this.evolucaoSeries.flatMap((s) => s.dados)
+  );
+
+  const inicioX = 640;
+  const larguraGrafico = 570;
+  const alturaGrafico = 65;
+
+  let topo = 145;
+
+  registros.forEach((registro, indice) => {
+    const serie = registro.serie;
+    const alturaLinha = alturas[indice];
+
+    // Fundo alternado para facilitar a leitura.
+    if (indice % 2 === 0) {
+      ctx.fillStyle = '#F4F7FB';
+      ctx.fillRect(30, topo, largura - 60, alturaLinha);
+    }
+
+    // Nome completo da instituição.
+    ctx.fillStyle = '#223344';
+    ctx.font = '20px Arial';
+
+    registro.linhasNome.forEach((linha, i) => {
+      ctx.fillText(linha, 48, topo + 35 + i * 27);
+    });
+
+    const baseY = topo + 103;
+
+    // Linha de referência.
+    ctx.strokeStyle = '#D2DCE8';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(inicioX, baseY);
+    ctx.lineTo(inicioX + larguraGrafico, baseY);
+    ctx.stroke();
+
+    // Evolução dos dados.
+    ctx.strokeStyle = '#5B84B1';
+    ctx.lineWidth = 4;
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+
+    serie.dados.forEach((valor, i) => {
+      const x = this.anos.length === 1
+        ? inicioX + larguraGrafico / 2
+        : inicioX + i * larguraGrafico /
+          (this.anos.length - 1);
+
+      const y = baseY -
+        (valor / maximo) * alturaGrafico;
+
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+
+    ctx.stroke();
+
+    // Indica o último valor da série.
+    const ultimo = serie.dados[serie.dados.length - 1] ?? 0;
+
+    ctx.fillStyle = '#0B3A82';
+    ctx.font = 'bold 24px Arial';
+    ctx.fillText(
+      ultimo.toLocaleString('pt-BR'),
+      1260,
+      topo + 67
+    );
+
+    ctx.fillStyle = '#555555';
+    ctx.font = '15px Arial';
+    ctx.fillText('avaliações', 1260, topo + 89);
+
+    // Anos de início e término.
+    ctx.font = '15px Arial';
+    ctx.fillText(this.anos[0], inicioX, topo + 126);
+
+    if (this.anos.length > 1) {
+      ctx.fillText(
+        this.anos[this.anos.length - 1],
+        inicioX + larguraGrafico - 45,
+        topo + 126
+      );
+    }
+
+    topo += alturaLinha;
+  });
+
+  // Gera o arquivo.
+  const extensao = formato === 'jpeg' ? 'jpg' : 'png';
+
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL(
+    formato === 'jpeg' ? 'image/jpeg' : 'image/png',
+    0.95
+  );
+  link.download = `rdapp-ano-publicacao.${extensao}`;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
 
   // ---- Filtros -----------------------------------------------------------
 
@@ -1361,6 +1611,22 @@ endLabel: {
     const m = label.match(/^\s*(\d+)/);
     return m ? parseInt(m[1], 10) : 0;
   }
+
+
+/**
+ * Legenda para exportação do gráfico de Ano de Publicação.
+ * Mantém os nomes completos das instituições.
+ */
+get legendaAnoExportacao(): {
+  label: string;
+  cor: string;
+}[] {
+  return this.evolucaoSeries.map((serie) => ({
+    label: serie.nome,
+    cor: '#5B84B1',
+  }));
+}
+
 
   /** Legenda do heatmap: numero do eixo X -> nome completo da avaliacao. */
   get legendaMatriz(): { num: number; nome: string }[] {
