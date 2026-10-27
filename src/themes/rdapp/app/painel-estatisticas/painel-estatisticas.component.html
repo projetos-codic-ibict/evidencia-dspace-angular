@@ -69,6 +69,41 @@
               <p class="bloco-ante">DETALHAMENTO</p>
               <h2>Política Pública ou Objeto Avaliado</h2>
               @if (politicaPublica.length) {
+
+<div class="exportacao-grafico">
+
+  <button
+    type="button"
+    (click)="exportarTabelaCSV(
+      'rdapp-politicas-publicas',
+      ['Nome da Política', 'Nº de Avaliações'],
+      linhasPoliticasExportacao
+    )">
+    Baixar CSV
+  </button>
+
+  <button
+    type="button"
+    [disabled]="exportandoTabelaXlsx"
+    (click)="exportarTabelaXLSX(
+      'rdapp-politicas-publicas',
+      'Politicas Publicas',
+      ['Nome da Política', 'Nº de Avaliações'],
+      linhasPoliticasExportacao
+    )">
+    {{ exportandoTabelaXlsx
+       ? 'Gerando Excel...'
+       : 'Baixar XLSX' }}
+  </button>
+
+</div>
+
+@if (erroExportacaoTabela) {
+  <p role="alert" class="vazio">
+    {{ erroExportacaoTabela }}
+  </p>
+}
+
                 <div class="tabela-box" [class.sem-fade]="!fadeTabela">
                   <div class="tabela-wrap" #tabelaWrap (scroll)="atualizarFadeTabela()">
                     <table class="tabela">
@@ -391,6 +426,37 @@
             <section class="bloco span-1">
               <p class="bloco-ante">EVOLUÇÃO</p>
               <h2>Ano de Publicação</h2>
+
+@if (anos.length && linhasAnoExportacao.length) {
+  <div class="exportacao-grafico">
+
+    <button
+      type="button"
+      (click)="exportarTabelaCSV(
+        'rdapp-ano-publicacao',
+        cabecalhosAnoExportacao,
+        linhasAnoExportacao
+      )">
+      Baixar CSV
+    </button>
+
+    <button
+      type="button"
+      [disabled]="exportandoTabelaXlsx"
+      (click)="exportarTabelaXLSX(
+        'rdapp-ano-publicacao',
+        'Ano de Publicacao',
+        cabecalhosAnoExportacao,
+        linhasAnoExportacao
+      )">
+      {{ exportandoTabelaXlsx
+         ? 'Gerando Excel...'
+         : 'Baixar XLSX' }}
+    </button>
+
+  </div>
+}
+
 
 @if (anos.length) {
 

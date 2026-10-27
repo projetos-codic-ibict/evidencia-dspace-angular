@@ -340,6 +340,102 @@ async exportarMatrizXLSX(): Promise<void> {
 }
 
 
+  // Exportação reutilizável para tabelas da aba Indicadores do Acervo.
+  // O conteúdo é extraído dos dados apresentados, respeitando os filtros ativos.
+  exportandoTabelaXlsx = false;
+  erroExportacaoTabela: string | null = null;
+
+  get linhasPoliticasExportacao(): (string | number)[][] {
+    return this.politicaPublica.map((politica) => [politica.label, politica.count]);
+  }
+
+  /** Cabecalhos da exportacao de Ano de Publicacao (recorte atual). */
+  get cabecalhosAnoExportacao(): string[] {
+    return ['Instituição', ...this.anos];
+  }
+
+  /** Linhas exportadas: uma instituicao por linha, uma coluna por ano. */
+  get linhasAnoExportacao(): (string | number)[][] {
+    return this.evolucaoSeries.map((serie) => [serie.nome, ...serie.dados]);
+  }
+
+  exportarTabelaCSV(
+    nomeArquivo: string,
+    cabecalhos: string[],
+    linhas: (string | number)[][],
+  ): void {
+    if (!this.isBrowser || !linhas.length) { return; }
+
+    const escapar = (valor: string | number): string => {
+      if (typeof valor === 'number') { return String(valor); }
+      const seguro = /^\s*[=+\-@]/.test(valor) ? `'${valor}` : valor;
+      return `"${seguro.replace(/"/g, '""')}"`;
+    };
+
+    const conteudo = [cabecalhos, ...linhas]
+      .map((linha) => linha.map(escapar).join(';'))
+      .join('\r\n');
+    const blob = new Blob(['\uFEFF', conteudo], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${nomeArquivo}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async exportarTabelaXLSX(
+    nomeArquivo: string,
+    nomeAba: string,
+    cabecalhos: string[],
+    linhas: (string | number)[][],
+  ): Promise<void> {
+    if (!this.isBrowser || !linhas.length || this.exportandoTabelaXlsx) {
+      return;
+    }
+
+    this.exportandoTabelaXlsx = true;
+    this.erroExportacaoTabela = null;
+    try {
+      const { default: writeExcelFile } =
+        await import('write-excel-file/browser');
+      const textoSeguro = (valor: string): string =>
+        /^\s*[=+\-@]/.test(valor) ? `'${valor}` : valor;
+
+      const cabecalho = cabecalhos.map((nome) => ({
+        value: textoSeguro(nome),
+        fontWeight: 'bold' as const,
+        backgroundColor: '#E9EDF2',
+        textColor: '#0B3A82',
+        wrap: true,
+      }));
+      const conteudo = linhas.map((linha) =>
+        linha.map((valor) => ({
+          value: typeof valor === 'number' ? valor : textoSeguro(valor),
+          wrap: typeof valor === 'string',
+        })),
+      );
+
+      await writeExcelFile([cabecalho, ...conteudo], {
+        sheet: nomeAba,
+        columns: cabecalhos.map((_nome, indice) => ({
+          width: indice === 0 ? 52 : 24,
+        })),
+        stickyRowsCount: 1,
+      }).toFile(`${nomeArquivo}.xlsx`);
+    } catch (erro) {
+      console.error('Erro ao exportar tabela em XLSX:', erro);
+      this.erroExportacaoTabela =
+        'Não foi possível gerar a planilha Excel.';
+    } finally {
+      this.exportandoTabelaXlsx = false;
+    }
+  }
+
   // Opcoes ECharts calculadas apos cada carga; ligadas aos <ds-grafico-echarts>.
   opcaoOdsVM: any = null;
   opcaoAreaVM: any = null;
