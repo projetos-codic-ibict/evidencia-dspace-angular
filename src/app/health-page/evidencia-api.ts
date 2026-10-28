@@ -5,4 +5,7 @@
  *
  * O CORS da API já libera esta origem. Trocar de host é uma alteração só aqui.
  */
-export const EVIDENCIA_API_BASE = 'https://api.rdapp.comais.uft.edu.br';
+
+import { customConfig } from 'src/environments/environment';
+
+export const EVIDENCIA_API_BASE = customConfig.apiURL;
