@@ -7609,6 +7609,7 @@
   "evidencia.search.tab.ai-summary.selected": "Summarise only the selected items ({{ count }})",
 
   "evidencia.search.tab.ai-summary.needs-selection": "Select one or more items to generate a summary",
+  "evidencia.search.tab.ai-summary.hint": "Uses artificial intelligence to summarize the documents you selected in the results list. The summary presents the findings and recommendations contained in those documents, showing which document each passage came from. Example: if you select three evaluation reports on school meals, the summary brings together what those reports found and recommended on the topic.",
 
   "evidencia.search.tab.ai-observation.short": "AI Obs.",
 
@@ -8129,6 +8130,8 @@
   "evidencia.search.ai-summary.mode.label": "Summary mode",
   "evidencia.search.ai-summary.mode.basic": "Findings summary",
   "evidencia.search.ai-summary.mode.by-section": "Recommendations summary",
+  "evidencia.search.ai-summary.mode.basic.hint": "Summarizes the findings contained in the selected documents, that is, the results and observations presented by the evaluations themselves, not conclusions drawn by the AI. Each passage shows which document it came from. Example: “The evaluation found that program coverage is lower in municipalities in the North Region.”",
+  "evidencia.search.ai-summary.mode.by-section.hint": "Summarizes the recommendations contained in the selected documents, that is, the improvement proposals the evaluations themselves address to the policy or program evaluated, not suggestions made by the AI. Each passage shows which document it came from. Example: “The report recommends expanding training for the municipal managers responsible for the program.”",
   "evidencia.search.ai-summary.filters.label": "Applied filters",
   "evidencia.search.ai-summary.evidence-count": "{{ count }} pieces of evidence analysed",
 

@@ -7747,6 +7747,7 @@
   "evidencia.search.tab.ai-summary.selected": "Sintetizar apenas os itens selecionados ({{ count }})",
 
   "evidencia.search.tab.ai-summary.needs-selection": "Selecione um ou mais itens para gerar o resumo",
+  "evidencia.search.tab.ai-summary.hint": "Gera, com inteligência artificial, um resumo dos documentos que você marcou na lista de resultados. O resumo apresenta os achados e as recomendações contidos nesses documentos, indicando de qual documento veio cada trecho. Exemplo: ao marcar três relatórios de avaliação sobre alimentação escolar, o resumo reúne o que esses relatórios constataram e recomendaram sobre o tema.",
 
   "evidencia.search.tab.ai-observation.short": "IA Obs.",
 
@@ -8308,6 +8309,8 @@
   "evidencia.search.ai-summary.mode.label": "Modo da síntese",
   "evidencia.search.ai-summary.mode.basic": "Resumo de achados",
   "evidencia.search.ai-summary.mode.by-section": "Resumo de recomendações",
+  "evidencia.search.ai-summary.mode.basic.hint": "Resume os achados contidos nos documentos selecionados, ou seja, os resultados e as constatações apresentados pelas próprias avaliações, e não conclusões da IA. Cada trecho indica de qual documento veio. Exemplo: “A avaliação constatou que a cobertura do programa é menor nos municípios da Região Norte.”",
+  "evidencia.search.ai-summary.mode.by-section.hint": "Resume as recomendações contidas nos documentos selecionados, ou seja, as propostas de melhoria que as próprias avaliações dirigem à política ou ao programa avaliado, e não sugestões da IA. Cada trecho indica de qual documento veio. Exemplo: “O relatório recomenda ampliar a capacitação dos gestores municipais responsáveis pelo programa.”",
   "evidencia.search.ai-summary.filters.label": "Filtros aplicados",
   "evidencia.search.ai-summary.evidence-count": "{{ count }} evidências analisadas",
 

@@ -20,7 +20,11 @@
               data-test="evidencia.search.ai-summary.mode-basic"
               [class.rdapp-ai__mode--on]="mode() === 'basic'"
               [attr.aria-selected]="mode() === 'basic'"
-              (click)="setMode('basic')">
+              [ngbTooltip]="i18n + '.mode.basic.hint' | translate"
+              container="body"
+              triggers="hover focus"
+              #basicTip="ngbTooltip"
+              (click)="basicTip.close(); setMode('basic')">
         {{ i18n + '.mode.basic' | translate }}
       </button>
       <button class="rdapp-ai__mode"
@@ -29,7 +33,11 @@
               data-test="evidencia.search.ai-summary.mode-by-section"
               [class.rdapp-ai__mode--on]="mode() === 'by_section'"
               [attr.aria-selected]="mode() === 'by_section'"
-              (click)="setMode('by_section')">
+              [ngbTooltip]="i18n + '.mode.by-section.hint' | translate"
+              container="body"
+              triggers="hover focus"
+              #bySectionTip="ngbTooltip"
+              (click)="bySectionTip.close(); setMode('by_section')">
         {{ i18n + '.mode.by-section' | translate }}
       </button>
     </div>

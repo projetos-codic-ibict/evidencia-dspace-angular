@@ -10,7 +10,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDropdownModule,
+  NgbTooltip,
+} from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { firstValueFrom } from 'rxjs';
@@ -63,6 +66,7 @@ interface StoredAiSummaryView {
     AsyncPipe,
     ErrorComponent,
     NgbDropdownModule,
+    NgbTooltip,
     NgxSkeletonLoaderModule,
     ObjectCollectionComponent,
     RouterLink,

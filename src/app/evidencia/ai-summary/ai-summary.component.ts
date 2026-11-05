@@ -10,7 +10,10 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbPopover,
+  NgbTooltip,
+} from '@ng-bootstrap/ng-bootstrap';
 import {
   TranslatePipe,
   TranslateService,
@@ -106,6 +109,7 @@ interface SectionView {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgbPopover,
+    NgbTooltip,
     NgTemplateOutlet,
     TranslatePipe,
   ],
