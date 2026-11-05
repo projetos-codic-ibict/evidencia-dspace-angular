@@ -8600,4 +8600,10 @@
   "rdapp.audit-overview.filter.error.object-invalid": "Informe o ID completo do objeto, como aparece na coluna \"ID do Objeto\" (ex.: 3f2a9c1e-5b7d-4e8f-9a0b-1c2d3e4f5a6b).",
 
   "rdapp.audit-overview.filter.error.date-range": "A data inicial deve ser igual ou anterior à data final.",
+
+  "admin.access-control.groups.form.notification.members.removed.failure": "Erro ao remover membro(s) do grupo.",
+  
+  "admin.access-control.groups.form.notification.members.removed.success": "Membro(s) removido(s) do grupo com sucesso.",
+
+  "admin.access-control.groups.form.notification.members.added.success": "Membro(s) adicionado(s) ao grupo com sucesso.",
 }

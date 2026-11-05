@@ -18,7 +18,6 @@ import { map } from 'rxjs/operators';
 
 import { SortOptions } from '@dspace/core/cache/models/sort-options.model';
 
-// Importações dos serviços oficiais do DSpace para varredura completa
 import { ItemDataService } from '../../../../../../app/core/data/item-data.service';
 import { getFirstCompletedRemoteData } from '../../../../../../app/core/shared/operators';
 import { AiSummaryComponent } from '../../../../../../app/evidencia/ai-summary/ai-summary.component';
@@ -45,11 +44,6 @@ import { SearchResultsSkeletonComponent } from '../../../../../../app/shared/sea
 import { SearchResultsComponent as BaseComponent } from '../../../../../../app/shared/search/search-results/search-results.component';
 import { SearchSettingsComponent } from '../search-settings/search-settings.component';
 
-/**
- * O que precisa sobreviver ao F5 para a aba de síntese voltar como estava: de qual
- * busca ela era e sobre quais documentos. A resposta em si fica no cache do
- * `AiSummaryService`.
- */
 interface StoredAiSummaryView {
   query: string;
   searchType: string;
@@ -84,98 +78,104 @@ export class SearchResultsComponent extends BaseComponent implements OnChanges {
   @Input() sortOptionsList: SortOptions[];
 
   selectedCount = 0;
-  /** Marcado quando todos os itens da página estão selecionados */
+  /** Marcado quando todos os itens da página atual estão selecionados */
   allSelected = false;
   isExporting = false;
   isExportingDocx = false;
   isExportingPdf = false;
 
-  /**
-   * Aba visível. "Resultados" é a inicial: a síntese custa uma inferência de LLM
-   * e ninguém a pediu ainda ao chegar na busca. A exceção é o F5 com a síntese
-   * aberta — ver `restoreAiSummaryView`.
-   */
   readonly activeTab = signal<'results' | 'ai-summary'>('results');
-
-  /**
-   * Itens marcados na lista quando a aba de síntese foi aberta.
-   *
-   * Fica num sinal e não numa leitura do DOM porque a aba de resultados sai da
-   * tela ao trocar de aba: quando o painel de síntese pergunta pela seleção, as
-   * caixas de seleção já não existem mais.
-   */
   readonly selectedDocuments = signal<AiSummaryDocument[]>([]);
 
   private itemDataService = inject(ItemDataService);
   private host = inject(ElementRef<HTMLElement>);
 
-  /**
-   * A aba de síntese aparece nesta instalação? Desligada por padrão — ver
-   * `aiSummary.enabled` no app config. Lido uma vez: configuração não muda em
-   * tempo de execução, e o template consulta isso a cada verificação.
-   */
   readonly aiSummaryEnabled = inject(AiSummaryService).enabled;
 
-  /** O primeiro `searchConfig` é a montagem da tela; os seguintes são busca ou
-   *  filtro trocados. Só o primeiro pode reabrir a síntese via F5. */
   private firstSearchConfig = true;
 
+  /**
+   * Mapa persistente de itens selecionados entre páginas (uuid -> AiSummaryDocument).
+   * Evita perder a seleção quando o DOM da página anterior é destruído.
+   */
+  private selectedItemsMap = new Map<string, AiSummaryDocument>();
+
+  /**
+   * Assinatura da busca atual (sem paginação/ordenação) para diferenciar
+   * troca de página de uma nova consulta ou mudança de filtro.
+   */
+  private lastSearchCriteriaKey = '';
+
   ngOnChanges(changes: SimpleChanges): void {
-    // Os checkboxes são recriados quando os resultados mudam, então o estado volta a ser lido deles
+    // Quando novos resultados chegam (ex.: trocou de página), restaura os checkboxes marcados no DOM
     if (changes.searchResults) {
-      setTimeout(() => this.updateSelectedCount());
+      setTimeout(() => this.syncCheckboxesWithSelection());
     }
+
     if (!changes.searchConfig) {
       return;
     }
+
+    const currentCriteriaKey = this.buildSearchCriteriaKey();
+
     if (this.firstSearchConfig) {
       this.firstSearchConfig = false;
-      // F5 na síntese aberta volta a ela, se for a mesma busca e a mesma seleção.
+      this.lastSearchCriteriaKey = currentCriteriaKey;
       this.restoreAiSummaryView();
       return;
     }
-    // Busca alterada ou filtro aplicado depois da montagem: a seleção que a
-    // síntese resumia veio das caixas da lista, que é recarregada e volta em
-    // branco. Manter o painel aberto o deixaria falando de documentos que já
-    // saíram do resultado, então ele é limpo e escondido para ficar em sincronia
-    // com a busca e os filtros atuais.
+
+    // Se mudou apenas a página ou a ordenação (mesma query/filtros/escopo), mantém a seleção!
+    if (currentCriteriaKey === this.lastSearchCriteriaKey) {
+      return;
+    }
+
+    // Nova busca ou filtro alterado: limpa a seleção e a síntese
+    this.lastSearchCriteriaKey = currentCriteriaKey;
     this.clearAiSummary();
+  }
+
+  /**
+   * Gera uma chave única apenas para os critérios de busca (query, escopo, configuração e filtros),
+   * ignorando paginação e ordenação.
+   */
+  private buildSearchCriteriaKey(): string {
+    const config = this.searchConfig as any;
+    if (!config) {
+      return '';
+    }
+    const filters = Array.isArray(config.filters)
+      ? config.filters.map((f: any) => `${f.key}=${(f.values ?? []).join(',')}`).sort().join('&')
+      : '';
+    return JSON.stringify({
+      query: config.query?.trim() ?? '',
+      searchType: this.currentSearchType(),
+      scope: config.scope ?? '',
+      configuration: config.configuration ?? '',
+      filters,
+    });
   }
 
   showTab(tab: 'results' | 'ai-summary'): void {
     if (tab === 'ai-summary') {
-      // Última chance de ler as caixas de seleção: a troca de aba desmonta a
-      // lista de resultados.
       const documents = this.readSelectedDocuments();
-      // A síntese só existe sobre uma seleção. Sem itens marcados não há o que
-      // resumir, então o clique não abre a aba.
       if (documents.length === 0) {
         return;
       }
       this.selectedDocuments.set(documents);
       this.selectedCount = documents.length;
       this.activeTab.set('ai-summary');
-      // O F5 volta à síntese com a mesma seleção.
       this.storeAiSummaryView();
     } else {
-      // A lista é remontada com as caixas em branco, então o contador volta a
-      // zero junto — senão a exportação segue habilitada sobre uma seleção que
-      // já não existe na tela.
-      this.selectedCount = 0;
-      this.allSelected = false;
-      this.selectedDocuments.set([]);
+      // Volta para a aba de resultados mantendo os itens selecionados e remarcando no DOM
       this.activeTab.set('results');
       removeStored(AI_SUMMARY_STORAGE_KEYS.view);
+      setTimeout(() => this.syncCheckboxesWithSelection());
     }
   }
 
-  /**
-   * Esvazia a síntese e volta à lista de resultados.
-   *
-   * Chamado a cada mudança de busca ou filtro: a seleção deixa de valer e o
-   * painel não pode continuar aberto sobre ela.
-   */
   private clearAiSummary(): void {
+    this.selectedItemsMap.clear();
     this.selectedCount = 0;
     this.allSelected = false;
     this.selectedDocuments.set([]);
@@ -183,14 +183,6 @@ export class SearchResultsComponent extends BaseComponent implements OnChanges {
     removeStored(AI_SUMMARY_STORAGE_KEYS.view);
   }
 
-  /**
-   * Depois de um F5, reabre a síntese se ela estava aberta **para esta mesma
-   * busca**, com a mesma seleção — o cache do serviço devolve o texto sem outra
-   * chamada à API.
-   *
-   * Busca diferente é navegação nova, não F5: o estado guardado sai, para uma
-   * volta futura àquela consulta não abrir a síntese sozinha.
-   */
   private restoreAiSummaryView(): void {
     const query = this.searchConfig?.query?.trim() ?? '';
     if (!this.aiSummaryEnabled || query === '') {
@@ -202,12 +194,14 @@ export class SearchResultsComponent extends BaseComponent implements OnChanges {
       return;
     }
     const sameSearch = stored.query === query && stored.searchType === this.currentSearchType();
-    // A síntese só se restaura sobre uma seleção: sem documentos guardados não há
-    // o que reabrir, mesma regra da abertura pela aba.
     if (!sameSearch || !Array.isArray(stored.documents) || stored.documents.length === 0) {
       removeStored(AI_SUMMARY_STORAGE_KEYS.view);
       return;
     }
+
+    this.selectedItemsMap.clear();
+    stored.documents.forEach((doc) => this.selectedItemsMap.set(doc.uuid, doc));
+
     this.selectedDocuments.set(stored.documents);
     this.selectedCount = stored.documents.length;
     this.activeTab.set('ai-summary');
@@ -228,63 +222,88 @@ export class SearchResultsComponent extends BaseComponent implements OnChanges {
 
   @HostListener('change', ['$event'])
   onChange(event: Event) {
-    const target = event.target as HTMLElement;
+    const target = event.target as HTMLInputElement;
     if (target && target.classList.contains('item-checkbox')) {
+      const uuid = target.id.replace('checkbox-', '');
+      if (target.checked) {
+        this.selectedItemsMap.set(uuid, {
+          uuid,
+          handle: this.handleOf(uuid),
+        });
+      } else {
+        this.selectedItemsMap.delete(uuid);
+      }
       this.updateSelectedCount();
     }
   }
 
-  /** Checkboxes dos itens desta lista de resultados */
+  /** Checkboxes dos itens renderizados na página atual */
   private itemCheckboxes(): HTMLInputElement[] {
     return Array.from(this.host.nativeElement.querySelectorAll('.item-checkbox'));
   }
 
-  /** Ids dos itens marcados, usados na exportação */
+  /** IDs de todos os itens marcados (em qualquer página) */
   private selectedItemIds(): string[] {
-    return this.itemCheckboxes()
-      .filter((checkbox) => checkbox.checked)
-      .map((checkbox) => checkbox.id.replace('checkbox-', ''));
+    return Array.from(this.selectedItemsMap.keys());
   }
 
-  /**
-   * A seleção no formato que a síntese pede: UUID e, quando a página de
-   * resultados o conhece, o handle do item.
-   *
-   * O handle vem do resultado já carregado, não do DOM — a lista só imprime o
-   * UUID —, e é opcional: a API acha o documento pelo UUID, o handle apenas
-   * dispensa a tradução do outro lado.
-   */
+  /** Documentos selecionados (em qualquer página) para a Síntese de IA */
   private readSelectedDocuments(): AiSummaryDocument[] {
-    return this.selectedItemIds()
-      .map((uuid: string) => ({ uuid, handle: this.handleOf(uuid) }));
+    return Array.from(this.selectedItemsMap.values());
   }
 
   /** Handle do item na página de resultados atual; `null` quando não se sabe. */
   private handleOf(uuid: string): string | null {
     const page = this.searchResults?.payload?.page ?? [];
     for (const result of page) {
-      const dso = result?.indexableObject as { uuid?: string, handle?: string };
+      const dso = result?.indexableObject as { uuid?: string; handle?: string };
       if (dso?.uuid === uuid) {
         return dso.handle ?? null;
       }
     }
-    return null;
+    return this.selectedItemsMap.get(uuid)?.handle ?? null;
   }
 
-  updateSelectedCount() {
-    // Com a aba de síntese aberta a lista não está na tela: contar as caixas daria
-    // zero e apagaria a seleção que a síntese está usando.
+  /**
+   * Remarca os checkboxes da página atual com base no `selectedItemsMap`
+   * e atualiza o contador total e o checkbox "Selecionar todos".
+   */
+  private syncCheckboxesWithSelection(): void {
     if (this.activeTab() === 'ai-summary') {
       return;
     }
     const checkboxes = this.itemCheckboxes();
-    this.selectedCount = checkboxes.filter((checkbox) => checkbox.checked).length;
-    this.allSelected = checkboxes.length > 0 && this.selectedCount === checkboxes.length;
+    checkboxes.forEach((checkbox) => {
+      const uuid = checkbox.id.replace('checkbox-', '');
+      checkbox.checked = this.selectedItemsMap.has(uuid);
+    });
+    this.updateSelectedCount();
   }
 
-  toggleSelectAll(event: Event) {
+  updateSelectedCount(): void {
+    if (this.activeTab() === 'ai-summary') {
+      return;
+    }
+    const checkboxes = this.itemCheckboxes();
+    this.selectedCount = this.selectedItemsMap.size;
+    this.allSelected =
+      checkboxes.length > 0 && checkboxes.every((checkbox) => checkbox.checked);
+  }
+
+  toggleSelectAll(event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
-    this.itemCheckboxes().forEach((checkbox) => (checkbox.checked = isChecked));
+    this.itemCheckboxes().forEach((checkbox) => {
+      checkbox.checked = isChecked;
+      const uuid = checkbox.id.replace('checkbox-', '');
+      if (isChecked) {
+        this.selectedItemsMap.set(uuid, {
+          uuid,
+          handle: this.handleOf(uuid),
+        });
+      } else {
+        this.selectedItemsMap.delete(uuid);
+      }
+    });
     this.updateSelectedCount();
   }
 
