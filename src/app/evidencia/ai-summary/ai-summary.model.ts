@@ -102,6 +102,27 @@ export function normalizeAiSummary(payload: unknown): AiSummaryResponse {
   };
 }
 
+/** Marcador de citação no texto da síntese: `[n]`. */
+const CITATION_MARKER = /\[(\d{1,3})\]/g;
+
+/**
+ * As citações que o texto da síntese realmente menciona.
+ *
+ * A API devolve todos os trechos que recuperou, não só os que o LLM usou: um
+ * trecho que nenhum `[n]` aponta não sustenta nada do que está escrito, e
+ * listá-lo como fonte faria parecer que sim. O marcador é o mesmo de
+ * `splitCitations`, para que fonte listada e marcador clicável nunca discordem.
+ */
+export function citedCitations(citations: AiCitation[], texts: string[]): AiCitation[] {
+  const cited = new Set<number>();
+  for (const text of texts) {
+    for (const match of text.matchAll(CITATION_MARKER)) {
+      cited.add(Number(match[1]));
+    }
+  }
+  return citations.filter((citation: AiCitation) => cited.has(citation.n));
+}
+
 /**
  * Divide o texto da síntese em partes, separando os marcadores `[n]` do texto
  * corrido. O template precisa disso para transformar cada marcador num botão de
@@ -113,7 +134,7 @@ export function normalizeAiSummary(payload: unknown): AiSummaryResponse {
 export function splitCitations(text: string, citations: AiCitation[]): AiSummaryChunk[] {
   const known = new Set(citations.map((citation: AiCitation) => citation.n));
   const chunks: AiSummaryChunk[] = [];
-  const pattern = /\[(\d{1,3})\]/g;
+  const pattern = new RegExp(CITATION_MARKER);
   let cursor = 0;
   let match: RegExpExecArray | null;
 

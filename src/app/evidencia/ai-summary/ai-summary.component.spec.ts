@@ -21,6 +21,7 @@ import {
   AiSummaryService,
 } from './ai-summary.service';
 import { AiSummaryPdfService } from './ai-summary-pdf.service';
+import { AiSummaryTitleService } from './ai-summary-title.service';
 
 const RESPONSE: AiSummaryResponse = {
   summary: '**Educação básica**\n- Principais evidências [1] e mais.',
@@ -33,19 +34,25 @@ const RESPONSE: AiSummaryResponse = {
   evidenceCount: 10,
 };
 
+/** A mesma resposta, com o texto citando os dois trechos. */
+const CITES_BOTH: AiSummaryResponse = { ...RESPONSE, summary: 'Evidências [1] e [2].' };
+
 describe('AiSummaryComponent', () => {
   let component: AiSummaryComponent;
   let fixture: ComponentFixture<AiSummaryComponent>;
   let service: jasmine.SpyObj<AiSummaryService>;
   let pdf: jasmine.SpyObj<AiSummaryPdfService>;
+  let titles: jasmine.SpyObj<AiSummaryTitleService>;
 
-  function setup(query = 'educacao', active = false): void {
+  function setup(query = 'educacao', active = false, response: AiSummaryResponse = RESPONSE): void {
     // O modo escolhido persiste no sessionStorage; cada teste parte do geral.
     sessionStorage.clear();
     service = jasmine.createSpyObj('AiSummaryService', ['summarize', 'forget'], { enabled: true, maxDocuments: 20 });
-    service.summarize.and.returnValue(of(RESPONSE));
+    service.summarize.and.returnValue(of(response));
     pdf = jasmine.createSpyObj('AiSummaryPdfService', ['open', 'canOpen']);
     pdf.canOpen.and.returnValue(true);
+    titles = jasmine.createSpyObj('AiSummaryTitleService', ['title']);
+    titles.title.and.returnValue(of(''));
 
     TestBed.configureTestingModule({
       imports: [
@@ -57,6 +64,7 @@ describe('AiSummaryComponent', () => {
       providers: [
         { provide: AiSummaryService, useValue: service },
         { provide: AiSummaryPdfService, useValue: pdf },
+        { provide: AiSummaryTitleService, useValue: titles },
       ],
     });
 
@@ -280,7 +288,7 @@ describe('AiSummaryComponent', () => {
   });
 
   it('lista cada documento uma vez, com os números que apontam para ele', () => {
-    setup('educacao', true);
+    setup('educacao', true, CITES_BOTH);
 
     const sources = fixture.debugElement.queryAll(By.css('.rdapp-ai__source'));
     expect(sources.length).toBe(1);
@@ -290,8 +298,43 @@ describe('AiSummaryComponent', () => {
       .toEqual(['[1]', '[2]']);
   });
 
+  it('não lista como fonte o trecho que o texto não cita', () => {
+    setup('educacao', true, {
+      ...RESPONSE,
+      summary: 'Só o primeiro [1].',
+      citations: [
+        ...RESPONSE.citations,
+        { n: 3, section: '1', page: 9, snippet: 'outro doc', title: 'Outro', itemUuid: 'uuid-2', itemHandle: null },
+      ],
+    });
+
+    const sources = fixture.debugElement.queryAll(By.css('.rdapp-ai__source'));
+    expect(sources.length).toBe(1);
+    expect(sources[0].queryAll(By.css('.rdapp-ai__mark')).map((mark) => mark.nativeElement.textContent.trim()))
+      .toEqual(['[1]']);
+  });
+
+  it('esconde a lista de fontes quando o texto não cita nada', () => {
+    setup('educacao', true, { ...RESPONSE, summary: 'Sem marcador.' });
+
+    expect(fixture.debugElement.query(By.css('.rdapp-ai__sources'))).toBeNull();
+  });
+
+  it('mostra o título da publicação no lugar do nome que a API manda', () => {
+    sessionStorage.clear();
+    setup('educacao', false);
+    titles.title.and.returnValue(of('Despesas com Educação no IRPF'));
+    fixture.componentRef.setInput('active', true);
+    fixture.detectChanges();
+    fixture.detectChanges();
+
+    expect(titles.title).toHaveBeenCalledWith('uuid-1');
+    expect(fixture.debugElement.query(By.css('.rdapp-ai__source-name')).nativeElement.textContent.trim())
+      .toBe('Despesas com Educação no IRPF');
+  });
+
   it('cada marcador da fonte abre a sua própria página', () => {
-    setup('educacao', true);
+    setup('educacao', true, CITES_BOTH);
 
     fixture.debugElement.queryAll(By.css('.rdapp-ai__mark'))[1].nativeElement.click();
 
