@@ -1,16 +1,17 @@
-<div class="nuvem" #nuvemBox>
+<!-- Lista semantica: o leitor de tela le cada termo com a contagem (sr-only); a dica visual e so para o mouse. -->
+<ul class="nuvem" #nuvemBox aria-label="Nuvem de palavras, do termo mais ao menos frequente">
   @for (p of nuvem; track trackNuvem($index)) {
-    <span class="termo" [ngStyle]="p.estilo"
-          (mouseenter)="mostrarDica($event, p)" (mousemove)="moverDica($event)"
-          (mouseleave)="esconderDica()">{{ p.label }}</span>
+    <li class="termo" [ngStyle]="p.estilo"
+        (mouseenter)="mostrarDica($event, p)" (mousemove)="moverDica($event)"
+        (mouseleave)="esconderDica()">{{ p.label }}<span class="sr-only">, {{ p.count }} {{ p.count === 1 ? 'ocorrência' : 'ocorrências' }}</span></li>
   }
   @if (dica.visivel) {
-    <div class="dica" [ngStyle]="{ left: dica.x + 'px', top: dica.y + 'px' }">
+    <li class="dica" role="presentation" aria-hidden="true" [ngStyle]="{ left: dica.x + 'px', top: dica.y + 'px' }">
       <span class="dica-nome">{{ dica.nome }}</span>
       <span class="dica-val">{{ dica.count }} {{ dica.count === 1 ? 'ocorrência' : 'ocorrências' }}</span>
-    </div>
+    </li>
   }
   @if (!nuvem.length) {
-    <p class="nuvem-vazia">Sem palavras-chave.</p>
+    <li class="nuvem-vazia">Sem palavras-chave.</li>
   }
-</div>
+</ul>

@@ -32,8 +32,8 @@
         (alternarFiltro)="toggleFiltro($event.nome, $event.valor)"
         (limpar)="limparFiltros()"></ds-filtros-sidebar>
 
-      <!-- Conteudo principal -->
-      <main class="painel-conteudo">
+      <!-- Conteudo principal. Nao e <main>: o root do DSpace ja tem o landmark main (#main-content). -->
+      <section class="painel-conteudo" aria-label="Indicadores do painel">
 
         @if (recarregando) {
           <p class="recarregando">Atualizando…</p>
@@ -183,8 +183,31 @@
 
             <section class="bloco span-2">
               <p class="bloco-ante">SEMÂNTICA</p>
-              <h2>Nuvem de Palavras-Chave</h2>
+              <div class="bloco-cabecalho">
+                <h2>Nuvem de Palavras-Chave</h2>
+                <div class="bloco-acoes">
+                  <button type="button" class="btn-icone" (click)="alternarTabela('palavras')" [attr.aria-pressed]="tabelas.palavras"
+                              [attr.aria-controls]="'tabela-palavras'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados das palavras-chave">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                </div>
+              </div>
               <ds-nuvem-palavras [palavras]="palavrasChave"></ds-nuvem-palavras>
+              <div class="tabela-box sem-fade" id="tabela-palavras" [class.sr-only]="!tabelas.palavras">
+                <div class="tabela-wrap">
+                  <table class="tabela">
+                    <caption class="sr-only">Palavras-chave mais frequentes e número de ocorrências</caption>
+                    <thead><tr><th scope="col">Palavra-chave</th><th scope="col" class="num">Ocorrências</th></tr></thead>
+                    <tbody>
+                      @for (p of palavrasChave; track p.label) {
+                        <tr><td>{{ p.label }}</td><td class="num">{{ p.count | number }}</td></tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </section>
           </div>
         </div>
@@ -263,8 +286,21 @@
                     <p class="bloco-ante">RANKING</p>
                     <div class="bloco-cabecalho">
                       <h2>Top 10 avaliações mais acessadas</h2>
-                      <ds-alternador-metrica [metrica]="vmTop.metrica" rotulo="Métrica do ranking"
-                                             (trocar)="trocarMetrica('top', $event)"></ds-alternador-metrica>
+                      <div class="bloco-acoes">
+                        <ds-alternador-metrica [metrica]="vmTop.metrica" rotulo="Métrica do ranking"
+                                               (trocar)="trocarMetrica('top', $event)"></ds-alternador-metrica>
+                        @if (vmTop.itens.length && !vmTop.emCards) {
+                          <ds-exportar-grafico [chart]="charts.top ?? null" rotulo="o ranking" [nome]="'top-10-' + rotulo(vmTop.metrica)"></ds-exportar-grafico>
+                        }
+                        @if (vmTop.itens.length) {
+                          <button type="button" class="btn-icone" (click)="alternarTabela('top')" [attr.aria-pressed]="tabelas.top"
+                              [attr.aria-controls]="'tabela-top'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados do ranking">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                        }
+                      </div>
                     </div>
                     @if (vmTop.itens.length) {
                       <p class="bloco-sub" id="sintese-top">{{ vmTop.sintese }}</p>
@@ -289,16 +325,10 @@
                       } @else {
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmTop.altura" [opcao]="vmTop.opcao" (pronto)="charts.top = $event"
                                             role="img" aria-label="Gráfico de barras do Top 10" aria-describedby="sintese-top"></ds-grafico-echarts>
-                        <ds-exportar-grafico [chart]="charts.top ?? null" rotulo="o ranking" [nome]="'top-10-' + rotulo(vmTop.metrica)"></ds-exportar-grafico>
                       }
 
-                      <!-- Alternativa tabular (recomendacao 4.1) com link para o item (CA07) -->
-                      <button type="button" class="btn-tabela" (click)="alternarTabelaTop()"
-                              [attr.aria-expanded]="mostrarTabelaTop" aria-controls="tabela-top">
-                        {{ mostrarTabelaTop ? 'Ocultar tabela' : 'Ver como tabela' }}
-                      </button>
-                      @if (mostrarTabelaTop) {
-                        <div class="tabela-box sem-fade" id="tabela-top">
+                      <!-- Alternativa tabular (recomendacao 4.1) com link para o item (CA07): sempre no DOM para o leitor de tela -->
+                      <div class="tabela-box sem-fade" id="tabela-top" [class.sr-only]="!tabelas.top">
                           <div class="tabela-wrap">
                             <table class="tabela">
                               <caption class="sr-only">Top 10 avaliações mais acessadas, ordenado por {{ rotulo(vmTop.metrica) }}</caption>
@@ -316,7 +346,6 @@
                             </table>
                           </div>
                         </div>
-                      }
                     } @else {
                       <p class="vazio">Nenhuma avaliação com {{ rotulo(vmTop.metrica) }} neste recorte.</p>
                     }
@@ -349,8 +378,21 @@
                     <p class="bloco-ante">MATRIZ DE ENGAJAMENTO</p>
                     <div class="bloco-cabecalho">
                       <h2>Tipo de Documento vs. Tipo de Avaliação</h2>
-                      <ds-alternador-metrica [metrica]="vmMatriz.metrica" rotulo="Métrica da matriz"
-                                             (trocar)="trocarMetrica('matriz', $event)"></ds-alternador-metrica>
+                      <div class="bloco-acoes">
+                        <ds-alternador-metrica [metrica]="vmMatriz.metrica" rotulo="Métrica da matriz"
+                                               (trocar)="trocarMetrica('matriz', $event)"></ds-alternador-metrica>
+                        @if (vmMatriz.modo === 'heatmap') {
+                          <ds-exportar-grafico [chart]="charts.matriz ?? null" rotulo="a matriz" [nome]="'documento-vs-avaliacao-' + rotulo(vmMatriz.metrica)"></ds-exportar-grafico>
+                        }
+                        @if (vmMatriz.modo === 'heatmap' || vmMatriz.modo === 'card') {
+                          <button type="button" class="btn-icone" (click)="alternarTabela('matriz')" [attr.aria-pressed]="tabelas.matriz"
+                              [attr.aria-controls]="'tabela-matriz'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados da matriz">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                        }
+                      </div>
                     </div>
                     @switch (vmMatriz.modo) {
                       @case ('vazio') {
@@ -364,6 +406,9 @@
                             <span class="cmp-valor">{{ vmMatriz.max | number }} <small>{{ unidade(vmMatriz.metrica, vmMatriz.max) }}</small></span>
                           </div>
                         </div>
+                        <div id="tabela-matriz" [class.sr-only]="!tabelas.matriz">
+                          <ng-container *ngTemplateOutlet="tabelaMatrizUso"></ng-container>
+                        </div>
                       }
                       @case ('simples') {
                         <p class="bloco-sub">{{ vmMatriz.sintese }}</p>
@@ -374,7 +419,6 @@
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmMatriz.altura" [opcao]="vmMatriz.opcao"
                                             (pronto)="ligarCruzMatrizUso($event)"
                                             role="img" aria-label="Matriz de calor de tipo de documento por tipo de avaliação" aria-describedby="sintese-matriz"></ds-grafico-echarts>
-                        <ds-exportar-grafico [chart]="charts.matriz ?? null" rotulo="a matriz" [nome]="'documento-vs-avaliacao-' + rotulo(vmMatriz.metrica)"></ds-exportar-grafico>
                         <div class="legenda-grafico">
                           <span class="lg-titulo">Tipo de Avaliação</span>
                           <div class="lg-grid">
@@ -385,15 +429,9 @@
                             }
                           </div>
                         </div>
-                        <button type="button" class="btn-tabela" (click)="alternarTabelaMatrizUso()"
-                                [attr.aria-expanded]="mostrarTabelaMatrizUso" aria-controls="tabela-matriz-uso">
-                          {{ mostrarTabelaMatrizUso ? 'Ocultar tabela' : 'Ver como tabela' }}
-                        </button>
-                        @if (mostrarTabelaMatrizUso) {
-                          <div id="tabela-matriz-uso">
-                            <ng-container *ngTemplateOutlet="tabelaMatrizUso"></ng-container>
-                          </div>
-                        }
+                        <div id="tabela-matriz" [class.sr-only]="!tabelas.matriz">
+                          <ng-container *ngTemplateOutlet="tabelaMatrizUso"></ng-container>
+                        </div>
                       }
                     }
                     <ng-template #tabelaMatrizUso>
@@ -430,8 +468,21 @@
                     <p class="bloco-ante">DISTRIBUIÇÃO DE ACESSOS</p>
                     <div class="bloco-cabecalho">
                       <h2>Área Temática</h2>
-                      <ds-alternador-metrica [metrica]="vmArea.metrica" rotulo="Métrica da área temática"
-                                             (trocar)="trocarMetrica('area', $event)"></ds-alternador-metrica>
+                      <div class="bloco-acoes">
+                        <ds-alternador-metrica [metrica]="vmArea.metrica" rotulo="Métrica da área temática"
+                                               (trocar)="trocarMetrica('area', $event)"></ds-alternador-metrica>
+                        @if (vmArea.lista.length && !vmArea.poucas) {
+                          <ds-exportar-grafico [chart]="charts.area ?? null" rotulo="o gráfico de área temática" [nome]="'area-tematica-' + rotulo(vmArea.metrica)"></ds-exportar-grafico>
+                        }
+                        @if (vmArea.lista.length) {
+                          <button type="button" class="btn-icone" (click)="alternarTabela('area')" [attr.aria-pressed]="tabelas.area"
+                              [attr.aria-controls]="'tabela-area'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados de área temática">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                        }
+                      </div>
                     </div>
                     @if (vmArea.lista.length) {
                       <p class="bloco-sub" id="sintese-area">{{ vmArea.sintese }}</p>
@@ -447,9 +498,8 @@
                       } @else {
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmArea.altura" [opcao]="vmArea.opcao" (pronto)="charts.area = $event"
                                             role="img" aria-label="Dot plot de área temática" aria-describedby="sintese-area"></ds-grafico-echarts>
-                        <ds-exportar-grafico [chart]="charts.area ?? null" rotulo="o gráfico de área temática" [nome]="'area-tematica-' + rotulo(vmArea.metrica)"></ds-exportar-grafico>
                       }
-                      <ds-tabela-uso idTabela="tabela-area-uso" rotuloCategoria="Área temática" [linhas]="vmArea.tabela" [metrica]="vmArea.metrica"
+                      <ds-tabela-uso idTabela="tabela-area" rotuloCategoria="Área temática" [linhas]="vmArea.tabela" [metrica]="vmArea.metrica" [visivel]="tabelas.area"
                                      titulo="Visualizações e downloads por área temática"></ds-tabela-uso>
                     } @else {
                       <p class="vazio">Sem área temática com {{ rotulo(vmArea.metrica) }} neste recorte.</p>
@@ -461,8 +511,21 @@
                     <p class="bloco-ante">CONCENTRAÇÃO POR ÓRGÃO</p>
                     <div class="bloco-cabecalho">
                       <h2>Instituição</h2>
-                      <ds-alternador-metrica [metrica]="vmInst.metrica" rotulo="Métrica da instituição"
-                                             (trocar)="trocarMetrica('inst', $event)"></ds-alternador-metrica>
+                      <div class="bloco-acoes">
+                        <ds-alternador-metrica [metrica]="vmInst.metrica" rotulo="Métrica da instituição"
+                                               (trocar)="trocarMetrica('inst', $event)"></ds-alternador-metrica>
+                        @if (vmInst.lista.length && !vmInst.poucas) {
+                          <ds-exportar-grafico [chart]="charts.inst ?? null" rotulo="o gráfico de instituição" [nome]="'instituicao-' + rotulo(vmInst.metrica)"></ds-exportar-grafico>
+                        }
+                        @if (vmInst.lista.length) {
+                          <button type="button" class="btn-icone" (click)="alternarTabela('inst')" [attr.aria-pressed]="tabelas.inst"
+                              [attr.aria-controls]="'tabela-inst'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados de instituição">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                        }
+                      </div>
                     </div>
                     @if (vmInst.lista.length) {
                       <p class="bloco-sub" id="sintese-inst">{{ vmInst.sintese }}</p>
@@ -479,9 +542,8 @@
                       } @else {
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmInst.altura" [opcao]="vmInst.opcao" (pronto)="charts.inst = $event"
                                             role="img" aria-label="Gráfico lollipop de instituição" aria-describedby="sintese-inst"></ds-grafico-echarts>
-                        <ds-exportar-grafico [chart]="charts.inst ?? null" rotulo="o gráfico de instituição" [nome]="'instituicao-' + rotulo(vmInst.metrica)"></ds-exportar-grafico>
                       }
-                      <ds-tabela-uso idTabela="tabela-inst-uso" rotuloCategoria="Instituição" [linhas]="vmInst.tabela" [metrica]="vmInst.metrica"
+                      <ds-tabela-uso idTabela="tabela-inst" rotuloCategoria="Instituição" [linhas]="vmInst.tabela" [metrica]="vmInst.metrica" [visivel]="tabelas.inst"
                                      titulo="Visualizações e downloads por instituição"></ds-tabela-uso>
                     } @else {
                       <p class="vazio">Sem instituição com {{ rotulo(vmInst.metrica) }} neste recorte.</p>
@@ -493,21 +555,26 @@
                     <p class="bloco-ante">CURVA DE CRESCIMENTO</p>
                     <div class="bloco-cabecalho">
                       <h2>Ano de Publicação (acumulado)</h2>
-                      <ds-alternador-metrica [metrica]="vmAno.metrica" rotulo="Métrica do acumulado por ano"
-                                             (trocar)="trocarMetrica('ano', $event)"></ds-alternador-metrica>
+                      <div class="bloco-acoes">
+                        <ds-alternador-metrica [metrica]="vmAno.metrica" rotulo="Métrica do acumulado por ano"
+                                               (trocar)="trocarMetrica('ano', $event)"></ds-alternador-metrica>
+                        @if (vmAno.modo !== 'vazio') {
+                          <ds-exportar-grafico [chart]="charts.ano ?? null" rotulo="o acumulado por ano" [nome]="'ano-publicacao-acumulado-' + rotulo(vmAno.metrica)"></ds-exportar-grafico>
+                          <button type="button" class="btn-icone" (click)="alternarTabela('ano')" [attr.aria-pressed]="tabelas.ano"
+                              [attr.aria-controls]="'tabela-ano'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados do acumulado por ano">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                        }
+                      </div>
                     </div>
                     @if (vmAno.modo !== 'vazio') {
                       <p class="bloco-sub" id="sintese-ano">{{ vmAno.sintese }}</p>
                       <ds-grafico-echarts class="grafico" [style.height.px]="vmAno.altura" [opcao]="vmAno.opcao" (pronto)="charts.ano = $event"
                                           role="img" [attr.aria-label]="vmAno.modo === 'linhas' ? 'Gráfico de linhas do acumulado por ano' : 'Pequenos múltiplos do acumulado por ano'" aria-describedby="sintese-ano"></ds-grafico-echarts>
-                      <ds-exportar-grafico [chart]="charts.ano ?? null" rotulo="o acumulado por ano" [nome]="'ano-publicacao-acumulado-' + rotulo(vmAno.metrica)"></ds-exportar-grafico>
                       <p class="nota-grafico">Cada ponto é o total acumulado de {{ rotulo(vmAno.metrica) }} das avaliações publicadas até aquele ano; a curva mostra crescimento, não a variação de cada período.</p>
-                      <button type="button" class="btn-tabela" (click)="mostrarTabelaAno = !mostrarTabelaAno"
-                              [attr.aria-expanded]="mostrarTabelaAno" aria-controls="tabela-ano-uso">
-                        {{ mostrarTabelaAno ? 'Ocultar tabela' : 'Ver como tabela' }}
-                      </button>
-                      @if (mostrarTabelaAno) {
-                        <div class="tabela-box sem-fade" id="tabela-ano-uso">
+                      <div class="tabela-box sem-fade" id="tabela-ano" [class.sr-only]="!tabelas.ano">
                           <div class="tabela-wrap tabela-larga">
                             <table class="tabela matriz-simples">
                               <caption class="sr-only">{{ rotulo(vmAno.metrica) }} acumuladas por ano de publicação e instituição</caption>
@@ -532,7 +599,6 @@
                             </table>
                           </div>
                         </div>
-                      }
                     } @else {
                       <p class="vazio">Sem {{ rotulo(vmAno.metrica) }} com ano de publicação neste recorte.</p>
                     }
@@ -541,10 +607,35 @@
                   <!-- 2.7 Termos mais buscados: eventos de busca do repositorio (contagem global) -->
                   <section class="bloco span-2">
                     <p class="bloco-ante">FREQUÊNCIA SEMÂNTICA</p>
-                    <h2>Termos mais buscados</h2>
+                    <div class="bloco-cabecalho">
+                      <h2>Termos mais buscados</h2>
+                      @if (termosBuscados.length) {
+                        <div class="bloco-acoes">
+                          <button type="button" class="btn-icone" (click)="alternarTabela('termos')" [attr.aria-pressed]="tabelas.termos"
+                              [attr.aria-controls]="'tabela-termos'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados dos termos buscados">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                        </div>
+                      }
+                    </div>
                     @if (termosBuscados.length) {
                       <p class="bloco-sub">Termos digitados na busca do repositório, do mais ao menos frequente. A contagem é de todo o acervo: os filtros da barra lateral não se aplicam a buscas.</p>
                       <ds-nuvem-palavras [palavras]="termosBuscados"></ds-nuvem-palavras>
+                      <div class="tabela-box sem-fade" id="tabela-termos" [class.sr-only]="!tabelas.termos">
+                        <div class="tabela-wrap">
+                          <table class="tabela">
+                            <caption class="sr-only">Termos mais buscados e número de buscas</caption>
+                            <thead><tr><th scope="col">Termo</th><th scope="col" class="num">Buscas</th></tr></thead>
+                            <tbody>
+                              @for (t of termosBuscados; track t.label) {
+                                <tr><td>{{ t.label }}</td><td class="num">{{ t.count | number }}</td></tr>
+                              }
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     } @else {
                       <p class="vazio">Ainda não há buscas registradas no repositório.</p>
                     }
@@ -555,8 +646,21 @@
                     <p class="bloco-ante">FOCO POR LOCALIDADE</p>
                     <div class="bloco-cabecalho">
                       <h2>Abrangência Territorial</h2>
-                      <ds-alternador-metrica [metrica]="vmAbr.metrica" rotulo="Métrica da abrangência"
-                                             (trocar)="trocarMetrica('abr', $event)"></ds-alternador-metrica>
+                      <div class="bloco-acoes">
+                        <ds-alternador-metrica [metrica]="vmAbr.metrica" rotulo="Métrica da abrangência"
+                                               (trocar)="trocarMetrica('abr', $event)"></ds-alternador-metrica>
+                        @if (vmAbr.lista.length && !vmAbr.poucas) {
+                          <ds-exportar-grafico [chart]="charts.abr ?? null" rotulo="o gráfico de abrangência" [nome]="'abrangencia-territorial-' + rotulo(vmAbr.metrica)"></ds-exportar-grafico>
+                        }
+                        @if (vmAbr.lista.length) {
+                          <button type="button" class="btn-icone" (click)="alternarTabela('abr')" [attr.aria-pressed]="tabelas.abr"
+                              [attr.aria-controls]="'tabela-abr'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados de abrangência territorial">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                        }
+                      </div>
                     </div>
                     @if (vmAbr.lista.length) {
                       <p class="bloco-sub" id="sintese-abr">{{ vmAbr.sintese }}</p>
@@ -583,9 +687,8 @@
                             </li>
                           }
                         </ul>
-                        <ds-exportar-grafico [chart]="charts.abr ?? null" rotulo="o gráfico de abrangência" [nome]="'abrangencia-territorial-' + rotulo(vmAbr.metrica)"></ds-exportar-grafico>
                       }
-                      <ds-tabela-uso idTabela="tabela-abr-uso" rotuloCategoria="Abrangência" [linhas]="vmAbr.tabela" [metrica]="vmAbr.metrica" [comPercentual]="true"
+                      <ds-tabela-uso idTabela="tabela-abr" rotuloCategoria="Abrangência" [linhas]="vmAbr.tabela" [metrica]="vmAbr.metrica" [comPercentual]="true" [visivel]="tabelas.abr"
                                      titulo="Visualizações e downloads por abrangência territorial"></ds-tabela-uso>
                     } @else {
                       <p class="vazio">Sem abrangência com {{ rotulo(vmAbr.metrica) }} neste recorte.</p>
@@ -597,8 +700,21 @@
                     <p class="bloco-ante">ALINHAMENTO GLOBAL</p>
                     <div class="bloco-cabecalho">
                       <h2>Objetivos de Desenvolvimento Sustentável (ODS)</h2>
-                      <ds-alternador-metrica [metrica]="vmOds.metrica" rotulo="Métrica dos ODS"
-                                             (trocar)="trocarMetrica('ods', $event)"></ds-alternador-metrica>
+                      <div class="bloco-acoes">
+                        <ds-alternador-metrica [metrica]="vmOds.metrica" rotulo="Métrica dos ODS"
+                                               (trocar)="trocarMetrica('ods', $event)"></ds-alternador-metrica>
+                        @if (vmOds.opcao && !vmOds.cards.length) {
+                          <ds-exportar-grafico [chart]="charts.ods ?? null" rotulo="o gráfico de ODS" [nome]="'ods-' + rotulo(vmOds.metrica)"></ds-exportar-grafico>
+                        }
+                        @if (vmOds.opcao) {
+                          <button type="button" class="btn-icone" (click)="alternarTabela('ods')" [attr.aria-pressed]="tabelas.ods"
+                              [attr.aria-controls]="'tabela-ods'" title="Mostrar tabela de dados" aria-label="Mostrar tabela de dados dos ODS">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/>
+                        </svg>
+                      </button>
+                        }
+                      </div>
                     </div>
                     @if (vmOds.opcao) {
                       <p class="bloco-sub" id="sintese-ods">{{ vmOds.sintese }}</p>
@@ -624,9 +740,8 @@
                             }
                           </div>
                         </div>
-                        <ds-exportar-grafico [chart]="charts.ods ?? null" rotulo="o gráfico de ODS" [nome]="'ods-' + rotulo(vmOds.metrica)"></ds-exportar-grafico>
                       }
-                      <ds-tabela-uso idTabela="tabela-ods-uso" rotuloCategoria="ODS" [linhas]="vmOds.tabela" [metrica]="vmOds.metrica"
+                      <ds-tabela-uso idTabela="tabela-ods" rotuloCategoria="ODS" [linhas]="vmOds.tabela" [metrica]="vmOds.metrica" [visivel]="tabelas.ods"
                                      titulo="Visualizações e downloads por Objetivo de Desenvolvimento Sustentável"></ds-tabela-uso>
                     } @else {
                       <p class="vazio">Sem ODS com {{ rotulo(vmOds.metrica) }} neste recorte.</p>
@@ -650,7 +765,7 @@
           </div>
         }
 
-      </main>
+      </section>
     </div>
   }
 </div>

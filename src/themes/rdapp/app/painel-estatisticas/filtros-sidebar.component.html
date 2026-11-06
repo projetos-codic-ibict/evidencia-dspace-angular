@@ -7,18 +7,20 @@
   <div class="filtros-scroll">
     @for (g of grupos; track g.nome) {
       <div class="grupo" [class.recolhido]="!abertos[g.nome]">
-        <button type="button" class="grupo-cab" (click)="toggleGrupo(g.nome)" [attr.aria-expanded]="abertos[g.nome]">
+        <button type="button" class="grupo-cab" (click)="toggleGrupo(g.nome)"
+                [attr.aria-expanded]="abertos[g.nome]" [attr.aria-controls]="'grupo-' + g.nome">
           <span class="grupo-titulo">{{ g.titulo }}</span>
           <svg class="caret" [class.aberto]="abertos[g.nome]" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
         @if (abertos[g.nome]) {
-          <div class="grupo-corpo">
-            <label class="busca-label">{{ g.buscarPor }}</label>
-            <input class="mini-busca" type="text" [placeholder]="g.placeholder"
-                   [(ngModel)]="buscaOpcao[g.nome]" [attr.aria-label]="'Filtrar ' + g.titulo">
-            <ul class="opcoes">
+          <div class="grupo-corpo" [id]="'grupo-' + g.nome">
+            <!-- Label associado ao campo por for/id (CA06), nao so por aria-label. -->
+            <label class="busca-label" [attr.for]="'busca-' + g.nome">{{ g.buscarPor }}</label>
+            <input class="mini-busca" type="text" [id]="'busca-' + g.nome" [placeholder]="g.placeholder"
+                   [(ngModel)]="buscaOpcao[g.nome]" autocomplete="off">
+            <ul class="opcoes" [id]="'opcoes-' + g.nome">
               @for (o of opcoesExibidas(g); track o.valor) {
                 <li>
                   <label>
@@ -33,7 +35,8 @@
               }
             </ul>
             @if (temMais(g)) {
-              <button type="button" class="mostrar-mais" (click)="toggleMostrarMais(g.nome)">
+              <button type="button" class="mostrar-mais" (click)="toggleMostrarMais(g.nome)"
+                      [attr.aria-expanded]="expandidos[g.nome]" [attr.aria-controls]="'opcoes-' + g.nome">
                 {{ expandidos[g.nome] ? 'Mostrar menos' : 'Mostrar mais' }}
               </button>
             }

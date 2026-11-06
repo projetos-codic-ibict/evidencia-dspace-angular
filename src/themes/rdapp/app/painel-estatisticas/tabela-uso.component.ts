@@ -11,9 +11,11 @@ import {
 export interface CategoriaUso { label: string; views: number; downloads: number; ni?: boolean; }
 
 /**
- * "Ver como tabela" (recomendacao 4.1 / CA06): alternativa textual de um grafico
- * por categoria, com as DUAS metricas e, opcionalmente, o percentual do total.
- * Fica recolhida por padrao; o botao expoe aria-expanded/aria-controls.
+ * Alternativa tabular de um grafico por categoria (recomendacao 4.1 / CA06), com
+ * as DUAS metricas e, opcionalmente, o percentual do total. Esta SEMPRE no DOM,
+ * logo apos o grafico: o leitor de tela a le sem precisar acionar nada. Para quem
+ * enxerga fica escondida (sr-only) ate o icone de tabela do cabecalho do bloco
+ * ligar [visivel].
  */
 @Component({
   selector: 'ds-tabela-uso',
@@ -21,12 +23,7 @@ export interface CategoriaUso { label: string; views: number; downloads: number;
     DecimalPipe,
   ],
   template: `
-    <button type="button" class="btn-tabela" (click)="aberta = !aberta"
-            [attr.aria-expanded]="aberta" [attr.aria-controls]="idTabela">
-      {{ aberta ? 'Ocultar tabela' : 'Ver como tabela' }}
-    </button>
-    @if (aberta) {
-      <div class="tabela-box sem-fade" [id]="idTabela">
+    <div class="tabela-box" [id]="idTabela" [class.sr-only]="!visivel">
         <div class="tabela-wrap">
           <table class="tabela">
             <caption class="sr-only">{{ titulo }}</caption>
@@ -55,14 +52,10 @@ export interface CategoriaUso { label: string; views: number; downloads: number;
           </table>
         </div>
       </div>
-    }
   `,
   styles: [`
     :host { display: block; }
-    .btn-tabela {
-      background: none; border: 0; padding: 0.25rem 0; margin: 0.25rem 0 0.5rem; color: #0B6256; font-weight: 600; font-size: 0.85rem; text-decoration: underline; cursor: pointer;
-      &:focus-visible { outline: 2px solid #0B6256; outline-offset: 2px; }
-    }
+    .tabela-box { margin-top: 0.5rem; }
     .tabela-wrap { max-height: 300px; overflow-y: auto; }
     .tabela {
       width: 100%; table-layout: fixed; border-collapse: collapse;
@@ -83,8 +76,8 @@ export class TabelaUsoComponent {
   @Input() metrica: 'views' | 'downloads' = 'views';
   /** Acrescenta a coluna de percentual do total (usada na abrangencia). */
   @Input() comPercentual = false;
-
-  aberta = false;
+  /** Visivel para quem enxerga; para o leitor de tela a tabela existe sempre. */
+  @Input() visivel = false;
 
   percentual(l: CategoriaUso): number {
     const total = this.linhas.reduce((acc, x) => acc + x[this.metrica], 0);

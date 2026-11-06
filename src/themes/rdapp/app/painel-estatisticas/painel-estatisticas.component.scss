@@ -138,6 +138,15 @@
     &:focus-visible { outline: 2px solid #0B6256; outline-offset: 2px; }
   }
   .bloco-cabecalho { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
+  // Acoes do bloco no cabecalho, como nos prototipos: alternador, download de imagem e tabela de dados.
+  .bloco-acoes { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .btn-icone {
+    display: inline-grid; place-items: center; width: 30px; height: 28px;
+    border: 1px solid #0B6256; border-radius: 6px; background: #fff; color: #0B6256; cursor: pointer;
+    &:hover { background: #E7F4F0; }
+    &[aria-pressed='true'] { background: #0B6256; color: #fff; }
+    &:focus-visible { outline: 2px solid #0B6256; outline-offset: 2px; }
+  }
   .bloco-sub { color: #6c757d; font-size: 0.8rem; margin: 0 0 0.75rem; }
   .nota-grafico { color: #6c757d; font-size: 0.78rem; margin: 0.5rem 0 0; }
   // O alternador Visualizacoes/Downloads vive em alternador-metrica.component.ts.
@@ -154,10 +163,6 @@
     .top-valor { font-size: 1.9rem; font-weight: 800; color: #0B6256; line-height: 1; }
     .top-unidade { font-size: 0.8rem; color: #6c757d; }
     .top-extra { font-size: 0.78rem; color: #6c757d; }
-  }
-  .btn-tabela {
-    background: none; border: 0; padding: 0.25rem 0; margin: 0.25rem 0 0.5rem; color: #0B6256; font-weight: 600; font-size: 0.85rem; text-decoration: underline; cursor: pointer;
-    &:focus-visible { outline: 2px solid #0B6256; outline-offset: 2px; }
   }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 

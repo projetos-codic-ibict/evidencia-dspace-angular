@@ -20,17 +20,27 @@ type FormatoImagem = 'png' | 'jpeg';
   selector: 'ds-exportar-grafico',
   template: `
     <div class="exportar" role="group" [attr.aria-label]="'Baixar ' + rotulo + ' como imagem'">
-      <span class="exportar-titulo" aria-hidden="true">Baixar imagem:</span>
-      <button type="button" class="btn-exportar" (click)="baixar('png')">PNG</button>
-      <button type="button" class="btn-exportar" (click)="baixar('jpeg')">JPG</button>
+      <button type="button" class="btn-exportar" (click)="baixar('png')" title="Baixar como PNG"
+              [attr.aria-label]="'Baixar ' + rotulo + ' como PNG'">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-8 8"/>
+        </svg>PNG
+      </button>
+      <button type="button" class="btn-exportar" (click)="baixar('jpeg')" title="Baixar como JPG"
+              [attr.aria-label]="'Baixar ' + rotulo + ' como JPG'">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-8 8"/>
+        </svg>JPG
+      </button>
     </div>
   `,
   styles: [`
-    :host { display: block; }
-    .exportar { display: inline-flex; align-items: center; gap: 0.5rem; margin: 0.25rem 0 0.5rem; font-size: 0.85rem; color: #6c757d; }
+    :host { display: inline-block; }
+    .exportar { display: inline-flex; align-items: center; gap: 0.35rem; }
     .btn-exportar {
+      display: inline-flex; align-items: center; gap: 0.3rem;
       border: 1px solid #0B6256; border-radius: 6px; background: #fff; color: #0B6256;
-      font-size: 0.78rem; font-weight: 600; padding: 0.2rem 0.6rem; cursor: pointer; min-height: 24px;
+      font-size: 0.74rem; font-weight: 700; padding: 0.25rem 0.5rem; cursor: pointer; min-height: 28px;
       &:hover { background: #E7F4F0; }
       &:focus-visible { outline: 2px solid #0B6256; outline-offset: 2px; }
     }

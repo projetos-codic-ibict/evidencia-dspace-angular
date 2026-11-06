@@ -270,9 +270,11 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   vmAbr: CategoriaVM = this.vmVazio();
   vmOds: OdsVM = { metrica: 'views', completo: [], cards: [], tabela: [], sintese: '', opcao: null };
   vmAno: AnoVM = { metrica: 'views', modo: 'vazio', anos: [], series: [], todas: [], sintese: '', opcao: null, altura: 0 };
-  mostrarTabelaTop = false;
-  mostrarTabelaMatrizUso = false;
-  mostrarTabelaAno = false;
+  // Tabelas de dados visiveis para quem enxerga (icone de tabela no cabecalho do bloco);
+  // para o leitor de tela todas existem sempre, escondidas por sr-only.
+  tabelas: { [bloco: string]: boolean } = {};
+  // Origem da ultima recarga, para a regiao viva anunciar a coisa certa.
+  private motivoRecarga: 'filtro' | 'atualizar' | null = null;
   // Instancias do ECharts de cada bloco da aba 2, para o download como imagem.
   // Chegam por (pronto) e sao renovadas sempre que o grafico e recriado.
   charts: { [bloco in BlocoUso]?: EChartsType } = {};
@@ -346,7 +348,11 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     Object.keys(this.selecionados).forEach((k) => this.selecionados[k].clear());
     this.recarregar();
   }
-  private recarregar(): void { this.recarregando = true; this.carregar(); }
+  private recarregar(): void {
+    this.motivoRecarga = this.motivoRecarga ?? 'filtro';
+    this.recarregando = true;
+    this.carregar();
+  }
 
   private paramsFiltro(excluir?: string): string {
     let p = '';
@@ -432,13 +438,20 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
         this.recomputarGraficos();
         this.loading = false;
-        if (this.recarregando) { this.anuncio = 'Indicadores atualizados.'; }
+        // Mensagem acessivel apos filtros ou "Atualizar" (CA06); nada e dito na carga inicial.
+        if (this.motivoRecarga === 'filtro') {
+          this.anuncio = `Filtros aplicados: ${this.fmt(r.total)} ${r.total === 1 ? 'avaliação' : 'avaliações'} no recorte.`;
+        } else if (this.motivoRecarga === 'atualizar') {
+          this.anuncio = 'Indicadores atualizados.';
+        }
+        this.motivoRecarga = null;
         this.recarregando = false;
         this.cdr.detectChanges();
       },
       error: () => {
         this.erro = 'Nao foi possivel carregar os indicadores. Verifique se o backend esta no ar em ' + this.stats.apiBase;
         this.loading = false;
+        this.motivoRecarga = null;
         this.recarregando = false;
       },
     });
@@ -531,6 +544,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   /** Botao "Atualizar": refaz a carga por vontade do usuario (CA10 sem atualizacao automatica). */
   atualizar(): void {
     this.anuncio = '';
+    this.motivoRecarga = 'atualizar';
     this.recarregar();
   }
 
@@ -850,12 +864,8 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     return t.charAt(0).toUpperCase() + t.slice(1);
   }
 
-  alternarTabelaTop(): void {
-    this.mostrarTabelaTop = !this.mostrarTabelaTop;
-  }
-
-  alternarTabelaMatrizUso(): void {
-    this.mostrarTabelaMatrizUso = !this.mostrarTabelaMatrizUso;
+  alternarTabela(bloco: string): void {
+    this.tabelas[bloco] = !this.tabelas[bloco];
   }
 
   // ---- Top 10 -------------------------------------------------------------
