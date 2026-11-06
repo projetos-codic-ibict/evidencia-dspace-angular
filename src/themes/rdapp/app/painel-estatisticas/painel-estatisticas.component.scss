@@ -15,8 +15,10 @@
         border: 0; background: transparent; color: rgba(255,255,255,0.85);
         font-weight: 700; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase;
         padding: 0.6rem 1.4rem; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s;
+        @media (prefers-reduced-motion: reduce) { transition: none; }
         &.ativo { background: #fff; color: var(--rdapp-bg-color-primary); }
-        &:focus-visible { outline: 2px solid #36c9a0; outline-offset: 2px; }
+        // Anel branco com contorno escuro: visivel tanto sobre o fundo azul quanto sobre a aba ativa branca.
+        &:focus-visible { outline: 3px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 5px #0c2350; }
       }
     }
   }
@@ -69,7 +71,8 @@
     padding: 1.25rem 1.5rem; box-shadow: 0 6px 20px rgba(16,42,84,0.04);
     .bloco-ante { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #6c757d; margin: 0; }
     h2 { font-size: 1.15rem; font-weight: 700; color: var(--rdapp-bg-color-primary); margin: 0.15rem 0 1rem; }
-    .vazio { color: #8a93a2; font-style: italic; margin: 0; }
+    // #5f6b7a sobre branco = 5,6:1 (o antigo #8a93a2 dava 3,2:1 e falhava o minimo de 4,5:1 do CA06).
+    .vazio { color: #5f6b7a; font-style: italic; margin: 0; }
   }
   .bloco.aviso p { color: #495667; line-height: 1.6; }
 
@@ -108,6 +111,7 @@
   }
   .tabela {
     width: 100%; table-layout: fixed; border-collapse: collapse;
+    a:focus-visible { outline: 2px solid #0B6256; outline-offset: 2px; border-radius: 3px; }
     th, td { text-align: left; padding: 0.4rem 0.7rem; border-bottom: 1px solid #eef1f6; overflow-wrap: anywhere; font-size: 0.88rem; }
     thead th {
       position: sticky; top: 0; background: #fff; z-index: 1;
@@ -142,7 +146,10 @@
   .top-card {
     display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem 1.1rem; border: 1px solid #d7e5e1; border-radius: 10px; background: #f7fbfa; min-width: 0;
     .top-posicao { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: #0B6256; }
-    .top-titulo { font-weight: 600; color: var(--rdapp-bg-color-primary); line-height: 1.3; }
+    .top-titulo {
+      font-weight: 600; color: var(--rdapp-bg-color-primary); line-height: 1.3;
+      &:focus-visible { outline: 2px solid #0B6256; outline-offset: 2px; border-radius: 3px; }
+    }
     .top-metrica { display: flex; align-items: baseline; gap: 0.4rem; }
     .top-valor { font-size: 1.9rem; font-weight: 800; color: #0B6256; line-height: 1; }
     .top-unidade { font-size: 0.8rem; color: #6c757d; }

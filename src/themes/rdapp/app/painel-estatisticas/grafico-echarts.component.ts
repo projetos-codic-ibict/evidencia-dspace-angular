@@ -89,11 +89,17 @@ export class GraficoEchartsComponent implements OnChanges, OnDestroy {
       this.pronto.emit(this.chart);
     }
     // notMerge = true: substitui a opcao por inteiro, evitando series antigas
-    // quando os dados encolhem apos um filtro.
-    this.chart.setOption(this.opcao, true);
+    // quando os dados encolhem apos um filtro. Sem animacao quando o sistema
+    // pede menos movimento (CA06: nada depende de animacao automatica).
+    this.chart.setOption(this.reduzirMovimento() ? { ...this.opcao, animation: false } : this.opcao, true);
   }
 
   ngOnDestroy(): void { this.destruir(); }
+
+  private reduzirMovimento(): boolean {
+    return typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
 
   private observarResize(): void {
     if (typeof ResizeObserver === 'undefined') { return; }

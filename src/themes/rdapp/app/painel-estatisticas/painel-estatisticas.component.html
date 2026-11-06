@@ -4,10 +4,13 @@
   <header class="hero">
     <h1 class="hero-titulo">Painel de Estatísticas</h1>
     <p class="hero-sub">Indicadores consolidados sobre a produção científica e técnica do acervo.</p>
-    <div class="alternador" role="tablist" aria-label="Seletor de visão">
-      <button type="button" role="tab" [attr.aria-selected]="aba === 'acervo'"
+    <!-- Padrao WAI-ARIA de abas: so a aba ativa entra na ordem do Tab; setas, Home e End trocam de aba (CA06). -->
+    <div class="alternador" role="tablist" aria-label="Seletor de visão" (keydown)="tecladoAbas($event)">
+      <button type="button" role="tab" id="aba-acervo" aria-controls="painel-acervo"
+              [attr.aria-selected]="aba === 'acervo'" [tabindex]="aba === 'acervo' ? 0 : -1"
               [class.ativo]="aba === 'acervo'" (click)="trocarAba('acervo')">Indicadores do Acervo</button>
-      <button type="button" role="tab" [attr.aria-selected]="aba === 'visualizacoes'"
+      <button type="button" role="tab" id="aba-visualizacoes" aria-controls="painel-visualizacoes"
+              [attr.aria-selected]="aba === 'visualizacoes'" [tabindex]="aba === 'visualizacoes' ? 0 : -1"
               [class.ativo]="aba === 'visualizacoes'" (click)="trocarAba('visualizacoes')">Total de Visualizações</button>
     </div>
   </header>
@@ -38,7 +41,8 @@
         <p class="sr-only" aria-live="polite">{{ anuncio }}</p>
 
         <!-- ABA: Indicadores do Acervo -->
-        <div [style.display]="aba === 'acervo' ? 'block' : 'none'">
+        <div role="tabpanel" id="painel-acervo" aria-labelledby="aba-acervo"
+             [style.display]="aba === 'acervo' ? 'block' : 'none'" [attr.aria-hidden]="aba !== 'acervo'">
 
           <section class="pcards">
             <div class="pcard">
@@ -187,7 +191,7 @@
 
         <!-- ABA: Total de Visualizacoes -->
         @if (aba === 'visualizacoes') {
-          <div>
+          <div role="tabpanel" id="painel-visualizacoes" aria-labelledby="aba-visualizacoes">
             @if (usoIndisponivel) {
               <section class="bloco aviso">
                 <p class="bloco-ante">ENGAJAMENTO</p>
@@ -263,7 +267,7 @@
                                              (trocar)="trocarMetrica('top', $event)"></ds-alternador-metrica>
                     </div>
                     @if (vmTop.itens.length) {
-                      <p class="bloco-sub">{{ vmTop.sintese }}</p>
+                      <p class="bloco-sub" id="sintese-top">{{ vmTop.sintese }}</p>
 
                       @if (vmTop.emCards) {
                         <!-- 1 a 4 publicacoes: cards comparativos no lugar do grafico (recomendacao 3.1) -->
@@ -284,7 +288,7 @@
                         </ol>
                       } @else {
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmTop.altura" [opcao]="vmTop.opcao" (pronto)="charts.top = $event"
-                                            role="img" [attr.aria-label]="'Gráfico de barras: ' + vmTop.sintese"></ds-grafico-echarts>
+                                            role="img" aria-label="Gráfico de barras do Top 10" aria-describedby="sintese-top"></ds-grafico-echarts>
                         <ds-exportar-grafico [chart]="charts.top ?? null" rotulo="o ranking" [nome]="'top-10-' + rotulo(vmTop.metrica)"></ds-exportar-grafico>
                       }
 
@@ -366,10 +370,10 @@
                         <ng-container *ngTemplateOutlet="tabelaMatrizUso"></ng-container>
                       }
                       @default {
-                        <p class="bloco-sub">{{ vmMatriz.sintese }}</p>
+                        <p class="bloco-sub" id="sintese-matriz">{{ vmMatriz.sintese }}</p>
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmMatriz.altura" [opcao]="vmMatriz.opcao"
                                             (pronto)="ligarCruzMatrizUso($event)"
-                                            role="img" [attr.aria-label]="'Matriz de calor: ' + vmMatriz.sintese"></ds-grafico-echarts>
+                                            role="img" aria-label="Matriz de calor de tipo de documento por tipo de avaliação" aria-describedby="sintese-matriz"></ds-grafico-echarts>
                         <ds-exportar-grafico [chart]="charts.matriz ?? null" rotulo="a matriz" [nome]="'documento-vs-avaliacao-' + rotulo(vmMatriz.metrica)"></ds-exportar-grafico>
                         <div class="legenda-grafico">
                           <span class="lg-titulo">Tipo de Avaliação</span>
@@ -430,7 +434,7 @@
                                              (trocar)="trocarMetrica('area', $event)"></ds-alternador-metrica>
                     </div>
                     @if (vmArea.lista.length) {
-                      <p class="bloco-sub">{{ vmArea.sintese }}</p>
+                      <p class="bloco-sub" id="sintese-area">{{ vmArea.sintese }}</p>
                       @if (vmArea.poucas) {
                         <ol class="cmp-cards" [attr.aria-label]="'Área temática por ' + rotulo(vmArea.metrica)">
                           @for (c of vmArea.lista; track c.label) {
@@ -442,7 +446,7 @@
                         </ol>
                       } @else {
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmArea.altura" [opcao]="vmArea.opcao" (pronto)="charts.area = $event"
-                                            role="img" [attr.aria-label]="'Dot plot: ' + vmArea.sintese"></ds-grafico-echarts>
+                                            role="img" aria-label="Dot plot de área temática" aria-describedby="sintese-area"></ds-grafico-echarts>
                         <ds-exportar-grafico [chart]="charts.area ?? null" rotulo="o gráfico de área temática" [nome]="'area-tematica-' + rotulo(vmArea.metrica)"></ds-exportar-grafico>
                       }
                       <ds-tabela-uso idTabela="tabela-area-uso" rotuloCategoria="Área temática" [linhas]="vmArea.tabela" [metrica]="vmArea.metrica"
@@ -461,7 +465,7 @@
                                              (trocar)="trocarMetrica('inst', $event)"></ds-alternador-metrica>
                     </div>
                     @if (vmInst.lista.length) {
-                      <p class="bloco-sub">{{ vmInst.sintese }}</p>
+                      <p class="bloco-sub" id="sintese-inst">{{ vmInst.sintese }}</p>
                       @if (vmInst.poucas) {
                         <ol class="cmp-cards" [attr.aria-label]="'Instituição por ' + rotulo(vmInst.metrica)">
                           @for (c of vmInst.lista; track c.label) {
@@ -474,7 +478,7 @@
                         </ol>
                       } @else {
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmInst.altura" [opcao]="vmInst.opcao" (pronto)="charts.inst = $event"
-                                            role="img" [attr.aria-label]="'Lollipop: ' + vmInst.sintese"></ds-grafico-echarts>
+                                            role="img" aria-label="Gráfico lollipop de instituição" aria-describedby="sintese-inst"></ds-grafico-echarts>
                         <ds-exportar-grafico [chart]="charts.inst ?? null" rotulo="o gráfico de instituição" [nome]="'instituicao-' + rotulo(vmInst.metrica)"></ds-exportar-grafico>
                       }
                       <ds-tabela-uso idTabela="tabela-inst-uso" rotuloCategoria="Instituição" [linhas]="vmInst.tabela" [metrica]="vmInst.metrica"
@@ -493,9 +497,9 @@
                                              (trocar)="trocarMetrica('ano', $event)"></ds-alternador-metrica>
                     </div>
                     @if (vmAno.modo !== 'vazio') {
-                      <p class="bloco-sub">{{ vmAno.sintese }}</p>
+                      <p class="bloco-sub" id="sintese-ano">{{ vmAno.sintese }}</p>
                       <ds-grafico-echarts class="grafico" [style.height.px]="vmAno.altura" [opcao]="vmAno.opcao" (pronto)="charts.ano = $event"
-                                          role="img" [attr.aria-label]="(vmAno.modo === 'linhas' ? 'Gráfico de linhas: ' : 'Pequenos múltiplos: ') + vmAno.sintese"></ds-grafico-echarts>
+                                          role="img" [attr.aria-label]="vmAno.modo === 'linhas' ? 'Gráfico de linhas do acumulado por ano' : 'Pequenos múltiplos do acumulado por ano'" aria-describedby="sintese-ano"></ds-grafico-echarts>
                       <ds-exportar-grafico [chart]="charts.ano ?? null" rotulo="o acumulado por ano" [nome]="'ano-publicacao-acumulado-' + rotulo(vmAno.metrica)"></ds-exportar-grafico>
                       <p class="nota-grafico">Cada ponto é o total acumulado de {{ rotulo(vmAno.metrica) }} das avaliações publicadas até aquele ano; a curva mostra crescimento, não a variação de cada período.</p>
                       <button type="button" class="btn-tabela" (click)="mostrarTabelaAno = !mostrarTabelaAno"
@@ -555,7 +559,7 @@
                                              (trocar)="trocarMetrica('abr', $event)"></ds-alternador-metrica>
                     </div>
                     @if (vmAbr.lista.length) {
-                      <p class="bloco-sub">{{ vmAbr.sintese }}</p>
+                      <p class="bloco-sub" id="sintese-abr">{{ vmAbr.sintese }}</p>
                       @if (vmAbr.poucas) {
                         <ol class="cmp-cards" [attr.aria-label]="'Abrangência territorial por ' + rotulo(vmAbr.metrica)">
                           @for (c of vmAbr.lista; track c.label) {
@@ -568,7 +572,7 @@
                         </ol>
                       } @else {
                         <ds-grafico-echarts class="grafico grafico-empilhada" [opcao]="vmAbr.opcao" (pronto)="charts.abr = $event"
-                                            role="img" [attr.aria-label]="'Barra empilhada: ' + vmAbr.sintese"></ds-grafico-echarts>
+                                            role="img" aria-label="Barra empilhada de abrangência territorial" aria-describedby="sintese-abr"></ds-grafico-echarts>
                         <ul class="empilhada-lista" aria-label="Participação por abrangência">
                           @for (l of vmAbr.legenda; track l.label) {
                             <li>
@@ -597,7 +601,7 @@
                                              (trocar)="trocarMetrica('ods', $event)"></ds-alternador-metrica>
                     </div>
                     @if (vmOds.opcao) {
-                      <p class="bloco-sub">{{ vmOds.sintese }}</p>
+                      <p class="bloco-sub" id="sintese-ods">{{ vmOds.sintese }}</p>
                       @if (vmOds.cards.length) {
                         <ol class="cmp-cards" [attr.aria-label]="'ODS selecionados por ' + rotulo(vmOds.metrica)">
                           @for (o of vmOds.cards; track o.num) {
@@ -609,7 +613,7 @@
                         </ol>
                       } @else {
                         <ds-grafico-echarts class="grafico" [opcao]="vmOds.opcao" (pronto)="charts.ods = $event"
-                                            role="img" [attr.aria-label]="'Gráfico de colunas: ' + vmOds.sintese"></ds-grafico-echarts>
+                                            role="img" aria-label="Gráfico de colunas dos ODS" aria-describedby="sintese-ods"></ds-grafico-echarts>
                         <div class="legenda-grafico">
                           <span class="lg-titulo">Legenda dos Objetivos</span>
                           <div class="lg-grid">

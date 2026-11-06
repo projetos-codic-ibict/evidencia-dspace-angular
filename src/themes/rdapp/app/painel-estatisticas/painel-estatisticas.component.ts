@@ -508,6 +508,26 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     });
   }
 
+  /**
+   * Teclado do seletor de abas (padrao WAI-ARIA tabs, CA06): setas trocam de aba e
+   * movem o foco junto; Home/End vao para a primeira/ultima. Tab sai do seletor.
+   */
+  tecladoAbas(ev: KeyboardEvent): void {
+    const ordem: Aba[] = ['acervo', 'visualizacoes'];
+    const atual = ordem.indexOf(this.aba);
+    let destino = -1;
+    switch (ev.key) {
+      case 'ArrowRight': case 'ArrowDown': destino = (atual + 1) % ordem.length; break;
+      case 'ArrowLeft': case 'ArrowUp': destino = (atual - 1 + ordem.length) % ordem.length; break;
+      case 'Home': destino = 0; break;
+      case 'End': destino = ordem.length - 1; break;
+      default: return;
+    }
+    ev.preventDefault();
+    this.trocarAba(ordem[destino]);
+    document.getElementById(`aba-${ordem[destino]}`)?.focus();
+  }
+
   /** Botao "Atualizar": refaz a carga por vontade do usuario (CA10 sem atualizacao automatica). */
   atualizar(): void {
     this.anuncio = '';
