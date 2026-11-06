@@ -9,18 +9,27 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
+import {
+  NgbPopover,
+  NgbTooltip,
+} from '@ng-bootstrap/ng-bootstrap';
 import {
   TranslatePipe,
   TranslateService,
 } from '@ngx-translate/core';
 import {
+  combineLatest,
   of,
   Subject,
 } from 'rxjs';
 import {
   catchError,
+  map,
   switchMap,
   tap,
 } from 'rxjs/operators';
@@ -31,6 +40,7 @@ import {
   AiSummaryBlock,
   AiSummaryResponse,
   blocksToPlainText,
+  citedCitations,
   groupCitationsBySource,
   parseMarkdownBlocks,
 } from './ai-summary.model';
@@ -55,6 +65,7 @@ import {
   isUnavailable,
 } from './ai-summary.view';
 import { AiSummaryPdfService } from './ai-summary-pdf.service';
+import { AiSummaryTitleService } from './ai-summary-title.service';
 
 /** Uma seção já pronta para o template, com o Markdown convertido em blocos. */
 /** Resultado da última cópia; volta a `idle` sozinho depois de um instante. */
@@ -106,6 +117,7 @@ interface SectionView {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgbPopover,
+    NgbTooltip,
     NgTemplateOutlet,
     TranslatePipe,
   ],
@@ -141,6 +153,7 @@ export class AiSummaryComponent {
   readonly loading = signal(false);
 
   private readonly pdf = inject(AiSummaryPdfService);
+  private readonly titleService = inject(AiSummaryTitleService);
   private readonly translate = inject(TranslateService);
   private readonly load$ = new Subject<AiSummaryParams>();
   /** Assunto da última síntese pedida, para saber quando a tela precisa esvaziar. */
@@ -194,11 +207,39 @@ export class AiSummaryComponent {
   readonly unavailable = computed(() => isUnavailable(this.error()));
 
   readonly citations = computed<AiCitation[]>(() => this.data()?.citations ?? []);
+
+  /** Só os trechos que o texto cita: os demais foram recuperados, mas não usados. */
+  private readonly cited = computed<AiCitation[]>(() => {
+    const data = this.data();
+    return data === null
+      ? []
+      : citedCitations(data.citations, [data.summary, ...data.sections.map((section) => section.summary)]);
+  });
+
   /**
-   * As fontes agrupadas por documento: a API numera trechos, e o mesmo relatório
-   * costuma responder por várias citações.
+   * `dc.title` de cada documento citado, por UUID. Vazio até o DSpace responder:
+   * enquanto isso, e se ele falhar, a fonte fica com o nome que a API mandou.
    */
-  readonly sources = computed<AiSource[]>(() => groupCitationsBySource(this.citations()));
+  private readonly itemTitles = toSignal(
+    toObservable(computed(() => [...new Set(this.cited()
+      .map((citation: AiCitation) => citation.itemUuid)
+      .filter((uuid: string | null): uuid is string => uuid !== null))])).pipe(
+      switchMap((uuids: string[]) => uuids.length === 0
+        ? of(new Map<string, string>())
+        : combineLatest(uuids.map((uuid: string) => this.titleService.title(uuid).pipe(
+          map((title: string) => [uuid, title] as const),
+        ))).pipe(map((entries) => new Map<string, string>(entries)))),
+    ),
+    { initialValue: new Map<string, string>() },
+  );
+
+  /**
+   * As fontes citadas, agrupadas por documento: a API numera trechos, e o mesmo
+   * relatório costuma responder por várias citações. O rótulo é o título da
+   * publicação.
+   */
+  readonly sources = computed<AiSource[]>(() => groupCitationsBySource(this.cited())
+    .map((source: AiSource) => ({ ...source, name: this.citationTitle(source.citations[0]) || source.name })));
   readonly filtersUsed = computed(() => (this.data()?.filtersUsed ?? [])
     .filter((filter) => !AI_SUMMARY_HIDDEN_FILTER_KEYS.has(filter.key.trim().toLowerCase())));
   readonly evidenceCount = computed(() => this.data()?.evidenceCount ?? 0);
@@ -331,6 +372,12 @@ export class AiSummaryComponent {
       return Promise.resolve();
     }
     return clipboard.writeText(this.plainText()).then(() => done('copied'), () => done('failed'));
+  }
+
+  /** Título da publicação de onde a citação veio; cai no nome da API sem ele. */
+  citationTitle(citation: AiCitation): string {
+    const title = citation.itemUuid === null ? '' : this.itemTitles().get(citation.itemUuid) ?? '';
+    return title || citation.title || citation.section;
   }
 
   /** A citação de número `n`; `null` quando o texto cita algo que não veio. */

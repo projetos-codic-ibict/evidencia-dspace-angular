@@ -20,7 +20,11 @@
               data-test="evidencia.search.ai-summary.mode-basic"
               [class.rdapp-ai__mode--on]="mode() === 'basic'"
               [attr.aria-selected]="mode() === 'basic'"
-              (click)="setMode('basic')">
+              [ngbTooltip]="i18n + '.mode.basic.hint' | translate"
+              container="body"
+              triggers="hover focus"
+              #basicTip="ngbTooltip"
+              (click)="basicTip.close(); setMode('basic')">
         {{ i18n + '.mode.basic' | translate }}
       </button>
       <button class="rdapp-ai__mode"
@@ -29,7 +33,11 @@
               data-test="evidencia.search.ai-summary.mode-by-section"
               [class.rdapp-ai__mode--on]="mode() === 'by_section'"
               [attr.aria-selected]="mode() === 'by_section'"
-              (click)="setMode('by_section')">
+              [ngbTooltip]="i18n + '.mode.by-section.hint' | translate"
+              container="body"
+              triggers="hover focus"
+              #bySectionTip="ngbTooltip"
+              (click)="bySectionTip.close(); setMode('by_section')">
         {{ i18n + '.mode.by-section' | translate }}
       </button>
     </div>
@@ -170,7 +178,7 @@
         }
       </div>
 
-      @if (citations().length > 0) {
+      @if (sources().length > 0) {
         <div class="rdapp-ai__sources">
           <p class="rdapp-ai__label">{{ i18n + '.sources.label' | translate }}</p>
           <ul class="rdapp-ai__source-list">
@@ -280,7 +288,7 @@
 <ng-template #citationDetail let-cite>
   @if (cite) {
     <div class="rdapp-ai-pop">
-      <p class="rdapp-ai-pop__title">{{ cite.title || cite.section || (i18n + '.citation.untitled' | translate) }}</p>
+      <p class="rdapp-ai-pop__title">{{ citationTitle(cite) || (i18n + '.citation.untitled' | translate) }}</p>
       <dl class="rdapp-ai-pop__list">
         @if (cite.page !== null) {
           <dt>{{ i18n + '.citation.page-label' | translate }}</dt>
