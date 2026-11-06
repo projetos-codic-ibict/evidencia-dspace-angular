@@ -14,7 +14,11 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import type { EChartsType } from 'echarts/core';
 import {
   forkJoin,
@@ -22,6 +26,7 @@ import {
   Observable,
 } from 'rxjs';
 
+import { BtnDisabledDirective } from '../../../../app/shared/btn-disabled.directive';
 import {
   AlternadorMetricaComponent,
   MetricaUso,
@@ -53,6 +58,35 @@ interface CelulaUso { x: number; y: number; views: number; downloads: number; }
 interface MatrizUso { docs: string[]; avals: string[]; celulas: CelulaUso[]; }
 /** ODS no grafico de uso: faixa fixa 1..18 mais "Nao Informado", com cor oficial. */
 interface OdsUso extends CategoriaUso { num: number; cor: string; ni: boolean; }
+
+type Aba = 'acervo' | 'visualizacoes';
+/** Blocos da aba 2 que tem alternador proprio (CA05.7); cada um guarda a sua metrica. */
+type BlocoUso = 'top' | 'matriz' | 'area' | 'inst' | 'abr' | 'ods';
+
+/** View-model de um bloco por categoria (area, instituicao, abrangencia), ja na metrica do bloco. */
+interface CategoriaVM {
+  metrica: MetricaUso;
+  lista: CategoriaUso[];     // categorias com acesso, do maior para o menor
+  tabela: CategoriaUso[];    // todas as categorias do recorte, para "Ver como tabela"
+  poucas: boolean;           // 1 a 3 categorias: cards no lugar do grafico
+  sintese: string;
+  opcao: any;
+  altura: number;
+  legenda: { label: string; cor: string; pct: number; valor: number }[]; // so na abrangencia
+}
+interface TopVM { metrica: MetricaUso; itens: ItemUso[]; emCards: boolean; sintese: string; opcao: any; altura: number; }
+interface MatrizVM {
+  metrica: MetricaUso;
+  matriz: MatrizUso;
+  modo: 'heatmap' | 'simples' | 'card' | 'vazio';
+  max: number;
+  linhas: { doc: string; valores: number[] }[];
+  legenda: { num: number; nome: string }[];
+  sintese: string;
+  opcao: any;
+  altura: number;
+}
+interface OdsVM { metrica: MetricaUso; completo: OdsUso[]; cards: OdsUso[]; tabela: CategoriaUso[]; sintese: string; opcao: any; }
 
 /**
  * FONTE UNICA da composicao da barra de filtros (CA18 da padronizacao):
@@ -118,6 +152,7 @@ const MATRIZ_SIMPLES_MAX = 6;
   styleUrls: ['./painel-estatisticas.component.scss'],
   imports: [
     AlternadorMetricaComponent,
+    BtnDisabledDirective,
     DatePipe,
     DecimalPipe,
     FiltrosSidebarComponent,
@@ -182,31 +217,40 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   totalSite = 0;
   totalDocsViews = 0;
   totalDownloads = 0;
-  // Metrica unica da aba: todos os alternadores (CA05.7) leem e escrevem aqui,
-  // para que os graficos nunca fiquem em metricas diferentes sem o usuario notar.
-  metricaUso: MetricaUso = 'views';
+  // Metrica de cada bloco (CA05.7): cada alternador e independente dos demais.
+  metricas: { [b in BlocoUso]: MetricaUso } = {
+    top: 'views', matriz: 'views', area: 'views', inst: 'views', abr: 'views', ods: 'views',
+  };
+  // Dados agregados do recorte, com as DUAS metricas; os view-models abaixo sao
+  // derivados deles na metrica do bloco, e so o bloco afetado e recalculado.
   itensUso: ItemUso[] = [];
   politicaUso: PoliticaUso[] = [];
-  areaUso: CategoriaUso[] = [];
-  instUso: CategoriaUso[] = [];
-  abrUso: CategoriaUso[] = [];
-  odsUso: CategoriaUso[] = [];
-  odsNaoInformadoUso: CategoriaUso = { label: 'Não Informado', views: 0, downloads: 0 };
+  private areaUso: CategoriaUso[] = [];
+  private instUso: CategoriaUso[] = [];
+  private abrUso: CategoriaUso[] = [];
+  private odsUso: CategoriaUso[] = [];
+  private odsNaoInformadoUso: CategoriaUso = { label: 'Não Informado', views: 0, downloads: 0 };
   // Pares "documento||avaliacao" com o uso somado; a matriz e montada por metrica.
   private matrizParesUso: { [k: string]: CategoriaUso } = {};
-  matrizUso: MatrizUso = { docs: [], avals: [], celulas: [] };
-  opcaoTopVM: any = null;
-  opcaoMatrizUsoVM: any = null;
-  opcaoAreaUsoVM: any = null;
-  opcaoInstUsoVM: any = null;
-  opcaoAbrUsoVM: any = null;
-  opcaoOdsUsoVM: any = null;
+  vmTop: TopVM = { metrica: 'views', itens: [], emCards: false, sintese: '', opcao: null, altura: 0 };
+  vmMatriz: MatrizVM = {
+    metrica: 'views', matriz: { docs: [], avals: [], celulas: [] }, modo: 'vazio', max: 0,
+    linhas: [], legenda: [], sintese: '', opcao: null, altura: 0,
+  };
+  vmArea: CategoriaVM = this.vmVazio();
+  vmInst: CategoriaVM = this.vmVazio();
+  vmAbr: CategoriaVM = this.vmVazio();
+  vmOds: OdsVM = { metrica: 'views', completo: [], cards: [], tabela: [], sintese: '', opcao: null };
   mostrarTabelaTop = false;
   mostrarTabelaMatrizUso = false;
+  // Anuncio para leitores de tela apos "Atualizar" (regiao viva no template).
+  anuncio = '';
 
   constructor(
     private cdr: ChangeDetectorRef,
     private stats: PainelEstatisticasService,
+    private route: ActivatedRoute,
+    private router: Router,
     @Inject(PLATFORM_ID) platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -214,7 +258,16 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   ngOnInit(): void {
     if (!this.isBrowser) { return; }
+    // A aba vive na URL (?aba=visualizacoes) para sobreviver a F5, link copiado e "voltar".
+    this.route.queryParamMap.subscribe((q) => {
+      const aba = q.get('aba');
+      this.aba = aba === 'visualizacoes' ? 'visualizacoes' : 'acervo';
+    });
     this.carregar();
+  }
+
+  private vmVazio(): CategoriaVM {
+    return { metrica: 'views', lista: [], tabela: [], poucas: false, sintese: '', opcao: null, altura: 0, legenda: [] };
   }
 
   /**
@@ -346,6 +399,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
         this.recomputarGraficos();
         this.loading = false;
+        if (this.recarregando) { this.anuncio = 'Indicadores atualizados.'; }
         this.recarregando = false;
         this.cdr.detectChanges();
       },
@@ -410,8 +464,21 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   // ---- Render ------------------------------------------------------------
 
-  trocarAba(aba: 'acervo' | 'visualizacoes'): void {
+  trocarAba(aba: Aba): void {
     this.aba = aba;
+    // Aba 1 e o padrao e fica sem parametro, para a URL padrao continuar limpa.
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { aba: aba === 'visualizacoes' ? aba : null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
+  /** Botao "Atualizar": refaz a carga por vontade do usuario (CA10 sem atualizacao automatica). */
+  atualizar(): void {
+    this.anuncio = '';
+    this.recarregar();
   }
 
   private recomputarGraficos(): void {
@@ -425,15 +492,28 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     this.recomputarGraficosUso();
   }
 
-  /** Opcoes da aba 2: dependem dos dados do recorte E da metrica ativa. */
+  /** View-models da aba 2: recalculados quando os dados do recorte mudam. */
   private recomputarGraficosUso(): void {
-    this.matrizUso = this.montarMatrizUso();
-    this.opcaoTopVM = this.opcaoTop();
-    this.opcaoMatrizUsoVM = this.opcaoMatrizUso();
-    this.opcaoAreaUsoVM = this.opcaoDotPlot(this.areaUsoGrafico, COR_AREA_USO);
-    this.opcaoInstUsoVM = this.opcaoLollipop(this.instUsoGrafico, COR_INST_USO);
-    this.opcaoAbrUsoVM = this.opcaoEmpilhada(this.abrUsoGrafico);
-    this.opcaoOdsUsoVM = this.opcaoOdsUso();
+    (['top', 'matriz', 'area', 'inst', 'abr', 'ods'] as BlocoUso[]).forEach((b) => this.recomputarBloco(b));
+  }
+
+  /** Alternador de um bloco (CA05.7): troca a metrica e recalcula SO aquele bloco. */
+  trocarMetrica(bloco: BlocoUso, m: MetricaUso): void {
+    if (this.metricas[bloco] === m) { return; }
+    this.metricas[bloco] = m;
+    this.recomputarBloco(bloco);
+  }
+
+  private recomputarBloco(bloco: BlocoUso): void {
+    const m = this.metricas[bloco];
+    switch (bloco) {
+      case 'top': this.vmTop = this.montarTop(m); break;
+      case 'matriz': this.vmMatriz = this.montarMatrizVM(m); break;
+      case 'area': this.vmArea = this.montarCategoriaVM(m, this.areaUso, 'Área temática', 'dot'); break;
+      case 'inst': this.vmInst = this.montarCategoriaVM(m, this.instUso, 'Instituição', 'lollipop'); break;
+      case 'abr': this.vmAbr = this.montarCategoriaVM(m, this.abrUso, 'Abrangência', 'empilhada'); break;
+      case 'ods': this.vmOds = this.montarOdsVM(m); break;
+    }
   }
 
   // ---- Agregacoes --------------------------------------------------------
@@ -622,8 +702,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
    * menor (CA05.1). Mesma orientacao da aba 1: documentos de maior total no topo
    * (Y ascendente) e avaliacoes de maior total a esquerda.
    */
-  private montarMatrizUso(): MatrizUso {
-    const m = this.metricaUso;
+  private montarMatrizUso(m: MetricaUso): MatrizUso {
     const totalDoc: { [d: string]: number } = {};
     const totalAval: { [a: string]: number } = {};
     Object.keys(this.matrizParesUso).forEach((k) => {
@@ -663,20 +742,20 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     return this.totalDocsViews > 0 || this.totalDownloads > 0;
   }
 
-  /** Rotulo da metrica ativa no plural (titulos, eixos, sinteses). */
-  get rotuloMetrica(): string {
-    return this.metricaUso === 'views' ? 'visualizações' : 'downloads';
+  /** Rotulo de uma metrica no plural (titulos, eixos, sinteses). */
+  rotulo(m: MetricaUso): string {
+    return m === 'views' ? 'visualizações' : 'downloads';
   }
 
   /** Unidade concordando em numero: "1 visualização", "2 visualizações", "1 download". */
-  unidade(n: number): string {
-    if (this.metricaUso === 'views') { return n === 1 ? 'visualização' : 'visualizações'; }
+  unidade(m: MetricaUso, n: number): string {
+    if (m === 'views') { return n === 1 ? 'visualização' : 'visualizações'; }
     return n === 1 ? 'download' : 'downloads';
   }
 
-  /** Valor da categoria na metrica ativa (usado nos cards do template). */
-  valor(c: CategoriaUso): number {
-    return c[this.metricaUso];
+  /** Valor da categoria na metrica do bloco (usado nos cards do template). */
+  valor(m: MetricaUso, c: CategoriaUso): number {
+    return c[m];
   }
 
   private pct(v: number, total: number): number {
@@ -687,120 +766,130 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     return n.toLocaleString('pt-BR');
   }
 
-  /** Altura de um grafico por categoria proporcional ao numero de linhas. */
-  alturaCategorias(n: number): number {
-    return 64 + 36 * n;
-  }
-
-  trocarMetricaUso(m: MetricaUso): void {
-    if (m === this.metricaUso) { return; }
-    this.metricaUso = m;
-    this.recomputarGraficosUso();
-  }
-
-  // ---- Top 10 -------------------------------------------------------------
-
-  /** Top N itens pela metrica selecionada, maior primeiro; ignora itens sem uso. */
-  get topItens(): ItemUso[] {
-    const m = this.metricaUso;
-    return this.itensUso
-      .filter((i) => i[m] > 0)
-      .sort((a, b) => b[m] - a[m] || a.titulo.localeCompare(b.titulo, 'pt-BR'))
-      .slice(0, TOP_N);
-  }
-
-  /** Com poucas publicacoes (1 a 4) o ranking vira cards comparativos (recomendacao 3.1). */
-  get topEmCards(): boolean {
-    const n = this.topItens.length;
-    return n > 0 && n <= TOP_MAX_CARDS;
-  }
-
-  /** Altura do grafico proporcional ao numero de barras, para nao sobrar espaco vazio. */
-  get alturaTop(): number {
-    return 56 + 44 * this.topItens.length;
-  }
-
-  /** Sintese textual do ranking (recomendacao 4.1): quem lidera e quanto o Top representa. */
-  get sinteseTop(): string {
-    const top = this.topItens;
-    if (!top.length) { return ''; }
-    const m = this.metricaUso;
-    const soma = top.reduce((acc, i) => acc + i[m], 0);
-    const total = m === 'views' ? this.totalDocsViews : this.totalDownloads;
-    const lider = `«${top[0].titulo}» lidera com ${this.fmt(top[0][m])} ${this.unidade(top[0][m])}`;
-    if (top.length === 1) { return `${lider}.`; }
-    const pct = this.pct(soma, total);
-    return `${lider}; as ${top.length} publicações listadas somam ${this.fmt(soma)} (${pct}% das ${this.rotuloMetrica} nos documentos).`;
+  private capitalizar(t: string): string {
+    return t.charAt(0).toUpperCase() + t.slice(1);
   }
 
   alternarTabelaTop(): void {
     this.mostrarTabelaTop = !this.mostrarTabelaTop;
   }
 
-  // ---- Graficos por categoria da aba 2 ---------------------------------------
+  alternarTabelaMatrizUso(): void {
+    this.mostrarTabelaMatrizUso = !this.mostrarTabelaMatrizUso;
+  }
 
-  /** Categorias com acesso na metrica ativa, do maior para o menor (CA05.1). */
-  private ordenarUso(lista: CategoriaUso[], comZeros = false): CategoriaUso[] {
-    const m = this.metricaUso;
+  // ---- Top 10 -------------------------------------------------------------
+
+  private montarTop(m: MetricaUso): TopVM {
+    // Top N pela metrica do bloco, maior primeiro; ignora itens sem uso.
+    const itens = this.itensUso
+      .filter((i) => i[m] > 0)
+      .sort((a, b) => b[m] - a[m] || a.titulo.localeCompare(b.titulo, 'pt-BR'))
+      .slice(0, TOP_N);
+    // Com poucas publicacoes (1 a 4) o ranking vira cards comparativos (recomendacao 3.1).
+    const emCards = itens.length > 0 && itens.length <= TOP_MAX_CARDS;
+    return {
+      metrica: m,
+      itens,
+      emCards,
+      sintese: this.sinteseTop(m, itens),
+      opcao: emCards ? null : this.opcaoTop(m, itens),
+      // Altura proporcional ao numero de barras, para nao sobrar espaco vazio.
+      altura: 56 + 44 * itens.length,
+    };
+  }
+
+  /** Sintese textual do ranking (recomendacao 4.1): quem lidera e quanto o Top representa. */
+  private sinteseTop(m: MetricaUso, top: ItemUso[]): string {
+    if (!top.length) { return ''; }
+    const soma = top.reduce((acc, i) => acc + i[m], 0);
+    const total = m === 'views' ? this.totalDocsViews : this.totalDownloads;
+    const lider = `«${top[0].titulo}» lidera com ${this.fmt(top[0][m])} ${this.unidade(m, top[0][m])}`;
+    if (top.length === 1) { return `${lider}.`; }
+    return `${lider}; as ${top.length} publicações listadas somam ${this.fmt(soma)} (${this.pct(soma, total)}% das ${this.rotulo(m)} nos documentos).`;
+  }
+
+  // ---- Blocos por categoria (area, instituicao, abrangencia) -----------------
+
+  /** Categorias do maior para o menor na metrica (CA05.1); sem comZeros, so as com acesso. */
+  private ordenarUso(m: MetricaUso, lista: CategoriaUso[], comZeros = false): CategoriaUso[] {
     return lista
       .filter((c) => comZeros || c[m] > 0)
       .sort((a, b) => b[m] - a[m] || a.label.localeCompare(b.label, 'pt-BR'));
   }
 
-  get areaUsoGrafico(): CategoriaUso[] { return this.ordenarUso(this.areaUso); }
-  get instUsoGrafico(): CategoriaUso[] { return this.ordenarUso(this.instUso); }
-  get abrUsoGrafico(): CategoriaUso[] { return this.ordenarUso(this.abrUso); }
-  /** Tabelas alternativas listam TODAS as categorias do recorte, inclusive as sem acesso. */
-  get areaUsoTabela(): CategoriaUso[] { return this.ordenarUso(this.areaUso, true); }
-  get instUsoTabela(): CategoriaUso[] { return this.ordenarUso(this.instUso, true); }
-  get abrUsoTabela(): CategoriaUso[] { return this.ordenarUso(this.abrUso, true); }
-
-  /** Poucas categorias (1 a 3) trocam o grafico por cards comparativos. */
-  poucas(lista: CategoriaUso[]): boolean {
-    return lista.length > 0 && lista.length <= POUCAS_CATEGORIAS;
+  private montarCategoriaVM(
+    m: MetricaUso, dados: CategoriaUso[], tipo: string, grafico: 'dot' | 'lollipop' | 'empilhada',
+  ): CategoriaVM {
+    const lista = this.ordenarUso(m, dados);
+    // Poucas categorias (1 a 3) trocam o grafico por cards comparativos.
+    const poucas = lista.length > 0 && lista.length <= POUCAS_CATEGORIAS;
+    let opcao: any = null;
+    if (lista.length && !poucas) {
+      if (grafico === 'dot') { opcao = this.opcaoDotPlot(m, lista, COR_AREA_USO); }
+      if (grafico === 'lollipop') { opcao = this.opcaoLollipop(m, lista, COR_INST_USO); }
+      if (grafico === 'empilhada') { opcao = this.opcaoEmpilhada(m, lista); }
+    }
+    return {
+      metrica: m,
+      lista,
+      tabela: this.ordenarUso(m, dados, true),
+      poucas,
+      sintese: this.sinteseCategoria(m, lista, tipo),
+      opcao,
+      altura: 64 + 36 * lista.length,
+      legenda: grafico === 'empilhada' ? this.legendaEmpilhada(m, lista) : [],
+    };
   }
 
-  /** Participacao da categoria no total da lista, na metrica ativa (abrangencia). */
-  participacao(c: CategoriaUso, lista: CategoriaUso[]): number {
-    const total = lista.reduce((acc, x) => acc + x[this.metricaUso], 0);
-    return this.pct(c[this.metricaUso], total);
+  /** Participacao da categoria no total da lista (abrangencia). */
+  participacao(m: MetricaUso, c: CategoriaUso, lista: CategoriaUso[]): number {
+    const total = lista.reduce((acc, x) => acc + x[m], 0);
+    return this.pct(c[m], total);
   }
 
   /** Diferenca para a lider, explicitada nos cards de instituicao (recomendacao 3.4). */
-  diferencaLider(c: CategoriaUso, lista: CategoriaUso[]): string {
+  diferencaLider(m: MetricaUso, c: CategoriaUso, lista: CategoriaUso[]): string {
     if (!lista.length || c === lista[0]) { return 'maior volume do recorte'; }
-    const dif = lista[0][this.metricaUso] - c[this.metricaUso];
+    const dif = lista[0][m] - c[m];
     return dif === 0 ? 'empatada com a líder' : `${this.fmt(dif)} a menos que «${lista[0].label}»`;
   }
 
   /** Legenda da barra empilhada: cor, nome, percentual e valor de cada abrangencia. */
-  get abrUsoLegenda(): { label: string; cor: string; pct: number; valor: number }[] {
-    const lista = this.abrUsoGrafico;
+  private legendaEmpilhada(m: MetricaUso, lista: CategoriaUso[]): { label: string; cor: string; pct: number; valor: number }[] {
     return lista.map((c, i) => ({
       label: c.label,
       cor: CORES_EMPILHADA[i % CORES_EMPILHADA.length],
-      pct: this.participacao(c, lista),
-      valor: c[this.metricaUso],
+      pct: this.participacao(m, c, lista),
+      valor: c[m],
     }));
   }
 
-  private sinteseCategoria(lista: CategoriaUso[], tipo: string): string {
+  private sinteseCategoria(m: MetricaUso, lista: CategoriaUso[], tipo: string): string {
     if (!lista.length) { return ''; }
-    const m = this.metricaUso;
     const total = lista.reduce((acc, c) => acc + c[m], 0);
     const lider = lista[0];
-    const base = `${tipo} com mais ${this.rotuloMetrica}: «${lider.label}», com ${this.fmt(lider[m])} (${this.pct(lider[m], total)}% do recorte)`;
+    const base = `${tipo} com mais ${this.rotulo(m)}: «${lider.label}», com ${this.fmt(lider[m])} (${this.pct(lider[m], total)}% do recorte)`;
     return lista.length === 1 ? `${base}.` : `${base}; ${lista.length} categorias com acesso.`;
   }
 
-  get sinteseArea(): string { return this.sinteseCategoria(this.areaUsoGrafico, 'Área temática'); }
-  get sinteseInst(): string { return this.sinteseCategoria(this.instUsoGrafico, 'Instituição'); }
-  get sinteseAbr(): string { return this.sinteseCategoria(this.abrUsoGrafico, 'Abrangência'); }
-
   // ---- ODS por uso ------------------------------------------------------------
 
+  private montarOdsVM(m: MetricaUso): OdsVM {
+    const completo = this.odsUsoCompleto();
+    const temDados = completo.some((o) => o[m] > 0);
+    return {
+      metrica: m,
+      completo,
+      cards: this.odsUsoCards(completo),
+      tabela: completo.map((o) => ({ label: o.label, views: o.views, downloads: o.downloads })),
+      sintese: this.sinteseOds(m, completo),
+      opcao: temDados ? this.opcaoOdsUso(m, completo) : null,
+    };
+  }
+
   /** ODS 1..18 sempre presentes (zero nos ausentes) mais "Nao Informado" ao final (CA05.1/CA05.4). */
-  get odsUsoCompleto(): OdsUso[] {
+  private odsUsoCompleto(): OdsUso[] {
     const porNum: { [n: number]: CategoriaUso } = {};
     this.odsUso.forEach((c) => { porNum[this.numeroOds(c.label)] = c; });
     const arr: OdsUso[] = [];
@@ -820,68 +909,52 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   }
 
   /** Com 1 a 3 ODS selecionados no filtro, o grafico vira cards identificadores (recomendacao 3.7). */
-  get odsUsoCards(): OdsUso[] {
+  private odsUsoCards(completo: OdsUso[]): OdsUso[] {
     const sel = this.selecionados.ods;
     if (!sel || sel.size === 0 || sel.size > POUCAS_CATEGORIAS) { return []; }
     const nums = new Set([...sel].map((l) => this.numeroOds(l)));
-    return this.odsUsoCompleto.filter((o) => nums.has(o.num));
+    return completo.filter((o) => nums.has(o.num));
   }
 
-  get odsUsoTabela(): CategoriaUso[] {
-    return this.odsUsoCompleto.map((o) => ({ label: o.label, views: o.views, downloads: o.downloads }));
-  }
-
-  get sinteseOds(): string {
-    const m = this.metricaUso;
-    const lista = this.odsUsoCompleto.filter((o) => o[m] > 0).sort((a, b) => b[m] - a[m]);
+  private sinteseOds(m: MetricaUso, completo: OdsUso[]): string {
+    const lista = completo.filter((o) => o[m] > 0).sort((a, b) => b[m] - a[m]);
     if (!lista.length) { return ''; }
     const lider = lista[0];
     const total = lista.reduce((acc, o) => acc + o[m], 0);
-    return `ODS com mais ${this.rotuloMetrica}: «${lider.label}», com ${this.fmt(lider[m])} (${this.pct(lider[m], total)}% dos acessos com ODS informado); ${lista.length} objetivos com acesso.`;
+    return `ODS com mais ${this.rotulo(m)}: «${lider.label}», com ${this.fmt(lider[m])} (${this.pct(lider[m], total)}% dos acessos com ODS informado); ${lista.length} objetivos com acesso.`;
   }
 
   // ---- Matriz de uso ----------------------------------------------------------
 
-  get matrizUsoMax(): number {
-    return this.matrizUso.celulas.reduce((acc, c) => Math.max(acc, c[this.metricaUso]), 0);
+  private montarMatrizVM(m: MetricaUso): MatrizVM {
+    const matriz = this.montarMatrizUso(m);
+    const { docs, avals, celulas } = matriz;
+    const max = celulas.reduce((acc, c) => Math.max(acc, c[m]), 0);
+    const n = docs.length * avals.length;
+    // heatmap: matriz cheia; simples: ate 2x3, so numeros; card: uma combinacao; vazio: sem acesso.
+    let modo: MatrizVM['modo'] = 'heatmap';
+    if (n === 0 || max === 0) { modo = 'vazio'; } else if (n === 1) { modo = 'card'; } else if (n <= MATRIZ_SIMPLES_MAX) { modo = 'simples'; }
+    return {
+      metrica: m,
+      matriz,
+      modo,
+      max,
+      // Linhas da tabela: documentos do maior para o menor (ordem de leitura).
+      linhas: docs
+        .map((doc, y) => ({ doc, valores: avals.map((_a, x) => celulas[y * avals.length + x][m]) }))
+        .reverse(),
+      legenda: avals.map((a, i) => ({ num: i + 1, nome: a })),
+      sintese: this.sinteseMatrizUso(m, matriz, max),
+      opcao: modo === 'heatmap' ? this.opcaoMatrizUso(m, matriz, max) : null,
+      altura: 120 + 40 * docs.length,
+    };
   }
 
-  /** heatmap: matriz cheia; simples: ate 2x3, so numeros; card: uma combinacao; vazio: sem acesso. */
-  get matrizUsoModo(): 'heatmap' | 'simples' | 'card' | 'vazio' {
-    const n = this.matrizUso.docs.length * this.matrizUso.avals.length;
-    if (n === 0 || this.matrizUsoMax === 0) { return 'vazio'; }
-    if (n === 1) { return 'card'; }
-    return n <= MATRIZ_SIMPLES_MAX ? 'simples' : 'heatmap';
-  }
-
-  /** Linhas da tabela da matriz: documentos do maior para o menor (ordem de leitura). */
-  get matrizUsoLinhas(): { doc: string; valores: number[] }[] {
-    const { docs, avals, celulas } = this.matrizUso;
-    const m = this.metricaUso;
-    return docs
-      .map((doc, y) => ({ doc, valores: avals.map((_a, x) => celulas[y * avals.length + x][m]) }))
-      .reverse();
-  }
-
-  get alturaMatrizUso(): number {
-    return 120 + 40 * this.matrizUso.docs.length;
-  }
-
-  get legendaMatrizUso(): { num: number; nome: string }[] {
-    return this.matrizUso.avals.map((a, i) => ({ num: i + 1, nome: a }));
-  }
-
-  get sinteseMatrizUso(): string {
-    const m = this.metricaUso;
-    const max = this.matrizUsoMax;
+  private sinteseMatrizUso(m: MetricaUso, matriz: MatrizUso, max: number): string {
     if (!max) { return ''; }
-    const c = this.matrizUso.celulas.find((x) => x[m] === max);
+    const c = matriz.celulas.find((x) => x[m] === max);
     if (!c) { return ''; }
-    return `Maior concentração: «${this.matrizUso.docs[c.y]}» × «${this.matrizUso.avals[c.x]}», com ${this.fmt(max)} ${this.unidade(max)}.`;
-  }
-
-  alternarTabelaMatrizUso(): void {
-    this.mostrarTabelaMatrizUso = !this.mostrarTabelaMatrizUso;
+    return `Maior concentração: «${matriz.docs[c.y]}» × «${matriz.avals[c.x]}», com ${this.fmt(max)} ${this.unidade(m, max)}.`;
   }
 
   /** Sigla curta de uma instituicao ("... - CMAP" -> "CMAP"). */
@@ -931,21 +1004,19 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   }
 
   /** Top 10 em barras horizontais: titulo truncado no eixo, valor na ponta da barra. */
-  private opcaoTop(): any {
-    const top = this.topItens;
+  private opcaoTop(m: MetricaUso, top: ItemUso[]): any {
     if (!top.length) { return null; }
-    const m = this.metricaUso;
     const invertido = [...top].reverse();
     return {
       tooltip: {
         trigger: 'axis', axisPointer: { type: 'shadow' },
         formatter: (params: any) => {
           const i = invertido[params[0].dataIndex];
-          return `${i.titulo}<br/><b>${this.fmt(i[m])}</b> ${this.unidade(i[m])}`;
+          return `${i.titulo}<br/><b>${this.fmt(i[m])}</b> ${this.unidade(m, i[m])}`;
         },
       },
       grid: { left: 8, right: 48, top: 8, bottom: 28, containLabel: true },
-      xAxis: this.eixoValorUso(),
+      xAxis: this.eixoValorUso(m),
       yAxis: {
         type: 'category',
         data: invertido.map((i) => i.titulo),
@@ -961,10 +1032,10 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   }
 
   /** Eixo de valor padrao da aba 2: titulo com a metrica (CA05.6), inteiros, linhas auxiliares suaves. */
-  private eixoValorUso(): any {
+  private eixoValorUso(m: MetricaUso): any {
     return {
       type: 'value', minInterval: 1,
-      name: this.rotuloMetrica.charAt(0).toUpperCase() + this.rotuloMetrica.slice(1),
+      name: this.capitalizar(this.rotulo(m)),
       nameLocation: 'middle', nameGap: 22, nameTextStyle: { color: COR_ROTULO_USO, fontSize: 11 },
       axisLabel: { color: COR_ROTULO_USO },
       splitLine: { lineStyle: { color: COR_AUX_USO } },
@@ -985,17 +1056,16 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
    * Dot plot horizontal (recomendacao 3.3): um ponto por categoria numa escala
    * comum, valor ao lado do ponto, ordenado do maior para o menor.
    */
-  private opcaoDotPlot(dados: CategoriaUso[], cor: string): any {
+  private opcaoDotPlot(m: MetricaUso, dados: CategoriaUso[], cor: string): any {
     if (!dados.length) { return null; }
-    const m = this.metricaUso;
     const inv = [...dados].reverse();
     return {
       tooltip: {
         trigger: 'item',
-        formatter: (p: any) => `${p.name}<br/><b>${this.fmt(p.value[0])}</b> ${this.unidade(p.value[0])}`,
+        formatter: (p: any) => `${p.name}<br/><b>${this.fmt(p.value[0])}</b> ${this.unidade(m, p.value[0])}`,
       },
       grid: { left: 8, right: 56, top: 8, bottom: 32, containLabel: true },
-      xAxis: this.eixoValorUso(),
+      xAxis: this.eixoValorUso(m),
       yAxis: this.eixoCategoriaUso(inv.map((c) => c.label)),
       series: [{
         type: 'scatter', symbolSize: 14,
@@ -1014,17 +1084,16 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
    * Lollipop horizontal (recomendacao 3.4): haste fina + ponto, valor junto ao
    * ponto. A haste e uma serie de barras estreitas sob a serie de pontos.
    */
-  private opcaoLollipop(dados: CategoriaUso[], cor: string): any {
+  private opcaoLollipop(m: MetricaUso, dados: CategoriaUso[], cor: string): any {
     if (!dados.length) { return null; }
-    const m = this.metricaUso;
     const inv = [...dados].reverse();
     return {
       tooltip: {
         trigger: 'item',
-        formatter: (p: any) => `${p.name}<br/><b>${this.fmt(p.value[0])}</b> ${this.unidade(p.value[0])}`,
+        formatter: (p: any) => `${p.name}<br/><b>${this.fmt(p.value[0])}</b> ${this.unidade(m, p.value[0])}`,
       },
       grid: { left: 8, right: 56, top: 8, bottom: 32, containLabel: true },
-      xAxis: this.eixoValorUso(),
+      xAxis: this.eixoValorUso(m),
       yAxis: this.eixoCategoriaUso(inv.map((c) => c.label)),
       series: [
         {
@@ -1051,18 +1120,17 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
    * abrangencia; nome e percentual dentro do segmento quando ha espaco (>= 10%),
    * e todos os segmentos na lista abaixo do grafico (nome, percentual, valor).
    */
-  private opcaoEmpilhada(dados: CategoriaUso[]): any {
+  private opcaoEmpilhada(m: MetricaUso, dados: CategoriaUso[]): any {
     if (!dados.length) { return null; }
-    const m = this.metricaUso;
     const total = dados.reduce((acc, c) => acc + c[m], 0);
     return {
       tooltip: {
         trigger: 'item',
-        formatter: (p: any) => `${p.seriesName}<br/><b>${this.pct(p.value, total)}%</b> · ${this.fmt(p.value)} ${this.unidade(p.value)}`,
+        formatter: (p: any) => `${p.seriesName}<br/><b>${this.pct(p.value, total)}%</b> · ${this.fmt(p.value)} ${this.unidade(m, p.value)}`,
       },
       grid: { left: 0, right: 0, top: 4, bottom: 4 },
       xAxis: { type: 'value', max: total, show: false },
-      yAxis: { type: 'category', data: [this.rotuloMetrica], show: false },
+      yAxis: { type: 'category', data: [this.rotulo(m)], show: false },
       series: dados.map((c, i) => ({
         name: c.label, type: 'bar', stack: 'total', barWidth: 44,
         data: [c[m]],
@@ -1081,16 +1149,14 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
    * ODS por uso (recomendacao 3.7): colunas nas cores oficiais, numero do ODS no
    * eixo, valor sobre a barra, nome completo no tooltip; ordem 1..18 + N/I (CA05.1).
    */
-  private opcaoOdsUso(): any {
-    const dados = this.odsUsoCompleto;
-    const m = this.metricaUso;
+  private opcaoOdsUso(m: MetricaUso, dados: OdsUso[]): any {
     if (!dados.some((o) => o[m] > 0)) { return null; }
     return {
       tooltip: {
         trigger: 'axis', axisPointer: { type: 'shadow' },
         formatter: (params: any) => {
           const o = dados[params[0].dataIndex];
-          return `${o.label}<br/><b>${this.fmt(o[m])}</b> ${this.unidade(o[m])}`;
+          return `${o.label}<br/><b>${this.fmt(o[m])}</b> ${this.unidade(m, o[m])}`;
         },
       },
       grid: { left: 40, right: 16, top: 28, bottom: 40, containLabel: true },
@@ -1101,7 +1167,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       },
       yAxis: {
         type: 'value', minInterval: 1,
-        name: this.rotuloMetrica.charAt(0).toUpperCase() + this.rotuloMetrica.slice(1),
+        name: this.capitalizar(this.rotulo(m)),
         nameTextStyle: { color: COR_ROTULO_USO, fontSize: 11, align: 'left' },
         axisLabel: { color: COR_ROTULO_USO },
         splitLine: { lineStyle: { color: COR_AUX_USO } },
@@ -1122,10 +1188,8 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
    * as celulas (texto claro nas escuras), borda branca para delimitar os tons
    * claros; colunas numeradas, com legenda no template.
    */
-  private opcaoMatrizUso(): any {
-    const { docs, avals, celulas } = this.matrizUso;
-    const m = this.metricaUso;
-    const max = this.matrizUsoMax;
+  private opcaoMatrizUso(m: MetricaUso, matriz: MatrizUso, max: number): any {
+    const { docs, avals, celulas } = matriz;
     if (!celulas.length || !max) { return null; }
     return {
       tooltip: { trigger: 'item', showContent: false, transitionDuration: 0 },
@@ -1244,7 +1308,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   }
 
   ligarCruzMatrizUso(chart: EChartsType): void {
-    this.ligarCruz(chart, () => [this.matrizUso.avals.length, this.matrizUso.docs.length]);
+    this.ligarCruz(chart, () => [this.vmMatriz.matriz.avals.length, this.vmMatriz.matriz.docs.length]);
   }
 
   /**

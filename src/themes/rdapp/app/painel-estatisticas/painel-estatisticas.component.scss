@@ -119,6 +119,20 @@
   // ---- Graficos ------------------------------------------------------
   // ---- Aba 2: Total de Visualizacoes --------------------------------------
   .nota-uso { color: #6c757d; font-size: 0.8rem; margin: -0.5rem 0 1.25rem; }
+  // Rodape da aba: data de consolidacao + botao Atualizar, com respiro em relacao ao ultimo bloco.
+  .nota-rodape {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem;
+    margin: 1.25rem 0 0; color: #6c757d; font-size: 0.8rem;
+    p { margin: 0; }
+  }
+  .btn-atualizar {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    border: 1px solid #0B6256; border-radius: 999px; background: #fff; color: #0B6256;
+    font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.9rem; cursor: pointer;
+    &:hover:not([aria-disabled='true']) { background: #E7F4F0; }
+    &[aria-disabled='true'] { opacity: 0.6; cursor: default; }
+    &:focus-visible { outline: 2px solid #0B6256; outline-offset: 2px; }
+  }
   .bloco-cabecalho { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
   .bloco-sub { color: #6c757d; font-size: 0.8rem; margin: 0 0 0.75rem; }
   // O alternador Visualizacoes/Downloads vive em alternador-metrica.component.ts.
