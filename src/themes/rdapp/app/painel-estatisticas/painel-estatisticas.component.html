@@ -74,6 +74,56 @@
               <p class="bloco-ante">DETALHAMENTO</p>
               <h2>Política Pública ou Objeto Avaliado</h2>
               @if (politicaPublica.length) {
+
+
+<div class="exportacao-grafico">
+
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+
+    <div class="menu-exportacao-opcoes">
+
+      <button
+        type="button"
+        (click)="exportarTabelaCSV(
+          'rdapp-politicas-publicas',
+          ['Nome da Política', 'Nº de Avaliações'],
+          linhasPoliticasExportacao
+        )">
+        Baixar CSV
+      </button>
+
+      <button
+        type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX(
+          'rdapp-politicas-publicas',
+          'Politicas Publicas',
+          ['Nome da Política', 'Nº de Avaliações'],
+          linhasPoliticasExportacao
+        )">
+        {{ exportandoTabelaXlsx
+          ? 'Gerando Excel...'
+          : 'Baixar XLSX' }}
+      </button>
+
+    </div>
+  </details>
+
+</div>
+
+
+
+@if (
+  erroExportacaoTabela &&
+  arquivoErroExportacaoTabela === 'rdapp-politicas-publicas'
+) {
+  <p role="alert" class="vazio">
+    {{ erroExportacaoTabela }}
+  </p>
+}
+
+
                 <div class="tabela-box" [class.sem-fade]="!fadeTabela">
                   <div class="tabela-wrap" #tabelaWrap (scroll)="atualizarFadeTabela()">
                     <table class="tabela">
@@ -91,95 +141,1078 @@
               }
             </section>
 
-            <section class="bloco span-2">
-              <p class="bloco-ante">MATRIZ CRUZADA</p>
-              <h2>Tipo de Documento vs. Tipo de Avaliação</h2>
-              @if (matrizData.length) {
-                <ds-grafico-echarts class="grafico grafico-matriz" [opcao]="opcaoMatrizVM" (pronto)="ligarCruzMatriz($event)"></ds-grafico-echarts>
-                <div class="legenda-grafico">
-                  <span class="lg-titulo">Tipo de Avaliação</span>
-                  <div class="lg-grid">
-                    @for (l of legendaMatriz; track l.num) {
-                      <span class="lg-item">
-                        <span class="lg-dot lg-dot-neutro" aria-hidden="true"></span>{{ l.num }} - {{ l.nome }}
-                      </span>
-                    }
-                  </div>
-                </div>
-              } @else {
-                <p class="vazio">Sem cruzamentos para este recorte.</p>
-              }
-            </section>
+<section class="bloco span-2">
+  <p class="bloco-ante">MATRIZ CRUZADA</p>
+  <h2>Tipo de Documento vs. Tipo de Avaliação</h2>
 
-            <section class="bloco span-1">
-              <p class="bloco-ante">SUSTENTABILIDADE</p>
-              <h2>Objetivos de Desenvolvimento Sustentável (ODS)</h2>
-              @if (totalAvaliacoes) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoOdsVM"></ds-grafico-echarts>
-                <div class="legenda-grafico">
-                  <span class="lg-titulo">Legenda dos Objetivos</span>
-                  <div class="lg-grid">
-                    @for (l of legendaOds; track l.label) {
-                      <span class="lg-item">
-                        <span class="lg-dot" [style.background]="l.cor" aria-hidden="true"></span>{{ l.label }}
-                      </span>
-                    }
-                  </div>
-                </div>
-              } @else {
-                <p class="vazio">Sem dados de ODS.</p>
+
+  @if (matrizData.length) {
+
+  @if (matrizPoucasCategorias) {
+    <div class="exportacao-grafico">
+      <details class="menu-exportacao">
+        <summary>Exportar</summary>
+        <div class="menu-exportacao-opcoes">
+          <button type="button"
+            (click)="exportarMatrizSimplificadaImagem('png')">
+            Baixar PNG
+          </button>
+
+          <button type="button"
+            (click)="exportarMatrizSimplificadaImagem('jpeg')">
+            Baixar JPG
+          </button>
+
+          <button type="button"
+            (click)="exportarMatrizCSV()">
+            Baixar CSV
+          </button>
+
+          <button type="button"
+            [dsBtnDisabled]="exportandoMatrizXlsx"
+            (click)="exportarMatrizXLSX()">
+            {{ exportandoMatrizXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+          </button>
+        </div>
+      </details>
+    </div>
+  }
+
+
+    <!-- CASO 1: Apenas uma combinação -->
+    @if (matrizDocs.length === 1 && matrizAvals.length === 1) {
+
+      <div class="matriz-valor-unico">
+
+        <div class="matriz-valor-categorias">
+          <p>
+            <strong>Tipo de Documento:</strong>
+            {{ matrizDocs[0] }}
+          </p>
+
+          <p>
+            <strong>Tipo de Avaliação:</strong>
+            {{ matrizAvals[0] }}
+          </p>
+        </div>
+
+        <div class="matriz-valor-destaque">
+          <strong>
+            {{ matrizData[0][2] | number }}
+          </strong>
+
+          <span>
+            {{ matrizData[0][2] === 1 ? 'avaliação' : 'avaliações' }}
+          </span>
+        </div>
+
+      </div>
+
+    } @else {
+
+      <!-- CASO 2: Matriz maior, com heatmap -->
+      @if (!matrizPoucasCategorias) {
+
+        <ds-grafico-echarts
+        #graficoMatriz
+          class="grafico grafico-matriz"
+          [style.height.px]="alturaMatriz"
+          [opcao]="opcaoMatrizVM"
+          (pronto)="ligarCruzMatriz($event)">
+        </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="graficoMatriz.exportarImagemComLegenda('png', 'rdapp-documento-avaliacao', 'Tipo de Documento × Tipo de Avaliação', legendaMatrizExportacao, 'Tipos de Avaliação')">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="graficoMatriz.exportarImagemComLegenda('jpeg', 'rdapp-documento-avaliacao', 'Tipo de Documento × Tipo de Avaliação', legendaMatrizExportacao, 'Tipos de Avaliação')">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarMatrizCSV()">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoMatrizXlsx"
+        (click)="exportarMatrizXLSX()">
+        {{ exportandoMatrizXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+
+
+
+        <div class="legenda-grafico">
+          <span class="lg-titulo">
+            Tipo de Avaliação
+          </span>
+
+          <div class="lg-grid">
+            @for (l of legendaMatriz; track l.num) {
+              <span class="lg-item">
+                <span
+                  class="lg-dot lg-dot-neutro"
+                  aria-hidden="true">
+                </span>
+                {{ l.num }} - {{ l.nome }}
+              </span>
+            }
+          </div>
+        </div>
+
+
+
+      }
+
+<!-- Apresentação visual para poucas categorias -->
+@if (matrizPoucasCategorias) {
+  <div class="matriz-resumo-cards" aria-hidden="true">
+
+    @for (linha of linhasMatrizTabela; track linha.nome) {
+      <div class="matriz-resumo-card">
+
+        <h3 class="matriz-resumo-titulo">
+          {{ linha.nome }}
+        </h3>
+
+        <div class="matriz-resumo-lista">
+
+          @for (avaliacao of matrizAvals; track $index; let indice = $index) {
+            <div class="matriz-resumo-item">
+
+              <span class="matriz-resumo-avaliacao">
+                {{ avaliacao }}
+              </span>
+
+              <span class="matriz-resumo-quantidade">
+                {{ linha.valores[indice] | number }}
+              </span>
+
+            </div>
+          }
+
+        </div>
+      </div>
+    }
+
+  </div>
+}
+
+      <!-- CASO 3: Tabela simplificada ou alternativa ao heatmap -->
+
+
+<div
+  id="tabela-matriz-documentos"
+  class="matriz-tabela-container sr-only"
+  role="region"
+  aria-label="Tabela de tipos de documento por tipos de avaliação">
+
+
+
+        <table class="matriz-tabela">
+
+          <caption>
+            Quantidade de avaliações por tipo de documento
+            e tipo de avaliação
+          </caption>
+
+          <thead>
+            <tr>
+              <th scope="col">
+                Tipo de Documento
+              </th>
+
+              @for (avaliacao of matrizAvals; track avaliacao) {
+                <th scope="col">
+                  {{ avaliacao }}
+                </th>
               }
-            </section>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (linha of linhasMatrizTabela; track linha.nome) {
+              <tr>
+                <th scope="row">
+                  {{ linha.nome }}
+                </th>
+
+                @for (valor of linha.valores; track $index) {
+                  <td class="matriz-numero">
+                    {{ valor | number }}
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+
+        </table>
+      </div>
+
+    }
+
+
+  @if (erroExportacaoMatriz) {
+    <p role="alert" class="vazio">{{ erroExportacaoMatriz }}</p>
+  }
+
+  } @else {
+
+    <p class="vazio">
+      Sem cruzamentos para este recorte.
+    </p>
+
+  }
+
+</section>
+
+
+
+<section class="bloco span-1">
+  <p class="bloco-ante">SUSTENTABILIDADE</p>
+  <h2>Objetivos de Desenvolvimento Sustentável (ODS)</h2>
+
+
+@if (totalAvaliacoes > 0 && odsComDados.length <= 3) {
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="exportarCardsOds('png')">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="exportarCardsOds('jpeg')">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarTabelaCSV('rdapp-ods', ['ODS', 'Nome do Objetivo', 'Nº de Avaliações'], linhasOdsExportacao)">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX('rdapp-ods', 'ODS', ['ODS', 'Nome do Objetivo', 'Nº de Avaliações'], linhasOdsExportacao)">
+        {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+}
+
+@if (erroExportacaoTabela && arquivoErroExportacaoTabela === 'rdapp-ods') {
+  <p role="alert" class="vazio">{{ erroExportacaoTabela }}</p>
+}
+
+  @if (totalAvaliacoes) {
+
+    @if (odsComDados.length > 0 && odsComDados.length <= 3) {
+
+      <!-- Cards quando houver de 1 a 3 ODS com avaliações -->
+      <ul class="ods-cards"
+          aria-label="Avaliações por Objetivo de Desenvolvimento Sustentável">
+
+        @for (ods of odsComDados; track ods.num) {
+          <li class="ods-card"
+              [style.border-top-color]="ods.cor">
+
+@if (ods.icone) {
+  <img
+    class="ods-card-icone"
+    [src]="ods.icone"
+    alt=""
+    aria-hidden="true"
+    width="72"
+    height="72">
+} @else {
+  <span class="ods-card-numero">
+    ODS {{ ods.num }}
+  </span>
+}
+
+<span class="sr-only">
+  ODS {{ ods.num }} —
+</span>
+
+            <span class="ods-card-nome">
+              {{ ods.nome }}
+            </span>
+
+            <span class="ods-card-valor">
+              {{ ods.count | number }}
+            </span>
+
+            <span class="ods-card-unidade">
+              {{ ods.count === 1 ? 'avaliação' : 'avaliações' }}
+            </span>
+
+          </li>
+        }
+      </ul>
+
+      @if (odsNaoInformado > 0) {
+        <p class="ods-nao-informado">
+          Sem ODS informado:
+          <strong>{{ odsNaoInformado | number }}</strong>
+          {{ odsNaoInformado === 1 ? 'avaliação' : 'avaliações' }}.
+        </p>
+      }
+
+    } @else if (odsComDados.length === 0) {
+
+      <p class="vazio">
+        Nenhuma avaliação associada a um ODS neste recorte.
+      </p>
+
+      @if (odsNaoInformado > 0) {
+        <p class="ods-nao-informado">
+          Sem ODS informado:
+          <strong>{{ odsNaoInformado | number }}</strong>
+          {{ odsNaoInformado === 1 ? 'avaliação' : 'avaliações' }}.
+        </p>
+      }
+
+    } @else {
+
+      <!-- Gráfico convencional para quatro ou mais ODS -->
+      <ds-grafico-echarts
+      #graficoOds
+        class="grafico"
+        [opcao]="opcaoOdsVM">
+      </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="graficoOds.exportarImagemComLegenda('png', 'rdapp-ods', 'Objetivos de Desenvolvimento Sustentável', legendaOds)">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="graficoOds.exportarImagemComLegenda('jpeg', 'rdapp-ods', 'Objetivos de Desenvolvimento Sustentável', legendaOds)">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarTabelaCSV('rdapp-ods', ['ODS', 'Nome do Objetivo', 'Nº de Avaliações'], linhasOdsExportacao)">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX('rdapp-ods', 'ODS', ['ODS', 'Nome do Objetivo', 'Nº de Avaliações'], linhasOdsExportacao)">
+        {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+
+
+
+
+      <div class="legenda-grafico">
+        <span class="lg-titulo">Legenda dos Objetivos</span>
+
+        <div class="lg-grid">
+          @for (l of legendaOds; track l.label) {
+            <span class="lg-item">
+              <span
+                class="lg-dot"
+                [style.background]="l.cor"
+                aria-hidden="true">
+              </span>
+              {{ l.label }}
+            </span>
+          }
+        </div>
+      </div>
+
+    }
+
+  } @else {
+    <p class="vazio">Sem dados de ODS.</p>
+  }
+
+</section>
+
 
             <section class="bloco span-1">
               <p class="bloco-ante">EVOLUÇÃO</p>
               <h2>Ano de Publicação</h2>
-              @if (anos.length) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoAnoVM"></ds-grafico-echarts>
-              } @else {
-                <p class="vazio">Sem dados de ano.</p>
-              }
+
+
+@if (anos.length && evolucaoSeries.length > 3) {
+
+<details class="menu-exportacao">
+  <summary>Exportar</summary>
+
+  <div class="menu-exportacao-opcoes">
+
+    <button
+      type="button"
+      (click)="exportarSparklinesImagem('png')">
+      Baixar PNG
+    </button>
+
+    <button
+      type="button"
+      (click)="exportarSparklinesImagem('jpeg')">
+      Baixar JPG
+    </button>
+
+    <button
+      type="button"
+      (click)="exportarTabelaCSV(
+        'rdapp-ano-publicacao',
+        cabecalhosAnoExportacao,
+        linhasAnoExportacao
+      )">
+      Baixar CSV
+    </button>
+
+    <button
+      type="button"
+      [dsBtnDisabled]="exportandoTabelaXlsx"
+      (click)="exportarTabelaXLSX(
+        'rdapp-ano-publicacao',
+        'Ano de Publicacao',
+        cabecalhosAnoExportacao,
+        linhasAnoExportacao
+      )">
+      {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+    </button>
+
+  </div>
+</details>
+
+}
+
+
+@if (erroExportacaoTabela && arquivoErroExportacaoTabela === 'rdapp-ano-publicacao') {
+  <p role="alert" class="vazio">{{ erroExportacaoTabela }}</p>
+}
+
+@if (anos.length) {
+
+  @if (evolucaoSeries.length > 3) {
+
+    <div class="sparklines">
+
+<div class="sparkline-cabecalho">
+  <div class="sparkline-eixo-anos">
+    <span>{{ anos[0] }}</span>
+    <span>{{ anos[anos.length - 1] }}</span>
+  </div>
+
+  <span class="sparkline-cabecalho-valor">
+    Em {{ anos[anos.length - 1] }}
+  </span>
+</div>
+
+      @for (spark of sparklinesVM; track spark.nome) {
+        <div class="sparkline-linha">
+
+          <span class="sparkline-nome">
+            {{ spark.nome }}
+          </span>
+
+          <ds-grafico-echarts
+            class="sparkline-grafico"
+            [opcao]="spark.opcao"
+            role="img"
+            [attr.aria-label]="
+              'Evolução anual de publicações de ' +
+              spark.nome +
+              '. Valor no último ano: ' +
+              spark.valorFinal
+            ">
+          </ds-grafico-echarts>
+
+          <strong class="sparkline-valor">
+            {{ spark.valorFinal | number }}
+          </strong>
+
+        </div>
+      }
+
+    </div>
+
+  } @else {
+
+    <ds-grafico-echarts
+    #graficoAno
+      class="grafico"
+      [opcao]="opcaoAnoVM">
+    </ds-grafico-echarts>
+
+
+@if (
+  evolucaoSeries.length > 0 &&
+  evolucaoSeries.length <= 3
+) {
+<details class="menu-exportacao">
+  <summary>Exportar</summary>
+
+  <div class="menu-exportacao-opcoes">
+
+    <button
+      type="button"
+      (click)="graficoAno.exportarImagemComLegenda(
+        'png',
+        'rdapp-ano-publicacao',
+        'Ano de Publicação',
+        legendaAnoExportacao,
+        'Instituições'
+      )">
+      Baixar PNG
+    </button>
+
+    <button
+      type="button"
+      (click)="graficoAno.exportarImagemComLegenda(
+        'jpeg',
+        'rdapp-ano-publicacao',
+        'Ano de Publicação',
+        legendaAnoExportacao,
+        'Instituições'
+      )">
+      Baixar JPG
+    </button>
+
+    <button
+      type="button"
+      (click)="exportarTabelaCSV(
+        'rdapp-ano-publicacao',
+        cabecalhosAnoExportacao,
+        linhasAnoExportacao
+      )">
+      Baixar CSV
+    </button>
+
+    <button
+      type="button"
+      [dsBtnDisabled]="exportandoTabelaXlsx"
+      (click)="exportarTabelaXLSX(
+        'rdapp-ano-publicacao',
+        'Ano de Publicacao',
+        cabecalhosAnoExportacao,
+        linhasAnoExportacao
+      )">
+      {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+    </button>
+
+  </div>
+</details>
+  }
+}
+
+<!-- Alternativa tabular para todas as visualizações temporais -->
+
+
+
+
+<div
+  id="tabela-ano-publicacao"
+  class="ano-tabela-wrap sr-only">
+
+
+  <table class="ano-tabela">
+
+    <caption>
+      Quantidade de avaliações publicadas por instituição e ano
+    </caption>
+
+    <thead>
+      <tr>
+        <th scope="col">Instituição</th>
+
+        @for (ano of anos; track ano) {
+          <th scope="col" class="ano-num">
+            {{ ano }}
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (serie of evolucaoSeries; track serie.nome) {
+        <tr>
+          <th scope="row">
+            {{ serie.nome }}
+          </th>
+
+          @for (ano of anos; track ano; let indiceAno = $index) {
+            <td class="ano-num">
+              {{ (serie.dados[indiceAno] ?? 0) | number }}
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+
+  </table>
+</div>
+
+
+} @else {
+  <p class="vazio">Sem dados de ano.</p>
+
+
+}
+
             </section>
 
-            <section class="bloco span-1">
-              <p class="bloco-ante">COMPOSIÇÃO</p>
-              <h2>Instituição</h2>
-              @if (instituicao.length) {
-                <ds-grafico-echarts class="grafico grafico-alto" [opcao]="opcaoInstVM"></ds-grafico-echarts>
-              } @else {
-                <p class="vazio">Sem dados de instituição.</p>
-              }
-            </section>
+
+<section class="bloco span-1">
+  <p class="bloco-ante">COMPOSIÇÃO</p>
+  <h2>Instituição</h2>
+
+
+@if (erroExportacaoTabela && arquivoErroExportacaoTabela === 'rdapp-instituicoes') {
+  <p role="alert" class="vazio">{{ erroExportacaoTabela }}</p>
+}
+
+  @if (instituicao.length) {
+
+    @if (instituicao.length <= 3) {
+
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="exportarCardsInstituicao('png')">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="exportarCardsInstituicao('jpeg')">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarTabelaCSV('rdapp-instituicoes', ['Instituição', 'Nº de Avaliações'], linhasInstituicoesExportacao)">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX('rdapp-instituicoes', 'Instituicoes', ['Instituição', 'Nº de Avaliações'], linhasInstituicoesExportacao)">
+        {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+
+      <ul class="instituicoes-valores">
+        @for (inst of instituicao; track inst.label) {
+          <li class="instituicao-valor-item">
+            <span class="instituicao-nome">
+              {{ inst.label }}
+            </span>
+
+            <span class="instituicao-quantidade">
+              <strong>{{ inst.count | number }}</strong>
+<span>
+  {{ inst.count === 1 ? 'avaliação' : 'avaliações' }}
+</span>
+            </span>
+          </li>
+        }
+      </ul>
+
+      @if (instituicao.length >= 2) {
+        <p class="instituicao-diferenca">
+          Diferença entre a maior e a menor quantidade:
+          <strong>
+            {{
+              (instituicao[0].count -
+              instituicao[instituicao.length - 1].count) | number
+            }}
+{{ (instituicao[0].count - instituicao[instituicao.length - 1].count) === 1
+  ? 'avaliação'
+  : 'avaliações' }}
+          </strong>
+        </p>
+      }
+
+    } @else {
+
+      <ds-grafico-echarts
+      #graficoInstituicao
+        class="grafico grafico-alto"
+        [opcao]="opcaoInstVM"
+        role="img"
+        aria-label="Gráfico de pontos com o número de avaliações por instituição"
+        aria-describedby="dados-instituicoes">
+      </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="graficoInstituicao.exportarImagem('png', 'rdapp-instituicao')">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="graficoInstituicao.exportarImagem('jpeg', 'rdapp-instituicao')">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarTabelaCSV('rdapp-instituicoes', ['Instituição', 'Nº de Avaliações'], linhasInstituicoesExportacao)">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX('rdapp-instituicoes', 'Instituicoes', ['Instituição', 'Nº de Avaliações'], linhasInstituicoesExportacao)">
+        {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+
+
+
+
+      <ul id="dados-instituicoes" class="sr-only">
+        @for (inst of instituicao; track inst.label) {
+          <li>
+{{ inst.label }}:
+{{ inst.count | number }}
+{{ inst.count === 1 ? 'avaliação' : 'avaliações' }}.
+          </li>
+        }
+      </ul>
+
+    }
+
+  } @else {
+    <p class="vazio">Sem dados de instituição.</p>
+  }
+</section>
+
 
             <section class="bloco span-1">
               <p class="bloco-ante">DISTRIBUIÇÃO</p>
               <h2>Tipo de Documento</h2>
+
+@if (erroExportacaoTabela && arquivoErroExportacaoTabela === 'rdapp-tipo-documento') {
+  <p role="alert" class="vazio">{{ erroExportacaoTabela }}</p>
+}
+
               @if (tipoDocumento.length) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoTipoVM"></ds-grafico-echarts>
+                <ds-grafico-echarts #graficoTipoDocumento class="grafico" [opcao]="opcaoTipoVM"></ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+
+<details class="menu-exportacao">
+  <summary>Exportar</summary>
+
+  <div class="menu-exportacao-opcoes">
+
+    <button
+      type="button"
+      (click)="graficoTipoDocumento.exportarImagem(
+        'png',
+        'rdapp-tipo-documento'
+      )">
+      Baixar PNG
+    </button>
+
+    <button
+      type="button"
+      (click)="graficoTipoDocumento.exportarImagem(
+        'jpeg',
+        'rdapp-tipo-documento'
+      )">
+      Baixar JPG
+    </button>
+
+    <button
+      type="button"
+      (click)="exportarTabelaCSV(
+        'rdapp-tipo-documento',
+        ['Tipo de Documento', 'Nº de Avaliações'],
+        linhasCategoriasExportacao(tipoDocumento)
+      )">
+      Baixar CSV
+    </button>
+
+    <button
+      type="button"
+      [dsBtnDisabled]="exportandoTabelaXlsx"
+      (click)="exportarTabelaXLSX(
+        'rdapp-tipo-documento',
+        'Tipo de Documento',
+        ['Tipo de Documento', 'Nº de Avaliações'],
+        linhasCategoriasExportacao(tipoDocumento)
+      )">
+      {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+    </button>
+
+  </div>
+</details>
+
+</div>
+
+
               } @else {
                 <p class="vazio">Sem dados de tipo de documento.</p>
               }
             </section>
 
-            <section class="bloco span-1">
-              <p class="bloco-ante">GEOGRAFIA</p>
-              <h2>Abrangência Territorial</h2>
-              @if (abrangencia.length) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoAbrVM"></ds-grafico-echarts>
-              } @else {
-                <p class="vazio">Sem dados de abrangência.</p>
-              }
-            </section>
 
-            <section class="bloco span-1">
-              <p class="bloco-ante">DISTRIBUIÇÃO</p>
-              <h2>Área Temática</h2>
-              @if (areaTematica.length) {
-                <ds-grafico-echarts class="grafico" [opcao]="opcaoAreaVM"></ds-grafico-echarts>
-              } @else {
-                <p class="vazio">Sem dados de área temática para este recorte.</p>
-              }
-            </section>
+<section class="bloco span-1">
+  <p class="bloco-ante">GEOGRAFIA</p>
+  <h2>Abrangência Territorial</h2>
+
+
+@if (erroExportacaoTabela && arquivoErroExportacaoTabela === 'rdapp-abrangencia-territorial') {
+  <p role="alert" class="vazio">{{ erroExportacaoTabela }}</p>
+}
+
+  @if (abrangencia.length) {
+
+    @if (abrangencia.length <= 3) {
+
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="exportarCardsAbrangencia('png')">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="exportarCardsAbrangencia('jpeg')">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarTabelaCSV('rdapp-abrangencia-territorial', ['Abrangência Territorial', 'Nº de Avaliações'], linhasCategoriasExportacao(abrangencia))">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX('rdapp-abrangencia-territorial', 'Abrangencia Territorial', ['Abrangência Territorial', 'Nº de Avaliações'], linhasCategoriasExportacao(abrangencia))">
+        {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+
+      <!-- Apresentação simplificada: 1 a 3 categorias -->
+      <ul
+        class="abrangencia-valores"
+        aria-label="Quantidade de avaliações por abrangência territorial">
+
+        @for (territorio of abrangencia; track territorio.label) {
+          <li class="abrangencia-item">
+
+            <span class="abrangencia-nome">
+              {{ territorio.label }}
+            </span>
+
+            <span class="abrangencia-quantidade">
+              <strong>
+                {{ territorio.count | number }}
+              </strong>
+
+              <span>
+                {{ territorio.count === 1 ? 'avaliação' : 'avaliações' }}
+              </span>
+            </span>
+
+          </li>
+        }
+
+      </ul>
+
+    } @else {
+
+      <!-- Lollipop: 4 ou mais categorias -->
+      <ds-grafico-echarts
+      #graficoAbrangencia
+        class="grafico"
+        [opcao]="opcaoAbrVM"
+        role="img"
+        aria-label="Gráfico de abrangência territorial, com quantidades de avaliações por categoria"
+        aria-describedby="dados-abrangencia">
+      </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="graficoAbrangencia.exportarImagem('png', 'rdapp-abrangencia-territorial')">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="graficoAbrangencia.exportarImagem('jpeg', 'rdapp-abrangencia-territorial')">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarTabelaCSV('rdapp-abrangencia-territorial', ['Abrangência Territorial', 'Nº de Avaliações'], linhasCategoriasExportacao(abrangencia))">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX('rdapp-abrangencia-territorial', 'Abrangencia Territorial', ['Abrangência Territorial', 'Nº de Avaliações'], linhasCategoriasExportacao(abrangencia))">
+        {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+
+
+
+      <ul id="dados-abrangencia" class="sr-only">
+        @for (territorio of abrangencia; track territorio.label) {
+          <li>
+            {{ territorio.label }}:
+            {{ territorio.count | number }}
+            {{ territorio.count === 1 ? 'avaliação' : 'avaliações' }}.
+          </li>
+        }
+      </ul>
+
+    }
+
+  } @else {
+    <p class="vazio">Sem dados de abrangência.</p>
+  }
+</section>
+
+
+<section class="bloco span-1">
+  <p class="bloco-ante">DISTRIBUIÇÃO</p>
+  <h2>Área Temática</h2>
+
+
+@if (erroExportacaoTabela && arquivoErroExportacaoTabela === 'rdapp-area-tematica') {
+  <p role="alert" class="vazio">{{ erroExportacaoTabela }}</p>
+}
+
+  @if (areaTematica.length) {
+
+    @if (areaTematica.length <= 3) {
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="exportarCardsAreaTematica('png')">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="exportarCardsAreaTematica('jpeg')">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarTabelaCSV('rdapp-area-tematica', ['Área Temática', 'Nº de Avaliações'], linhasCategoriasExportacao(areaTematica))">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX('rdapp-area-tematica', 'Area Tematica', ['Área Temática', 'Nº de Avaliações'], linhasCategoriasExportacao(areaTematica))">
+        {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+
+      <ul class="area-cards" aria-label="Áreas temáticas">
+        @for (area of areaTematica; track area.label) {
+          <li class="area-card">
+            <span class="area-card-rotulo">{{ area.label }}</span>
+
+            <span class="area-card-metrica">
+              <span class="area-card-valor">{{ area.count | number }}</span>
+              <span class="area-card-unidade">avaliações</span>
+            </span>
+          </li>
+        }
+      </ul>
+    } @else {
+  <ds-grafico-echarts
+  #graficoArea
+    class="grafico"
+    [opcao]="opcaoAreaVM"
+    role="img"
+    aria-label="Gráfico de barras horizontais com a distribuição das avaliações por área temática."
+    aria-describedby="dados-area-tematica">
+  </ds-grafico-echarts>
+
+<div class="exportacao-grafico">
+  <details class="menu-exportacao">
+    <summary>Exportar</summary>
+    <div class="menu-exportacao-opcoes">
+      <button type="button"
+        (click)="graficoArea.exportarImagem('png', 'rdapp-area-tematica')">
+        Baixar PNG
+      </button>
+
+      <button type="button"
+        (click)="graficoArea.exportarImagem('jpeg', 'rdapp-area-tematica')">
+        Baixar JPG
+      </button>
+
+      <button type="button"
+        (click)="exportarTabelaCSV('rdapp-area-tematica', ['Área Temática', 'Nº de Avaliações'], linhasCategoriasExportacao(areaTematica))">
+        Baixar CSV
+      </button>
+
+      <button type="button"
+        [dsBtnDisabled]="exportandoTabelaXlsx"
+        (click)="exportarTabelaXLSX('rdapp-area-tematica', 'Area Tematica', ['Área Temática', 'Nº de Avaliações'], linhasCategoriasExportacao(areaTematica))">
+        {{ exportandoTabelaXlsx ? 'Gerando Excel...' : 'Baixar XLSX' }}
+      </button>
+    </div>
+  </details>
+</div>
+
+
+
+  <ul id="dados-area-tematica" class="sr-only">
+    @for (area of areaTematica; track area.label) {
+      <li>
+        {{ area.label }}: {{ area.count | number }} avaliações.
+      </li>
+    }
+  </ul>
+}
+
+  } @else {
+    <p class="vazio">Sem dados de área temática para este recorte.</p>
+  }
+</section>
 
             <section class="bloco span-2">
               <p class="bloco-ante">SEMÂNTICA</p>

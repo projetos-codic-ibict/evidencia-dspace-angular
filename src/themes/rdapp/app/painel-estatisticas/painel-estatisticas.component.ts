@@ -31,6 +31,7 @@ import {
   AlternadorMetricaComponent,
   MetricaUso,
 } from './alternador-metrica.component';
+import { exportarCategoriasImagem } from './exportacao-imagem-categorias';
 import { ExportarGraficoComponent } from './exportar-grafico.component';
 import {
   FiltrosSidebarComponent,
@@ -52,6 +53,12 @@ import {
 
 interface SerieEvolucao { nome: string; dados: number[]; }
 
+/** Sparkline de uma instituicao na aba 1 (recomendacao 3.5). */
+interface SparklineVM {
+  nome: string;
+  valorFinal: number;
+  opcao: any;
+}
 interface ItemUso { id: string; titulo: string; instituicao: string; ano: string; views: number; downloads: number; }
 interface PoliticaUso { label: string; views: number; downloads: number; }
 /** Celula da matriz Documento x Avaliacao pesada por uso (x = avaliacao, y = documento). */
@@ -138,10 +145,17 @@ const NOMES_ODS: { [n: number]: string } = {
   17: 'Parcerias e Meios de Implementação', 18: 'Igualdade Étnico-Racial',
 };
 
-// Escala do heatmap da HU: vermelho (baixo) -> laranja -> amarelo -> verde (alto).
-const ESCALA_HEATMAP = ['#d80000', '#f07800', '#f2c200', '#8bc34a', '#1a9850'];
+// Escala sequencial em tons de azul para o heatmap de Indicadores do Acervo.
+// Valores menores: tons claros; valores maiores: tons escuros.
+const ESCALA_HEATMAP = [
+  '#E9EDF2',
+  '#A9C4E8',
+  '#7FA7D8',
+  '#4E739C',
+  '#1E5CC8',
+  '#0B3A82',
+];
 // Paleta para as linhas da evolucao.
-const CORES_LINHAS = ['#1f4ea3', '#0a97d9', '#1aa179', '#f0a500', '#a21942', '#6f42c1', '#fd6925'];
 // Paleta da aba de visualizacoes: familia de verdes da proposta de design (secao 3).
 const COR_USO = '#0B6256';           // Top 10 (Quadro 6) e valores em destaque
 const ESCALA_VERDE = ['#E7F4F0', '#B9E2D5', '#82C9B4', '#4FAF96', '#0E7E6A', '#0B6256']; // heatmap (Quadro 7)
@@ -219,10 +233,20 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   anos: string[] = [];
   evolucaoSeries: SerieEvolucao[] = [];
+  sparklinesVM: SparklineVM[] = [];
   matrizDocs: string[] = [];
   matrizAvals: string[] = [];
   matrizData: number[][] = [];
+  mostrarTabelaMatriz = false;
+  exportandoMatrizXlsx = false;
+  erroExportacaoMatriz: string | null = null;
   matrizMax = 0;
+
+  // Exportação reutilizável para tabelas da aba Indicadores do Acervo.
+  // O conteúdo é extraído dos dados apresentados, respeitando os filtros ativos.
+  exportandoTabelaXlsx = false;
+  erroExportacaoTabela: string | null = null;
+  arquivoErroExportacaoTabela: string | null = null;
 
   // Opcoes ECharts calculadas apos cada carga; ligadas aos <ds-grafico-echarts>.
   opcaoOdsVM: any = null;
@@ -280,6 +304,337 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   charts: { [bloco in BlocoUso]?: EChartsType } = {};
   // Anuncio para leitores de tela apos "Atualizar" (regiao viva no template).
   anuncio = '';
+  // Tabela alternativa das sparklines da aba 1 (Joao).
+  mostrarTabelaAno = false;
+
+  /**
+ * Ajusta a altura do heatmap conforme a quantidade
+ * de tipos de documento apresentados.
+ */
+  get alturaMatriz(): number {
+    const alturaPorLinha = 58;
+    const espacoAdicional = 100;
+
+    return Math.max(
+      210,
+      Math.min(
+        560,
+        espacoAdicional + this.matrizDocs.length * alturaPorLinha,
+      ),
+    );
+  }
+
+  /**
+ * Identifica quando a matriz pode ser apresentada
+ * diretamente como tabela simplificada.
+ */
+  get matrizPoucasCategorias(): boolean {
+    return (
+      this.matrizDocs.length > 0 &&
+    this.matrizAvals.length > 0 &&
+    this.matrizDocs.length <= 3 &&
+    this.matrizAvals.length <= 3
+    );
+  }
+
+  /**
+ * Prepara as linhas da tabela acessível do heatmap.
+ * Mantém os mesmos valores e a mesma ordenação visual.
+ */
+  get linhasMatrizTabela(): {
+  nome: string;
+  valores: number[];
+}[] {
+    const totalColunas = this.matrizAvals.length;
+
+    if (!totalColunas) {
+      return [];
+    }
+
+    return this.matrizDocs
+      .map((nome, y) => ({
+        nome,
+        valores: this.matrizAvals.map(
+          (_avaliacao, x) =>
+            this.matrizData[y * totalColunas + x]?.[2] ?? 0,
+        ),
+      }))
+      .reverse();
+  }
+
+  /** Exibe ou oculta a alternativa tabular do heatmap. */
+  alternarTabelaMatriz(): void {
+    this.mostrarTabelaMatriz = !this.mostrarTabelaMatriz;
+  }
+
+
+  /**
+ * Exporta a matriz Documento x Avaliação em CSV.
+ * Utiliza os dados do recorte atual dos filtros.
+ */
+  exportarMatrizCSV(): void {
+    if (!this.isBrowser || !this.matrizData.length) {
+      return;
+    }
+
+    // Protege campos textuais contra fórmulas em planilhas.
+    const escapar = (valor: string | number): string => {
+      if (typeof valor === 'number') {
+        return String(valor);
+      }
+
+      const seguro = /^[\s]*[=+\-@]/.test(valor)
+        ? `'${valor}`
+        : valor;
+
+      return `"${seguro.replace(/"/g, '""')}"`;
+    };
+
+    // Cabeçalhos com os nomes completos das avaliações.
+    const linhas: (string | number)[][] = [
+      ['Tipo de Documento', ...this.matrizAvals],
+      ...this.linhasMatrizTabela.map(linha => [
+        linha.nome,
+        ...linha.valores,
+      ]),
+    ];
+
+    const csv = '\uFEFF' + linhas
+      .map(linha => linha.map(escapar).join(';'))
+      .join('\r\n');
+
+    const blob = new Blob([csv], {
+      type: 'text/csv;charset=utf-8;',
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = 'rdapp-documento-avaliacao.csv';
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  /**
+ * Exporta Documento x Avaliação em formato Excel (.xlsx).
+ * Preserva o recorte atual dos filtros e os valores numéricos.
+ */
+  async exportarMatrizXLSX(): Promise<void> {
+    if (!this.isBrowser || !this.matrizData.length ||
+      this.exportandoMatrizXlsx) {
+      return;
+    }
+
+    this.exportandoMatrizXlsx = true;
+    this.erroExportacaoMatriz = null;
+
+    try {
+    // Carregamento apenas quando o usuário solicita a exportação.
+      const { default: writeExcelFile } =
+      await import('write-excel-file/browser');
+
+      // Evita interpretar conteúdos externos como fórmulas.
+      const textoSeguro = (valor: string): string =>
+        /^\s*[=+\-@]/.test(valor)
+          ? `'${valor}`
+          : valor;
+
+      // Cabeçalho com os nomes completos das avaliações.
+      const cabecalho = [
+        'Tipo de Documento',
+        ...this.matrizAvals,
+      ].map((nome) => ({
+        value: textoSeguro(nome),
+        fontWeight: 'bold' as const,
+        backgroundColor: '#E9EDF2',
+        textColor: '#0B3A82',
+        wrap: true,
+      }));
+
+      // Dados da mesma matriz já utilizada na exportação CSV.
+      const linhas = this.linhasMatrizTabela.map((linha) => [
+        {
+          value: textoSeguro(linha.nome),
+          wrap: true,
+        },
+        ...linha.valores.map((valor) => ({
+          value: valor,
+        })),
+      ]);
+
+      const dados = [cabecalho, ...linhas];
+      const colunas = [
+        { width: 42 },
+        ...this.matrizAvals.map(() => ({ width: 28 })),
+      ];
+
+      await writeExcelFile(dados, {
+        sheet: 'Documento x Avaliacao',
+        columns: colunas,
+        stickyRowsCount: 1,
+        stickyColumnsCount: 1,
+      }).toFile('rdapp-documento-avaliacao.xlsx');
+
+    } catch (erro) {
+      console.error('Erro ao exportar XLSX:', erro);
+      this.erroExportacaoMatriz =
+      'Não foi possível gerar a planilha Excel.';
+    } finally {
+      this.exportandoMatrizXlsx = false;
+    }
+  }
+
+
+  get linhasPoliticasExportacao(): (string | number)[][] {
+    return this.politicaPublica.map((politica) => [politica.label, politica.count]);
+  }
+
+
+  /**
+ * Prepara os dados das instituições para CSV e XLSX.
+ * Mantém os nomes completos e as quantidades do recorte atual.
+ */
+  get linhasInstituicoesExportacao(): (string | number)[][] {
+    return this.instituicao.map((item) => [
+      item.label,
+      item.count,
+    ]);
+  }
+
+
+  /**
+ * Prepara os dados de indicadores categóricos para CSV e XLSX.
+ * Preserva os nomes completos, os valores numéricos
+ * e os filtros atualmente aplicados no painel.
+ */
+  linhasCategoriasExportacao(
+    dados: FacetValue[],
+  ): (string | number)[][] {
+    return dados.map((item) => [
+      item.label,
+      item.count,
+    ]);
+  }
+
+
+  /**
+ * Prepara os dados dos ODS para exportação CSV e XLSX.
+ *
+ * Inclui os 18 objetivos, inclusive os que possuem
+ * zero avaliações, e a categoria "Não informado".
+ *
+ * Mantém os valores numéricos e respeita os filtros
+ * atualmente aplicados no painel.
+ */
+  get linhasOdsExportacao(): (string | number)[][] {
+    return this.odsCompleto.map((ods) => [
+      ods.ni ? '—' : ods.num,
+      ods.ni
+        ? 'Não informado'
+        : (NOMES_ODS[ods.num] ?? ods.label),
+      ods.count,
+    ]);
+  }
+
+
+  /** Cabecalhos da exportacao de Ano de Publicacao (recorte atual). */
+  get cabecalhosAnoExportacao(): string[] {
+    return ['Instituição', ...this.anos];
+  }
+
+  /** Linhas exportadas: uma instituicao por linha, uma coluna por ano. */
+  get linhasAnoExportacao(): (string | number)[][] {
+    return this.evolucaoSeries.map((serie) => [serie.nome, ...serie.dados]);
+  }
+
+  exportarTabelaCSV(
+    nomeArquivo: string,
+    cabecalhos: string[],
+    linhas: (string | number)[][],
+  ): void {
+    if (!this.isBrowser || !linhas.length) { return; }
+
+    const escapar = (valor: string | number): string => {
+      if (typeof valor === 'number') { return String(valor); }
+      const seguro = /^\s*[=+\-@]/.test(valor) ? `'${valor}` : valor;
+      return `"${seguro.replace(/"/g, '""')}"`;
+    };
+
+    const conteudo = [cabecalhos, ...linhas]
+      .map((linha) => linha.map(escapar).join(';'))
+      .join('\r\n');
+    const blob = new Blob(['\uFEFF', conteudo], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${nomeArquivo}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async exportarTabelaXLSX(
+    nomeArquivo: string,
+    nomeAba: string,
+    cabecalhos: string[],
+    linhas: (string | number)[][],
+  ): Promise<void> {
+    if (!this.isBrowser || !linhas.length || this.exportandoTabelaXlsx) {
+      return;
+    }
+
+    this.exportandoTabelaXlsx = true;
+    this.erroExportacaoTabela = null;
+    this.arquivoErroExportacaoTabela = null;
+    try {
+      const { default: writeExcelFile } =
+        await import('write-excel-file/browser');
+      const textoSeguro = (valor: string): string =>
+        /^\s*[=+\-@]/.test(valor) ? `'${valor}` : valor;
+
+      const cabecalho = cabecalhos.map((nome) => ({
+        value: textoSeguro(nome),
+        fontWeight: 'bold' as const,
+        backgroundColor: '#E9EDF2',
+        textColor: '#0B3A82',
+        wrap: true,
+      }));
+      const conteudo = linhas.map((linha) =>
+        linha.map((valor) => ({
+          value: typeof valor === 'number' ? valor : textoSeguro(valor),
+          wrap: typeof valor === 'string',
+        })),
+      );
+
+      await writeExcelFile([cabecalho, ...conteudo], {
+        sheet: nomeAba,
+        columns: cabecalhos.map((_nome, indice) => ({
+          width: indice === 0 ? 52 : 24,
+        })),
+        stickyRowsCount: 1,
+      }).toFile(`${nomeArquivo}.xlsx`);
+
+    } catch (erro) {
+      console.error('Erro ao exportar tabela em XLSX:', erro);
+
+      this.arquivoErroExportacaoTabela = nomeArquivo;
+
+      this.erroExportacaoTabela =
+    'Não foi possível gerar a planilha Excel. Tente novamente.';
+
+    } finally {
+      this.exportandoTabelaXlsx = false;
+    }
+
+  }
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -327,6 +682,298 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     // margem de 4px absorve arredondamento de zoom/subpixel
     return el.scrollHeight - el.scrollTop - el.clientHeight > 4;
   }
+
+
+  /**
+ * Exporta os cards de Abrangência Territorial.
+ */
+  exportarCardsAbrangencia(
+    formato: 'png' | 'jpeg',
+  ): void {
+    exportarCategoriasImagem(
+      this.abrangencia,
+      'Abrangência Territorial',
+      'rdapp-abrangencia-territorial',
+      formato,
+    );
+  }
+
+
+  /**
+ * Exporta os cards de Área Temática em PNG ou JPG.
+ * Utiliza os dados filtrados exibidos no painel.
+ */
+  exportarCardsAreaTematica(
+    formato: 'png' | 'jpeg',
+  ): void {
+    exportarCategoriasImagem(
+      this.areaTematica,
+      'Área Temática',
+      'rdapp-area-tematica',
+      formato,
+    );
+  }
+
+
+  /**
+ * Exporta a apresentação simplificada de Instituição.
+ * Utilizada quando existem de 1 a 3 instituições.
+ */
+  exportarCardsInstituicao(
+    formato: 'png' | 'jpeg',
+  ): void {
+    exportarCategoriasImagem(
+      this.instituicao,
+      'Instituição',
+      'rdapp-instituicao',
+      formato,
+    );
+  }
+
+  /**
+ * Exporta Documento x Avaliação quando a matriz
+ * aparece como valor único ou tabela simplificada.
+ */
+  exportarMatrizSimplificadaImagem(
+    formato: 'png' | 'jpeg',
+  ): void {
+    if (!this.matrizPoucasCategorias) {
+      return;
+    }
+
+    const dados = this.linhasMatrizTabela.flatMap((linha) =>
+      linha.valores.map((valor, coluna) => ({
+        label:
+        `Documento: ${linha.nome} | ` +
+        `Avaliação: ${this.matrizAvals[coluna]}`,
+        count: valor,
+      })),
+    );
+
+    exportarCategoriasImagem(
+      dados,
+      'Documento × Avaliação',
+      'rdapp-documento-avaliacao',
+      formato,
+    );
+  }
+
+
+  /**
+ * Exporta os cards dos ODS em PNG ou JPG.
+ * Mantém os números, nomes e cores dos objetivos.
+ */
+  exportarCardsOds(
+    formato: 'png' | 'jpeg',
+  ): void {
+
+    const dados = this.odsComDados.map((ods) => ({
+      label: `ODS ${ods.num} — ${ods.nome}`,
+      count: ods.count,
+      cor: ods.cor,
+    }));
+
+    // Inclui avaliações sem ODS informado.
+    if (this.odsNaoInformado > 0) {
+      dados.push({
+        label: 'Não informado',
+        count: this.odsNaoInformado,
+        cor: '#9AA5B1',
+      });
+    }
+
+    if (!dados.length) {
+      return;
+    }
+
+    exportarCategoriasImagem(
+      dados,
+      'Objetivos de Desenvolvimento Sustentável',
+      'rdapp-ods',
+      formato,
+    );
+  }
+
+
+  /**
+ * Exporta todas as sparklines de Ano de Publicação
+ * em uma imagem consolidada.
+ */
+  exportarSparklinesImagem(formato: 'png' | 'jpeg'): void {
+    if (!this.isBrowser ||
+      !this.anos.length ||
+      this.evolucaoSeries.length <= 3) {
+      return;
+    }
+
+    const largura = 1400;
+    const canvas = document.createElement('canvas');
+    canvas.width = largura;
+    canvas.height = 200;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) { return; }
+
+    // Divide nomes longos em várias linhas.
+    ctx.font = '20px Arial';
+
+    const quebrarTexto = (texto: string): string[] => {
+      const linhas: string[] = [];
+      let atual = '';
+
+      texto.split(/\s+/).forEach((palavra) => {
+        const teste = atual ? `${atual} ${palavra}` : palavra;
+
+        if (atual && ctx.measureText(teste).width > 500) {
+          linhas.push(atual);
+          atual = palavra;
+        } else {
+          atual = teste;
+        }
+      });
+
+      if (atual) { linhas.push(atual); }
+      return linhas;
+    };
+
+    const registros = this.evolucaoSeries.map((serie) => ({
+      serie,
+      linhasNome: quebrarTexto(serie.nome),
+    }));
+
+    const alturas = registros.map((r) =>
+      Math.max(145, r.linhasNome.length * 27 + 48),
+    );
+
+    const altura = 145 + alturas.reduce(
+      (total, valor) => total + valor, 0,
+    ) + 65;
+
+    canvas.height = altura;
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, largura, altura);
+
+    // Cabeçalho.
+    ctx.fillStyle = '#0B3A82';
+    ctx.font = 'bold 32px Arial';
+    ctx.fillText('Ano de Publicação', 45, 65);
+
+    ctx.fillStyle = '#555555';
+    ctx.font = '19px Arial';
+    ctx.fillText(
+      'Evolução por instituição — dados do recorte selecionado',
+      45, 100,
+    );
+
+    const maximo = Math.max(
+      1,
+      ...this.evolucaoSeries.flatMap((s) => s.dados),
+    );
+
+    const inicioX = 640;
+    const larguraGrafico = 570;
+    const alturaGrafico = 65;
+
+    let topo = 145;
+
+    registros.forEach((registro, indice) => {
+      const serie = registro.serie;
+      const alturaLinha = alturas[indice];
+
+      // Fundo alternado para facilitar a leitura.
+      if (indice % 2 === 0) {
+        ctx.fillStyle = '#F4F7FB';
+        ctx.fillRect(30, topo, largura - 60, alturaLinha);
+      }
+
+      // Nome completo da instituição.
+      ctx.fillStyle = '#223344';
+      ctx.font = '20px Arial';
+
+      registro.linhasNome.forEach((linha, i) => {
+        ctx.fillText(linha, 48, topo + 35 + i * 27);
+      });
+
+      const baseY = topo + 103;
+
+      // Linha de referência.
+      ctx.strokeStyle = '#D2DCE8';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(inicioX, baseY);
+      ctx.lineTo(inicioX + larguraGrafico, baseY);
+      ctx.stroke();
+
+      // Evolução dos dados.
+      ctx.strokeStyle = '#5B84B1';
+      ctx.lineWidth = 4;
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+
+      serie.dados.forEach((valor, i) => {
+        const x = this.anos.length === 1
+          ? inicioX + larguraGrafico / 2
+          : inicioX + i * larguraGrafico /
+          (this.anos.length - 1);
+
+        const y = baseY -
+        (valor / maximo) * alturaGrafico;
+
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+
+      ctx.stroke();
+
+      // Indica o último valor da série.
+      const ultimo = serie.dados[serie.dados.length - 1] ?? 0;
+
+      ctx.fillStyle = '#0B3A82';
+      ctx.font = 'bold 24px Arial';
+      ctx.fillText(
+        ultimo.toLocaleString('pt-BR'),
+        1260,
+        topo + 67,
+      );
+
+      ctx.fillStyle = '#555555';
+      ctx.font = '15px Arial';
+      ctx.fillText('avaliações', 1260, topo + 89);
+
+      // Anos de início e término.
+      ctx.font = '15px Arial';
+      ctx.fillText(this.anos[0], inicioX, topo + 126);
+
+      if (this.anos.length > 1) {
+        ctx.fillText(
+          this.anos[this.anos.length - 1],
+          inicioX + larguraGrafico - 45,
+          topo + 126,
+        );
+      }
+
+      topo += alturaLinha;
+    });
+
+    // Gera o arquivo.
+    const extensao = formato === 'jpeg' ? 'jpg' : 'png';
+
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL(
+      formato === 'jpeg' ? 'image/jpeg' : 'image/png',
+      0.95,
+    );
+    link.download = `rdapp-ano-publicacao.${extensao}`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
 
   // ---- Filtros -----------------------------------------------------------
 
@@ -550,11 +1197,12 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   private recomputarGraficos(): void {
     this.opcaoOdsVM = this.opcaoOds();
-    this.opcaoAreaVM = this.opcaoBarras(this.areaTematica, '#2f6fd1');
-    this.opcaoInstVM = this.opcaoTreemap(this.instituicao);
-    this.opcaoAbrVM = this.opcaoBarras(this.abrangencia, '#f0a500');
+    this.opcaoAreaVM = this.opcaoBarras(this.areaTematica, '#1E5CC8');
+    this.opcaoInstVM = this.opcaoDotPlot(this.instituicao);
+    this.opcaoAbrVM = this.opcaoLollipop(this.abrangencia);
     this.opcaoTipoVM = this.opcaoBarras(this.tipoDocumento, '#1f4ea3');
     this.opcaoAnoVM = this.opcaoLinhaTempo();
+    this.sparklinesVM = this.construirSparklines();
     this.opcaoMatrizVM = this.opcaoMatriz();
     this.recomputarGraficosUso();
   }
@@ -918,8 +1566,8 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     const poucas = lista.length > 0 && lista.length <= POUCAS_CATEGORIAS;
     let opcao: any = null;
     if (lista.length && !poucas) {
-      if (grafico === 'dot') { opcao = this.opcaoDotPlot(m, lista, COR_AREA_USO); }
-      if (grafico === 'lollipop') { opcao = this.opcaoLollipop(m, lista, COR_INST_USO); }
+      if (grafico === 'dot') { opcao = this.opcaoDotPlotUso(m, lista, COR_AREA_USO); }
+      if (grafico === 'lollipop') { opcao = this.opcaoLollipopUso(m, lista, COR_INST_USO); }
       if (grafico === 'empilhada') { opcao = this.opcaoEmpilhada(m, lista); }
     }
     return {
@@ -1189,6 +1837,11 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     return `Maior concentração: «${matriz.docs[c.y]}» × «${matriz.avals[c.x]}», com ${this.fmt(max)} ${this.unidade(m, max)}.`;
   }
 
+  /** Exibe ou oculta a alternativa tabular do Ano de Publicação. */
+  alternarTabelaAno(): void {
+    this.mostrarTabelaAno = !this.mostrarTabelaAno;
+  }
+
   /** Sigla curta de uma instituicao ("... - CMAP" -> "CMAP"). */
   private sigla(nome: string): string {
     const partes = nome.split(' - ');
@@ -1208,13 +1861,39 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
           return `${o.label}<br/><b>${o.count}</b> avaliações`;
         },
       },
-      grid: { left: 40, right: 16, top: 16, bottom: 40 },
+      grid: { left: 40, right: 16, top: 36, bottom: 40 },
       xAxis: { type: 'category', data: dados.map((o) => (o.ni ? 'N/I' : String(o.num))), axisLabel: { interval: 0 } },
       yAxis: { type: 'value' },
       series: [{
         type: 'bar',
-        data: dados.map((o) => ({ value: o.count, name: o.label, itemStyle: { color: o.cor } })),
+
+        data: dados.map((o) => ({
+          value: o.count,
+          name: o.label,
+          itemStyle: {
+            color: o.cor,
+          },
+        })),
+
+        label: {
+          show: true,
+          position: 'top',
+          distance: 5,
+
+          color: '#4F5B66',
+          fontSize: 11,
+          fontWeight: 600,
+
+          formatter: (params: any) => {
+            const valor = Number(params.value);
+
+            return valor > 0
+              ? valor.toLocaleString('pt-BR')
+              : '';
+          },
+        },
       }],
+
     };
   }
 
@@ -1262,6 +1941,125 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       }],
     };
   }
+  /**
+ * Lollipop horizontal para Abrangência Territorial.
+ * Quantidades absolutas de avaliações (sem percentuais).
+ */
+  private opcaoLollipop(dados: FacetValue[]): any {
+    if (!dados.length) { return null; }
+
+    // A ordem é invertida porque a primeira categoria fica na base do eixo Y.
+    const ordenados = [...dados].sort((a, b) => a.count - b.count);
+    const maiorValor = Math.max(1, ...ordenados.map((d) => d.count));
+
+    return {
+      animation: false,
+      tooltip: {
+        trigger: 'item',
+        renderMode: 'richText',
+        formatter: (p: any) => {
+          const quantidade = Array.isArray(p.value) ? p.value[0] : p.value;
+          return `${p.name}\n${Number(quantidade).toLocaleString('pt-BR')} avaliações`;
+        },
+      },
+      grid: { left: 235, right: 65, top: 20, bottom: 40, containLabel: false },
+      xAxis: {
+        type: 'value',
+        min: 0,
+        max: Math.ceil(maiorValor * 1.2),
+        minInterval: 1,
+        name: 'Número de avaliações',
+        nameLocation: 'middle',
+        nameGap: 30,
+        axisLabel: { color: '#6A6F76' },
+        splitLine: { lineStyle: { color: '#E9EDF2' } },
+      },
+      yAxis: {
+        type: 'category',
+        data: ordenados.map((d) => d.label),
+        axisLabel: { color: '#6A6F76', width: 205, overflow: 'break', lineHeight: 17, fontSize: 12 },
+        axisLine: { show: false },
+        axisTick: { show: false },
+      },
+      series: [
+        {
+          name: 'Hastes',
+          type: 'bar',
+          barWidth: 2,
+          silent: true,
+          data: ordenados.map((d) => ({ name: d.label, value: d.count })),
+          itemStyle: { color: '#5F8CC4' },
+        },
+        {
+          name: 'Avaliações',
+          type: 'scatter',
+          symbol: 'circle',
+          symbolSize: 15,
+          data: ordenados.map((d) => ({ name: d.label, value: [d.count, d.label] })),
+          itemStyle: { color: '#5F8CC4' },
+          label: {
+            show: true,
+            position: 'right',
+            distance: 8,
+            color: '#0B3A82',
+            fontWeight: 'bold',
+            fontSize: 12,
+            formatter: (p: any) => Number(p.value[0]).toLocaleString('pt-BR'),
+          },
+          emphasis: { scale: 1.3 },
+        },
+      ],
+    };
+  }
+
+  /**
+ * Dot plot horizontal para comparar o número de avaliações por instituição.
+ */
+  private opcaoDotPlot(dados: FacetValue[]): any {
+    if (!dados.length) { return null; }
+
+    const ordenados = [...dados].sort((a, b) => a.count - b.count);
+    return {
+      tooltip: {
+        trigger: 'item',
+        formatter: (p: any) => {
+          const d = ordenados[p.dataIndex];
+          return `${d.label}<br/><b>${d.count.toLocaleString('pt-BR')}</b> avaliações`;
+        },
+      },
+      grid: { left: 330, right: 85, top: 15, bottom: 30, containLabel: false },
+      xAxis: {
+        type: 'value',
+        min: 0,
+        minInterval: 1,
+        axisLabel: { color: '#6A6F76' },
+        splitLine: { lineStyle: { color: '#E9EDF2' } },
+      },
+      yAxis: {
+        type: 'category',
+        data: ordenados.map((d) => d.label),
+        axisLabel: {
+          color: '#6A6F76', width: 290, overflow: 'break',
+          lineHeight: 16, fontSize: 12, margin: 12, align: 'right',
+        },
+        axisLine: { show: false },
+        axisTick: { show: false },
+      },
+      series: [{
+        type: 'scatter',
+        symbolSize: 14,
+        data: ordenados.map((d, indice) => ({ name: d.label, value: [d.count, indice] })),
+        itemStyle: { color: '#0B3A82' },
+        label: {
+          show: true,
+          position: 'right',
+          color: '#4F5B66',
+          formatter: (p: any) => Number(p.value[0]).toLocaleString('pt-BR'),
+        },
+        emphasis: { scale: 1.3 },
+      }],
+    };
+  }
 
   /** Eixo de valor padrao da aba 2: titulo com a metrica (CA05.6), inteiros, linhas auxiliares suaves. */
   private eixoValorUso(m: MetricaUso): any {
@@ -1290,7 +2088,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
    * Dot plot horizontal (recomendacao 3.3): um ponto por categoria numa escala
    * comum, valor ao lado do ponto, ordenado do maior para o menor.
    */
-  private opcaoDotPlot(m: MetricaUso, dados: CategoriaUso[], cor: string): any {
+  private opcaoDotPlotUso(m: MetricaUso, dados: CategoriaUso[], cor: string): any {
     if (!dados.length) { return null; }
     const inv = [...dados].reverse();
     return {
@@ -1317,7 +2115,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
    * Lollipop horizontal (recomendacao 3.4): haste fina + ponto, valor junto ao
    * ponto. A haste e uma serie de barras estreitas sob a serie de pontos.
    */
-  private opcaoLollipop(m: MetricaUso, dados: CategoriaUso[], cor: string): any {
+  private opcaoLollipopUso(m: MetricaUso, dados: CategoriaUso[], cor: string): any {
     if (!dados.length) { return null; }
     const inv = [...dados].reverse();
     return {
@@ -1457,38 +2255,187 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     };
   }
 
-  private opcaoTreemap(dados: FacetValue[]): any {
-    if (!dados.length) { return null; }
+  /**
+ * Cria uma sparkline para cada instituição.
+ * Todas usam o mesmo intervalo temporal e a mesma escala.
+ */
+  private construirSparklines(): SparklineVM[] {
+    if (!this.anos.length || !this.evolucaoSeries.length) {
+      return [];
+    }
+
+    const maximo = Math.max(
+      1,
+      ...this.evolucaoSeries.flatMap((s) => s.dados),
+    );
+
+    return this.evolucaoSeries.map((serie) => ({
+      nome: serie.nome,
+      valorFinal: serie.dados[serie.dados.length - 1] ?? 0,
+
+      opcao: {
+        animation: false,
+
+        tooltip: {
+          trigger: 'axis',
+        },
+
+        grid: {
+          left: 8,
+          right: 8,
+          top: 5,
+          bottom: 5,
+        },
+
+        xAxis: {
+          type: 'category',
+          data: this.anos,
+          boundaryGap: false,
+          show: false,
+        },
+
+        yAxis: {
+          type: 'value',
+          min: 0,
+          max: maximo,
+          show: false,
+        },
+
+        series: [{
+          name: serie.nome,
+          type: 'line',
+          data: serie.dados,
+          smooth: false,
+          showSymbol: false,
+
+          lineStyle: {
+            color: '#5B84B1',
+            width: 2.5,
+          },
+
+          itemStyle: {
+            color: '#5B84B1',
+          },
+        }],
+      },
+    }));
+  }
+
+
+
+  /**
+ * Gráfico de linhas convencional para até 3 instituições.
+ * Usa uma única tonalidade de azul, com marcadores e
+ * estilos de linha distintos para acessibilidade.
+ */
+  private opcaoLinhaTempo(): any {
+    if (!this.anos.length || !this.evolucaoSeries.length) {
+      return null;
+    }
+
+    const corLinha = '#5B84B1';
+    const simbolos = ['circle', 'diamond', 'triangle'];
+    const estilos = ['solid', 'dashed', 'dotted'];
+
     return {
-      tooltip: { formatter: (info: any) => `${info.name}<br/>${info.value} avaliações` },
-      series: [{
-        type: 'treemap', roam: false, breadcrumb: { show: false },
-        label: { show: true, formatter: '{b}\n{c}' },
-        data: dados.map((v) => ({ name: v.label, value: v.count })),
-      }],
+      animation: false,
+
+      tooltip: {
+        trigger: 'axis',
+      },
+
+      legend: {
+        show: false,
+      },
+
+      grid: {
+        left: 48,
+        right: 220,
+        top: 24,
+        bottom: 40,
+      },
+
+      xAxis: {
+        type: 'category',
+        data: this.anos,
+        boundaryGap: false,
+        axisLabel: {
+          color: '#6A6F76',
+        },
+      },
+
+      yAxis: {
+        type: 'value',
+        min: 0,
+        minInterval: 1,
+        axisLabel: {
+          color: '#6A6F76',
+        },
+        splitLine: {
+          lineStyle: {
+            color: '#E9EDF2',
+          },
+        },
+      },
+
+      series: this.evolucaoSeries.map((serie, i) => {
+        const ultimoValor =
+        serie.dados[serie.dados.length - 1] ?? 0;
+
+        return {
+          name: serie.nome,
+          type: 'line',
+
+          data: serie.dados,
+          smooth: false,
+
+          showSymbol: true,
+          symbol: simbolos[i % simbolos.length],
+          symbolSize: 7,
+
+          lineStyle: {
+            color: corLinha,
+            width: 2.5,
+            type: estilos[i % estilos.length],
+          },
+
+          itemStyle: {
+            color: corLinha,
+          },
+
+
+          endLabel: {
+            show: true,
+
+            formatter: () => {
+              const nome = serie.nome;
+
+              // Identifica siglas entre parênteses.
+              const siglaFinal = nome.match(/\(([^()]+)\)\s*$/);
+              const quantidadeSiglas = (nome.match(/\(/g) ?? []).length;
+
+              // Só utiliza a sigla isoladamente quando não há
+              // várias instituições identificadas no mesmo nome.
+              const rotulo = siglaFinal && quantidadeSiglas === 1
+                ? siglaFinal[1]
+                : this.sigla(nome);
+
+              return `${rotulo}: ${ultimoValor.toLocaleString('pt-BR')}`;
+            },
+
+            color: '#0B3A82',
+            fontSize: 12,
+            fontWeight: 600,
+            distance: 8,
+            width: 200,
+            overflow: 'break',
+          },
+
+        };
+      }),
     };
   }
 
-  /** Linha do tempo: uma linha por instituicao (ordem cronologica no eixo X). */
-  private opcaoLinhaTempo(): any {
-    if (!this.anos.length) { return null; }
-    return {
-      tooltip: { trigger: 'axis' },
-      legend: { type: 'scroll', top: 0, textStyle: { fontSize: 11 } },
-      grid: { left: 8, right: 24, top: 44, bottom: 8, containLabel: true },
-      xAxis: { type: 'category', data: this.anos, boundaryGap: false },
-      yAxis: { type: 'value' },
-      series: this.evolucaoSeries.map((s, i) => ({
-        name: this.sigla(s.nome),
-        type: 'line',
-        smooth: true,
-        showSymbol: false,
-        data: s.dados,
-        lineStyle: { width: 2, color: CORES_LINHAS[i % CORES_LINHAS.length] },
-        itemStyle: { color: CORES_LINHAS[i % CORES_LINHAS.length] },
-      })),
-    };
-  }
 
   /** Heatmap em tons de uma unica cor, eixos ja ordenados por quantidade. */
   private opcaoMatriz(): any {
@@ -1572,21 +2519,71 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     return m ? parseInt(m[1], 10) : 0;
   }
 
+
+  /**
+ * Legenda para exportação do gráfico de Ano de Publicação.
+ * Mantém os nomes completos das instituições.
+ */
+  get legendaAnoExportacao(): {
+  label: string;
+  cor: string;
+}[] {
+    return this.evolucaoSeries.map((serie) => ({
+      label: serie.nome,
+      cor: '#5B84B1',
+    }));
+  }
+
+
   /** Legenda do heatmap: numero do eixo X -> nome completo da avaliacao. */
   get legendaMatriz(): { num: number; nome: string }[] {
     return this.matrizAvals.map((a, i) => ({ num: i + 1, nome: a }));
   }
 
   /**
+ * Legenda completa para exportação do heatmap.
+ * Relaciona os números do eixo X aos nomes
+ * completos dos tipos de avaliação.
+ */
+  get legendaMatrizExportacao(): {
+  label: string;
+  cor: string;
+}[] {
+    return this.legendaMatriz.map((item) => ({
+      label: `${item.num} - ${item.nome}`,
+      cor: '#9AA5B1',
+    }));
+  }
+
+  /**
    * ODS completo para o grafico e a legenda: faixa fixa de 1 a 18 (zero nos ausentes,
    * com o nome oficial de fallback) mais a coluna "Nao Informado" ao final.
    */
-  get odsCompleto(): { num: number; label: string; count: number; cor: string; ni: boolean }[] {
+
+  get odsCompleto(): {
+    num: number;
+    label: string;
+    count: number;
+    cor: string;
+    ni: boolean;
+  }[] {
     const porNum: { [n: number]: FacetValue } = {};
-    this.ods.forEach((v) => { porNum[this.numeroOds(v.label)] = v; });
-    const arr: { num: number; label: string; count: number; cor: string; ni: boolean }[] = [];
+
+    this.ods.forEach((v) => {
+      porNum[this.numeroOds(v.label)] = v;
+    });
+
+    const arr: {
+      num: number;
+      label: string;
+      count: number;
+      cor: string;
+      ni: boolean;
+    }[] = [];
+
     for (let n = 1; n <= 18; n++) {
       const fv = porNum[n];
+
       arr.push({
         num: n,
         label: fv ? fv.label : `${n} - ${NOMES_ODS[n] ?? 'ODS ' + n}`,
@@ -1595,12 +2592,54 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
         ni: false,
       });
     }
-    arr.push({ num: 19, label: 'Não Informado', count: this.odsNaoInformado, cor: '#9aa5b1', ni: true });
+
+    arr.push({
+      num: 19,
+      label: 'Não Informado',
+      count: this.odsNaoInformado,
+      cor: '#9aa5b1',
+      ni: true,
+    });
+
     return arr;
   }
 
-  /** Legenda dos ODS: 1 a 18 mais "Nao Informado", cada um com sua cor. */
-  get legendaOds(): { num: number; label: string; cor: string }[] {
-    return this.odsCompleto.map((o) => ({ num: o.num, label: o.label, cor: o.cor }));
+  /**
+   * ODS que possuem avaliações no recorte atual.
+   * Exclui valores zerados e a categoria Não Informado.
+   */
+  get odsComDados(): {
+    num: number;
+    nome: string;
+    count: number;
+    cor: string;
+    icone: string | null;
+  }[] {
+    return this.odsCompleto
+      .filter((o) => !o.ni && o.count > 0)
+      .map((o) => ({
+        num: o.num,
+        nome: NOMES_ODS[o.num] ?? o.label,
+        count: o.count,
+        cor: o.cor,
+        icone: o.num <= 17
+          ? `assets/rdapp/images/ods/ods-${String(o.num).padStart(2, '0')}.svg`
+          : null,
+      }));
+  }
+
+  /**
+   * Legenda dos ODS, incluindo Não Informado.
+   */
+  get legendaOds(): {
+    num: number;
+    label: string;
+    cor: string;
+  }[] {
+    return this.odsCompleto.map((o) => ({
+      num: o.num,
+      label: o.label,
+      cor: o.cor,
+    }));
   }
 }
