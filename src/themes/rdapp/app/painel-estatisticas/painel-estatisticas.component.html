@@ -432,7 +432,7 @@
                       @if (vmArea.poucas) {
                         <ol class="cmp-cards" [attr.aria-label]="'Área temática por ' + rotulo(vmArea.metrica)">
                           @for (c of vmArea.lista; track c.label) {
-                            <li class="cmp-card cor-area">
+                            <li class="cmp-card cor-area" [class.ni]="c.ni">
                               <span class="cmp-nome">{{ c.label }}</span>
                               <span class="cmp-valor">{{ valor(vmArea.metrica, c) | number }} <small>{{ unidade(vmArea.metrica, valor(vmArea.metrica, c)) }}</small></span>
                             </li>
@@ -462,7 +462,7 @@
                       @if (vmInst.poucas) {
                         <ol class="cmp-cards" [attr.aria-label]="'Instituição por ' + rotulo(vmInst.metrica)">
                           @for (c of vmInst.lista; track c.label) {
-                            <li class="cmp-card cor-inst">
+                            <li class="cmp-card cor-inst" [class.ni]="c.ni">
                               <span class="cmp-nome">{{ c.label }}</span>
                               <span class="cmp-valor">{{ valor(vmInst.metrica, c) | number }} <small>{{ unidade(vmInst.metrica, valor(vmInst.metrica, c)) }}</small></span>
                               <span class="cmp-extra">{{ diferencaLider(vmInst.metrica, c, vmInst.lista) }}</span>
@@ -480,6 +480,67 @@
                     }
                   </section>
 
+                  <!-- 2.6 Ano de publicacao: acumulado por instituicao, pequenos multiplos / linhas (recomendacao 3.5) -->
+                  <section class="bloco span-2">
+                    <p class="bloco-ante">CURVA DE CRESCIMENTO</p>
+                    <div class="bloco-cabecalho">
+                      <h2>Ano de Publicação (acumulado)</h2>
+                      <ds-alternador-metrica [metrica]="vmAno.metrica" rotulo="Métrica do acumulado por ano"
+                                             (trocar)="trocarMetrica('ano', $event)"></ds-alternador-metrica>
+                    </div>
+                    @if (vmAno.modo !== 'vazio') {
+                      <p class="bloco-sub">{{ vmAno.sintese }}</p>
+                      <ds-grafico-echarts class="grafico" [style.height.px]="vmAno.altura" [opcao]="vmAno.opcao"
+                                          role="img" [attr.aria-label]="(vmAno.modo === 'linhas' ? 'Gráfico de linhas: ' : 'Pequenos múltiplos: ') + vmAno.sintese"></ds-grafico-echarts>
+                      <p class="nota-grafico">Cada ponto é o total acumulado de {{ rotulo(vmAno.metrica) }} das avaliações publicadas até aquele ano; a curva mostra crescimento, não a variação de cada período.</p>
+                      <button type="button" class="btn-tabela" (click)="mostrarTabelaAno = !mostrarTabelaAno"
+                              [attr.aria-expanded]="mostrarTabelaAno" aria-controls="tabela-ano-uso">
+                        {{ mostrarTabelaAno ? 'Ocultar tabela' : 'Ver como tabela' }}
+                      </button>
+                      @if (mostrarTabelaAno) {
+                        <div class="tabela-box sem-fade" id="tabela-ano-uso">
+                          <div class="tabela-wrap tabela-larga">
+                            <table class="tabela matriz-simples">
+                              <caption class="sr-only">{{ rotulo(vmAno.metrica) }} acumuladas por ano de publicação e instituição</caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col">Instituição</th>
+                                  @for (a of vmAno.anos; track a) {
+                                    <th scope="col" class="num">{{ a }}</th>
+                                  }
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @for (sr of vmAno.todas; track sr.nome) {
+                                  <tr>
+                                    <th scope="row">{{ sr.nome }}</th>
+                                    @for (v of sr.dados; track $index) {
+                                      <td class="num">{{ v | number }}</td>
+                                    }
+                                  </tr>
+                                }
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      }
+                    } @else {
+                      <p class="vazio">Sem {{ rotulo(vmAno.metrica) }} com ano de publicação neste recorte.</p>
+                    }
+                  </section>
+
+                  <!-- 2.7 Termos mais buscados: eventos de busca do repositorio (contagem global) -->
+                  <section class="bloco span-2">
+                    <p class="bloco-ante">FREQUÊNCIA SEMÂNTICA</p>
+                    <h2>Termos mais buscados</h2>
+                    @if (termosBuscados.length) {
+                      <p class="bloco-sub">Termos digitados na busca do repositório, do mais ao menos frequente. A contagem é de todo o acervo: os filtros da barra lateral não se aplicam a buscas.</p>
+                      <ds-nuvem-palavras [palavras]="termosBuscados"></ds-nuvem-palavras>
+                    } @else {
+                      <p class="vazio">Ainda não há buscas registradas no repositório.</p>
+                    }
+                  </section>
+
                   <!-- 2.8 Abrangencia: barra empilhada 100% / cards de percentual (recomendacao 3.6) -->
                   <section class="bloco span-1">
                     <p class="bloco-ante">FOCO POR LOCALIDADE</p>
@@ -493,7 +554,7 @@
                       @if (vmAbr.poucas) {
                         <ol class="cmp-cards" [attr.aria-label]="'Abrangência territorial por ' + rotulo(vmAbr.metrica)">
                           @for (c of vmAbr.lista; track c.label) {
-                            <li class="cmp-card cor-abr">
+                            <li class="cmp-card cor-abr" [class.ni]="c.ni">
                               <span class="cmp-nome">{{ c.label }}</span>
                               <span class="cmp-valor">{{ participacao(vmAbr.metrica, c, vmAbr.lista) }}%</span>
                               <span class="cmp-extra">{{ valor(vmAbr.metrica, c) | number }} {{ unidade(vmAbr.metrica, valor(vmAbr.metrica, c)) }}</span>

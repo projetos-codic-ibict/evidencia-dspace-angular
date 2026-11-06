@@ -61,7 +61,7 @@ interface OdsUso extends CategoriaUso { num: number; cor: string; ni: boolean; }
 
 type Aba = 'acervo' | 'visualizacoes';
 /** Blocos da aba 2 que tem alternador proprio (CA05.7); cada um guarda a sua metrica. */
-type BlocoUso = 'top' | 'matriz' | 'area' | 'inst' | 'abr' | 'ods';
+type BlocoUso = 'top' | 'matriz' | 'area' | 'inst' | 'abr' | 'ods' | 'ano';
 
 /** View-model de um bloco por categoria (area, instituicao, abrangencia), ja na metrica do bloco. */
 interface CategoriaVM {
@@ -87,6 +87,18 @@ interface MatrizVM {
   altura: number;
 }
 interface OdsVM { metrica: MetricaUso; completo: OdsUso[]; cards: OdsUso[]; tabela: CategoriaUso[]; sintese: string; opcao: any; }
+/** Serie acumulada de uma instituicao por ano de publicacao (recomendacao 3.5). */
+interface SerieAno { nome: string; dados: number[]; total: number; ni: boolean; }
+interface AnoVM {
+  metrica: MetricaUso;
+  modo: 'multiplos' | 'linhas' | 'vazio';
+  anos: string[];
+  series: SerieAno[];     // as exibidas no grafico (ate MAX_PAINEIS_ANO)
+  todas: SerieAno[];      // todas, para "Ver como tabela"
+  sintese: string;
+  opcao: any;
+  altura: number;
+}
 
 /**
  * FONTE UNICA da composicao da barra de filtros (CA18 da padronizacao):
@@ -138,6 +150,16 @@ const CORES_EMPILHADA = ['#0B6256', '#148F77', '#4FAF96', '#82C9B4', '#B9E2D5', 
 const COR_TEXTO_USO = '#4F5B66';
 const COR_ROTULO_USO = '#6A6F76';
 const COR_AUX_USO = '#E9EDF2';
+const COR_ANO_USO = '#148F77';       // pequenos multiplos do ano de publicacao (Quadro 10)
+const COR_NI = '#9aa5b1';            // "Nao Informado", mesma cor do ODS N/I
+const NAO_INFORMADO = 'Não Informado';
+// Pequenos multiplos: ate este numero de instituicoes no grafico; a tabela lista todas.
+const MAX_PAINEIS_ANO = 12;
+// Ate este numero de series, linhas no mesmo grafico, distinguidas por estilo de traco e marcador.
+const POUCAS_SERIES_ANO = 3;
+const ESTILOS_LINHA: { tipo: string; simbolo: string }[] = [
+  { tipo: 'solid', simbolo: 'circle' }, { tipo: 'dashed', simbolo: 'rect' }, { tipo: 'dotted', simbolo: 'triangle' },
+];
 const TOP_N = 10;
 // Ate este numero de publicacoes o Top vira cards comparativos (recomendacao 3.1).
 const TOP_MAX_CARDS = 4;
@@ -219,7 +241,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   totalDownloads = 0;
   // Metrica de cada bloco (CA05.7): cada alternador e independente dos demais.
   metricas: { [b in BlocoUso]: MetricaUso } = {
-    top: 'views', matriz: 'views', area: 'views', inst: 'views', abr: 'views', ods: 'views',
+    top: 'views', matriz: 'views', area: 'views', inst: 'views', abr: 'views', ods: 'views', ano: 'views',
   };
   // Dados agregados do recorte, com as DUAS metricas; os view-models abaixo sao
   // derivados deles na metrica do bloco, e so o bloco afetado e recalculado.
@@ -232,6 +254,10 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   private odsNaoInformadoUso: CategoriaUso = { label: 'Não Informado', views: 0, downloads: 0 };
   // Pares "documento||avaliacao" com o uso somado; a matriz e montada por metrica.
   private matrizParesUso: { [k: string]: CategoriaUso } = {};
+  // Uso por instituicao e ano de publicacao, para o acumulado (bloco 2.6).
+  private anoUso: { [inst: string]: { [ano: string]: UsoItem } } = {};
+  // Termos digitados na busca do repositorio (eventos de busca do core statistics); contagem global.
+  termosBuscados: FacetValue[] = [];
   vmTop: TopVM = { metrica: 'views', itens: [], emCards: false, sintese: '', opcao: null, altura: 0 };
   vmMatriz: MatrizVM = {
     metrica: 'views', matriz: { docs: [], avals: [], celulas: [] }, modo: 'vazio', max: 0,
@@ -241,8 +267,10 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   vmInst: CategoriaVM = this.vmVazio();
   vmAbr: CategoriaVM = this.vmVazio();
   vmOds: OdsVM = { metrica: 'views', completo: [], cards: [], tabela: [], sintese: '', opcao: null };
+  vmAno: AnoVM = { metrica: 'views', modo: 'vazio', anos: [], series: [], todas: [], sintese: '', opcao: null, altura: 0 };
   mostrarTabelaTop = false;
   mostrarTabelaMatrizUso = false;
+  mostrarTabelaAno = false;
   // Anuncio para leitores de tela apos "Atualizar" (regiao viva no template).
   anuncio = '';
 
@@ -494,7 +522,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   /** View-models da aba 2: recalculados quando os dados do recorte mudam. */
   private recomputarGraficosUso(): void {
-    (['top', 'matriz', 'area', 'inst', 'abr', 'ods'] as BlocoUso[]).forEach((b) => this.recomputarBloco(b));
+    (['top', 'matriz', 'area', 'inst', 'abr', 'ods', 'ano'] as BlocoUso[]).forEach((b) => this.recomputarBloco(b));
   }
 
   /** Alternador de um bloco (CA05.7): troca a metrica e recalcula SO aquele bloco. */
@@ -509,10 +537,11 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     switch (bloco) {
       case 'top': this.vmTop = this.montarTop(m); break;
       case 'matriz': this.vmMatriz = this.montarMatrizVM(m); break;
-      case 'area': this.vmArea = this.montarCategoriaVM(m, this.areaUso, 'Área temática', 'dot'); break;
-      case 'inst': this.vmInst = this.montarCategoriaVM(m, this.instUso, 'Instituição', 'lollipop'); break;
-      case 'abr': this.vmAbr = this.montarCategoriaVM(m, this.abrUso, 'Abrangência', 'empilhada'); break;
+      case 'area': this.vmArea = this.montarCategoriaVM(m, this.areaUso, 'Área temática', 'sem área temática informada', 'dot'); break;
+      case 'inst': this.vmInst = this.montarCategoriaVM(m, this.instUso, 'Instituição', 'sem instituição informada', 'lollipop'); break;
+      case 'abr': this.vmAbr = this.montarCategoriaVM(m, this.abrUso, 'Abrangência', 'sem abrangência informada', 'empilhada'); break;
       case 'ods': this.vmOds = this.montarOdsVM(m); break;
+      case 'ano': this.vmAno = this.montarAnoVM(m); break;
     }
   }
 
@@ -613,8 +642,10 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       this.instUso = [];
       this.abrUso = [];
       this.odsUso = [];
-      this.odsNaoInformadoUso = { label: 'Não Informado', views: 0, downloads: 0 };
+      this.odsNaoInformadoUso = { label: NAO_INFORMADO, views: 0, downloads: 0 };
       this.matrizParesUso = {};
+      this.anoUso = {};
+      this.termosBuscados = [];
       return;
     }
     this.usoGeradoEm = uso.geradoEm;
@@ -624,8 +655,13 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     const porInst: { [k: string]: CategoriaUso } = {};
     const porAbr: { [k: string]: CategoriaUso } = {};
     const porOds: { [k: string]: CategoriaUso } = {};
-    const semOds: CategoriaUso = { label: 'Não Informado', views: 0, downloads: 0 };
+    // "Nao Informado" de cada categoria: uso dos itens sem o metadado (CA05.4, estendido ao painel todo).
+    const semArea: CategoriaUso = { label: NAO_INFORMADO, views: 0, downloads: 0, ni: true };
+    const semInst: CategoriaUso = { label: NAO_INFORMADO, views: 0, downloads: 0, ni: true };
+    const semAbr: CategoriaUso = { label: NAO_INFORMADO, views: 0, downloads: 0, ni: true };
+    const semOds: CategoriaUso = { label: NAO_INFORMADO, views: 0, downloads: 0, ni: true };
     const pares: { [k: string]: CategoriaUso } = {};
+    const porInstAno: { [inst: string]: { [ano: string]: UsoItem } } = {};
     let somaViews = 0;
     let somaDownloads = 0;
 
@@ -635,13 +671,20 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       somaViews += u.views;
       somaDownloads += u.downloads;
       this.somarPorCampo(porPolitica, it, 'local.politicapublica', u);
-      this.somarPorCampo(porArea, it, 'local.areatematica', u);
-      this.somarPorCampo(porInst, it, 'local.instituicao', u);
-      this.somarPorCampo(porAbr, it, 'local.abrangencia', u);
-      // ODS e opcional: o uso dos itens sem ODS vai para "Nao Informado" (CA05.4).
-      if (!this.somarPorCampo(porOds, it, 'local.ods', u)) {
-        semOds.views += u.views;
-        semOds.downloads += u.downloads;
+      if (!this.somarPorCampo(porArea, it, 'local.areatematica', u)) { this.somarEm(semArea, u); }
+      if (!this.somarPorCampo(porInst, it, 'local.instituicao', u)) { this.somarEm(semInst, u); }
+      if (!this.somarPorCampo(porAbr, it, 'local.abrangencia', u)) { this.somarEm(semAbr, u); }
+      if (!this.somarPorCampo(porOds, it, 'local.ods', u)) { this.somarEm(semOds, u); }
+      // Acumulado por ano de publicacao: primeiro ano valido do item, uma serie por instituicao.
+      const ano = this.valores(it, 'dc.date.issued').map((v) => v.substring(0, 4)).find((a) => /^\d{4}$/.test(a));
+      if (ano) {
+        const insts = this.valores(it, 'local.instituicao');
+        (insts.length ? insts : [NAO_INFORMADO]).forEach((inst) => {
+          porInstAno[inst] = porInstAno[inst] ?? {};
+          porInstAno[inst][ano] = porInstAno[inst][ano] ?? { views: 0, downloads: 0 };
+          porInstAno[inst][ano].views += u.views;
+          porInstAno[inst][ano].downloads += u.downloads;
+        });
       }
       // Matriz: cada par (documento, avaliacao) do item recebe o uso do item.
       const docs = this.valores(it, 'local.tipodocumento');
@@ -667,12 +710,19 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     }
     this.politicaUso = Object.values(porPolitica)
       .sort((a, b) => b.views - a.views || b.downloads - a.downloads || a.label.localeCompare(b.label, 'pt-BR'));
-    this.areaUso = Object.values(porArea);
-    this.instUso = Object.values(porInst);
-    this.abrUso = Object.values(porAbr);
+    this.areaUso = [...Object.values(porArea), semArea];
+    this.instUso = [...Object.values(porInst), semInst];
+    this.abrUso = [...Object.values(porAbr), semAbr];
     this.odsUso = Object.values(porOds);
     this.odsNaoInformadoUso = semOds;
     this.matrizParesUso = pares;
+    this.anoUso = porInstAno;
+    this.termosBuscados = uso.termosBuscados;
+  }
+
+  private somarEm(c: CategoriaUso, u: UsoItem): void {
+    c.views += u.views;
+    c.downloads += u.downloads;
   }
 
   /** Valores (sem espacos nas pontas, nao vazios) de um campo de metadado do item. */
@@ -818,13 +868,15 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   /** Categorias do maior para o menor na metrica (CA05.1); sem comZeros, so as com acesso. */
   private ordenarUso(m: MetricaUso, lista: CategoriaUso[], comZeros = false): CategoriaUso[] {
-    return lista
-      .filter((c) => comZeros || c[m] > 0)
+    const visiveis = lista.filter((c) => comZeros || c[m] > 0);
+    const informados = visiveis.filter((c) => !c.ni)
       .sort((a, b) => b[m] - a[m] || a.label.localeCompare(b.label, 'pt-BR'));
+    // "Nao Informado" sempre por ultimo, independentemente do valor, como no ODS.
+    return [...informados, ...visiveis.filter((c) => c.ni)];
   }
 
   private montarCategoriaVM(
-    m: MetricaUso, dados: CategoriaUso[], tipo: string, grafico: 'dot' | 'lollipop' | 'empilhada',
+    m: MetricaUso, dados: CategoriaUso[], tipo: string, semRotulo: string, grafico: 'dot' | 'lollipop' | 'empilhada',
   ): CategoriaVM {
     const lista = this.ordenarUso(m, dados);
     // Poucas categorias (1 a 3) trocam o grafico por cards comparativos.
@@ -840,7 +892,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       lista,
       tabela: this.ordenarUso(m, dados, true),
       poucas,
-      sintese: this.sinteseCategoria(m, lista, tipo),
+      sintese: this.sinteseCategoria(m, lista, tipo, semRotulo),
       opcao,
       altura: 64 + 44 * lista.length,
       legenda: grafico === 'empilhada' ? this.legendaEmpilhada(m, lista) : [],
@@ -855,27 +907,36 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
 
   /** Diferenca para a lider, explicitada nos cards de instituicao (recomendacao 3.4). */
   diferencaLider(m: MetricaUso, c: CategoriaUso, lista: CategoriaUso[]): string {
-    if (!lista.length || c === lista[0]) { return 'maior volume do recorte'; }
-    const dif = lista[0][m] - c[m];
-    return dif === 0 ? 'empatada com a líder' : `${this.fmt(dif)} a menos que «${lista[0].label}»`;
+    const informadas = lista.filter((x) => !x.ni);
+    if (c.ni) { return 'avaliações sem instituição informada'; }
+    if (!informadas.length || c === informadas[0]) { return 'maior volume do recorte'; }
+    const dif = informadas[0][m] - c[m];
+    return dif === 0 ? 'empatada com a líder' : `${this.fmt(dif)} a menos que «${informadas[0].label}»`;
   }
 
   /** Legenda da barra empilhada: cor, nome, percentual e valor de cada abrangencia. */
   private legendaEmpilhada(m: MetricaUso, lista: CategoriaUso[]): { label: string; cor: string; pct: number; valor: number }[] {
     return lista.map((c, i) => ({
       label: c.label,
-      cor: CORES_EMPILHADA[i % CORES_EMPILHADA.length],
+      cor: c.ni ? COR_NI : CORES_EMPILHADA[i % CORES_EMPILHADA.length],
       pct: this.participacao(m, c, lista),
       valor: c[m],
     }));
   }
 
-  private sinteseCategoria(m: MetricaUso, lista: CategoriaUso[], tipo: string): string {
-    if (!lista.length) { return ''; }
-    const total = lista.reduce((acc, c) => acc + c[m], 0);
-    const lider = lista[0];
-    const base = `${tipo} com mais ${this.rotulo(m)}: «${lider.label}», com ${this.fmt(lider[m])} (${this.pct(lider[m], total)}% do recorte)`;
-    return lista.length === 1 ? `${base}.` : `${base}; ${lista.length} categorias com acesso.`;
+  /** Lider e percentual so entre as categorias informadas; o "Nao Informado" vira frase a parte. */
+  private sinteseCategoria(m: MetricaUso, lista: CategoriaUso[], tipo: string, semRotulo: string): string {
+    const informadas = lista.filter((c) => !c.ni);
+    const semInfo = lista.find((c) => c.ni)?.[m] ?? 0;
+    const partes: string[] = [];
+    if (informadas.length) {
+      const total = informadas.reduce((acc, c) => acc + c[m], 0);
+      const lider = informadas[0];
+      partes.push(`${tipo} com mais ${this.rotulo(m)}: «${lider.label}», com ${this.fmt(lider[m])} (${this.pct(lider[m], total)}% das informadas)`);
+      if (informadas.length > 1) { partes.push(`${informadas.length} categorias com acesso`); }
+    }
+    if (semInfo > 0) { partes.push(`${this.fmt(semInfo)} ${this.unidade(m, semInfo)} em avaliações ${semRotulo}`); }
+    return partes.length ? `${partes.join('; ')}.` : '';
   }
 
   // ---- ODS por uso ------------------------------------------------------------
@@ -936,6 +997,128 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       partes.push(`${this.fmt(semOds)} ${this.unidade(m, semOds)} em avaliações sem ODS informado`);
     }
     return partes.length ? `${partes.join('; ')}.` : '';
+  }
+
+  // ---- Ano de publicacao (acumulado) ------------------------------------------
+
+  /**
+   * Acumulado da metrica por ano de publicacao, uma serie por instituicao
+   * (CA04 2.6). Com 4+ instituicoes, pequenos multiplos; ate 3, linhas no mesmo
+   * grafico (recomendacao 3.5). "Nao Informado" e a ultima serie.
+   */
+  private montarAnoVM(m: MetricaUso): AnoVM {
+    const anos = this.anos;
+    const todas: SerieAno[] = Object.keys(this.anoUso).map((inst) => {
+      let acumulado = 0;
+      const dados = anos.map((a) => { acumulado += this.anoUso[inst][a]?.[m] ?? 0; return acumulado; });
+      return { nome: inst, dados, total: acumulado, ni: inst === NAO_INFORMADO };
+    })
+      .filter((sr) => sr.total > 0)
+      .sort((a, b) => Number(a.ni) - Number(b.ni) || b.total - a.total || a.nome.localeCompare(b.nome, 'pt-BR'));
+    const series = todas.slice(0, MAX_PAINEIS_ANO);
+    let modo: AnoVM['modo'] = 'multiplos';
+    if (!anos.length || !series.length) { modo = 'vazio'; } else if (series.length <= POUCAS_SERIES_ANO) { modo = 'linhas'; }
+    const linhas = Math.ceil(series.length / 3);
+    return {
+      metrica: m,
+      modo,
+      anos,
+      series,
+      todas,
+      sintese: this.sinteseAno(m, anos, todas),
+      opcao: modo === 'vazio' ? null : modo === 'linhas' ? this.opcaoAnoLinhas(m, anos, series) : this.opcaoAnoMultiplos(m, anos, series),
+      altura: modo === 'linhas' ? 320 : 52 + 185 * linhas,
+    };
+  }
+
+  private sinteseAno(m: MetricaUso, anos: string[], todas: SerieAno[]): string {
+    const informadas = todas.filter((sr) => !sr.ni);
+    const semInfo = todas.find((sr) => sr.ni)?.total ?? 0;
+    const partes: string[] = [];
+    if (informadas.length) {
+      const lider = informadas[0];
+      partes.push(`«${lider.nome}» acumula ${this.fmt(lider.total)} ${this.unidade(m, lider.total)} nas avaliações publicadas de ${anos[0]} a ${anos[anos.length - 1]}`);
+      if (informadas.length > 1) {
+        partes.push(`${informadas.length} instituições${informadas.length > MAX_PAINEIS_ANO ? `, as ${MAX_PAINEIS_ANO} mais acessadas no gráfico` : ''}`);
+      }
+    }
+    if (semInfo > 0) { partes.push(`${this.fmt(semInfo)} ${this.unidade(m, semInfo)} em avaliações sem instituição informada`); }
+    return partes.length ? `${partes.join('; ')}.` : '';
+  }
+
+  private eixoAno(anos: string[], gridIndex = 0): any {
+    return {
+      type: 'category', data: anos, gridIndex, boundaryGap: false,
+      axisLabel: { color: COR_ROTULO_USO, fontSize: 10 }, axisLine: { lineStyle: { color: COR_AUX_USO } }, axisTick: { show: false },
+    };
+  }
+
+  /** Ate 3 series no mesmo grafico: rotulo na ponta, traco e marcador distintos por serie. */
+  private opcaoAnoLinhas(m: MetricaUso, anos: string[], series: SerieAno[]): any {
+    return {
+      tooltip: { trigger: 'axis', valueFormatter: (v: number) => `${this.fmt(v)} ${this.unidade(m, v)}` },
+      grid: { left: 8, right: 180, top: 16, bottom: 8, containLabel: true },
+      xAxis: this.eixoAno(anos),
+      yAxis: {
+        type: 'value', minInterval: 1, name: this.capitalizar(this.rotulo(m)),
+        nameTextStyle: { color: COR_ROTULO_USO, fontSize: 11, align: 'left' },
+        axisLabel: { color: COR_ROTULO_USO }, splitLine: { lineStyle: { color: COR_AUX_USO } },
+      },
+      series: series.map((sr, i) => ({
+        name: sr.nome, type: 'line', data: sr.dados,
+        symbol: ESTILOS_LINHA[i].simbolo, symbolSize: 7,
+        lineStyle: { width: 2, type: ESTILOS_LINHA[i].tipo, color: sr.ni ? COR_NI : COR_ANO_USO },
+        itemStyle: { color: sr.ni ? COR_NI : COR_ANO_USO },
+        endLabel: { show: true, color: COR_USO, fontSize: 11, width: 170, overflow: 'truncate', formatter: (p: any) => `${p.seriesName}: ${this.fmt(p.value)}` },
+        emphasis: { focus: 'series' },
+      })),
+    };
+  }
+
+  /** Pequenos multiplos: um painel por instituicao, 3 por linha, mesma escala em todos. */
+  private opcaoAnoMultiplos(m: MetricaUso, anos: string[], series: SerieAno[]): any {
+    const colunas = 3;
+    const max = series.reduce((acc, sr) => Math.max(acc, sr.total), 0);
+    const grids: any[] = [];
+    const titulos: any[] = [];
+    const xAxes: any[] = [];
+    const yAxes: any[] = [];
+    const sers: any[] = [];
+    series.forEach((sr, i) => {
+      const col = i % colunas;
+      const lin = Math.floor(i / colunas);
+      const left = `${4 + col * 32}%`;
+      const top = 48 + lin * 185;
+      grids.push({ left, top, width: '27%', height: 96 });
+      // Titulo em ate duas linhas: nomes com o mesmo prefixo (as duas SMA) continuam distinguiveis.
+      titulos.push({
+        text: sr.nome, left, top: top - 42,
+        textStyle: { fontSize: 11, fontWeight: 600, lineHeight: 14, color: sr.ni ? COR_ROTULO_USO : COR_TEXTO_USO, width: 240, overflow: 'break' },
+      });
+      xAxes.push(this.eixoAno(anos, i));
+      yAxes.push({
+        type: 'value', gridIndex: i, min: 0, max, minInterval: 1,
+        axisLabel: { color: COR_ROTULO_USO, fontSize: 10 }, splitLine: { lineStyle: { color: COR_AUX_USO } },
+      });
+      const ultimo = sr.dados.length - 1;
+      sers.push({
+        name: sr.nome, type: 'line', xAxisIndex: i, yAxisIndex: i,
+        data: sr.dados.map((v, j) => (j === ultimo
+          ? { value: v, label: { show: true, position: 'top', color: COR_USO, fontWeight: 600, fontSize: 11, formatter: () => this.fmt(v) } }
+          : v)),
+        symbol: 'circle', symbolSize: 5,
+        lineStyle: { width: 2, color: sr.ni ? COR_NI : COR_ANO_USO },
+        itemStyle: { color: sr.ni ? COR_NI : COR_ANO_USO },
+      });
+    });
+    return {
+      tooltip: { trigger: 'axis', valueFormatter: (v: number) => `${this.fmt(v)} ${this.unidade(m, v)}` },
+      title: titulos,
+      grid: grids,
+      xAxis: xAxes,
+      yAxis: yAxes,
+      series: sers,
+    };
   }
 
   // ---- Matriz de uso ----------------------------------------------------------
@@ -1085,8 +1268,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       yAxis: this.eixoCategoriaUso(inv.map((c) => c.label)),
       series: [{
         type: 'scatter', symbolSize: 14,
-        data: inv.map((c) => ({ name: c.label, value: [c[m], c.label] })),
-        itemStyle: { color: cor },
+        data: inv.map((c) => ({ name: c.label, value: [c[m], c.label], itemStyle: { color: c.ni ? COR_NI : cor } })),
         label: {
           show: true, position: 'right', color: COR_USO, fontWeight: 600,
           formatter: (p: any) => this.fmt(p.value[0]),
@@ -1114,13 +1296,11 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       series: [
         {
           type: 'bar', barWidth: 3, silent: true, z: 1,
-          data: inv.map((c) => c[m]),
-          itemStyle: { color: cor },
+          data: inv.map((c) => ({ value: c[m], itemStyle: { color: c.ni ? COR_NI : cor } })),
         },
         {
           type: 'scatter', symbolSize: 14, z: 3,
-          data: inv.map((c) => ({ name: c.label, value: [c[m], c.label] })),
-          itemStyle: { color: cor },
+          data: inv.map((c) => ({ name: c.label, value: [c[m], c.label], itemStyle: { color: c.ni ? COR_NI : cor } })),
           label: {
             show: true, position: 'right', color: COR_USO, fontWeight: 600,
             formatter: (p: any) => this.fmt(p.value[0]),
@@ -1150,10 +1330,10 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       series: dados.map((c, i) => ({
         name: c.label, type: 'bar', stack: 'total', barWidth: 44,
         data: [c[m]],
-        itemStyle: { color: CORES_EMPILHADA[i % CORES_EMPILHADA.length], borderColor: '#fff', borderWidth: 2 },
+        itemStyle: { color: c.ni ? COR_NI : CORES_EMPILHADA[i % CORES_EMPILHADA.length], borderColor: '#fff', borderWidth: 2 },
         label: {
           show: c[m] / total >= 0.1, position: 'inside', fontSize: 12,
-          color: i < 3 ? '#fff' : COR_TEXTO_USO,
+          color: i < 3 && !c.ni ? '#fff' : COR_TEXTO_USO,
           formatter: () => `${c.label} ${this.pct(c[m], total)}%`,
         },
         emphasis: { focus: 'none' },

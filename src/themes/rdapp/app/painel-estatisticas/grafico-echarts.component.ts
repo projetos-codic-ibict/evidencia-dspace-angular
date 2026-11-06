@@ -20,6 +20,7 @@ import {
 import {
   GridComponent,
   LegendComponent,
+  TitleComponent,
   TooltipComponent,
   VisualMapComponent,
 } from 'echarts/components';
@@ -41,6 +42,7 @@ use([
   TreemapChart,
   GridComponent,
   LegendComponent,
+  TitleComponent,
   TooltipComponent,
   VisualMapComponent,
   CanvasRenderer,

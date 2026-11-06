@@ -4,8 +4,11 @@ import {
   Input,
 } from '@angular/core';
 
-/** Uma categoria (area, instituicao, abrangencia, ODS) com as duas metricas de uso. */
-export interface CategoriaUso { label: string; views: number; downloads: number; }
+/**
+ * Uma categoria (area, instituicao, abrangencia, ODS) com as duas metricas de uso.
+ * ni = "Nao Informado": uso de itens sem o metadado, mostrado a parte (CA05.4).
+ */
+export interface CategoriaUso { label: string; views: number; downloads: number; ni?: boolean; }
 
 /**
  * "Ver como tabela" (recomendacao 4.1 / CA06): alternativa textual de um grafico
