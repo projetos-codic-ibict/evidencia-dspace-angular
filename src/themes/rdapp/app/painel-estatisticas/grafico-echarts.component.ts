@@ -92,7 +92,10 @@ export class GraficoEchartsComponent implements OnChanges, OnDestroy {
   }
 
 /**
- * Exporta o gráfico ECharts em PNG ou JPG.
+
+/**
+ * Exporta o gráfico com seu título em PNG ou JPG.
+ * Preserva a imagem original e acrescenta um cabeçalho.
  */
 exportarImagem(
   formato: 'png' | 'jpeg',
@@ -102,34 +105,101 @@ exportarImagem(
     return;
   }
 
-  const imagem = this.chart.getDataURL({
-    type: formato,
+  const titulos: Record<string, string> = {
+    'rdapp-instituicao': 'Instituição',
+    'rdapp-tipo-documento': 'Tipo de Documento',
+    'rdapp-area-tematica': 'Área Temática',
+    'rdapp-abrangencia-territorial': 'Abrangência Territorial',
+  };
+
+  const titulo = titulos[nomeArquivo] || nomeArquivo;
+
+  const imagem = new Image();
+
+  imagem.onload = () => {
+    const alturaCabecalho = 115;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = imagem.naturalWidth;
+    canvas.height = imagem.naturalHeight + alturaCabecalho;
+
+    const contexto = canvas.getContext('2d');
+    if (!contexto) {
+      return;
+    }
+
+    // Fundo branco.
+    contexto.fillStyle = '#FFFFFF';
+    contexto.fillRect(
+      0, 0,
+      canvas.width,
+      canvas.height
+    );
+
+    // Título centralizado.
+    contexto.fillStyle = '#0B3A82';
+    contexto.font = 'bold 36px Arial, sans-serif';
+    contexto.textAlign = 'center';
+    contexto.textBaseline = 'middle';
+
+    contexto.fillText(
+      titulo,
+      canvas.width / 2,
+      alturaCabecalho / 2,
+      canvas.width - 80
+    );
+
+    // Gráfico original abaixo do título.
+    contexto.drawImage(
+      imagem,
+      0,
+      alturaCabecalho
+    );
+
+    // Download da imagem completa.
+    const mime =
+      formato === 'jpeg' ? 'image/jpeg' : 'image/png';
+
+    const extensao =
+      formato === 'jpeg' ? 'jpg' : 'png';
+
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL(mime, 0.95);
+    link.download = `${nomeArquivo}.${extensao}`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
+  imagem.onerror = () => {
+    console.error(
+      'Não foi possível preparar a imagem do gráfico.'
+    );
+  };
+
+  imagem.src = this.chart.getDataURL({
+    type: 'png',
     pixelRatio: 2,
     backgroundColor: '#FFFFFF',
   });
-
-  const link = document.createElement('a');
-
-  link.href = imagem;
-  link.download =
-    `${nomeArquivo}.${formato === 'jpeg' ? 'jpg' : 'png'}`;
-
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
 }
+
 
 
 /**
  * Exporta um gráfico com título e legenda externa.
  * Utilizado inicialmente no gráfico dos ODS.
  */
+
 exportarImagemComLegenda(
   formato: 'png' | 'jpeg',
   nomeArquivo: string,
   titulo: string,
-  legenda: ReadonlyArray<{ label: string; cor: string }>
+  legenda: ReadonlyArray<{ label: string; cor: string }>,
+  tituloLegenda: string = 'Legenda dos Objetivos'
 ): void {
+
   if (!this.isBrowser || !this.chart) {
     return;
   }
@@ -170,11 +240,11 @@ exportarImagemComLegenda(
 
     // Título da legenda.
     contexto.font = 'bold 25px Arial, sans-serif';
-    contexto.fillText(
-      'Legenda dos Objetivos',
-      margem,
-      topoLegenda
-    );
+contexto.fillText(
+  tituloLegenda,
+  margem,
+  topoLegenda
+);
 
     // Legenda com os nomes e cores de todos os ODS.
     contexto.font = '22px Arial, sans-serif';

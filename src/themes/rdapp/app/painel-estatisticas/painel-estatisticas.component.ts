@@ -346,10 +346,58 @@ async exportarMatrizXLSX(): Promise<void> {
   // O conteúdo é extraído dos dados apresentados, respeitando os filtros ativos.
   exportandoTabelaXlsx = false;
   erroExportacaoTabela: string | null = null;
-
+arquivoErroExportacaoTabela: string | null = null;
   get linhasPoliticasExportacao(): (string | number)[][] {
     return this.politicaPublica.map((politica) => [politica.label, politica.count]);
   }
+
+
+/**
+ * Prepara os dados das instituições para CSV e XLSX.
+ * Mantém os nomes completos e as quantidades do recorte atual.
+ */
+get linhasInstituicoesExportacao(): (string | number)[][] {
+  return this.instituicao.map((item) => [
+    item.label,
+    item.count,
+  ]);
+}
+
+
+/**
+ * Prepara os dados de indicadores categóricos para CSV e XLSX.
+ * Preserva os nomes completos, os valores numéricos
+ * e os filtros atualmente aplicados no painel.
+ */
+linhasCategoriasExportacao(
+  dados: FacetValue[]
+): (string | number)[][] {
+  return dados.map((item) => [
+    item.label,
+    item.count,
+  ]);
+}
+
+
+/**
+ * Prepara os dados dos ODS para exportação CSV e XLSX.
+ *
+ * Inclui os 18 objetivos, inclusive os que possuem
+ * zero avaliações, e a categoria "Não informado".
+ *
+ * Mantém os valores numéricos e respeita os filtros
+ * atualmente aplicados no painel.
+ */
+get linhasOdsExportacao(): (string | number)[][] {
+  return this.odsCompleto.map((ods) => [
+    ods.ni ? '—' : ods.num,
+    ods.ni
+      ? 'Não informado'
+      : (NOMES_ODS[ods.num] ?? ods.label),
+    ods.count,
+  ]);
+}
+
 
   /** Cabecalhos da exportacao de Ano de Publicacao (recorte atual). */
   get cabecalhosAnoExportacao(): string[] {
@@ -402,6 +450,7 @@ async exportarMatrizXLSX(): Promise<void> {
 
     this.exportandoTabelaXlsx = true;
     this.erroExportacaoTabela = null;
+    this.arquivoErroExportacaoTabela = null;
     try {
       const { default: writeExcelFile } =
         await import('write-excel-file/browser');
@@ -429,13 +478,19 @@ async exportarMatrizXLSX(): Promise<void> {
         })),
         stickyRowsCount: 1,
       }).toFile(`${nomeArquivo}.xlsx`);
-    } catch (erro) {
-      console.error('Erro ao exportar tabela em XLSX:', erro);
-      this.erroExportacaoTabela =
-        'Não foi possível gerar a planilha Excel.';
-    } finally {
-      this.exportandoTabelaXlsx = false;
-    }
+
+} catch (erro) {
+  console.error('Erro ao exportar tabela em XLSX:', erro);
+
+  this.arquivoErroExportacaoTabela = nomeArquivo;
+
+  this.erroExportacaoTabela =
+    'Não foi possível gerar a planilha Excel. Tente novamente.';
+
+} finally {
+  this.exportandoTabelaXlsx = false;
+}
+
   }
 
   // Opcoes ECharts calculadas apos cada carga; ligadas aos <ds-grafico-echarts>.
@@ -525,6 +580,50 @@ exportarCardsAreaTematica(
     this.areaTematica,
     'Área Temática',
     'rdapp-area-tematica',
+    formato
+  );
+}
+
+
+/**
+ * Exporta a apresentação simplificada de Instituição.
+ * Utilizada quando existem de 1 a 3 instituições.
+ */
+exportarCardsInstituicao(
+  formato: 'png' | 'jpeg'
+): void {
+  exportarCategoriasImagem(
+    this.instituicao,
+    'Instituição',
+    'rdapp-instituicao',
+    formato
+  );
+}
+
+/**
+ * Exporta Documento x Avaliação quando a matriz
+ * aparece como valor único ou tabela simplificada.
+ */
+exportarMatrizSimplificadaImagem(
+  formato: 'png' | 'jpeg'
+): void {
+  if (!this.matrizPoucasCategorias) {
+    return;
+  }
+
+  const dados = this.linhasMatrizTabela.flatMap((linha) =>
+    linha.valores.map((valor, coluna) => ({
+      label:
+        `Documento: ${linha.nome} | ` +
+        `Avaliação: ${this.matrizAvals[coluna]}`,
+      count: valor,
+    }))
+  );
+
+  exportarCategoriasImagem(
+    dados,
+    'Documento × Avaliação',
+    'rdapp-documento-avaliacao',
     formato
   );
 }
@@ -1632,6 +1731,21 @@ get legendaAnoExportacao(): {
   get legendaMatriz(): { num: number; nome: string }[] {
     return this.matrizAvals.map((a, i) => ({ num: i + 1, nome: a }));
   }
+
+/**
+ * Legenda completa para exportação do heatmap.
+ * Relaciona os números do eixo X aos nomes
+ * completos dos tipos de avaliação.
+ */
+get legendaMatrizExportacao(): {
+  label: string;
+  cor: string;
+}[] {
+  return this.legendaMatriz.map((item) => ({
+    label: `${item.num} - ${item.nome}`,
+    cor: '#9AA5B1',
+  }));
+}
 
   /**
    * ODS completo para o grafico e a legenda: faixa fixa de 1 a 18 (zero nos ausentes,

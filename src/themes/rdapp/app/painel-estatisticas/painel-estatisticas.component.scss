@@ -768,3 +768,185 @@
     }
   }
 }
+
+
+// Menu único de exportação de dados
+
+.menu-exportacao {
+  display: inline-block;
+
+  summary {
+    display: inline-block;
+    padding: 0.45rem 0.85rem;
+
+    background: #FFFFFF;
+    border: 1px solid #1E5CC8;
+    border-radius: 6px;
+
+    color: #0B3A82;
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: ' ▾';
+      margin-left: 0.3rem;
+    }
+
+    &:hover {
+      background: #E9EDF2;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #1E5CC8;
+      outline-offset: 2px;
+    }
+  }
+
+  &[open] summary::after {
+    content: ' ▴';
+  }
+
+  .menu-exportacao-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+
+    button {
+      text-align: left;
+    }
+  }
+}
+
+
+
+/* Posicionamento dos menus Exportar */
+
+.painel-estatisticas .grade > .bloco {
+  position: relative;
+}
+
+/* Botão no canto superior direito */
+.painel-estatisticas .grade > .bloco > .exportacao-grafico,
+.painel-estatisticas .grade > .bloco > .menu-exportacao {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  z-index: 30;
+  margin: 0;
+}
+
+/* Espaço para o botão nos títulos dos indicadores */
+.painel-estatisticas .painel-conteudo > div:first-of-type
+> .grade > .bloco > .bloco-ante,
+.painel-estatisticas .painel-conteudo > div:first-of-type
+> .grade > .bloco > h2 {
+  padding-right: 9rem;
+}
+
+/* Ancoragem do menu */
+.painel-estatisticas .grade > .bloco
+> .exportacao-grafico .menu-exportacao {
+  position: relative;
+}
+
+/* Opções abertas sobre o gráfico */
+.painel-estatisticas .grade > .bloco
+.menu-exportacao-opcoes {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  min-width: 170px;
+  z-index: 35;
+  margin-top: 0;
+  padding: 0.5rem;
+  background: #FFFFFF;
+  border: 1px solid #D5E2F5;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(16, 42, 84, 0.14);
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 575px) {
+  .painel-estatisticas .grade > .bloco
+  > .exportacao-grafico,
+  .painel-estatisticas .grade > .bloco
+  > .menu-exportacao {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .painel-estatisticas .painel-conteudo > div:first-of-type
+  > .grade > .bloco > h2 {
+    padding-right: 7.5rem;
+  }
+}
+
+
+
+/* Matriz simplificada apresentada em cards */
+
+.matriz-resumo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.matriz-resumo-card {
+  min-width: 0;
+  padding: 1.1rem;
+  background: #F7FAFE;
+  border: 1px solid #D5E2F5;
+  border-radius: 10px;
+}
+
+.matriz-resumo-titulo {
+  margin: 0 0 0.9rem;
+  color: #0B3A82;
+  font-size: 1rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.matriz-resumo-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.matriz-resumo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid #E1E8F2;
+}
+
+.matriz-resumo-avaliacao {
+  color: #4F5B66;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.matriz-resumo-quantidade {
+  color: #0B3A82;
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 575px) {
+  .matriz-resumo-cards {
+    grid-template-columns: 1fr;
+  }
+}
