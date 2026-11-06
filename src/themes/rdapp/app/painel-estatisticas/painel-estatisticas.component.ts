@@ -31,6 +31,7 @@ import {
   AlternadorMetricaComponent,
   MetricaUso,
 } from './alternador-metrica.component';
+import { ExportarGraficoComponent } from './exportar-grafico.component';
 import {
   FiltrosSidebarComponent,
   GrupoFiltro,
@@ -177,6 +178,7 @@ const MATRIZ_SIMPLES_MAX = 6;
     BtnDisabledDirective,
     DatePipe,
     DecimalPipe,
+    ExportarGraficoComponent,
     FiltrosSidebarComponent,
     GraficoEchartsComponent,
     NgTemplateOutlet,
@@ -271,6 +273,9 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   mostrarTabelaTop = false;
   mostrarTabelaMatrizUso = false;
   mostrarTabelaAno = false;
+  // Instancias do ECharts de cada bloco da aba 2, para o download como imagem.
+  // Chegam por (pronto) e sao renovadas sempre que o grafico e recriado.
+  charts: { [bloco in BlocoUso]?: EChartsType } = {};
   // Anuncio para leitores de tela apos "Atualizar" (regiao viva no template).
   anuncio = '';
 
@@ -1504,6 +1509,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   }
 
   ligarCruzMatrizUso(chart: EChartsType): void {
+    this.charts.matriz = chart;
     this.ligarCruz(chart, () => [this.vmMatriz.matriz.avals.length, this.vmMatriz.matriz.docs.length]);
   }
 

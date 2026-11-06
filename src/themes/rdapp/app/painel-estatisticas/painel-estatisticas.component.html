@@ -283,8 +283,9 @@
                           }
                         </ol>
                       } @else {
-                        <ds-grafico-echarts class="grafico" [style.height.px]="vmTop.altura" [opcao]="vmTop.opcao"
+                        <ds-grafico-echarts class="grafico" [style.height.px]="vmTop.altura" [opcao]="vmTop.opcao" (pronto)="charts.top = $event"
                                             role="img" [attr.aria-label]="'Gráfico de barras: ' + vmTop.sintese"></ds-grafico-echarts>
+                        <ds-exportar-grafico [chart]="charts.top ?? null" rotulo="o ranking" [nome]="'top-10-' + rotulo(vmTop.metrica)"></ds-exportar-grafico>
                       }
 
                       <!-- Alternativa tabular (recomendacao 4.1) com link para o item (CA07) -->
@@ -369,6 +370,7 @@
                         <ds-grafico-echarts class="grafico" [style.height.px]="vmMatriz.altura" [opcao]="vmMatriz.opcao"
                                             (pronto)="ligarCruzMatrizUso($event)"
                                             role="img" [attr.aria-label]="'Matriz de calor: ' + vmMatriz.sintese"></ds-grafico-echarts>
+                        <ds-exportar-grafico [chart]="charts.matriz ?? null" rotulo="a matriz" [nome]="'documento-vs-avaliacao-' + rotulo(vmMatriz.metrica)"></ds-exportar-grafico>
                         <div class="legenda-grafico">
                           <span class="lg-titulo">Tipo de Avaliação</span>
                           <div class="lg-grid">
@@ -439,8 +441,9 @@
                           }
                         </ol>
                       } @else {
-                        <ds-grafico-echarts class="grafico" [style.height.px]="vmArea.altura" [opcao]="vmArea.opcao"
+                        <ds-grafico-echarts class="grafico" [style.height.px]="vmArea.altura" [opcao]="vmArea.opcao" (pronto)="charts.area = $event"
                                             role="img" [attr.aria-label]="'Dot plot: ' + vmArea.sintese"></ds-grafico-echarts>
+                        <ds-exportar-grafico [chart]="charts.area ?? null" rotulo="o gráfico de área temática" [nome]="'area-tematica-' + rotulo(vmArea.metrica)"></ds-exportar-grafico>
                       }
                       <ds-tabela-uso idTabela="tabela-area-uso" rotuloCategoria="Área temática" [linhas]="vmArea.tabela" [metrica]="vmArea.metrica"
                                      titulo="Visualizações e downloads por área temática"></ds-tabela-uso>
@@ -470,8 +473,9 @@
                           }
                         </ol>
                       } @else {
-                        <ds-grafico-echarts class="grafico" [style.height.px]="vmInst.altura" [opcao]="vmInst.opcao"
+                        <ds-grafico-echarts class="grafico" [style.height.px]="vmInst.altura" [opcao]="vmInst.opcao" (pronto)="charts.inst = $event"
                                             role="img" [attr.aria-label]="'Lollipop: ' + vmInst.sintese"></ds-grafico-echarts>
+                        <ds-exportar-grafico [chart]="charts.inst ?? null" rotulo="o gráfico de instituição" [nome]="'instituicao-' + rotulo(vmInst.metrica)"></ds-exportar-grafico>
                       }
                       <ds-tabela-uso idTabela="tabela-inst-uso" rotuloCategoria="Instituição" [linhas]="vmInst.tabela" [metrica]="vmInst.metrica"
                                      titulo="Visualizações e downloads por instituição"></ds-tabela-uso>
@@ -490,8 +494,9 @@
                     </div>
                     @if (vmAno.modo !== 'vazio') {
                       <p class="bloco-sub">{{ vmAno.sintese }}</p>
-                      <ds-grafico-echarts class="grafico" [style.height.px]="vmAno.altura" [opcao]="vmAno.opcao"
+                      <ds-grafico-echarts class="grafico" [style.height.px]="vmAno.altura" [opcao]="vmAno.opcao" (pronto)="charts.ano = $event"
                                           role="img" [attr.aria-label]="(vmAno.modo === 'linhas' ? 'Gráfico de linhas: ' : 'Pequenos múltiplos: ') + vmAno.sintese"></ds-grafico-echarts>
+                      <ds-exportar-grafico [chart]="charts.ano ?? null" rotulo="o acumulado por ano" [nome]="'ano-publicacao-acumulado-' + rotulo(vmAno.metrica)"></ds-exportar-grafico>
                       <p class="nota-grafico">Cada ponto é o total acumulado de {{ rotulo(vmAno.metrica) }} das avaliações publicadas até aquele ano; a curva mostra crescimento, não a variação de cada período.</p>
                       <button type="button" class="btn-tabela" (click)="mostrarTabelaAno = !mostrarTabelaAno"
                               [attr.aria-expanded]="mostrarTabelaAno" aria-controls="tabela-ano-uso">
@@ -562,7 +567,7 @@
                           }
                         </ol>
                       } @else {
-                        <ds-grafico-echarts class="grafico grafico-empilhada" [opcao]="vmAbr.opcao"
+                        <ds-grafico-echarts class="grafico grafico-empilhada" [opcao]="vmAbr.opcao" (pronto)="charts.abr = $event"
                                             role="img" [attr.aria-label]="'Barra empilhada: ' + vmAbr.sintese"></ds-grafico-echarts>
                         <ul class="empilhada-lista" aria-label="Participação por abrangência">
                           @for (l of vmAbr.legenda; track l.label) {
@@ -574,6 +579,7 @@
                             </li>
                           }
                         </ul>
+                        <ds-exportar-grafico [chart]="charts.abr ?? null" rotulo="o gráfico de abrangência" [nome]="'abrangencia-territorial-' + rotulo(vmAbr.metrica)"></ds-exportar-grafico>
                       }
                       <ds-tabela-uso idTabela="tabela-abr-uso" rotuloCategoria="Abrangência" [linhas]="vmAbr.tabela" [metrica]="vmAbr.metrica" [comPercentual]="true"
                                      titulo="Visualizações e downloads por abrangência territorial"></ds-tabela-uso>
@@ -602,7 +608,7 @@
                           }
                         </ol>
                       } @else {
-                        <ds-grafico-echarts class="grafico" [opcao]="vmOds.opcao"
+                        <ds-grafico-echarts class="grafico" [opcao]="vmOds.opcao" (pronto)="charts.ods = $event"
                                             role="img" [attr.aria-label]="'Gráfico de colunas: ' + vmOds.sintese"></ds-grafico-echarts>
                         <div class="legenda-grafico">
                           <span class="lg-titulo">Legenda dos Objetivos</span>
@@ -614,6 +620,7 @@
                             }
                           </div>
                         </div>
+                        <ds-exportar-grafico [chart]="charts.ods ?? null" rotulo="o gráfico de ODS" [nome]="'ods-' + rotulo(vmOds.metrica)"></ds-exportar-grafico>
                       }
                       <ds-tabela-uso idTabela="tabela-ods-uso" rotuloCategoria="ODS" [linhas]="vmOds.tabela" [metrica]="vmOds.metrica"
                                      titulo="Visualizações e downloads por Objetivo de Desenvolvimento Sustentável"></ds-tabela-uso>
