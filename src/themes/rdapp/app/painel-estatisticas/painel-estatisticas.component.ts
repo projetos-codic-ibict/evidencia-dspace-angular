@@ -747,6 +747,11 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     return m === 'views' ? 'visualizações' : 'downloads';
   }
 
+  /** Contracao "de + artigo" concordando em genero: "das visualizações", "dos downloads". */
+  private artigoDe(m: MetricaUso): string {
+    return m === 'views' ? 'das' : 'dos';
+  }
+
   /** Unidade concordando em numero: "1 visualização", "2 visualizações", "1 download". */
   unidade(m: MetricaUso, n: number): string {
     if (m === 'views') { return n === 1 ? 'visualização' : 'visualizações'; }
@@ -806,7 +811,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     const total = m === 'views' ? this.totalDocsViews : this.totalDownloads;
     const lider = `«${top[0].titulo}» lidera com ${this.fmt(top[0][m])} ${this.unidade(m, top[0][m])}`;
     if (top.length === 1) { return `${lider}.`; }
-    return `${lider}; as ${top.length} publicações listadas somam ${this.fmt(soma)} (${this.pct(soma, total)}% das ${this.rotulo(m)} nos documentos).`;
+    return `${lider}; as ${top.length} publicações listadas somam ${this.fmt(soma)} (${this.pct(soma, total)}% ${this.artigoDe(m)} ${this.rotulo(m)} nos documentos).`;
   }
 
   // ---- Blocos por categoria (area, instituicao, abrangencia) -----------------
@@ -837,7 +842,7 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
       poucas,
       sintese: this.sinteseCategoria(m, lista, tipo),
       opcao,
-      altura: 64 + 36 * lista.length,
+      altura: 64 + 44 * lista.length,
       legenda: grafico === 'empilhada' ? this.legendaEmpilhada(m, lista) : [],
     };
   }
@@ -916,12 +921,21 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
     return completo.filter((o) => nums.has(o.num));
   }
 
+  /** Lider e percentual so entre os ODS informados; o "Nao Informado" entra como frase a parte. */
   private sinteseOds(m: MetricaUso, completo: OdsUso[]): string {
-    const lista = completo.filter((o) => o[m] > 0).sort((a, b) => b[m] - a[m]);
-    if (!lista.length) { return ''; }
-    const lider = lista[0];
-    const total = lista.reduce((acc, o) => acc + o[m], 0);
-    return `ODS com mais ${this.rotulo(m)}: «${lider.label}», com ${this.fmt(lider[m])} (${this.pct(lider[m], total)}% dos acessos com ODS informado); ${lista.length} objetivos com acesso.`;
+    const informados = completo.filter((o) => !o.ni && o[m] > 0).sort((a, b) => b[m] - a[m]);
+    const semOds = completo.find((o) => o.ni)?.[m] ?? 0;
+    const partes: string[] = [];
+    if (informados.length) {
+      const lider = informados[0];
+      const total = informados.reduce((acc, o) => acc + o[m], 0);
+      partes.push(`ODS com mais ${this.rotulo(m)}: «${lider.label}», com ${this.fmt(lider[m])} (${this.pct(lider[m], total)}% dos acessos com ODS informado)`);
+      partes.push(`${informados.length} ${informados.length === 1 ? 'objetivo' : 'objetivos'} com acesso`);
+    }
+    if (semOds > 0) {
+      partes.push(`${this.fmt(semOds)} ${this.unidade(m, semOds)} em avaliações sem ODS informado`);
+    }
+    return partes.length ? `${partes.join('; ')}.` : '';
   }
 
   // ---- Matriz de uso ----------------------------------------------------------
@@ -1046,7 +1060,9 @@ export class PainelEstatisticasComponent implements AfterViewChecked, OnInit {
   private eixoCategoriaUso(rotulos: string[]): any {
     return {
       type: 'category', data: rotulos,
-      axisLabel: { width: 220, overflow: 'truncate', color: COR_TEXTO_USO },
+      // Nomes longos (instituicoes) quebram em ate duas linhas em vez de truncar,
+      // para que "Controladoria-Geral da União (CGU)" e "... (CGU) e IPEA" se distingam.
+      axisLabel: { width: 280, overflow: 'break', lineHeight: 14, fontSize: 11, color: COR_TEXTO_USO },
       axisTick: { show: false }, axisLine: { show: false },
       splitLine: { show: true, lineStyle: { color: COR_AUX_USO } },
     };
