@@ -14,6 +14,7 @@ import {
   BarChart,
   HeatmapChart,
   LineChart,
+  ScatterChart,
   TreemapChart,
 } from 'echarts/charts';
 import {
@@ -36,6 +37,7 @@ use([
   BarChart,
   LineChart,
   HeatmapChart,
+  ScatterChart,
   TreemapChart,
   GridComponent,
   LegendComponent,

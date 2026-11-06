@@ -252,30 +252,28 @@
                 </section>
               } @else {
                 <div class="grade">
+
+                  <!-- 2.1 Top 10 -->
                   <section class="bloco span-2">
                     <p class="bloco-ante">RANKING</p>
                     <div class="bloco-cabecalho">
                       <h2>Top 10 avaliações mais acessadas</h2>
-                      <div class="alternador-metrica" role="group" aria-label="Métrica do ranking">
-                        <button type="button" [attr.aria-pressed]="metricaTop === 'views'"
-                                (click)="trocarMetricaTop('views')">Visualizações</button>
-                        <button type="button" [attr.aria-pressed]="metricaTop === 'downloads'"
-                                (click)="trocarMetricaTop('downloads')">Downloads</button>
-                      </div>
+                      <ds-alternador-metrica [metrica]="metricaUso" rotulo="Métrica do ranking"
+                                             (trocar)="trocarMetricaUso($event)"></ds-alternador-metrica>
                     </div>
                     @if (topItens.length) {
                       <p class="bloco-sub">{{ sinteseTop }}</p>
 
                       @if (topEmCards) {
                         <!-- 1 a 4 publicacoes: cards comparativos no lugar do grafico (recomendacao 3.1) -->
-                        <ol class="top-cards" [attr.aria-label]="'Ranking por ' + rotuloMetricaTop">
+                        <ol class="top-cards" [attr.aria-label]="'Ranking por ' + rotuloMetrica">
                           @for (i of topItens; track i.id; let pos = $index) {
                             <li class="top-card">
                               <span class="top-posicao" aria-hidden="true">{{ pos + 1 }}º</span>
                               <a class="top-titulo" [routerLink]="['/items', i.id]">{{ i.titulo }}</a>
                               <span class="top-metrica">
-                                <span class="top-valor">{{ (metricaTop === 'views' ? i.views : i.downloads) | number }}</span>
-                                <span class="top-unidade">{{ rotuloMetricaTop }}</span>
+                                <span class="top-valor">{{ (metricaUso === 'views' ? i.views : i.downloads) | number }}</span>
+                                <span class="top-unidade">{{ unidade(metricaUso === 'views' ? i.views : i.downloads) }}</span>
                               </span>
                               @if (i.instituicao || i.ano) {
                                 <span class="top-extra">{{ i.instituicao }}{{ i.instituicao && i.ano ? ' · ' : '' }}{{ i.ano }}</span>
@@ -297,7 +295,7 @@
                         <div class="tabela-box sem-fade" id="tabela-top">
                           <div class="tabela-wrap">
                             <table class="tabela">
-                              <caption class="sr-only">Top 10 avaliações mais acessadas, ordenado por {{ rotuloMetricaTop }}</caption>
+                              <caption class="sr-only">Top 10 avaliações mais acessadas, ordenado por {{ rotuloMetrica }}</caption>
                               <thead><tr><th class="num">#</th><th>Avaliação</th><th class="num">Visualizações</th><th class="num">Downloads</th></tr></thead>
                               <tbody>
                                 @for (i of topItens; track i.id; let pos = $index) {
@@ -314,10 +312,11 @@
                         </div>
                       }
                     } @else {
-                      <p class="vazio">Nenhuma avaliação com {{ rotuloMetricaTop }} neste recorte.</p>
+                      <p class="vazio">Nenhuma avaliação com {{ rotuloMetrica }} neste recorte.</p>
                     }
                   </section>
 
+                  <!-- 2.2 Politica publica: tabela com as duas colunas (CA05.7, sem alternador) -->
                   <section class="bloco span-2">
                     <p class="bloco-ante">DETALHAMENTO</p>
                     <h2>Acessos por Política Pública ou Objeto Avaliado</h2>
@@ -338,6 +337,229 @@
                       <p class="vazio">Sem dados de política pública para este recorte.</p>
                     }
                   </section>
+
+                  <!-- 2.3 Documento x Avaliacao: heatmap verde / matriz simples / card (recomendacao 3.2) -->
+                  <section class="bloco span-2">
+                    <p class="bloco-ante">MATRIZ DE ENGAJAMENTO</p>
+                    <div class="bloco-cabecalho">
+                      <h2>Tipo de Documento vs. Tipo de Avaliação</h2>
+                      <ds-alternador-metrica [metrica]="metricaUso" rotulo="Métrica da matriz"
+                                             (trocar)="trocarMetricaUso($event)"></ds-alternador-metrica>
+                    </div>
+                    @switch (matrizUsoModo) {
+                      @case ('vazio') {
+                        <p class="vazio">Sem cruzamentos com {{ rotuloMetrica }} neste recorte.</p>
+                      }
+                      @case ('card') {
+                        <p class="bloco-sub">{{ sinteseMatrizUso }}</p>
+                        <div class="cmp-cards">
+                          <div class="cmp-card">
+                            <span class="cmp-nome">{{ matrizUso.docs[0] }} × {{ matrizUso.avals[0] }}</span>
+                            <span class="cmp-valor">{{ matrizUsoMax | number }} <small>{{ unidade(matrizUsoMax) }}</small></span>
+                          </div>
+                        </div>
+                      }
+                      @case ('simples') {
+                        <p class="bloco-sub">{{ sinteseMatrizUso }}</p>
+                        <ng-container *ngTemplateOutlet="tabelaMatrizUso"></ng-container>
+                      }
+                      @default {
+                        <p class="bloco-sub">{{ sinteseMatrizUso }}</p>
+                        <ds-grafico-echarts class="grafico" [style.height.px]="alturaMatrizUso" [opcao]="opcaoMatrizUsoVM"
+                                            (pronto)="ligarCruzMatrizUso($event)"
+                                            role="img" [attr.aria-label]="'Matriz de calor: ' + sinteseMatrizUso"></ds-grafico-echarts>
+                        <div class="legenda-grafico">
+                          <span class="lg-titulo">Tipo de Avaliação</span>
+                          <div class="lg-grid">
+                            @for (l of legendaMatrizUso; track l.num) {
+                              <span class="lg-item">
+                                <span class="lg-dot lg-dot-neutro" aria-hidden="true"></span>{{ l.num }} - {{ l.nome }}
+                              </span>
+                            }
+                          </div>
+                        </div>
+                        <button type="button" class="btn-tabela" (click)="alternarTabelaMatrizUso()"
+                                [attr.aria-expanded]="mostrarTabelaMatrizUso" aria-controls="tabela-matriz-uso">
+                          {{ mostrarTabelaMatrizUso ? 'Ocultar tabela' : 'Ver como tabela' }}
+                        </button>
+                        @if (mostrarTabelaMatrizUso) {
+                          <div id="tabela-matriz-uso">
+                            <ng-container *ngTemplateOutlet="tabelaMatrizUso"></ng-container>
+                          </div>
+                        }
+                      }
+                    }
+                    <ng-template #tabelaMatrizUso>
+                      <div class="tabela-box sem-fade">
+                        <div class="tabela-wrap tabela-larga">
+                          <table class="tabela matriz-simples">
+                            <caption class="sr-only">{{ rotuloMetrica }} por tipo de documento e tipo de avaliação</caption>
+                            <thead>
+                              <tr>
+                                <th scope="col">Tipo de documento</th>
+                                @for (a of matrizUso.avals; track a) {
+                                  <th scope="col" class="num">{{ a }}</th>
+                                }
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @for (l of matrizUsoLinhas; track l.doc) {
+                                <tr>
+                                  <th scope="row">{{ l.doc }}</th>
+                                  @for (v of l.valores; track $index) {
+                                    <td class="num">{{ v | number }}</td>
+                                  }
+                                </tr>
+                              }
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </section>
+
+                  <!-- 2.4 Area tematica: dot plot / cards (recomendacao 3.3) -->
+                  <section class="bloco span-1">
+                    <p class="bloco-ante">DISTRIBUIÇÃO DE ACESSOS</p>
+                    <div class="bloco-cabecalho">
+                      <h2>Área Temática</h2>
+                      <ds-alternador-metrica [metrica]="metricaUso" rotulo="Métrica da área temática"
+                                             (trocar)="trocarMetricaUso($event)"></ds-alternador-metrica>
+                    </div>
+                    @if (areaUsoGrafico.length) {
+                      <p class="bloco-sub">{{ sinteseArea }}</p>
+                      @if (poucas(areaUsoGrafico)) {
+                        <ol class="cmp-cards" [attr.aria-label]="'Área temática por ' + rotuloMetrica">
+                          @for (c of areaUsoGrafico; track c.label) {
+                            <li class="cmp-card cor-area">
+                              <span class="cmp-nome">{{ c.label }}</span>
+                              <span class="cmp-valor">{{ valor(c) | number }} <small>{{ unidade(valor(c)) }}</small></span>
+                            </li>
+                          }
+                        </ol>
+                      } @else {
+                        <ds-grafico-echarts class="grafico" [style.height.px]="alturaCategorias(areaUsoGrafico.length)" [opcao]="opcaoAreaUsoVM"
+                                            role="img" [attr.aria-label]="'Dot plot: ' + sinteseArea"></ds-grafico-echarts>
+                      }
+                      <ds-tabela-uso idTabela="tabela-area-uso" rotuloCategoria="Área temática" [linhas]="areaUsoTabela" [metrica]="metricaUso"
+                                     titulo="Visualizações e downloads por área temática"></ds-tabela-uso>
+                    } @else {
+                      <p class="vazio">Sem área temática com {{ rotuloMetrica }} neste recorte.</p>
+                    }
+                  </section>
+
+                  <!-- 2.5 Instituicao: lollipop / cards com diferenca (recomendacao 3.4) -->
+                  <section class="bloco span-1">
+                    <p class="bloco-ante">CONCENTRAÇÃO POR ÓRGÃO</p>
+                    <div class="bloco-cabecalho">
+                      <h2>Instituição</h2>
+                      <ds-alternador-metrica [metrica]="metricaUso" rotulo="Métrica da instituição"
+                                             (trocar)="trocarMetricaUso($event)"></ds-alternador-metrica>
+                    </div>
+                    @if (instUsoGrafico.length) {
+                      <p class="bloco-sub">{{ sinteseInst }}</p>
+                      @if (poucas(instUsoGrafico)) {
+                        <ol class="cmp-cards" [attr.aria-label]="'Instituição por ' + rotuloMetrica">
+                          @for (c of instUsoGrafico; track c.label) {
+                            <li class="cmp-card cor-inst">
+                              <span class="cmp-nome">{{ c.label }}</span>
+                              <span class="cmp-valor">{{ valor(c) | number }} <small>{{ unidade(valor(c)) }}</small></span>
+                              <span class="cmp-extra">{{ diferencaLider(c, instUsoGrafico) }}</span>
+                            </li>
+                          }
+                        </ol>
+                      } @else {
+                        <ds-grafico-echarts class="grafico" [style.height.px]="alturaCategorias(instUsoGrafico.length)" [opcao]="opcaoInstUsoVM"
+                                            role="img" [attr.aria-label]="'Lollipop: ' + sinteseInst"></ds-grafico-echarts>
+                      }
+                      <ds-tabela-uso idTabela="tabela-inst-uso" rotuloCategoria="Instituição" [linhas]="instUsoTabela" [metrica]="metricaUso"
+                                     titulo="Visualizações e downloads por instituição"></ds-tabela-uso>
+                    } @else {
+                      <p class="vazio">Sem instituição com {{ rotuloMetrica }} neste recorte.</p>
+                    }
+                  </section>
+
+                  <!-- 2.8 Abrangencia: barra empilhada 100% / cards de percentual (recomendacao 3.6) -->
+                  <section class="bloco span-1">
+                    <p class="bloco-ante">FOCO POR LOCALIDADE</p>
+                    <div class="bloco-cabecalho">
+                      <h2>Abrangência Territorial</h2>
+                      <ds-alternador-metrica [metrica]="metricaUso" rotulo="Métrica da abrangência"
+                                             (trocar)="trocarMetricaUso($event)"></ds-alternador-metrica>
+                    </div>
+                    @if (abrUsoGrafico.length) {
+                      <p class="bloco-sub">{{ sinteseAbr }}</p>
+                      @if (poucas(abrUsoGrafico)) {
+                        <ol class="cmp-cards" [attr.aria-label]="'Abrangência territorial por ' + rotuloMetrica">
+                          @for (c of abrUsoGrafico; track c.label) {
+                            <li class="cmp-card cor-abr">
+                              <span class="cmp-nome">{{ c.label }}</span>
+                              <span class="cmp-valor">{{ participacao(c, abrUsoGrafico) }}%</span>
+                              <span class="cmp-extra">{{ valor(c) | number }} {{ unidade(valor(c)) }}</span>
+                            </li>
+                          }
+                        </ol>
+                      } @else {
+                        <ds-grafico-echarts class="grafico grafico-empilhada" [opcao]="opcaoAbrUsoVM"
+                                            role="img" [attr.aria-label]="'Barra empilhada: ' + sinteseAbr"></ds-grafico-echarts>
+                        <ul class="empilhada-lista" aria-label="Participação por abrangência">
+                          @for (l of abrUsoLegenda; track l.label) {
+                            <li>
+                              <span class="sw" [style.background]="l.cor" aria-hidden="true"></span>
+                              <span>{{ l.label }}</span>
+                              <span class="pct">{{ l.pct }}%</span>
+                              <span class="abs">({{ l.valor | number }})</span>
+                            </li>
+                          }
+                        </ul>
+                      }
+                      <ds-tabela-uso idTabela="tabela-abr-uso" rotuloCategoria="Abrangência" [linhas]="abrUsoTabela" [metrica]="metricaUso" [comPercentual]="true"
+                                     titulo="Visualizações e downloads por abrangência territorial"></ds-tabela-uso>
+                    } @else {
+                      <p class="vazio">Sem abrangência com {{ rotuloMetrica }} neste recorte.</p>
+                    }
+                  </section>
+
+                  <!-- 2.9 ODS: colunas oficiais / cards identificadores (recomendacao 3.7) -->
+                  <section class="bloco span-1">
+                    <p class="bloco-ante">ALINHAMENTO GLOBAL</p>
+                    <div class="bloco-cabecalho">
+                      <h2>Objetivos de Desenvolvimento Sustentável (ODS)</h2>
+                      <ds-alternador-metrica [metrica]="metricaUso" rotulo="Métrica dos ODS"
+                                             (trocar)="trocarMetricaUso($event)"></ds-alternador-metrica>
+                    </div>
+                    @if (opcaoOdsUsoVM) {
+                      <p class="bloco-sub">{{ sinteseOds }}</p>
+                      @if (odsUsoCards.length) {
+                        <ol class="cmp-cards" [attr.aria-label]="'ODS selecionados por ' + rotuloMetrica">
+                          @for (o of odsUsoCards; track o.num) {
+                            <li class="cmp-card" [style.border-top-color]="o.cor">
+                              <span class="cmp-nome"><strong>ODS {{ o.num }}</strong> · {{ o.label }}</span>
+                              <span class="cmp-valor">{{ valor(o) | number }} <small>{{ unidade(valor(o)) }}</small></span>
+                            </li>
+                          }
+                        </ol>
+                      } @else {
+                        <ds-grafico-echarts class="grafico" [opcao]="opcaoOdsUsoVM"
+                                            role="img" [attr.aria-label]="'Gráfico de colunas: ' + sinteseOds"></ds-grafico-echarts>
+                        <div class="legenda-grafico">
+                          <span class="lg-titulo">Legenda dos Objetivos</span>
+                          <div class="lg-grid">
+                            @for (l of legendaOds; track l.label) {
+                              <span class="lg-item">
+                                <span class="lg-dot" [style.background]="l.cor" aria-hidden="true"></span>{{ l.label }}
+                              </span>
+                            }
+                          </div>
+                        </div>
+                      }
+                      <ds-tabela-uso idTabela="tabela-ods-uso" rotuloCategoria="ODS" [linhas]="odsUsoTabela" [metrica]="metricaUso"
+                                     titulo="Visualizações e downloads por Objetivo de Desenvolvimento Sustentável"></ds-tabela-uso>
+                    } @else {
+                      <p class="vazio">Sem ODS com {{ rotuloMetrica }} neste recorte.</p>
+                    }
+                  </section>
+
                 </div>
               }
               @if (usoGeradoEm) {
