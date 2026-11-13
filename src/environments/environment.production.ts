@@ -35,5 +35,5 @@ export const environment: Partial<BuildConfig> = {
 };
 
 export const customConfig = {
-  apiURL : 'https://api.rdapp.comais.uft.edu.br'
+  apiURL : 'https://api-devrdapp.ibict.br'
 }
