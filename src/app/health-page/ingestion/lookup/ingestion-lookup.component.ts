@@ -131,7 +131,7 @@ export class IngestionLookupComponent implements OnInit {
             return of({
               ...EMPTY_OUTCOME,
               status,
-              resultKey: `health-page.ingestion.lookup.result-${normalizeStatus(status.status) === 'erro' ? 'failed' : 'pending'}`,
+              resultKey: this.unfinishedKey(normalizeStatus(status.status)),
             });
           }
           return this.ingestion.getResult(id).pipe(
@@ -199,6 +199,18 @@ export class IngestionLookupComponent implements OnInit {
 
   statusKey(status?: string): string {
     return statusLabelKey(status);
+  }
+
+  /** Por que um job válido não tem resultado: falhou, foi cancelado ou não terminou. */
+  private unfinishedKey(status: string): string {
+    switch (status) {
+      case 'erro':
+        return 'health-page.ingestion.lookup.result-failed';
+      case 'cancelado':
+        return 'health-page.ingestion.lookup.result-cancelled';
+      default:
+        return 'health-page.ingestion.lookup.result-pending';
+    }
   }
 
   /** 409 = ainda processando, 422 = terminou em erro: não são falhas da consulta. */

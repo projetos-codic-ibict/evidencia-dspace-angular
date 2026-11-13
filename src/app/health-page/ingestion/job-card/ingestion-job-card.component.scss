@@ -41,6 +41,22 @@
   }
 
   &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
     margin: 1rem 0 0;
+  }
+
+  &__confirm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__cancel-status {
+    display: inline-flex;
+    align-items: center;
   }
 }

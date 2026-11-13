@@ -94,6 +94,30 @@ export interface JobResult {
   documents: JobResultDocument[];
 }
 
+/** Job criado pela ingestão de um item (um por PDF do bundle ORIGINAL). */
+export interface IngestItemJob {
+  job_id: string;
+  filename?: string;
+  bitstream_uuid?: string;
+  status?: string;
+  status_url?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Resposta 202 de POST /api/files/ingest/item/{uuid}: `status` é `na_fila` com os
+ * jobs enfileirados, ou `aguardando_dspace` (item ainda indisponível) com `job_id`
+ * = `item:{uuid}` e `jobs` vazio.
+ */
+export interface IngestItemResponse {
+  message?: string;
+  item_uuid?: string;
+  status: string;
+  job_id?: string;
+  jobs?: IngestItemJob[];
+  [key: string]: unknown;
+}
+
 /**
  * Cliente da API de ingestão (evidencia_pipe) usada pela aba "Ingestão" da
  * health page. Segue a convenção do projeto (HttpClient simples, sem
@@ -139,6 +163,26 @@ export class IngestionService {
   getResult(jobId: string): Observable<JobResult> {
     return this.http.get<JobResult>(
       `${INGESTION_API_BASE}/api/files/result/${encodeURIComponent(jobId)}`,
+    );
+  }
+
+  /** Inicia a ingestão de um item do DSpace pelo UUID (exige admin do DSpace). */
+  ingestItem(itemUuid: string, force = false): Observable<IngestItemResponse> {
+    return this.http.post<IngestItemResponse>(
+      `${INGESTION_API_BASE}/api/files/ingest/item/${encodeURIComponent(itemUuid)}`,
+      null,
+      { params: { force: String(force) } },
+    );
+  }
+
+  /**
+   * Cancela um job em andamento (exige admin do DSpace). 409 = o job já não está
+   * em andamento (terminou, falhou ou já foi cancelado).
+   */
+  cancel(jobId: string): Observable<unknown> {
+    return this.http.post(
+      `${INGESTION_API_BASE}/api/files/cancel/${encodeURIComponent(jobId)}`,
+      null,
     );
   }
 

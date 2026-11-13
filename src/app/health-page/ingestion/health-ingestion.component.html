@@ -57,6 +57,9 @@
     </div>
   }
 
+  <!-- ====================== Iniciar ingestão de um item ======================= -->
+  <ds-ingestion-start (started)="onIngestionStarted()"></ds-ingestion-start>
+
   <!-- ========================= Busca, filtros e ordenação ===================== -->
   <ds-ingestion-filters [filters]="filters()" [limit]="apiLimit()"
                         (filtersChange)="onFiltersChange($event)"
@@ -76,7 +79,9 @@
                         (clearFilters)="clearFilters()">
     <div class="ingestion__grid">
       @for (job of activePage().items; track job.job_id) {
-        <ds-ingestion-job-card [job]="job"></ds-ingestion-job-card>
+        <ds-ingestion-job-card [job]="job"
+                               [cancelState]="cancelStates()[job.job_id] ?? { phase: 'idle' }"
+                               (cancel)="cancelJob($event)"></ds-ingestion-job-card>
       }
     </div>
 

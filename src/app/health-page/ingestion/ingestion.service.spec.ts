@@ -84,6 +84,25 @@ describe('IngestionService', () => {
     req.flush({});
   });
 
+  it('cancela um job', () => {
+    service.cancel('item:abc').subscribe();
+
+    const req = httpMock.expectOne(`${INGESTION_API_BASE}/api/files/cancel/item%3Aabc`);
+
+    expect(req.request.method).toBe('POST');
+    req.flush({ status: 'cancelado' });
+  });
+
+  it('inicia a ingestão de um item com force=false por padrão', () => {
+    service.ingestItem('0f1e2d3c-4b5a-6978-8a9b-0c1d2e3f4a5b').subscribe();
+
+    const req = httpMock.expectOne(
+      `${INGESTION_API_BASE}/api/files/ingest/item/0f1e2d3c-4b5a-6978-8a9b-0c1d2e3f4a5b?force=false`);
+
+    expect(req.request.method).toBe('POST');
+    req.flush({ status: 'na_fila', jobs: [] });
+  });
+
   [401, 403, 404, 429, 500].forEach((status: number) => {
     it(`propaga o erro ${status} para quem chamou`, () => {
       let received: number | null = null;
