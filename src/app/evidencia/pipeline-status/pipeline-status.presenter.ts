@@ -1,5 +1,7 @@
 import {
+  ContainerStats,
   DiskVolume,
+  HostDisk,
   GpuDevice,
   PipelineCapability,
   PipelineComponent,
@@ -15,12 +17,15 @@ import {
   celsius,
   ComponentView,
   ConfigGroupView,
+  ContainerView,
   decimal,
   DetailGroup,
   DetailRow,
   DetailView,
+  DockerView,
   FlowStepView,
   HeaderView,
+  HostView,
   humanizeKey,
   I18N,
   i18nValue,
@@ -350,6 +355,120 @@ export function buildComponents(response: PipelineStatusResponse): ComponentView
     });
 }
 
+// ------------------------------------------------------------ docker stats
+function numOrNone(value: unknown, as: (num: number) => MetricValue): MetricValue {
+  return typeof value === 'number' && Number.isFinite(value) ? as(value) : NO_VALUE;
+}
+
+/** Linhas do `docker stats`, na ordem do serviço. Lista ausente vira vazia. */
+export function buildContainers(list: ContainerStats[] | undefined | null): ContainerView[] {
+  if (!Array.isArray(list)) {
+    return [];
+  }
+  return list
+    .filter((item: ContainerStats) => item !== null && typeof item === 'object')
+    .map((item: ContainerStats): ContainerView => {
+      const state = (item.state ?? '').toLowerCase();
+      const statusText = item.status || item.state || '';
+      return {
+        service: item.service || item.name || '?',
+        statusText,
+        running: state === 'running',
+        warning: state === 'restarting' || state === 'dead'
+          || /unhealthy/i.test(statusText)
+          || (state === 'exited' && !/^exited \(0\)/i.test(statusText)),
+        cpu: numOrNone(item.cpu_percent, percent),
+        memory: numOrNone(item.mem_usage_bytes, bytes),
+        memoryPercent: numOrNone(item.mem_percent, percent),
+        netRx: numOrNone(item.net_rx_bytes, bytes),
+        netTx: numOrNone(item.net_tx_bytes, bytes),
+        blockRead: numOrNone(item.block_read_bytes, bytes),
+        blockWrite: numOrNone(item.block_write_bytes, bytes),
+        pids: numOrNone(item.pids, int),
+      };
+    })
+    .sort((a: ContainerView, b: ContainerView) => a.service.localeCompare(b.service));
+}
+
+/** Bloco `docker` da resposta; `null` quando a API não o envia (versão anterior). */
+export function buildDocker(response: PipelineStatusResponse): DockerView | null {
+  const docker = response.docker;
+  if (!docker || typeof docker !== 'object') {
+    return null;
+  }
+  return {
+    available: docker.available === true,
+    ageSeconds: typeof docker.age_seconds === 'number' ? docker.age_seconds : null,
+    others: buildContainers(docker.other_containers),
+  };
+}
+
+// ------------------------------------------------------------------ Host
+function usageBar(labelKey: string, percentValue: unknown, used: unknown, total: unknown,
+                  warnAt: number, captionParams?: Record<string, string>): BarView | null {
+  if (typeof percentValue !== 'number' || !Number.isFinite(percentValue)) {
+    return null;
+  }
+  const ratio = Math.min(100, Math.max(0, Math.round(percentValue)));
+  return {
+    labelKey,
+    percent: ratio,
+    captionKey: `${I18N}.bar.of-total`,
+    captionParams: captionParams ?? {
+      used: typeof used === 'number' ? formatGigabytes(used / 1024 ** 3) : '—',
+      total: typeof total === 'number' ? formatGigabytes(total / 1024 ** 3) : '—',
+    },
+    warning: ratio >= warnAt,
+  };
+}
+
+/** Seção "Servidor"; `null` quando a API não manda `host` (sem coletor). */
+export function buildHost(response: PipelineStatusResponse): HostView | null {
+  const host = response.host;
+  if (!host || typeof host !== 'object') {
+    return null;
+  }
+  const load = [host.load_1, host.load_5, host.load_15];
+  const metrics = compact([
+    metric('host_cpu', numOrNone(host.cpu_percent, percent)),
+    metric('host_iowait', numOrNone(host.iowait_percent, percent)),
+    metric('host_cores', numOrNone(host.cpu_count, int)),
+    metric('host_load', load.every((v: unknown) => typeof v === 'number')
+      ? text(load.map((v: number) => v.toFixed(2)).join(' · '))
+      : NO_VALUE),
+    metric('host_uptime', numOrNone(host.uptime_seconds, seconds)),
+  ]);
+
+  const bars: BarView[] = [];
+  const memory = usageBar(`${I18N}.host.memory`, host.mem_percent, host.mem_used_bytes,
+    host.mem_total_bytes, 90);
+  if (memory) {
+    bars.push(memory);
+  }
+  if (typeof host.swap_total_bytes === 'number' && host.swap_total_bytes > 0) {
+    const swap = usageBar(`${I18N}.host.swap`, host.swap_percent, host.swap_used_bytes,
+      host.swap_total_bytes, 50);
+    if (swap) {
+      bars.push(swap);
+    }
+  }
+  (Array.isArray(host.disks) ? host.disks : []).forEach((disk: HostDisk) => {
+    const bar = usageBar(`${I18N}.host.disk`, disk.used_percent, disk.used_bytes,
+      disk.total_bytes, 90);
+    if (bar) {
+      bars.push({ ...bar, label: disk.mountpoint || disk.label || '' });
+    }
+  });
+
+  return {
+    identity: [host.hostname, host.os, host.kernel]
+      .filter((part: unknown) => typeof part === 'string' && part !== '')
+      .join(' · '),
+    metrics,
+    bars,
+  };
+}
+
 export function componentIcon(key: string): string {
   return COMPONENT_ICONS[key] ?? 'fa-server';
 }
@@ -369,6 +488,7 @@ function buildComponent(key: string, component: PipelineComponent): ComponentVie
     metrics: curatedMetrics(key, detail).slice(0, CARD_METRICS),
     bars: buildBars(key, detail),
     detail: buildDetail(detail, curatedFields(key)),
+    containers: buildContainers(component?.containers),
     optionalNotConfigured: component?.status === 'not_configured' && component?.critical !== true,
   };
 }

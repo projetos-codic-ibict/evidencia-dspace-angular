@@ -69,6 +69,17 @@
     </dl>
   }
 
+  <!-- docker stats dos contêineres do componente -->
+  @if (component().containers.length > 0) {
+    <section class="pipeline-card__containers"
+             [attr.aria-label]="'health-page.pipeline.docker.heading' | translate">
+      <h5 class="pipeline-card__containers-title">
+        {{ 'health-page.pipeline.docker.heading' | translate }}
+      </h5>
+      <ds-pipeline-containers [containers]="component().containers"></ds-pipeline-containers>
+    </section>
+  }
+
   @if (component().hint) {
     <p class="pipeline-card__hint">
       <i class="fa fa-info-circle" aria-hidden="true"></i>

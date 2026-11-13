@@ -12,6 +12,22 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 260px;
 
+  &__containers {
+    margin: 0.25rem 0 0.75rem;
+    padding: 0.5rem 0.625rem;
+    border-radius: var(--bs-border-radius-sm, 0.25rem);
+    background: var(--bs-tertiary-bg, #f8f9fa);
+  }
+
+  &__containers-title {
+    margin: 0 0 0.375rem;
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
   &__header {
     display: flex;
     align-items: center;
