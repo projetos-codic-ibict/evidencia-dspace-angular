@@ -68,6 +68,7 @@ import {
   TriggerReason,
 } from './ingestion-source';
 import {
+  errorStatus,
   isBusy,
   SectionState,
   toSectionError,
@@ -76,6 +77,7 @@ import { IngestionJobCardComponent } from './job-card/ingestion-job-card.compone
 import { IngestionLookupComponent } from './lookup/ingestion-lookup.component';
 import { IngestionPaginationComponent } from './pagination/ingestion-pagination.component';
 import { IngestionSectionComponent } from './section/ingestion-section.component';
+import { IngestionStartComponent } from './start/ingestion-start.component';
 import { IngestionSucceededTableComponent } from './succeeded/ingestion-succeeded-table.component';
 
 /** As três listas da aba, cada uma com sua própria fonte e paginação. */
@@ -107,6 +109,7 @@ type SectionKey = 'active' | 'succeeded' | 'failures';
     IngestionLookupComponent,
     IngestionPaginationComponent,
     IngestionSectionComponent,
+    IngestionStartComponent,
     IngestionSucceededTableComponent,
     TranslatePipe,
   ],
@@ -127,6 +130,7 @@ export class HealthIngestionComponent implements OnInit, OnDestroy {
   readonly openPanels = signal<OpenPanels>({ ...DEFAULT_OPEN_PANELS });
   readonly lookupJobId = signal('');
   readonly reprocessStates = signal<Record<string, ReprocessState>>({});
+  readonly cancelStates = signal<Record<string, ReprocessState>>({});
   /** Chave i18n anunciada por leitores de tela após uma atualização manual. */
   readonly announcement = signal('');
 
@@ -345,6 +349,41 @@ export class HealthIngestionComponent implements OnInit, OnDestroy {
     this.lookupJobId.set(jobId);
   }
 
+  /** Ingestão iniciada pelo formulário: abre "Em andamento" e atualiza já. */
+  onIngestionStarted(): void {
+    if (!this.openPanels().active) {
+      // Abrir o painel já busca os dados (ver `onPanelToggle`).
+      this.onPanelToggle('active', true);
+    } else {
+      this.refreshNow();
+    }
+  }
+
+  /** Cancela um job em andamento (já confirmado no card). */
+  cancelJob(jobId: string): void {
+    this.setCancelState(jobId, { phase: 'loading' });
+    this.ingestion.cancel(jobId).pipe(
+      take(1),
+      takeUntil(this.destroy$),
+    ).subscribe({
+      next: () => {
+        this.setCancelState(jobId, { phase: 'done' });
+        this.refreshNow();
+      },
+      error: (err: unknown) => {
+        // 409: o job terminou (ou já foi cancelado) entre a lista e o clique.
+        const finished = errorStatus(err) === 409;
+        this.setCancelState(jobId, {
+          phase: 'error',
+          errorKey: finished ? 'health-page.ingestion.cancel.error.finished' : toSectionError(err).key,
+        });
+        if (finished) {
+          this.refreshNow();
+        }
+      },
+    });
+  }
+
   /** Re-enfileira um job que falhou (já confirmado pela tabela). */
   reprocess(jobId: string): void {
     this.setReprocessState(jobId, { phase: 'loading' });
@@ -425,6 +464,13 @@ export class HealthIngestionComponent implements OnInit, OnDestroy {
   private pageOrNull(key: SectionKey): number | null {
     const page = this.pages()[key];
     return page === 1 ? null : page;
+  }
+
+  private setCancelState(jobId: string, state: ReprocessState): void {
+    this.cancelStates.update((states: Record<string, ReprocessState>) => ({
+      ...states,
+      [jobId]: state,
+    }));
   }
 
   private setReprocessState(jobId: string, state: ReprocessState): void {

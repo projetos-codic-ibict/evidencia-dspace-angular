@@ -67,12 +67,13 @@ describe('HealthIngestionComponent', () => {
 
   function setup(queryParams: Params = {}, overrides: Partial<jasmine.SpyObj<IngestionService>> = {}): void {
     ingestion = jasmine.createSpyObj('IngestionService', [
-      'getActive', 'getSucceeded', 'getFailures', 'getStatus', 'getResult', 'reprocess',
+      'getActive', 'getSucceeded', 'getFailures', 'getStatus', 'getResult', 'reprocess', 'cancel',
     ]);
     ingestion.getActive.and.returnValue(of(activeResponse([activeJob('a'), activeJob('b')])));
     ingestion.getSucceeded.and.returnValue(of(SUCCEEDED));
     ingestion.getFailures.and.returnValue(of(FAILURES));
     ingestion.reprocess.and.returnValue(of({}));
+    ingestion.cancel.and.returnValue(of({}));
     ingestion.getStatus.and.returnValue(of({ job_id: 'job-9', status: 'concluido' }));
     ingestion.getResult.and.returnValue(of({ job_id: 'job-9', status: 'concluido', documents: [] }));
     Object.assign(ingestion, overrides);
@@ -528,6 +529,36 @@ describe('HealthIngestionComponent', () => {
 
       expect(component.reprocessStates().f1.phase).toBe('error');
       expect(component.reprocessStates().f1.errorKey).toBe('health-page.ingestion.state.error.forbidden');
+    });
+  });
+
+  describe('cancelamento', () => {
+    it('registra o andamento por job e atualiza a lista ao concluir', () => {
+      setup();
+
+      component.cancelJob('a1');
+
+      expect(ingestion.cancel).toHaveBeenCalledWith('a1');
+      expect(component.cancelStates().a1.phase).toBe('done');
+    });
+
+    it('trata o 409 como job que já terminou', () => {
+      setup();
+      ingestion.cancel.and.returnValue(throwError(() => new HttpErrorResponse({ status: 409 })));
+
+      component.cancelJob('a1');
+
+      expect(component.cancelStates().a1.phase).toBe('error');
+      expect(component.cancelStates().a1.errorKey).toBe('health-page.ingestion.cancel.error.finished');
+    });
+
+    it('mostra o erro de autorização', () => {
+      setup();
+      ingestion.cancel.and.returnValue(throwError(() => new HttpErrorResponse({ status: 403 })));
+
+      component.cancelJob('a1');
+
+      expect(component.cancelStates().a1.errorKey).toBe('health-page.ingestion.state.error.forbidden');
     });
   });
 

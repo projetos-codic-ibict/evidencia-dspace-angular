@@ -30,10 +30,14 @@ const STAGE_TO_STEP: Record<string, number> = {
 
 /** Situações canônicas usadas em badges e no filtro de situação. */
 export const JOB_STATUSES = ['na_fila', 'processando', 'erro', 'concluido'] as const;
-export type JobStatusKey = typeof JOB_STATUSES[number];
+/**
+ * `cancelado` fica fora do filtro: um job cancelado sai de todas as listas (só a
+ * consulta por ID o encontra), então a opção nunca casaria com nada.
+ */
+export type JobStatusKey = typeof JOB_STATUSES[number] | 'cancelado';
 
 /** Situações que ainda não são "concluído com sucesso". */
-export const NON_SUCCESS: string[] = ['processando', 'na_fila', 'erro'];
+export const NON_SUCCESS: string[] = ['processando', 'na_fila', 'erro', 'cancelado'];
 
 /** Normaliza as variações vindas da API para uma das situações canônicas. */
 export function normalizeStatus(status?: string): JobStatusKey | '' {
@@ -49,6 +53,9 @@ export function normalizeStatus(status?: string): JobStatusKey | '' {
   }
   if (value === 'erro' || value === 'error' || value === 'failed' || value === 'failure') {
     return 'erro';
+  }
+  if (value === 'cancelado' || value === 'cancelled' || value === 'canceled') {
+    return 'cancelado';
   }
   return 'concluido';
 }
@@ -70,6 +77,8 @@ export function statusBadgeClass(status?: string): string {
       return 'badge bg-danger';
     case 'concluido':
       return 'badge bg-success';
+    case 'cancelado':
+      return 'badge bg-secondary';
     default:
       return 'badge bg-secondary';
   }
@@ -78,6 +87,12 @@ export function statusBadgeClass(status?: string): string {
 /** O job terminou em erro. */
 export function isErrorJob(job: IngestionJob | null | undefined): boolean {
   return normalizeStatus(job?.status) === 'erro';
+}
+
+/** O job ainda pode ser cancelado (está na fila ou em processamento). */
+export function isCancellableJob(job: IngestionJob | null | undefined): boolean {
+  const status = normalizeStatus(job?.status);
+  return status === 'na_fila' || status === 'processando';
 }
 
 /** Índice do passo atual (0..STAGES.length-1) a partir de situação e estágio. */

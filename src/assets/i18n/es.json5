@@ -7609,6 +7609,7 @@
   "evidencia.search.tab.ai-summary.selected": "Sintetizar solo los ítems seleccionados ({{ count }})",
 
   "evidencia.search.tab.ai-summary.needs-selection": "Seleccione uno o más ítems para generar el resumen",
+  "evidencia.search.tab.ai-summary.hint": "Genera, con inteligencia artificial, un resumen de los documentos que usted marcó en la lista de resultados. El resumen presenta los hallazgos y las recomendaciones contenidos en esos documentos, indicando de qué documento proviene cada fragmento. Ejemplo: al marcar tres informes de evaluación sobre alimentación escolar, el resumen reúne lo que esos informes constataron y recomendaron sobre el tema.",
 
   "evidencia.search.tab.ai-observation.short": "IA Obs.",
 
@@ -7803,6 +7804,8 @@
   "evidencia.search.ai-summary.mode.label": "Modo del resumen",
   "evidencia.search.ai-summary.mode.basic": "Resumen de hallazgos",
   "evidencia.search.ai-summary.mode.by-section": "Resumen de recomendaciones",
+  "evidencia.search.ai-summary.mode.basic.hint": "Resume los hallazgos contenidos en los documentos seleccionados, es decir, los resultados y las constataciones presentados por las propias evaluaciones, y no conclusiones de la IA. Cada fragmento indica de qué documento proviene. Ejemplo: “La evaluación constató que la cobertura del programa es menor en los municipios de la Región Norte.”",
+  "evidencia.search.ai-summary.mode.by-section.hint": "Resume las recomendaciones contenidas en los documentos seleccionados, es decir, las propuestas de mejora que las propias evaluaciones dirigen a la política o al programa evaluado, y no sugerencias de la IA. Cada fragmento indica de qué documento proviene. Ejemplo: “El informe recomienda ampliar la capacitación de los gestores municipales responsables del programa.”",
   "evidencia.search.ai-summary.filters.label": "Filtros aplicados",
   "evidencia.search.ai-summary.evidence-count": "{{ count }} evidencias analizadas",
 

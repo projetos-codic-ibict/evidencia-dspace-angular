@@ -2,6 +2,7 @@ import {
   AiCitation,
   AiSummaryChunk,
   blocksToPlainText,
+  citedCitations,
   groupCitationsBySource,
   isAiSummaryPayload,
   normalizeAiSummary,
@@ -125,6 +126,33 @@ describe('ai-summary.model', () => {
       const result = normalizeAiSummary({});
 
       expect(result).toEqual({ summary: '', sections: [], citations: [], filtersUsed: [], evidenceCount: 0 });
+    });
+  });
+
+  describe('citedCitations', () => {
+
+    function cite(n: number): AiCitation {
+      return { n, section: '', page: n, snippet: '', title: 'Relatório', itemUuid: 'uuid-1', itemHandle: null };
+    }
+
+    it('fica só com os trechos que o texto cita', () => {
+      const cited = citedCitations([cite(1), cite(2), cite(3)], ['A cobertura caiu [1] e [3].']);
+
+      expect(cited.map((c: AiCitation) => c.n)).toEqual([1, 3]);
+    });
+
+    it('junta os marcadores de todos os textos', () => {
+      const cited = citedCitations([cite(1), cite(2), cite(3)], ['Resumo [2].', 'Seção [3].']);
+
+      expect(cited.map((c: AiCitation) => c.n)).toEqual([2, 3]);
+    });
+
+    it('ignora marcador que não tem trecho', () => {
+      expect(citedCitations([cite(1)], ['Fala de [1] e de [7].']).map((c: AiCitation) => c.n)).toEqual([1]);
+    });
+
+    it('não lista nada quando o texto não cita', () => {
+      expect(citedCitations([cite(1), cite(2)], ['Texto sem marcador.'])).toEqual([]);
     });
   });
 

@@ -76,6 +76,11 @@
       <ds-pipeline-flow [steps]="flow()"></ds-pipeline-flow>
     }
 
+    <!-- 3b. Servidor: CPU, memória, swap e discos do host -->
+    @if (host(); as host) {
+      <ds-pipeline-host [host]="host"></ds-pipeline-host>
+    }
+
     <!-- 4. Grade de componentes -->
     @if (components().length > 0) {
       <section class="pipeline-components" aria-labelledby="pipeline-components-heading">
@@ -90,6 +95,30 @@
       </section>
     } @else {
       <p class="pipeline-empty" role="status">{{ 'health-page.pipeline.components.empty' | translate }}</p>
+    }
+
+    <!-- 4b. docker stats: contêineres fora dos componentes e estado do coletor -->
+    @if (docker(); as docker) {
+      @if (!docker.available) {
+        <p class="pipeline-docker__note" role="status">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          {{ 'health-page.pipeline.docker.unavailable' | translate }}
+        </p>
+      } @else if (docker.others.length > 0) {
+        <section class="pipeline-docker" aria-labelledby="pipeline-docker-heading">
+          <h3 class="pipeline-section-heading" id="pipeline-docker-heading">
+            {{ 'health-page.pipeline.docker.others-heading' | translate }}
+          </h3>
+          @if (docker.ageSeconds !== null) {
+            <p class="pipeline-docker__age">
+              {{ 'health-page.pipeline.docker.age' | translate: { seconds: docker.ageSeconds } }}
+            </p>
+          }
+          <div class="pipeline-docker__list">
+            <ds-pipeline-containers [containers]="docker.others"></ds-pipeline-containers>
+          </div>
+        </section>
+      }
     }
 
     <!-- 6. Configuração técnica -->

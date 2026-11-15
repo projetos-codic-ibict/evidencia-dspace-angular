@@ -1,0 +1,55 @@
+<ul class="pipeline-containers">
+  @for (c of containers(); track c.service) {
+    <li class="pipeline-containers__item" [class.is-warning]="c.warning" [class.is-stopped]="!c.running">
+      <p class="pipeline-containers__head">
+        <i class="fa fa-cube" aria-hidden="true"></i>
+        <code class="pipeline-containers__service" translate="no">{{ c.service }}</code>
+        @if (c.statusText) {
+          <span class="pipeline-containers__status">{{ c.statusText }}</span>
+        }
+      </p>
+
+      @if (c.running) {
+        <dl class="pipeline-containers__stats">
+          <div>
+            <dt>{{ 'health-page.pipeline.docker.cpu' | translate }}</dt>
+            <dd><ds-pipeline-value [value]="c.cpu"></ds-pipeline-value></dd>
+          </div>
+          <div>
+            <dt>{{ 'health-page.pipeline.docker.memory' | translate }}</dt>
+            <dd>
+              <ds-pipeline-value [value]="c.memory"></ds-pipeline-value>
+              @if (c.memoryPercent.kind !== 'none') {
+                <span class="pipeline-containers__sub">
+                  (<ds-pipeline-value [value]="c.memoryPercent"></ds-pipeline-value>)
+                </span>
+              }
+            </dd>
+          </div>
+          <div>
+            <dt>{{ 'health-page.pipeline.docker.net' | translate }}</dt>
+            <dd>
+              <span [attr.aria-label]="'health-page.pipeline.docker.received' | translate">↓</span>
+              <ds-pipeline-value [value]="c.netRx"></ds-pipeline-value>
+              <span [attr.aria-label]="'health-page.pipeline.docker.sent' | translate">↑</span>
+              <ds-pipeline-value [value]="c.netTx"></ds-pipeline-value>
+            </dd>
+          </div>
+          <div>
+            <dt>{{ 'health-page.pipeline.docker.block' | translate }}</dt>
+            <dd>
+              <span [attr.aria-label]="'health-page.pipeline.docker.read' | translate">L</span>
+              <ds-pipeline-value [value]="c.blockRead"></ds-pipeline-value>
+              <span [attr.aria-label]="'health-page.pipeline.docker.written' | translate">E</span>
+              <ds-pipeline-value [value]="c.blockWrite"></ds-pipeline-value>
+            </dd>
+          </div>
+          <div>
+            <dt>{{ 'health-page.pipeline.docker.pids' | translate }}</dt>
+            <dd><ds-pipeline-value [value]="c.pids"></ds-pipeline-value></dd>
+          </div>
+        </dl>
+      }
+    </li>
+  }
+</ul>

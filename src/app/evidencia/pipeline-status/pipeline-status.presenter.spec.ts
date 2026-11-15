@@ -5,9 +5,12 @@ import {
   buildCapabilities,
   buildComponents,
   buildConfig,
+  buildContainers,
   buildDetail,
+  buildDocker,
   buildFlow,
   buildHeader,
+  buildHost,
 } from './pipeline-status.presenter';
 import {
   ageLabel,
@@ -235,6 +238,107 @@ describe('pipeline-status presenter', () => {
 
       expect(flower.detail.rows).toEqual([]);
       expect(flower.detail.groups).toEqual([]);
+    });
+  });
+
+  describe('docker stats', () => {
+    const worker = {
+      service: 'worker-light', state: 'running', status: 'Up 3 hours',
+      cpu_percent: 12.5, mem_usage_bytes: 1024, mem_limit_bytes: 4096, mem_percent: 25,
+      net_rx_bytes: 10, net_tx_bytes: 20, block_read_bytes: 30, block_write_bytes: 40, pids: 7,
+    };
+
+    it('leva os contêineres de cada componente para o cartão', () => {
+      const data = response();
+      data.components.celery.containers = [worker];
+
+      const celery = component(buildComponents(data), 'celery');
+
+      expect(celery.containers.length).toBe(1);
+      expect(celery.containers[0].service).toBe('worker-light');
+      expect(celery.containers[0].cpu).toEqual({ kind: 'percent', num: 12.5 });
+      expect(celery.containers[0].memory).toEqual({ kind: 'bytes', num: 1024 });
+      expect(celery.containers[0].pids).toEqual({ kind: 'int', num: 7 });
+      expect(celery.containers[0].running).toBeTrue();
+      expect(celery.containers[0].warning).toBeFalse();
+    });
+
+    it('componente sem contêineres (API antiga) fica com a lista vazia', () => {
+      expect(component(buildComponents(response()), 'qdrant').containers).toEqual([]);
+    });
+
+    it('marca como alerta o que reinicia, está unhealthy ou saiu com erro', () => {
+      const views = buildContainers([
+        { service: 'a', state: 'restarting', status: 'Restarting (1) 2 seconds ago' },
+        { service: 'b', state: 'running', status: 'Up 2 minutes (unhealthy)' },
+        { service: 'c', state: 'exited', status: 'Exited (137) 1 hour ago' },
+        { service: 'd', state: 'exited', status: 'Exited (0) 1 hour ago' },
+      ]);
+
+      expect(views.map((v) => v.warning)).toEqual([true, true, true, false]);
+      expect(views[3].cpu.kind).toBe('none');
+    });
+
+    it('lê o bloco docker: disponibilidade, idade e contêineres avulsos', () => {
+      const docker = buildDocker(response({
+        docker: { available: true, age_seconds: 4.2, other_containers: [{ service: 'proxy' }, { service: 'api' }] },
+      }));
+
+      expect(docker.available).toBeTrue();
+      expect(docker.ageSeconds).toBe(4.2);
+      expect(docker.others.map((c) => c.service)).toEqual(['api', 'proxy']);
+    });
+
+    it('sem bloco docker na resposta, nada a exibir', () => {
+      expect(buildDocker(response())).toBeNull();
+      expect(buildDocker(response({ docker: { available: false } })).available).toBeFalse();
+    });
+  });
+
+  describe('servidor (host)', () => {
+    const GB = 1024 ** 3;
+
+    it('monta métricas, barras de memória/swap e uma barra por disco', () => {
+      const host = buildHost(response({
+        host: {
+          hostname: 'rdapp', os: 'Ubuntu 24.04', kernel: '6.8.0',
+          cpu_percent: 12.5, iowait_percent: 0.4, cpu_count: 16,
+          load_1: 1.5, load_5: 0.75, load_15: 0.25, uptime_seconds: 7200,
+          mem_percent: 75, mem_used_bytes: 12 * GB, mem_total_bytes: 16 * GB,
+          swap_percent: 60, swap_used_bytes: 1.2 * GB, swap_total_bytes: 2 * GB,
+          disks: [{ mountpoint: '/', used_percent: 95.4, used_bytes: 800 * GB, total_bytes: 838 * GB }],
+        },
+      }));
+
+      expect(host.identity).toBe('rdapp · Ubuntu 24.04 · 6.8.0');
+      expect(host.metrics.map((m) => m.value)).toEqual([
+        { kind: 'percent', num: 12.5 },
+        { kind: 'percent', num: 0.4 },
+        { kind: 'int', num: 16 },
+        { kind: 'text', text: '1.50 · 0.75 · 0.25' },
+        { kind: 'seconds', num: 7200 },
+      ]);
+      expect(host.bars.map((b) => [b.labelKey.split('.').pop(), b.percent, b.warning, b.label]))
+        .toEqual([
+          ['memory', 75, false, undefined],
+          ['swap', 60, true, undefined],
+          ['disk', 95, true, '/'],
+        ]);
+      expect(host.bars[0].captionParams).toEqual({ used: '12.0 GB', total: '16.0 GB' });
+    });
+
+    it('sem swap configurado não desenha a barra; disco público usa o rótulo genérico', () => {
+      const host = buildHost(response({
+        host: { mem_percent: 10, swap_total_bytes: 0, disks: [{ label: 'disco 1', used_percent: 40 }] },
+      }));
+
+      expect(host.identity).toBe('');
+      expect(host.bars.map((b) => b.labelKey.split('.').pop())).toEqual(['memory', 'disk']);
+      expect(host.bars[1].label).toBe('disco 1');
+    });
+
+    it('sem host na resposta (API sem coletor), nada a exibir', () => {
+      expect(buildHost(response())).toBeNull();
     });
   });
 

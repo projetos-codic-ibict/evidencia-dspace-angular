@@ -8,6 +8,7 @@ import {
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { componentIcon } from '../pipeline-status.presenter';
+import { PipelineContainersComponent } from '../containers/pipeline-containers.component';
 import { ComponentView } from '../pipeline-status.view';
 import { PipelineValueComponent } from '../value/pipeline-value.component';
 
@@ -23,6 +24,7 @@ import { PipelineValueComponent } from '../value/pipeline-value.component';
   styleUrls: ['./pipeline-component-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    PipelineContainersComponent,
     PipelineValueComponent,
     TranslatePipe,
   ],

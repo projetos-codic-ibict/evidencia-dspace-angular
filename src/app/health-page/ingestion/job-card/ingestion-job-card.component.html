@@ -17,12 +17,56 @@
 
     <ds-ingestion-stepper [job]="job()"></ds-ingestion-stepper>
 
-    @if (job().item_uuid) {
-      <p class="ingestion-card__actions">
-        <a class="btn btn-sm btn-outline-primary" [routerLink]="['/items', job().item_uuid]">
-          {{ 'health-page.ingestion.card.view-item' | translate }}
-        </a>
-      </p>
+    @if (job().item_uuid || cancellable() || cancelState().phase !== 'idle') {
+      <div class="ingestion-card__actions">
+        @if (job().item_uuid) {
+          <a class="btn btn-sm btn-outline-primary" [routerLink]="['/items', job().item_uuid]">
+            {{ 'health-page.ingestion.card.view-item' | translate }}
+          </a>
+        }
+
+        @switch (cancelState().phase) {
+          @case ('loading') {
+            <span class="ingestion-card__cancel-status small" role="status">
+              <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+              {{ 'health-page.ingestion.cancel.loading' | translate }}
+            </span>
+          }
+          @case ('done') {
+            <span class="ingestion-card__cancel-status small text-success" role="status">
+              {{ 'health-page.ingestion.cancel.done' | translate }}
+            </span>
+          }
+          @default {
+            @if (cancellable()) {
+              @if (confirming()) {
+                <div class="ingestion-card__confirm" role="group"
+                     [attr.aria-label]="'health-page.ingestion.cancel.confirm' | translate">
+                  <span class="small">{{ 'health-page.ingestion.cancel.confirm' | translate }}</span>
+                  <button type="button" class="btn btn-sm btn-danger" (click)="confirmCancel()">
+                    {{ 'health-page.ingestion.cancel.confirm-yes' | translate }}
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="keepJob()">
+                    {{ 'health-page.ingestion.cancel.keep' | translate }}
+                  </button>
+                </div>
+              } @else {
+                <button type="button" class="btn btn-sm btn-outline-danger"
+                        [attr.aria-label]="('health-page.ingestion.cancel.action' | translate) + ': ' + title()"
+                        (click)="askCancel()">
+                  {{ 'health-page.ingestion.cancel.action' | translate }}
+                </button>
+              }
+            }
+          }
+        }
+      </div>
+
+      @if (cancelState().phase === 'error' && cancelState().errorKey) {
+        <p class="ingestion-card__cancel-error small text-danger mb-0 mt-2" role="alert">
+          {{ cancelState().errorKey | translate }}
+        </p>
+      }
     }
   </div>
 </article>

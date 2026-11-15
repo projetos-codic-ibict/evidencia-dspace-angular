@@ -39,6 +39,77 @@ export interface PipelineComponent {
   /** Orientação de próximo passo, quando a API tem algo a sugerir. */
   hint?: string;
   detail?: Record<string, unknown>;
+  /**
+   * `docker stats` dos contêineres que implementam o componente (ex.: `celery` ←
+   * worker-light e worker-index). Ausente quando a API não tem coletor ou o
+   * componente não é um contêiner; vazio quando o serviço roda fora do host.
+   */
+  containers?: ContainerStats[];
+}
+
+/** Uma linha do `docker stats` (backend/services/docker_stats.py). */
+export interface ContainerStats {
+  /** Serviço do compose (`worker-light`, `qdrant`…). */
+  service: string;
+  /** Nome do contêiner — só no detalhe completo. */
+  name?: string;
+  /** `running`, `exited`, `restarting`… */
+  state?: string;
+  /** Texto do Engine: "Up 3 hours (healthy)". */
+  status?: string;
+  cpu_percent?: number | null;
+  mem_usage_bytes?: number | null;
+  mem_limit_bytes?: number | null;
+  mem_percent?: number | null;
+  net_rx_bytes?: number | null;
+  net_tx_bytes?: number | null;
+  block_read_bytes?: number | null;
+  block_write_bytes?: number | null;
+  pids?: number | null;
+}
+
+/** Um sistema de arquivos do host. `mountpoint` só no detalhe completo. */
+export interface HostDisk {
+  mountpoint?: string;
+  label?: string;
+  fstype?: string;
+  total_bytes?: number;
+  used_bytes?: number;
+  free_bytes?: number;
+  used_percent?: number | null;
+}
+
+/** Métricas da máquina, medidas pelo coletor docker-stats. */
+export interface PipelineHostInfo {
+  /** Identificação — só no detalhe completo. */
+  hostname?: string;
+  os?: string;
+  kernel?: string;
+  cpu_percent?: number | null;
+  iowait_percent?: number | null;
+  cpu_count?: number | null;
+  load_1?: number;
+  load_5?: number;
+  load_15?: number;
+  mem_total_bytes?: number;
+  mem_used_bytes?: number;
+  mem_available_bytes?: number;
+  mem_percent?: number;
+  swap_total_bytes?: number;
+  swap_used_bytes?: number;
+  swap_percent?: number | null;
+  uptime_seconds?: number | null;
+  disks?: HostDisk[];
+}
+
+/** Bloco `docker` da resposta: disponibilidade do coletor e contêineres avulsos. */
+export interface PipelineDockerInfo {
+  available: boolean;
+  message?: string;
+  collected_at?: string;
+  age_seconds?: number | null;
+  /** Contêineres que não pertencem a nenhum componente (api, proxy…). */
+  other_containers?: ContainerStats[];
 }
 
 // --------------------------------------------------------- Detalhes tipados
@@ -115,6 +186,10 @@ export interface PipelineStatusResponse {
   components?: Record<string, PipelineComponent>;
   config?: PipelineConfig;
   api?: PipelineApiInfo;
+  /** `docker stats` do stack; ausente em APIs anteriores ao coletor. */
+  docker?: PipelineDockerInfo;
+  /** Métricas do host; ausente sem coletor. */
+  host?: PipelineHostInfo;
 }
 
 /** Uma resposta é utilizável quando tem, no mínimo, o estado geral. */

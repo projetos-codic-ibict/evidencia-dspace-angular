@@ -103,6 +103,8 @@ export interface MetricView {
 /** Barra de proporção (memória, disco). */
 export interface BarView {
   labelKey: string;
+  /** Rótulo cru que acompanha o traduzido (ponto de montagem do disco). */
+  label?: string;
   /** 0–100. */
   percent: number;
   /** Legenda ao lado da barra (ex.: "40,2 GB de 48 GB"). */
@@ -126,6 +128,40 @@ export interface DetailView {
   groups: DetailGroup[];
 }
 
+/** Um contêiner do `docker stats`, pronto para exibir. */
+export interface ContainerView {
+  service: string;
+  /** Texto do Engine ("Up 3 hours (healthy)") ou o estado cru. */
+  statusText: string;
+  running: boolean;
+  /** Reiniciando, parado com erro, unhealthy: pinta a linha como alerta. */
+  warning: boolean;
+  cpu: MetricValue;
+  memory: MetricValue;
+  memoryPercent: MetricValue;
+  netRx: MetricValue;
+  netTx: MetricValue;
+  blockRead: MetricValue;
+  blockWrite: MetricValue;
+  pids: MetricValue;
+}
+
+/** Seção "Servidor": métricas da máquina. */
+export interface HostView {
+  /** "rdapp · Ubuntu 24.04 · 6.8.0" (vazio no detalhe público). */
+  identity: string;
+  metrics: MetricView[];
+  /** Memória, swap e um por disco. */
+  bars: BarView[];
+}
+
+/** Bloco de contêineres da página (fora dos cartões). */
+export interface DockerView {
+  available: boolean;
+  ageSeconds: number | null;
+  others: ContainerView[];
+}
+
 export interface ComponentView {
   key: string;
   nameKey: string;
@@ -139,6 +175,8 @@ export interface ComponentView {
   metrics: MetricView[];
   bars: BarView[];
   detail: DetailView;
+  /** `docker stats` dos contêineres do componente (vazio = sem dados). */
+  containers: ContainerView[];
   /** Opcional e desligado: informativo, não erro. */
   optionalNotConfigured: boolean;
 }
@@ -194,6 +232,11 @@ export interface HeaderView {
  * `humanizeKey`, então um campo novo na API aparece legível em vez de sumir.
  */
 export const FIELD_LABELS: Record<string, string> = {
+  host_cpu: 'host_cpu',
+  host_iowait: 'host_iowait',
+  host_cores: 'host_cores',
+  host_load: 'host_load',
+  host_uptime: 'host_uptime',
   active: 'active',
   active_tasks: 'active_tasks',
   artifacts: 'artifacts',

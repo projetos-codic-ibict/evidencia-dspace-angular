@@ -1,0 +1,44 @@
+<section class="pipeline-host" aria-labelledby="pipeline-host-heading">
+  <h3 class="pipeline-section-heading" id="pipeline-host-heading">
+    <i class="fa fa-server me-1" aria-hidden="true"></i>
+    {{ 'health-page.pipeline.host.heading' | translate }}
+  </h3>
+  @if (host().identity) {
+    <p class="pipeline-host__identity" translate="no">{{ host().identity }}</p>
+  }
+
+  <div class="pipeline-host__body">
+    <dl class="pipeline-host__metrics">
+      @for (metric of host().metrics; track metric.labelKey || metric.label) {
+        <div class="pipeline-host__metric">
+          <dt>{{ metric.labelKey ? (metric.labelKey | translate) : metric.label }}</dt>
+          <dd><ds-pipeline-value [value]="metric.value"></ds-pipeline-value></dd>
+        </div>
+      }
+    </dl>
+
+    <div class="pipeline-host__bars">
+      @for (bar of host().bars; track $index) {
+        <div class="pipeline-host__bar" [class.is-warning]="bar.warning">
+          <p class="pipeline-host__bar-label">
+            <span>
+              {{ bar.labelKey | translate }}
+              @if (bar.label) {
+                <code translate="no">{{ bar.label }}</code>
+              }
+            </span>
+            <span class="pipeline-host__bar-percent">{{ bar.percent }}%</span>
+          </p>
+          <div class="pipeline-host__track" role="progressbar"
+               [attr.aria-valuenow]="bar.percent" aria-valuemin="0" aria-valuemax="100"
+               [attr.aria-label]="(bar.labelKey | translate) + (bar.label ? ' ' + bar.label : '')">
+            <span class="pipeline-host__fill" [style.width.%]="bar.percent"></span>
+          </div>
+          @if (bar.captionKey) {
+            <p class="pipeline-host__caption">{{ bar.captionKey | translate: bar.captionParams }}</p>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>

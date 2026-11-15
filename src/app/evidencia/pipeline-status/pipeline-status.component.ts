@@ -22,16 +22,20 @@ import { PipelineAlertsComponent } from './alerts/pipeline-alerts.component';
 import { PipelineCapabilitiesComponent } from './capabilities/pipeline-capabilities.component';
 import { PipelineComponentCardComponent } from './card/pipeline-component-card.component';
 import { PipelineConfigComponent } from './config/pipeline-config.component';
+import { PipelineContainersComponent } from './containers/pipeline-containers.component';
 import { PipelineFlowComponent } from './flow/pipeline-flow.component';
 import { PipelineHealthHeaderComponent } from './header/pipeline-health-header.component';
+import { PipelineHostComponent } from './host/pipeline-host.component';
 import { PipelineStatusResponse } from './pipeline-status.model';
 import {
   buildAlerts,
   buildCapabilities,
   buildComponents,
   buildConfig,
+  buildDocker,
   buildFlow,
   buildHeader,
+  buildHost,
 } from './pipeline-status.presenter';
 import {
   PipelineStatusError,
@@ -71,8 +75,10 @@ const HTTP_ERROR_KEYS: Record<number, string> = {
     PipelineCapabilitiesComponent,
     PipelineComponentCardComponent,
     PipelineConfigComponent,
+    PipelineContainersComponent,
     PipelineFlowComponent,
     PipelineHealthHeaderComponent,
+    PipelineHostComponent,
     TranslatePipe,
   ],
 })
@@ -114,6 +120,8 @@ export class PipelineStatusComponent implements OnInit {
   readonly components = computed(() => this.withData(buildComponents) ?? []);
   readonly alerts = computed(() => this.withData(buildAlerts) ?? []);
   readonly config = computed(() => this.withData(buildConfig) ?? []);
+  readonly docker = computed(() => this.withData(buildDocker) ?? null);
+  readonly host = computed(() => this.withData(buildHost) ?? null);
 
   constructor() {
     this.reload$.pipe(

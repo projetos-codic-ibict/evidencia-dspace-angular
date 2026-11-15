@@ -1,0 +1,72 @@
+<section class="ingestion-start card" aria-labelledby="ingestion-start-heading">
+  <div class="card-body">
+    <h2 class="ingestion-start__heading h6" id="ingestion-start-heading">
+      {{ 'health-page.ingestion.start.heading' | translate }}
+    </h2>
+    <p class="ingestion-start__summary">{{ 'health-page.ingestion.start.summary' | translate }}</p>
+
+    <form class="ingestion-start__form" (submit)="onSubmit($event)" novalidate>
+      <div class="ingestion-start__field">
+        <label class="form-label" for="ingestion-item-uuid">
+          {{ 'health-page.ingestion.start.label' | translate }}
+        </label>
+        <input #uuidBox id="ingestion-item-uuid" class="form-control"
+               type="text" name="ingestion-item-uuid" inputmode="text"
+               autocomplete="off" spellcheck="false" translate="no"
+               [attr.aria-invalid]="invalidKey() !== null"
+               [attr.aria-describedby]="invalidKey() ? 'ingestion-item-uuid-error' : null"
+               [placeholder]="'health-page.ingestion.start.placeholder' | translate">
+        @if (invalidKey()) {
+          <p class="ingestion-start__field-error" id="ingestion-item-uuid-error" role="alert">
+            {{ invalidKey() | translate }}
+          </p>
+        }
+        <div class="form-check mt-2 mb-0">
+          <input class="form-check-input" type="checkbox" id="ingestion-item-force"
+                 [checked]="force()" (change)="toggleForce()">
+          <label class="form-check-label small" for="ingestion-item-force">
+            {{ 'health-page.ingestion.start.force' | translate }}
+          </label>
+        </div>
+      </div>
+
+      <div class="ingestion-start__buttons">
+        <button type="submit" class="btn btn-primary" [dsBtnDisabled]="loading()">
+          @if (loading()) {
+            <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+            {{ 'health-page.ingestion.start.loading' | translate }}
+          } @else {
+            {{ 'health-page.ingestion.start.button' | translate }}
+          }
+        </button>
+      </div>
+    </form>
+
+    <div class="ingestion-start__states" role="status">
+      @if (outcome().response; as response) {
+        @if (isWaiting(response)) {
+          <div class="alert alert-warning py-2 mb-0">
+            <p class="mb-1">{{ 'health-page.ingestion.start.waiting' | translate }}</p>
+            <code class="small" translate="no">{{ response.job_id }}</code>
+          </div>
+        } @else {
+          <div class="alert alert-success py-2 mb-0">
+            <p class="mb-1">
+              {{ 'health-page.ingestion.start.queued' | translate: { count: response.jobs?.length ?? 0 } }}
+            </p>
+            @for (job of response.jobs ?? []; track job.job_id) {
+              <code class="small d-block" translate="no">{{ job.filename || job.job_id }}</code>
+            }
+          </div>
+        }
+      } @else if (outcome().errorKey) {
+        <div class="alert alert-danger py-2 mb-0">
+          <p class="mb-0">{{ outcome().errorKey | translate }}</p>
+          @if (outcome().errorDetail) {
+            <p class="small mb-0 mt-1">{{ outcome().errorDetail }}</p>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
